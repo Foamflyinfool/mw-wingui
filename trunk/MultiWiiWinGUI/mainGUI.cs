@@ -51,7 +51,8 @@ namespace MultiWiiWinGUI
         const int iPacketSizeM19 = 125;             //M answer packet size for ver 1.9
         static int iPacketSizeM;                    //This will contain packet size 
         const string sRelName20 = "SVN r569";
-        const string sRelName19 = "1.9 released";
+        const string sRelName19 = "1.9";
+        static string sRelName;
 
         //PID value positions is serial stream
         static byte PID_ROLL;
@@ -154,6 +155,7 @@ namespace MultiWiiWinGUI
             {
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_GPS = 5; PID_LEVEL = 6; PID_MAG = 7;
                 iPacketSizeM = iPacketSizeM20;
+                sRelName = sRelName20;
                 splash.sFcVersionLabel = "MultiWii version " + sRelName20;
                 splash.Refresh();
             }
@@ -161,6 +163,7 @@ namespace MultiWiiWinGUI
             {
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_LEVEL = 5; PID_MAG = 6;
                 iPacketSizeM = iPacketSizeM19;
+                sRelName = sRelName19;
                 groupBoxGPS.Visible = false;
                 splash.sFcVersionLabel = "MultiWii version " + sRelName19;
                 splash.Refresh();
@@ -717,7 +720,7 @@ namespace MultiWiiWinGUI
                     }
                     catch
                     {
-                        MessageBoxEx.Show(this, "No Answer from FC, check connections!", "Comm error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No valid answer from FC!\r\nCheck that your MultiWii software version is maching with the version selected at the GUI Settings tab ("+sRelName+") and it's connected properly.", "Comm error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         bSerialError = true;
                         return;
                     }
