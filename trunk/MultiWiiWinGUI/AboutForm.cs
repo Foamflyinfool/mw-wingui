@@ -12,6 +12,20 @@ namespace MultiWiiWinGUI
 {
     public partial class frmAbout : Form
     {
+
+        public string sVersionLabel
+        {
+            get { return this.l_version.Text; }
+            set { this.l_version.Text = value; }
+        }
+
+        public string sFcVersionLabel
+        {
+            get { return this.l_mwver.Text; }
+            set { this.l_mwver.Text = value; }
+        }
+
+
         public frmAbout()
         {
             InitializeComponent();
@@ -25,6 +39,7 @@ namespace MultiWiiWinGUI
             AssemblyName assemName = assem.GetName();
             Version ver = assemName.Version;
             label2.Text = String.Format("{0}", ver.ToString());
+
         }
 
         private void button1_Click(object sender, EventArgs e)
