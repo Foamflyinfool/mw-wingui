@@ -35,6 +35,8 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
+        static string sPublishVersion = "1.0 Beta";
+
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
         enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, Octo8Coax, Octo8P, Octo8X };
@@ -48,6 +50,8 @@ namespace MultiWiiWinGUI
         const int iPacketSizeM20 = 155;             //M answer packet size for ver latest head
         const int iPacketSizeM19 = 125;             //M answer packet size for ver 1.9
         static int iPacketSizeM;                    //This will contain packet size 
+        const string sRelName20 = "SVN r569";
+        const string sRelName19 = "1.9 released";
 
         //PID value positions is serial stream
         static byte PID_ROLL;
@@ -128,11 +132,10 @@ namespace MultiWiiWinGUI
         private void mainGUI_Load(object sender, EventArgs e)
         {
 
-            Form splash = new splash_screen();
+            splash_screen splash = new splash_screen();
+            splash.sVersionLabel = sPublishVersion;
             splash.Show();
             splash.Refresh();
-            System.Threading.Thread.Sleep(2000);
-
             //Start with Settings file read, and parse exit if unsuccessfull
             gui_settings = new GUI_settings();
             if (!gui_settings.read_from_xml(sGuiSettingsFilename))
@@ -151,14 +154,19 @@ namespace MultiWiiWinGUI
             {
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_GPS = 5; PID_LEVEL = 6; PID_MAG = 7;
                 iPacketSizeM = iPacketSizeM20;
+                splash.sFcVersionLabel = "MultiWii version " + sRelName20;
+                splash.Refresh();
             }
             if (gui_settings.iSoftwareVersion == 19)
             {
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_LEVEL = 5; PID_MAG = 6;
                 iPacketSizeM = iPacketSizeM19;
                 groupBoxGPS.Visible = false;
+                splash.sFcVersionLabel = "MultiWii version " + sRelName19;
+                splash.Refresh();
 
             }
+
             bSerialBuffer = new byte[iPacketSizeM];
 
             ToolTip toolTip1 = new ToolTip();
@@ -476,7 +484,7 @@ namespace MultiWiiWinGUI
             dropdown_devices.SelectedIndex = 0;
             cb_codec.SelectedIndex = 0;
 
-
+            System.Threading.Thread.Sleep(2000);
             splash.Close();
 
         } //End of mainGUI_load
@@ -1471,7 +1479,10 @@ namespace MultiWiiWinGUI
 
         private void b_about_Click(object sender, EventArgs e)
         {
-            Form aboutform = new frmAbout();
+            frmAbout aboutform = new frmAbout();
+            aboutform.sVersionLabel = sPublishVersion;
+            if (gui_settings.iSoftwareVersion == 20) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName20; }
+            if (gui_settings.iSoftwareVersion == 19) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName19; }
             aboutform.ShowDialog();
         }
 

@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.l_version = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.l_mwver = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -44,17 +45,17 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
+            // l_version
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Gray;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(452, 90);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 18);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Version 1.0 Beta";
+            this.l_version.BackColor = System.Drawing.Color.Gray;
+            this.l_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_version.ForeColor = System.Drawing.Color.LightGray;
+            this.l_version.Location = new System.Drawing.Point(451, 75);
+            this.l_version.Name = "l_version";
+            this.l_version.Size = new System.Drawing.Size(132, 18);
+            this.l_version.TabIndex = 1;
+            this.l_version.Text = "Version 1.0 Beta";
+            this.l_version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
@@ -72,22 +73,34 @@
             this.label3.BackColor = System.Drawing.Color.Gray;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DarkGray;
-            this.label3.Location = new System.Drawing.Point(379, 75);
+            this.label3.Location = new System.Drawing.Point(375, 93);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(205, 15);
             this.label3.TabIndex = 3;
             this.label3.Text = "by András Schäffer (EOSBandi)";
+            // 
+            // l_mwver
+            // 
+            this.l_mwver.BackColor = System.Drawing.Color.Gray;
+            this.l_mwver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_mwver.ForeColor = System.Drawing.Color.Maroon;
+            this.l_mwver.Location = new System.Drawing.Point(389, 119);
+            this.l_mwver.Name = "l_mwver";
+            this.l_mwver.Size = new System.Drawing.Size(191, 23);
+            this.l_mwver.TabIndex = 6;
+            this.l_mwver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::MultiWiiWinGUI.Properties.Resources.splash;
-            this.ClientSize = new System.Drawing.Size(596, 276);
+            this.ClientSize = new System.Drawing.Size(594, 274);
             this.ControlBox = false;
+            this.Controls.Add(this.l_mwver);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.l_version);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -106,8 +119,9 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label l_version;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label l_mwver;
     }
 }

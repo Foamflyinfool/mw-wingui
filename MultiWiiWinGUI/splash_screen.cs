@@ -11,6 +11,21 @@ namespace MultiWiiWinGUI
 {
     public partial class splash_screen : Form
     {
+
+        public string sVersionLabel
+        {
+            get { return this.l_version.Text; }
+            set { this.l_version.Text = value; }
+        }
+
+        public string sFcVersionLabel
+        {
+            get { return this.l_mwver.Text; }
+            set { this.l_mwver.Text = value; }
+        }
+
+
+
         public splash_screen()
         {
             InitializeComponent();

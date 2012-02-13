@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.l_version = new System.Windows.Forms.Label();
             this.l_full_version = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.l_mwver = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // l_version
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Gray;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(454, 91);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 18);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Version 1.0 Beta";
+            this.l_version.BackColor = System.Drawing.Color.Gray;
+            this.l_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_version.ForeColor = System.Drawing.Color.LightGray;
+            this.l_version.Location = new System.Drawing.Point(452, 77);
+            this.l_version.Name = "l_version";
+            this.l_version.Size = new System.Drawing.Size(132, 18);
+            this.l_version.TabIndex = 0;
+            this.l_version.Text = "Version 1.0 Beta";
+            this.l_version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // l_full_version
             // 
@@ -63,11 +64,21 @@
             this.label3.BackColor = System.Drawing.Color.Gray;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DarkGray;
-            this.label3.Location = new System.Drawing.Point(383, 76);
+            this.label3.Location = new System.Drawing.Point(383, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(205, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "by András Schäffer (EOSBandi)";
+            // 
+            // l_mwver
+            // 
+            this.l_mwver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_mwver.ForeColor = System.Drawing.Color.Maroon;
+            this.l_mwver.Location = new System.Drawing.Point(386, 123);
+            this.l_mwver.Name = "l_mwver";
+            this.l_mwver.Size = new System.Drawing.Size(200, 23);
+            this.l_mwver.TabIndex = 5;
+            this.l_mwver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // splash_screen
             // 
@@ -77,8 +88,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(598, 278);
             this.ControlBox = false;
+            this.Controls.Add(this.l_mwver);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.l_version);
             this.Controls.Add(this.l_full_version);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -95,9 +107,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label l_version;
         private System.Windows.Forms.Label l_full_version;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label l_mwver;
 
     }
 }
