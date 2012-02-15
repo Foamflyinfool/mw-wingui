@@ -194,6 +194,7 @@
             this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
             this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -242,7 +243,8 @@
             this.bkgWorker = new System.ComponentModel.BackgroundWorker();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.b_about = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.nPID_level_d = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).BeginInit();
@@ -290,13 +292,14 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabPageFlighDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nFrameRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_d)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_serial_port
@@ -1033,6 +1036,8 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.label23);
+            this.groupBox7.Controls.Add(this.nPID_level_d);
             this.groupBox7.Controls.Add(this.label51);
             this.groupBox7.Controls.Add(this.label52);
             this.groupBox7.Controls.Add(this.nPID_level_i);
@@ -1041,7 +1046,7 @@
             this.groupBox7.ForeColor = System.Drawing.Color.White;
             this.groupBox7.Location = new System.Drawing.Point(97, 319);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(219, 42);
+            this.groupBox7.Size = new System.Drawing.Size(321, 42);
             this.groupBox7.TabIndex = 7;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Level";
@@ -2372,6 +2377,20 @@
             this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
             this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
+            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
+            // 
             // tabPageFlighDeck
             // 
             this.tabPageFlighDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2920,19 +2939,31 @@
             this.b_about.UseVisualStyleBackColor = true;
             this.b_about.Click += new System.EventHandler(this.b_about_Click);
             // 
-            // pictureBox2
+            // nPID_level_d
             // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
-            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
+            this.nPID_level_d.BackColor = System.Drawing.Color.LightGray;
+            this.nPID_level_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_level_d.Location = new System.Drawing.Point(238, 16);
+            this.nPID_level_d.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nPID_level_d.Name = "nPID_level_d";
+            this.nPID_level_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_level_d.TabIndex = 6;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(216, 18);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(16, 13);
+            this.label23.TabIndex = 6;
+            this.label23.Text = "D";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // mainGUI
             // 
@@ -3022,6 +3053,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabPageFlighDeck.ResumeLayout(false);
             this.tabPageFlighDeck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).EndInit();
@@ -3032,7 +3064,7 @@
             this.groupBox11.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_d)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3253,6 +3285,8 @@
         private System.Windows.Forms.Label l_i2cerrors;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.NumericUpDown nPID_level_d;
     }
 }
 
