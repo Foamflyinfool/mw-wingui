@@ -133,10 +133,15 @@ namespace MultiWiiWinGUI
         private void mainGUI_Load(object sender, EventArgs e)
         {
 
-            //setup_wizard panelSetupWizard = new setup_wizard();
-            //panelSetupWizard.Show();
-            //panelSetupWizard.Refresh();
+            //First step, check it gui_settings file is exists or not, if not then start settings wizard
+            if (!File.Exists(sGuiSettingsFilename))
+            {
+                setup_wizard panelSetupWizard = new setup_wizard();
+                panelSetupWizard.ShowDialog();
 
+            }
+
+            //Now there must be a valid settings file, so we can continue with normal execution
 
             splash_screen splash = new splash_screen();
             splash.sVersionLabel = sPublishVersion;
@@ -1303,6 +1308,7 @@ namespace MultiWiiWinGUI
             SaveFileDialog sfdSaveParameters = new SaveFileDialog();
             sfdSaveParameters.Filter = "MultiWii Settings File|*.mws";
             sfdSaveParameters.Title = "Save parameters to file";
+            sfdSaveParameters.InitialDirectory = gui_settings.sSettingsFolder;
 
             string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
             string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
@@ -1324,6 +1330,7 @@ namespace MultiWiiWinGUI
             OpenFileDialog ofdLoadParameters = new OpenFileDialog();
             ofdLoadParameters.Filter = "MultiWii Settings File|*.mws";
             ofdLoadParameters.Title = "Load parameters from file";
+            ofdLoadParameters.InitialDirectory = gui_settings.sSettingsFolder;
             if (ofdLoadParameters.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             { //we have file to open
                 if (mw_params.read_from_xml(ofdLoadParameters.FileName))
@@ -1455,6 +1462,18 @@ namespace MultiWiiWinGUI
                 b_save_gui_settings.BackColor = Color.LightCoral;
             }
         }
+
+        private void b_select_settings_folder_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                gui_settings.sSettingsFolder = folderBrowserDialog1.SelectedPath;
+                l_Settings_folder.Text = gui_settings.sSettingsFolder;
+                b_save_gui_settings.BackColor = Color.LightCoral;
+            }
+
+        }
+
 
         private void b_save_gui_settings_Click(object sender, EventArgs e)
         {

@@ -17,6 +17,7 @@ namespace MultiWiiWinGUI
     {
         public string sLogFolder { get; set; }
         public string sCaptureFolder { get; set; }
+        public string sSettingsFolder { get; set; }
         public int iSoftwareVersion { get; set; }
         public bool bEnableLogging { get; set; }
         public string sPreferedComPort { get; set; }
@@ -38,6 +39,7 @@ namespace MultiWiiWinGUI
         {
             sLogFolder = Directory.GetCurrentDirectory();
             sCaptureFolder = Directory.GetCurrentDirectory();
+            sSettingsFolder = Directory.GetCurrentDirectory();
             iSoftwareVersion = 20;
             bEnableLogging = true;
         }
@@ -63,6 +65,7 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("FCVERSION value=\"" + iSoftwareVersion + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGFOLDER value=\"" + sLogFolder + "\""); tw.WriteEndElement();
             tw.WriteStartElement("CAPTUREFOLDER value=\"" + sCaptureFolder + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("SETTINGSFOLDER value=\"" + sSettingsFolder + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGATCONNECT value=\"" + bEnableLogging + "\""); tw.WriteEndElement();
             tw.WriteStartElement("SERIALPORT value=\"" + sPreferedComPort + "\""); tw.WriteEndElement();
             tw.WriteStartElement("SERIALSPEED value=\"" + sPreferedSerialSpeed + "\""); tw.WriteEndElement();
@@ -105,6 +108,7 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "fcversion", true) == 0 && reader.HasAttributes) { iSoftwareVersion = Convert.ToInt16(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logfolder", true) == 0 && reader.HasAttributes) { sLogFolder = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "capturefolder", true) == 0 && reader.HasAttributes) { sCaptureFolder = reader.GetAttribute("value"); }
+                            if (String.Compare(reader.Name, "settingsfolder", true) == 0 && reader.HasAttributes) { sSettingsFolder = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "logatconnect", true) == 0 && reader.HasAttributes) { bEnableLogging = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "serailport", true) == 0 && reader.HasAttributes) { sPreferedComPort = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "serialspeed", true) == 0 && reader.HasAttributes) { sPreferedSerialSpeed = reader.GetAttribute("value"); }
