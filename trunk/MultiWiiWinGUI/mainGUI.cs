@@ -133,6 +133,11 @@ namespace MultiWiiWinGUI
         private void mainGUI_Load(object sender, EventArgs e)
         {
 
+            //setup_wizard panelSetupWizard = new setup_wizard();
+            //panelSetupWizard.Show();
+            //panelSetupWizard.Refresh();
+
+
             splash_screen splash = new splash_screen();
             splash.sVersionLabel = sPublishVersion;
             splash.Show();
@@ -164,6 +169,7 @@ namespace MultiWiiWinGUI
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_LEVEL = 5; PID_MAG = 6;
                 iPacketSizeM = iPacketSizeM19;
                 sRelName = sRelName19;
+                nPID_level_d.Visible = false;
                 groupBoxGPS.Visible = false;
                 splash.sFcVersionLabel = "MultiWii version " + sRelName19;
                 splash.Refresh();
@@ -1067,6 +1073,8 @@ namespace MultiWiiWinGUI
 
             mw_params.pidP[PID_LEVEL] = (byte)(nPID_level_p.Value * 10);
             mw_params.pidI[PID_LEVEL] = (byte)(nPID_level_i.Value * 1000);
+            if (gui_settings.iSoftwareVersion == 20) { mw_params.pidD[PID_LEVEL] = (byte)(nPID_level_d.Value); }
+
 
             mw_params.pidP[PID_MAG] = (byte)(nPID_mag_p.Value * 10);
 
@@ -1202,6 +1210,7 @@ namespace MultiWiiWinGUI
 
             nPID_level_p.Value = (decimal)mw_gui.pidP[PID_LEVEL] / 10;
             nPID_level_i.Value = (decimal)mw_gui.pidI[PID_LEVEL] / 1000;
+            if (gui_settings.iSoftwareVersion == 20) { nPID_level_d.Value = (decimal)mw_gui.pidD[PID_LEVEL]; }
 
             nPID_mag_p.Value = (decimal)mw_gui.pidP[PID_MAG] / 10;
 
@@ -1268,6 +1277,7 @@ namespace MultiWiiWinGUI
 
             nPID_level_p.Value = (decimal)mw_params.pidP[PID_LEVEL] / 10;
             nPID_level_i.Value = (decimal)mw_params.pidI[PID_LEVEL] / 1000;
+            if (gui_settings.iSoftwareVersion == 20) { nPID_level_d.Value = (decimal)mw_params.pidD[PID_LEVEL]; }
 
             nPID_mag_p.Value = (decimal)mw_params.pidP[PID_MAG] / 10;
 

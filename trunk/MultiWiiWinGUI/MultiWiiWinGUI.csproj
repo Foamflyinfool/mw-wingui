@@ -113,6 +113,12 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="setup_wizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="setup_wizard.Designer.cs">
+      <DependentUpon>setup_wizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="MWGUIControls\artifical_horizont.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -169,6 +175,9 @@
     </Compile>
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="setup_wizard.resx">
+      <DependentUpon>setup_wizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MWGUIControls\MWGUIControlsResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
