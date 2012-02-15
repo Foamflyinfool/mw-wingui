@@ -117,4 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label7.Text" xml:space="preserve">
+    <value>This wizard will guide you through the initial settings of the GUI, such
+as MultiWii software version or target folders.
+You can cancel this wizard any time, to get the default values.
+However it’s highly recommended to go through all steps to get
+familiar with the settings.</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Please choose which software version you are using on your
+MultiWii controller. Due the recent changes in serial protocol,
+interim versions between 1.9 and r569 are not working.
+You can change software version at the GUI Settings tab later
+ if required.</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>You can set your preferred serial port and serial speed. So you 
+don’t have to set it every time when GUI started. If you are using
+“stock” MultiWii firmware you must use 115200 for speed.
+If your preferred serial port is not available the first available port
+will be selected by the GUI.</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>You can log any data that comes from the MultiWii flight controller.
+When logging is enabled, a new logfile will be created at each
+connect, and the selected data sets will be logged at each data
+refresh. You can open and analyze logs in the LogBrowser. </value>
+  </data>
 </root>
