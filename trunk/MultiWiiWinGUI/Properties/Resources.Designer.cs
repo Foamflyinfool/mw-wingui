@@ -80,5 +80,47 @@ namespace MultiWiiWinGUI.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap wizard_1 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap wizard_2 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap wizard_3 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap wizard_4 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap wizard_5 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap wizard_6 {
+            get {
+                object obj = ResourceManager.GetObject("wizard_6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

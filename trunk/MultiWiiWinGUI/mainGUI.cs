@@ -21,6 +21,7 @@ using System.IO.Ports;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Video.FFMPEG;
@@ -35,7 +36,10 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        static string sPublishVersion = "1.0 Beta";
+        const string sVersion = "1.00";
+        const string sVersionUrl = "http://mw-wingui.googlecode.com/files/version.xml";
+        private string sVersionFromSVN;
+        private XDocument doc;
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
@@ -144,7 +148,7 @@ namespace MultiWiiWinGUI
             //Now there must be a valid settings file, so we can continue with normal execution
 
             splash_screen splash = new splash_screen();
-            splash.sVersionLabel = sPublishVersion;
+            splash.sVersionLabel = sVersion;
             splash.Show();
             splash.Refresh();
             //Start with Settings file read, and parse exit if unsuccessfull
@@ -195,6 +199,8 @@ namespace MultiWiiWinGUI
             //Fill out settings tab
             l_Capture_folder.Text = gui_settings.sCaptureFolder;
             l_LogFolder.Text = gui_settings.sLogFolder;
+            l_Settings_folder.Text = gui_settings.sSettingsFolder;
+
             cb_Logging_enabled.Checked = gui_settings.bEnableLogging;
             switch (gui_settings.iSoftwareVersion)
             {
@@ -368,6 +374,7 @@ namespace MultiWiiWinGUI
             timer_rc.Enabled = true;
             timer_rc.Stop();
 
+
             //Set up zgMonitor control for real time monitoring
             GraphPane myPane = zgMonitor.GraphPane;
 
@@ -449,11 +456,11 @@ namespace MultiWiiWinGUI
             myPane.XAxis.Scale.IsVisible = false;
             myPane.YAxis.Scale.IsVisible = true;
 
-            myPane.XAxis.Scale.MagAuto = false;
+            myPane.XAxis.Scale.MagAuto = true;
             myPane.YAxis.Scale.MagAuto = false;
 
-            zgMonitor.IsEnableHPan = false;
-            zgMonitor.IsEnableHZoom = false;
+            zgMonitor.IsEnableHPan = true;
+            zgMonitor.IsEnableHZoom = true;
 
             foreach (ZedGraph.LineItem li in myPane.CurveList)
             {
@@ -466,7 +473,10 @@ namespace MultiWiiWinGUI
 
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = 300;
-
+            myPane.XAxis.Type = AxisType.Linear;
+            
+            
+            
             zgMonitor.ScrollGrace = 0;
             xScale = zgMonitor.GraphPane.XAxis.Scale;
             zgMonitor.AxisChange();
@@ -501,6 +511,8 @@ namespace MultiWiiWinGUI
             System.Threading.Thread.Sleep(2000);
             splash.Close();
 
+
+
         } //End of mainGUI_load
 
         private void timer_rc_Tick(object sender, EventArgs e)
@@ -520,6 +532,9 @@ namespace MultiWiiWinGUI
 
         private void b_connect_Click(object sender, EventArgs e)
         {
+            //Check if we at GUI Settings, go to first screen when connect
+            if (tabMain.SelectedIndex == 4) { tabMain.SelectedIndex = 0; }
+
             if (serialPort.IsOpen)
             {
                 b_connect.Text = "Connect";
@@ -550,7 +565,7 @@ namespace MultiWiiWinGUI
                 //Open Log file if it is enabled
                 if (gui_settings.bEnableLogging)
                 {
-                    wLogStream = new StreamWriter(gui_settings.sLogFolder + "mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
+                    wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
                 }
 
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
@@ -1512,7 +1527,7 @@ namespace MultiWiiWinGUI
         private void b_about_Click(object sender, EventArgs e)
         {
             frmAbout aboutform = new frmAbout();
-            aboutform.sVersionLabel = sPublishVersion;
+            aboutform.sVersionLabel = sVersion;
             if (gui_settings.iSoftwareVersion == 20) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName20; }
             if (gui_settings.iSoftwareVersion == 19) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName19; }
             aboutform.ShowDialog();
@@ -1533,6 +1548,32 @@ namespace MultiWiiWinGUI
             gui_settings.logGdbg = cb_Log10.Checked;
             b_save_gui_settings.BackColor = Color.LightCoral;
         }
+
+        private void b_check_update_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Cursor = Cursors.AppStarting;
+                doc = XDocument.Load(sVersionUrl, LoadOptions.None);
+                sVersionFromSVN = doc.Element("application").Element("version").Value;
+                this.Cursor = Cursors.Default;
+                if (String.Compare(sVersionFromSVN, sVersion) == 0)
+                {
+                    MessageBoxEx.Show(this, "You have the latest version : " + sVersionFromSVN, "No update available",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                }
+                else
+                {
+
+                    MessageBoxEx.Show(this, "A new version : " + sVersionFromSVN + " is available\r\nYou can download it from http://code.google.com/p/mw-wingui/downloads/list","Update available",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                }
+            }
+            catch
+            {
+                MessageBoxEx.Show(this, "Not Able to connect to SVN for version info");
+            }
+
+        }
+
 
 
 
