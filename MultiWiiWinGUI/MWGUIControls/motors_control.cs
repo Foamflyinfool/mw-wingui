@@ -270,6 +270,15 @@ namespace MultiWiiGUIControls
 
 
             }
+            
+            //Disposing graph objects
+            drawPen.Dispose();
+            maskPen.Dispose();
+            drawFont.Dispose();
+            drawBrush.Dispose();
+            drawBrushGreen.Dispose();
+            drawBrushBlue.Dispose();
+
 
 
 

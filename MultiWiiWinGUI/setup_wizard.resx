@@ -118,7 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label7.Text" xml:space="preserve">
-    <value>This wizard will guide you through the initial settings of the GUI, such
+    <value>Thank You, for trying out WinGUI!
+This wizard will guide you through the initial settings of the GUI, such
 as MultiWii software version or target folders.
 You can cancel this wizard any time, to get the default values.
 However it’s highly recommended to go through all steps to get
@@ -143,5 +144,13 @@ will be selected by the GUI.</value>
 When logging is enabled, a new logfile will be created at each
 connect, and the selected data sets will be logged at each data
 refresh. You can open and analyze logs in the LogBrowser. </value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Your settings are now completed. Remember, you can always
+change them at the GUI Settings tab.
+Please keep in mind that this program is under constant development
+and there could be bugs in it. If you find one, do not hesitate to report it
+at http://code.google.com/p/mw-wingui/
+</value>
   </data>
 </root>
