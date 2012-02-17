@@ -34,14 +34,17 @@ namespace MultiWiiWinGUI
         public bool logGpar { get; set; }
         public bool logGdbg { get; set; }
 
+        public bool bSupressI2CErrorData { get; set; }
+
         //Constructor, set default values
         public GUI_settings()
         {
             sLogFolder = Directory.GetCurrentDirectory();
             sCaptureFolder = Directory.GetCurrentDirectory();
             sSettingsFolder = Directory.GetCurrentDirectory();
-            iSoftwareVersion = 20;
-            bEnableLogging = true;
+            iSoftwareVersion = 19;
+            bEnableLogging = false;
+            bSupressI2CErrorData = false;
         }
 
 
@@ -58,7 +61,7 @@ namespace MultiWiiWinGUI
             Version ver = assemName.Version;
             tw.WriteComment(String.Format("{0}, Version {1}", assemName.Name, ver.ToString()));
             tw.WriteComment("GUI Settings");
-            tw.WriteComment("Do not change this file manually");
+            tw.WriteComment("Do not change this file manually, unless you know what are you doing");
 
             tw.WriteStartElement("PARAMETERS");
 
@@ -80,6 +83,10 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("LOGNAV value=\"" + logGnav + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGPAR value=\"" + logGpar + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGDBG value=\"" + logGdbg + "\""); tw.WriteEndElement();
+
+            tw.WriteComment("Change this to TRUE if you using 20120203 release, this will depreciate serial protocol change in SVN r569");
+            tw.WriteComment("This will work only when FCVERSION==20");
+            tw.WriteStartElement("SUPRESSI2CERRORDATA value=\"" + bSupressI2CErrorData + "\""); tw.WriteEndElement();
 
             tw.WriteEndElement();
 
@@ -110,7 +117,7 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "capturefolder", true) == 0 && reader.HasAttributes) { sCaptureFolder = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "settingsfolder", true) == 0 && reader.HasAttributes) { sSettingsFolder = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "logatconnect", true) == 0 && reader.HasAttributes) { bEnableLogging = Convert.ToBoolean(reader.GetAttribute("value")); }
-                            if (String.Compare(reader.Name, "serailport", true) == 0 && reader.HasAttributes) { sPreferedComPort = reader.GetAttribute("value"); }
+                            if (String.Compare(reader.Name, "serialport", true) == 0 && reader.HasAttributes) { sPreferedComPort = reader.GetAttribute("value"); }
                             if (String.Compare(reader.Name, "serialspeed", true) == 0 && reader.HasAttributes) { sPreferedSerialSpeed = reader.GetAttribute("value"); }
 
                             if (String.Compare(reader.Name, "lograw", true) == 0 && reader.HasAttributes) { logGraw = Convert.ToBoolean(reader.GetAttribute("value")); }
@@ -123,6 +130,8 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "lognav", true) == 0 && reader.HasAttributes) { logGnav = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logpar", true) == 0 && reader.HasAttributes) { logGpar = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logdbg", true) == 0 && reader.HasAttributes) { logGdbg = Convert.ToBoolean(reader.GetAttribute("value")); }
+
+                            if (String.Compare(reader.Name, "supressi2cerrordata", true) == 0 && reader.HasAttributes) { bSupressI2CErrorData = Convert.ToBoolean(reader.GetAttribute("value")); }
 
                             break;
                     }
@@ -447,9 +456,10 @@ namespace MultiWiiWinGUI
 
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
+        private bool bCompatibilityMode;
 
         //Constructor
-        public mw_data_gui(int pidItems,int checkboxItems, int iSoftwareVersion)
+        public mw_data_gui(int pidItems,int checkboxItems, int iSoftwareVersion, bool bCompatibility)
         {
             motors = new int[8];
             servos = new int[8];
@@ -462,6 +472,7 @@ namespace MultiWiiWinGUI
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
             iSwVer = iSoftwareVersion;
+            bCompatibilityMode = bCompatibility;
 
 
         }
@@ -513,7 +524,8 @@ namespace MultiWiiWinGUI
                 present = packet[o++];
                 mode = packet[o++];
                 cycleTime = BitConverter.ToInt16(packet, o); o += i16;
-                i2cErrors = BitConverter.ToInt16(packet, o); o += i16;
+                //For 20120203dev compatibity
+                if (!bCompatibilityMode) { i2cErrors = BitConverter.ToInt16(packet, o); o += i16; }
                 angx = BitConverter.ToInt16(packet, o) / 10; o += i16;
                 angy = BitConverter.ToInt16(packet, o) / 10; o += i16;
                 multiType = packet[o++];

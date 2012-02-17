@@ -36,7 +36,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "1.00";
+        const string sVersion = "1.01";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/files/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -160,7 +160,8 @@ namespace MultiWiiWinGUI
             sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
 
-            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
+            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion,gui_settings.bSupressI2CErrorData);
+
             mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
 
             //Define FC version dependant thingys :D
@@ -170,7 +171,15 @@ namespace MultiWiiWinGUI
                 iPacketSizeM = iPacketSizeM20;
                 sRelName = sRelName20;
                 splash.sFcVersionLabel = "MultiWii version " + sRelName20;
+                if (gui_settings.bSupressI2CErrorData)
+                {
+                    l_i2cdatasupress.Text = "dev20120203 combatibity mode enabled";
+                    iPacketSizeM = 153;     //This is hardcoded and eventually will be removed once MultiWii 2.0 is released
+                    splash.sFcVersionLabel += Environment.NewLine + "20120203 compatibility mode";
+                }
                 splash.Refresh();
+
+
             }
             if (gui_settings.iSoftwareVersion == 19)
             {
@@ -323,11 +332,7 @@ namespace MultiWiiWinGUI
 
             this.Refresh();
 
-            string[] ports = SerialPort.GetPortNames();
-            foreach (string port in ports)
-            {
-                cb_serial_port.Items.Add(port);
-            }
+            serial_ports_enumerate();
             foreach (string speed in sSerialSpeeds)
             {
                 cb_serial_speed.Items.Add(speed);
@@ -337,10 +342,6 @@ namespace MultiWiiWinGUI
             if (cb_serial_port.Items.Count == 0)
             {
                 b_connect.Enabled = false;          //Nos serial port, disable connect
-            }
-            else
-            {
-                cb_serial_port.SelectedIndex = 0;   //Otherwise select the first available port
             }
 
             //Init serial port object
@@ -463,7 +464,7 @@ namespace MultiWiiWinGUI
 
             foreach (ZedGraph.LineItem li in myPane.CurveList)
             {
-                li.Line.Width = 2;
+                li.Line.Width = 1;
             }
 
 
@@ -540,7 +541,6 @@ namespace MultiWiiWinGUI
                 isConnected = false;
                 timer_realtime.Stop();                       //Stop timer(s), whatever it takes
                 timer_rc.Stop();
-                //while (bkgWorker.IsBusy) { ; }
                 System.Threading.Thread.Sleep(iRefreshIntervals[cb_monitor_rate.SelectedIndex]);         //Wait for 1 cycle to let backgroundworker finish it's last job.
                 serialPort.Close();
                 if (gui_settings.bEnableLogging)
@@ -553,13 +553,24 @@ namespace MultiWiiWinGUI
             else
             {
 
+                if (cb_serial_port.Text == "") { return; }  //if no port selected then do nothin' at connect
+                //Assume that the selection in the combobox for port is still valid
                 serialPort.PortName = cb_serial_port.Text;
                 serialPort.BaudRate = int.Parse(cb_serial_speed.Text);
-                serialPort.Open();
+                try
+                {
+                    serialPort.Open();
+                }
+                catch
+                {
+                    //WRONG, it seems that the combobox selection pointed to a port which is no longer available
+                    MessageBoxEx.Show(this, "Please check that your USB cable is still connected.\r\nAfter you press OK, Serial ports will be re-enumerated", "Error opening COM port", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    serial_ports_enumerate();
+                    return; //Exit without connecting;
+                }
+                //Set button text and status
                 b_connect.Text = "Disconnect";
                 isConnected = true;
-
-                //Run BackgroundWorker Once
 
                 //Open Log file if it is enabled
                 if (gui_settings.bEnableLogging)
@@ -567,6 +578,7 @@ namespace MultiWiiWinGUI
                     wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
                 }
 
+                //Run BackgroundWorker Once
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
                 if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
                 if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
@@ -615,8 +627,34 @@ namespace MultiWiiWinGUI
         {
             Form logbrowser = new LogBrowser();
             logbrowser.ShowDialog();
+        }
 
+        private void l_ports_label_DoubleClick(object sender, EventArgs e)
+        {
+            serial_ports_enumerate();
+        }
 
+        private void serial_ports_enumerate()
+        {
+            //Enumerate all serial ports
+            b_connect.Enabled = true;           //Enable the connect button
+
+            string[] ports = SerialPort.GetPortNames();
+            cb_serial_port.Items.Clear();
+            foreach (string port in ports)
+            {
+                cb_serial_port.Items.Add(port);
+            }
+            cb_serial_port.SelectedIndex = cb_serial_port.FindStringExact(gui_settings.sPreferedComPort);
+
+            //if prefered port is not available then select the first one 
+            if (cb_serial_port.Text == "")
+            {
+                if (cb_serial_port.Items.Count > 0) { cb_serial_port.SelectedIndex = 0; }
+            }
+
+            //Thisable connect button if there is no selected com port
+            if (cb_serial_port.Items.Count == 0) { b_connect.Enabled = false; }
         }
 
         private void read_options_config()
@@ -724,6 +762,18 @@ namespace MultiWiiWinGUI
         private void bkgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
+            try
+            {
+                bool bIsPortOpen = serialPort.IsOpen;
+            }
+            catch
+            {
+                //Hmm, if this throws an exception it should mean that we have an issue here
+                bSerialError = true;
+                return;
+            }
+
+
             if (serialPort.IsOpen)
             {
                 //Read whatever we had in the buffer
@@ -745,7 +795,7 @@ namespace MultiWiiWinGUI
                     }
                     catch
                     {
-                        MessageBox.Show("No valid answer from FC!\r\nCheck that your MultiWii software version is maching with the version selected at the GUI Settings tab ("+sRelName+") and it's connected properly.", "Comm error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No valid answer from FC!\r\nCheck that your MultiWii software version is maching with the version selected at the GUI Settings tab (" + sRelName + ") and it's connected properly.", "Comm error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         bSerialError = true;
                         return;
                     }
@@ -760,7 +810,11 @@ namespace MultiWiiWinGUI
 
                 mw_gui.parse_input_packet(bSerialBuffer);
             }
-
+            else   //port not opened, (it could happen when U disconnect the usb cable while connected
+            {
+                bSerialError = true;
+                return;
+            }
 
 
         }
@@ -770,12 +824,20 @@ namespace MultiWiiWinGUI
 
             if (bSerialError)
             {
+                //Background worker returned error, disconnect serial port
                 b_connect.Text = "Connect";
                 isConnected = false;
                 timer_realtime.Stop();                       //Stop timer(s), whatever it takes
                 timer_rc.Stop();
                 System.Threading.Thread.Sleep(iRefreshIntervals[cb_monitor_rate.SelectedIndex]);         //Wait for 1 cycle to let backgroundworker finish it's last job.
-                serialPort.Close();
+                try
+                {
+                    serialPort.Close();
+                }
+                catch
+                {
+                    MessageBoxEx.Show(this, "An error condition detected on the Serial port, check that your USB cable is connected", "Comm Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 bSerialError = false;
                 return;
             }
@@ -1386,7 +1448,6 @@ namespace MultiWiiWinGUI
 
             this.Cursor = Cursors.Default;
         }
-
         // New frame received
         private void videoSourcePlayer_NewFrame(object sender, ref Bitmap image)
         {
@@ -1458,6 +1519,7 @@ namespace MultiWiiWinGUI
 
         private void b_select_log_folder_Click(object sender, EventArgs e)
         {
+            folderBrowserDialog1.SelectedPath = gui_settings.sLogFolder;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 gui_settings.sLogFolder = folderBrowserDialog1.SelectedPath;
@@ -1469,6 +1531,7 @@ namespace MultiWiiWinGUI
 
         private void b_select_capture_folder_Click(object sender, EventArgs e)
         {
+            folderBrowserDialog1.SelectedPath = gui_settings.sCaptureFolder;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 gui_settings.sCaptureFolder = folderBrowserDialog1.SelectedPath;
@@ -1479,6 +1542,7 @@ namespace MultiWiiWinGUI
 
         private void b_select_settings_folder_Click(object sender, EventArgs e)
         {
+            folderBrowserDialog1.SelectedPath = gui_settings.sSettingsFolder;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 gui_settings.sSettingsFolder = folderBrowserDialog1.SelectedPath;
@@ -1487,7 +1551,6 @@ namespace MultiWiiWinGUI
             }
 
         }
-
 
         private void b_save_gui_settings_Click(object sender, EventArgs e)
         {
@@ -1522,16 +1585,18 @@ namespace MultiWiiWinGUI
             b_save_gui_settings.BackColor = Color.LightCoral;
         }
 
-
         private void b_about_Click(object sender, EventArgs e)
         {
             frmAbout aboutform = new frmAbout();
             aboutform.sVersionLabel = sVersion;
-            if (gui_settings.iSoftwareVersion == 20) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName20; }
+            if (gui_settings.iSoftwareVersion == 20)
+            {
+                aboutform.sFcVersionLabel = "MultiWii version " + sRelName20;
+                if (gui_settings.bSupressI2CErrorData) { aboutform.sFcVersionLabel += Environment.NewLine + "20120203 compatibility mode"; }
+            }
             if (gui_settings.iSoftwareVersion == 19) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName19; }
             aboutform.ShowDialog();
         }
-
 
         private void log_option_Clicked(object sender, EventArgs e)
         {

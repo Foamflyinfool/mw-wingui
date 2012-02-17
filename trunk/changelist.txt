@@ -1,0 +1,19 @@
+version 1.01
+
+Smarter COM port selection in Settings Wizard, thanks to TimeCop
+Font in Parameter boxes changed to Tahoma 9pt now shows disctinct commas versus points
+Additional error situation handling with serial port, allow grace disconnect when usb plug pulled
+double click on the "port" label besides the serial port selecion box now re-enumerate available serial ports.
+Preferred serial port is now honored in GUI
+When change directory in the GUI settings tab, the pervious directory is now preselected in the folderbrowser window
+Gyro and Acc graph is now selected as default
+Changed graph line width to 1 point
+Added SUPRESSI2CERRORDATA setting to the gui_settings.xml file, when it set to True, then serial protocol changes introduced 
+n SVN r569 are ignored, so dev20120203 will work with the GUI.
+Log files folder setting was ignored in 1.00 now it works correctly.
+
+For those who use older multiwii version than SVN r569 but newer than 1.9. there is a Compatibility Mode switch. After finishing the setup wizard, open gui_settings.xml and change SUPRESSI2CERRORDATA element's value to true. This will ignore the change in serial protocol which was introduced in SVNr569.
+
+Version 1.0
+
+Intial public release
