@@ -136,7 +136,6 @@ namespace MultiWiiWinGUI
 
         private void mainGUI_Load(object sender, EventArgs e)
         {
-
             //First step, check it gui_settings file is exists or not, if not then start settings wizard
             if (!File.Exists(sGuiSettingsFilename))
             {

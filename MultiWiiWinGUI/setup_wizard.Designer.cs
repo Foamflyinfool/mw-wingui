@@ -33,17 +33,17 @@
             this.b_prev = new System.Windows.Forms.Button();
             this.b_next = new System.Windows.Forms.Button();
             this.panelWizard = new MultiWiiGUIControls.StackPanel();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabStart = new System.Windows.Forms.TabPage();
             this.label7 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabFC = new System.Windows.Forms.TabPage();
             this.r_Mw19 = new System.Windows.Forms.RadioButton();
             this.r_Mw20 = new System.Windows.Forms.RadioButton();
             this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabSerial = new System.Windows.Forms.TabPage();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.cb_SerialSpeed = new System.Windows.Forms.ComboBox();
@@ -51,7 +51,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabFolders = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -64,7 +64,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabLogs = new System.Windows.Forms.TabPage();
             this.cb_LogEnabled = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -81,23 +81,23 @@
             this.cb_Log4 = new System.Windows.Forms.CheckBox();
             this.cb_Log5 = new System.Windows.Forms.CheckBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabFinish = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.panelWizard.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabStart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tabFC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.tabSerial.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            this.tabPage4.SuspendLayout();
+            this.tabFolders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.tabPage5.SuspendLayout();
+            this.tabLogs.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.tabPage6.SuspendLayout();
+            this.tabFinish.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.SuspendLayout();
             // 
@@ -133,12 +133,12 @@
             // 
             // panelWizard
             // 
-            this.panelWizard.Controls.Add(this.tabPage1);
-            this.panelWizard.Controls.Add(this.tabPage2);
-            this.panelWizard.Controls.Add(this.tabPage3);
-            this.panelWizard.Controls.Add(this.tabPage4);
-            this.panelWizard.Controls.Add(this.tabPage5);
-            this.panelWizard.Controls.Add(this.tabPage6);
+            this.panelWizard.Controls.Add(this.tabStart);
+            this.panelWizard.Controls.Add(this.tabFC);
+            this.panelWizard.Controls.Add(this.tabSerial);
+            this.panelWizard.Controls.Add(this.tabFolders);
+            this.panelWizard.Controls.Add(this.tabLogs);
+            this.panelWizard.Controls.Add(this.tabFinish);
             this.panelWizard.Location = new System.Drawing.Point(-4, 0);
             this.panelWizard.Margin = new System.Windows.Forms.Padding(0);
             this.panelWizard.Name = "panelWizard";
@@ -147,20 +147,20 @@
             this.panelWizard.Size = new System.Drawing.Size(596, 318);
             this.panelWizard.TabIndex = 0;
             // 
-            // tabPage1
+            // tabStart
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.pictureBox1);
-            this.tabPage1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(588, 292);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabStart.BackColor = System.Drawing.Color.DimGray;
+            this.tabStart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabStart.Controls.Add(this.label7);
+            this.tabStart.Controls.Add(this.label1);
+            this.tabStart.Controls.Add(this.pictureBox1);
+            this.tabStart.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tabStart.Location = new System.Drawing.Point(4, 22);
+            this.tabStart.Name = "tabStart";
+            this.tabStart.Padding = new System.Windows.Forms.Padding(3);
+            this.tabStart.Size = new System.Drawing.Size(588, 292);
+            this.tabStart.TabIndex = 0;
+            this.tabStart.Text = "tabPage1";
             // 
             // label7
             // 
@@ -194,20 +194,20 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // tabPage2
+            // tabFC
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage2.Controls.Add(this.r_Mw19);
-            this.tabPage2.Controls.Add(this.r_Mw20);
-            this.tabPage2.Controls.Add(this.label8);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.pictureBox2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(588, 292);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabFC.BackColor = System.Drawing.Color.DimGray;
+            this.tabFC.Controls.Add(this.r_Mw19);
+            this.tabFC.Controls.Add(this.r_Mw20);
+            this.tabFC.Controls.Add(this.label8);
+            this.tabFC.Controls.Add(this.label2);
+            this.tabFC.Controls.Add(this.pictureBox2);
+            this.tabFC.Location = new System.Drawing.Point(4, 22);
+            this.tabFC.Name = "tabFC";
+            this.tabFC.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFC.Size = new System.Drawing.Size(588, 292);
+            this.tabFC.TabIndex = 1;
+            this.tabFC.Text = "tabPage2";
             // 
             // r_Mw19
             // 
@@ -270,21 +270,21 @@
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
             // 
-            // tabPage3
+            // tabSerial
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage3.Controls.Add(this.label14);
-            this.tabPage3.Controls.Add(this.label13);
-            this.tabPage3.Controls.Add(this.cb_SerialSpeed);
-            this.tabPage3.Controls.Add(this.cb_SerialPort);
-            this.tabPage3.Controls.Add(this.label9);
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Controls.Add(this.pictureBox3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(588, 292);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
+            this.tabSerial.BackColor = System.Drawing.Color.DimGray;
+            this.tabSerial.Controls.Add(this.label14);
+            this.tabSerial.Controls.Add(this.label13);
+            this.tabSerial.Controls.Add(this.cb_SerialSpeed);
+            this.tabSerial.Controls.Add(this.cb_SerialPort);
+            this.tabSerial.Controls.Add(this.label9);
+            this.tabSerial.Controls.Add(this.label3);
+            this.tabSerial.Controls.Add(this.pictureBox3);
+            this.tabSerial.Location = new System.Drawing.Point(4, 22);
+            this.tabSerial.Name = "tabSerial";
+            this.tabSerial.Size = new System.Drawing.Size(588, 292);
+            this.tabSerial.TabIndex = 2;
+            this.tabSerial.Text = "tabPage3";
             // 
             // label14
             // 
@@ -310,6 +310,7 @@
             // 
             // cb_SerialSpeed
             // 
+            this.cb_SerialSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_SerialSpeed.FormattingEnabled = true;
             this.cb_SerialSpeed.Location = new System.Drawing.Point(374, 186);
             this.cb_SerialSpeed.Name = "cb_SerialSpeed";
@@ -318,6 +319,7 @@
             // 
             // cb_SerialPort
             // 
+            this.cb_SerialPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_SerialPort.FormattingEnabled = true;
             this.cb_SerialPort.Location = new System.Drawing.Point(254, 186);
             this.cb_SerialPort.Name = "cb_SerialPort";
@@ -358,26 +360,26 @@
             this.pictureBox3.TabIndex = 3;
             this.pictureBox3.TabStop = false;
             // 
-            // tabPage4
+            // tabFolders
             // 
-            this.tabPage4.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage4.Controls.Add(this.label22);
-            this.tabPage4.Controls.Add(this.label21);
-            this.tabPage4.Controls.Add(this.label20);
-            this.tabPage4.Controls.Add(this.b_select_captures_folder);
-            this.tabPage4.Controls.Add(this.l_Captures_folder);
-            this.tabPage4.Controls.Add(this.b_select_settings_folder);
-            this.tabPage4.Controls.Add(this.l_Settings_folder);
-            this.tabPage4.Controls.Add(this.b_select_log_folder);
-            this.tabPage4.Controls.Add(this.l_Log_folder);
-            this.tabPage4.Controls.Add(this.label10);
-            this.tabPage4.Controls.Add(this.label4);
-            this.tabPage4.Controls.Add(this.pictureBox4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(588, 292);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "tabPage4";
+            this.tabFolders.BackColor = System.Drawing.Color.DimGray;
+            this.tabFolders.Controls.Add(this.label22);
+            this.tabFolders.Controls.Add(this.label21);
+            this.tabFolders.Controls.Add(this.label20);
+            this.tabFolders.Controls.Add(this.b_select_captures_folder);
+            this.tabFolders.Controls.Add(this.l_Captures_folder);
+            this.tabFolders.Controls.Add(this.b_select_settings_folder);
+            this.tabFolders.Controls.Add(this.l_Settings_folder);
+            this.tabFolders.Controls.Add(this.b_select_log_folder);
+            this.tabFolders.Controls.Add(this.l_Log_folder);
+            this.tabFolders.Controls.Add(this.label10);
+            this.tabFolders.Controls.Add(this.label4);
+            this.tabFolders.Controls.Add(this.pictureBox4);
+            this.tabFolders.Location = new System.Drawing.Point(4, 22);
+            this.tabFolders.Name = "tabFolders";
+            this.tabFolders.Size = new System.Drawing.Size(588, 292);
+            this.tabFolders.TabIndex = 3;
+            this.tabFolders.Text = "tabPage4";
             // 
             // label22
             // 
@@ -491,7 +493,7 @@
             this.label10.Size = new System.Drawing.Size(343, 32);
             this.label10.TabIndex = 10;
             this.label10.Text = "Please choose where WinGUI save captured video files,\r\nLog files and Parameter se" +
-    "ttings.";
+                "ttings.";
             // 
             // label4
             // 
@@ -516,19 +518,19 @@
             this.pictureBox4.TabIndex = 3;
             this.pictureBox4.TabStop = false;
             // 
-            // tabPage5
+            // tabLogs
             // 
-            this.tabPage5.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage5.Controls.Add(this.cb_LogEnabled);
-            this.tabPage5.Controls.Add(this.label11);
-            this.tabPage5.Controls.Add(this.label5);
-            this.tabPage5.Controls.Add(this.panel1);
-            this.tabPage5.Controls.Add(this.pictureBox5);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(588, 292);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "tabPage5";
+            this.tabLogs.BackColor = System.Drawing.Color.DimGray;
+            this.tabLogs.Controls.Add(this.cb_LogEnabled);
+            this.tabLogs.Controls.Add(this.label11);
+            this.tabLogs.Controls.Add(this.label5);
+            this.tabLogs.Controls.Add(this.panel1);
+            this.tabLogs.Controls.Add(this.pictureBox5);
+            this.tabLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabLogs.Name = "tabLogs";
+            this.tabLogs.Size = new System.Drawing.Size(588, 292);
+            this.tabLogs.TabIndex = 4;
+            this.tabLogs.Text = "tabPage5";
             // 
             // cb_LogEnabled
             // 
@@ -726,17 +728,17 @@
             this.pictureBox5.TabIndex = 3;
             this.pictureBox5.TabStop = false;
             // 
-            // tabPage6
+            // tabFinish
             // 
-            this.tabPage6.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage6.Controls.Add(this.label12);
-            this.tabPage6.Controls.Add(this.label6);
-            this.tabPage6.Controls.Add(this.pictureBox6);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(588, 292);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "tabPage6";
+            this.tabFinish.BackColor = System.Drawing.Color.DimGray;
+            this.tabFinish.Controls.Add(this.label12);
+            this.tabFinish.Controls.Add(this.label6);
+            this.tabFinish.Controls.Add(this.pictureBox6);
+            this.tabFinish.Location = new System.Drawing.Point(4, 22);
+            this.tabFinish.Name = "tabFinish";
+            this.tabFinish.Size = new System.Drawing.Size(588, 292);
+            this.tabFinish.TabIndex = 5;
+            this.tabFinish.Text = "tabPage6";
             // 
             // label12
             // 
@@ -791,25 +793,25 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.setup_wizard_Load);
             this.panelWizard.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabStart.ResumeLayout(false);
+            this.tabStart.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabFC.ResumeLayout(false);
+            this.tabFC.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tabSerial.ResumeLayout(false);
+            this.tabSerial.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.tabFolders.ResumeLayout(false);
+            this.tabFolders.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
+            this.tabLogs.ResumeLayout(false);
+            this.tabLogs.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.tabPage6.ResumeLayout(false);
-            this.tabPage6.PerformLayout();
+            this.tabFinish.ResumeLayout(false);
+            this.tabFinish.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.ResumeLayout(false);
 
@@ -818,15 +820,15 @@
         #endregion
 
         private MultiWiiGUIControls.StackPanel panelWizard;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabStart;
+        private System.Windows.Forms.TabPage tabFC;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button b_finish_cancel;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TabPage tabSerial;
+        private System.Windows.Forms.TabPage tabFolders;
+        private System.Windows.Forms.TabPage tabLogs;
+        private System.Windows.Forms.TabPage tabFinish;
         private System.Windows.Forms.Button b_prev;
         private System.Windows.Forms.Button b_next;
         private System.Windows.Forms.PictureBox pictureBox2;
