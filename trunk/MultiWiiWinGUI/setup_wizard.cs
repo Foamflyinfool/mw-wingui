@@ -24,6 +24,18 @@ namespace MultiWiiWinGUI
             InitializeComponent();
         }
 
+        private void setup_scan_Ports()
+        {
+            cb_SerialPort.Items.Clear();
+            string[] ports = SerialPort.GetPortNames();
+            foreach (string port in ports)
+            {
+                cb_SerialPort.Items.Add(port);
+            }
+            // select 1st item if any - avoid error when no com ports found
+            if (cb_SerialPort.Items.Count > 0)
+                cb_SerialPort.SelectedIndex = 0;
+        }
 
         private void setup_wizard_Load(object sender, EventArgs e)
         {
@@ -38,18 +50,16 @@ namespace MultiWiiWinGUI
             Settings.sPreferedSerialSpeed = "115200";
 
             r_Mw19.Checked = true;
-            string[] ports = SerialPort.GetPortNames();
-            foreach (string port in ports)
-            {
-                cb_SerialPort.Items.Add(port);
-            }
-            cb_SerialPort.SelectedIndex = 0;
+            
+            // scan for serial ports on startup - maybe not needed as better scan on entering page 3
+            //setup_scan_Ports();
+            // add serial speeds
             string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
             foreach (string speed in sSerialSpeeds)
             {
                 cb_SerialSpeed.Items.Add(speed);
             }
-            cb_SerialSpeed.SelectedItem = Settings.sPreferedSerialSpeed ;
+            cb_SerialSpeed.SelectedItem = Settings.sPreferedSerialSpeed;
 
             l_Log_folder.Text = Settings.sLogFolder;
             l_Captures_folder.Text = Settings.sCaptureFolder;
@@ -123,6 +133,12 @@ namespace MultiWiiWinGUI
             if (iActualPage < iLastPage)
             {
                 iActualPage++;
+                if (String.Compare(panelWizard.TabPages[iActualPage].Name,"tabSerial") == 0 )
+                {
+                    // Rewritten to use tab.name to identify serial port tab
+                    // re-scan for serial ports
+                    setup_scan_Ports();
+                }
                 panelWizard.SelectedIndex = iActualPage;
                 b_prev.Enabled = true;
                 if (iActualPage == iLastPage) { b_next.Enabled = false; b_finish_cancel.Text = "Finish"; }
