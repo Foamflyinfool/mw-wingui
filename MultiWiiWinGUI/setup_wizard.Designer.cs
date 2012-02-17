@@ -243,7 +243,7 @@
             this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label8.Location = new System.Drawing.Point(155, 48);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(368, 80);
+            this.label8.Size = new System.Drawing.Size(384, 96);
             this.label8.TabIndex = 6;
             this.label8.Text = resources.GetString("label8.Text");
             // 
@@ -493,7 +493,7 @@
             this.label10.Size = new System.Drawing.Size(343, 32);
             this.label10.TabIndex = 10;
             this.label10.Text = "Please choose where WinGUI save captured video files,\r\nLog files and Parameter se" +
-                "ttings.";
+    "ttings.";
             // 
             // label4
             // 

@@ -177,6 +177,7 @@
             this.zgMonitor = new ZedGraph.ZedGraphControl();
             this.label3 = new System.Windows.Forms.Label();
             this.cb_monitor_rate = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.indPASST = new MultiWiiGUIControls.indicator_lamp();
             this.indPOS = new MultiWiiGUIControls.indicator_lamp();
             this.indRTH = new MultiWiiGUIControls.indicator_lamp();
@@ -196,7 +197,6 @@
             this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
             this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -212,6 +212,7 @@
             this.dropdown_devices = new System.Windows.Forms.ComboBox();
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.l_i2cdatasupress = new System.Windows.Forms.Label();
             this.b_check_update = new System.Windows.Forms.Button();
             this.b_select_settings_folder = new System.Windows.Forms.Button();
             this.l_Settings_folder = new System.Windows.Forms.Label();
@@ -327,6 +328,7 @@
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Port";
+            this.label1.DoubleClick += new System.EventHandler(this.l_ports_label_DoubleClick);
             // 
             // cb_serial_speed
             // 
@@ -414,11 +416,11 @@
             // 
             this.tComment.BackColor = System.Drawing.Color.LightGray;
             this.tComment.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tComment.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tComment.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tComment.Location = new System.Drawing.Point(432, 387);
             this.tComment.MaxLength = 40;
             this.tComment.Name = "tComment";
-            this.tComment.Size = new System.Drawing.Size(239, 13);
+            this.tComment.Size = new System.Drawing.Size(239, 15);
             this.tComment.TabIndex = 22;
             // 
             // label8
@@ -437,7 +439,7 @@
             // 
             this.nPAlarm.BackColor = System.Drawing.Color.LightGray;
             this.nPAlarm.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPAlarm.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nPAlarm.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPAlarm.Location = new System.Drawing.Point(350, 384);
             this.nPAlarm.Maximum = new decimal(new int[] {
             64000,
@@ -445,7 +447,7 @@
             0,
             0});
             this.nPAlarm.Name = "nPAlarm";
-            this.nPAlarm.Size = new System.Drawing.Size(68, 16);
+            this.nPAlarm.Size = new System.Drawing.Size(68, 18);
             this.nPAlarm.TabIndex = 6;
             // 
             // groupBox13
@@ -471,6 +473,7 @@
             this.nRCExpo.BackColor = System.Drawing.Color.LightGray;
             this.nRCExpo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nRCExpo.DecimalPlaces = 2;
+            this.nRCExpo.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nRCExpo.Increment = new decimal(new int[] {
             1,
             0,
@@ -483,7 +486,7 @@
             0,
             0});
             this.nRCExpo.Name = "nRCExpo";
-            this.nRCExpo.Size = new System.Drawing.Size(55, 16);
+            this.nRCExpo.Size = new System.Drawing.Size(55, 18);
             this.nRCExpo.TabIndex = 21;
             this.nRCExpo.ValueChanged += new System.EventHandler(this.nRCExpo_ValueChanged);
             // 
@@ -492,6 +495,7 @@
             this.nRCRate.BackColor = System.Drawing.Color.LightGray;
             this.nRCRate.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nRCRate.DecimalPlaces = 2;
+            this.nRCRate.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nRCRate.Increment = new decimal(new int[] {
             1,
             0,
@@ -504,7 +508,7 @@
             0,
             0});
             this.nRCRate.Name = "nRCRate";
-            this.nRCRate.Size = new System.Drawing.Size(55, 16);
+            this.nRCRate.Size = new System.Drawing.Size(55, 18);
             this.nRCRate.TabIndex = 20;
             this.nRCRate.ValueChanged += new System.EventHandler(this.nRCRate_ValueChanged);
             // 
@@ -618,6 +622,7 @@
             // 
             this.nPID_vel_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_vel_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_vel_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_vel_d.Location = new System.Drawing.Point(238, 16);
             this.nPID_vel_d.Maximum = new decimal(new int[] {
             50,
@@ -625,7 +630,7 @@
             0,
             0});
             this.nPID_vel_d.Name = "nPID_vel_d";
-            this.nPID_vel_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_vel_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_vel_d.TabIndex = 2;
             // 
             // nPID_vel_i
@@ -633,6 +638,7 @@
             this.nPID_vel_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_vel_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_vel_i.DecimalPlaces = 3;
+            this.nPID_vel_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_vel_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -645,7 +651,7 @@
             0,
             196608});
             this.nPID_vel_i.Name = "nPID_vel_i";
-            this.nPID_vel_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_vel_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_vel_i.TabIndex = 1;
             // 
             // nPID_vel_p
@@ -653,6 +659,7 @@
             this.nPID_vel_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_vel_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_vel_p.DecimalPlaces = 1;
+            this.nPID_vel_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_vel_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -665,7 +672,7 @@
             0,
             0});
             this.nPID_vel_p.Name = "nPID_vel_p";
-            this.nPID_vel_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_vel_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_vel_p.TabIndex = 0;
             // 
             // groupBox8
@@ -725,6 +732,7 @@
             // 
             this.nPID_alt_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_alt_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_alt_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_alt_d.Location = new System.Drawing.Point(238, 14);
             this.nPID_alt_d.Maximum = new decimal(new int[] {
             50,
@@ -732,7 +740,7 @@
             0,
             0});
             this.nPID_alt_d.Name = "nPID_alt_d";
-            this.nPID_alt_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_alt_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_alt_d.TabIndex = 2;
             // 
             // nPID_alt_i
@@ -740,6 +748,7 @@
             this.nPID_alt_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_alt_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_alt_i.DecimalPlaces = 3;
+            this.nPID_alt_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_alt_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -752,7 +761,7 @@
             0,
             196608});
             this.nPID_alt_i.Name = "nPID_alt_i";
-            this.nPID_alt_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_alt_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_alt_i.TabIndex = 1;
             // 
             // nPID_alt_p
@@ -760,6 +769,7 @@
             this.nPID_alt_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_alt_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_alt_p.DecimalPlaces = 1;
+            this.nPID_alt_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_alt_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -772,7 +782,7 @@
             0,
             0});
             this.nPID_alt_p.Name = "nPID_alt_p";
-            this.nPID_alt_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_alt_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_alt_p.TabIndex = 0;
             // 
             // groupBox12
@@ -833,6 +843,7 @@
             this.nRATE_tpid.BackColor = System.Drawing.Color.LightGray;
             this.nRATE_tpid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nRATE_tpid.DecimalPlaces = 2;
+            this.nRATE_tpid.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nRATE_tpid.Increment = new decimal(new int[] {
             1,
             0,
@@ -845,7 +856,7 @@
             0,
             0});
             this.nRATE_tpid.Name = "nRATE_tpid";
-            this.nRATE_tpid.Size = new System.Drawing.Size(68, 16);
+            this.nRATE_tpid.Size = new System.Drawing.Size(68, 18);
             this.nRATE_tpid.TabIndex = 2;
             // 
             // nRATE_yaw
@@ -853,6 +864,7 @@
             this.nRATE_yaw.BackColor = System.Drawing.Color.LightGray;
             this.nRATE_yaw.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nRATE_yaw.DecimalPlaces = 2;
+            this.nRATE_yaw.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nRATE_yaw.Increment = new decimal(new int[] {
             1,
             0,
@@ -865,7 +877,7 @@
             0,
             0});
             this.nRATE_yaw.Name = "nRATE_yaw";
-            this.nRATE_yaw.Size = new System.Drawing.Size(68, 16);
+            this.nRATE_yaw.Size = new System.Drawing.Size(68, 18);
             this.nRATE_yaw.TabIndex = 1;
             // 
             // nRATE_rp
@@ -873,6 +885,7 @@
             this.nRATE_rp.BackColor = System.Drawing.Color.LightGray;
             this.nRATE_rp.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nRATE_rp.DecimalPlaces = 2;
+            this.nRATE_rp.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nRATE_rp.Increment = new decimal(new int[] {
             1,
             0,
@@ -885,7 +898,7 @@
             0,
             0});
             this.nRATE_rp.Name = "nRATE_rp";
-            this.nRATE_rp.Size = new System.Drawing.Size(68, 16);
+            this.nRATE_rp.Size = new System.Drawing.Size(68, 18);
             this.nRATE_rp.TabIndex = 0;
             // 
             // groupBoxGPS
@@ -945,6 +958,7 @@
             // 
             this.nPID_gps_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_gps_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_gps_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_gps_d.Location = new System.Drawing.Point(238, 15);
             this.nPID_gps_d.Maximum = new decimal(new int[] {
             50,
@@ -952,7 +966,7 @@
             0,
             0});
             this.nPID_gps_d.Name = "nPID_gps_d";
-            this.nPID_gps_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_gps_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_gps_d.TabIndex = 2;
             // 
             // nPID_gps_i
@@ -960,6 +974,7 @@
             this.nPID_gps_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_gps_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_gps_i.DecimalPlaces = 3;
+            this.nPID_gps_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_gps_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -972,7 +987,7 @@
             0,
             196608});
             this.nPID_gps_i.Name = "nPID_gps_i";
-            this.nPID_gps_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_gps_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_gps_i.TabIndex = 1;
             // 
             // nPID_gps_p
@@ -980,6 +995,7 @@
             this.nPID_gps_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_gps_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_gps_p.DecimalPlaces = 1;
+            this.nPID_gps_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_gps_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -992,7 +1008,7 @@
             0,
             0});
             this.nPID_gps_p.Name = "nPID_gps_p";
-            this.nPID_gps_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_gps_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_gps_p.TabIndex = 0;
             // 
             // groupBox10
@@ -1025,6 +1041,7 @@
             this.nPID_mag_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_mag_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_mag_p.DecimalPlaces = 1;
+            this.nPID_mag_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_mag_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -1037,7 +1054,7 @@
             0,
             0});
             this.nPID_mag_p.Name = "nPID_mag_p";
-            this.nPID_mag_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_mag_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_mag_p.TabIndex = 0;
             // 
             // groupBox7
@@ -1073,14 +1090,15 @@
             // 
             this.nPID_level_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_level_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_level_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_level_d.Location = new System.Drawing.Point(238, 16);
             this.nPID_level_d.Maximum = new decimal(new int[] {
-            50,
+            200,
             0,
             0,
             0});
             this.nPID_level_d.Name = "nPID_level_d";
-            this.nPID_level_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_level_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_level_d.TabIndex = 6;
             // 
             // label51
@@ -1112,6 +1130,7 @@
             this.nPID_level_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_level_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_level_i.DecimalPlaces = 3;
+            this.nPID_level_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_level_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -1124,7 +1143,7 @@
             0,
             196608});
             this.nPID_level_i.Name = "nPID_level_i";
-            this.nPID_level_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_level_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_level_i.TabIndex = 1;
             // 
             // nPID_level_p
@@ -1132,6 +1151,7 @@
             this.nPID_level_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_level_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_level_p.DecimalPlaces = 1;
+            this.nPID_level_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_level_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -1144,7 +1164,7 @@
             0,
             0});
             this.nPID_level_p.Name = "nPID_level_p";
-            this.nPID_level_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_level_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_level_p.TabIndex = 0;
             // 
             // groupBox6
@@ -1204,6 +1224,7 @@
             // 
             this.nPID_yaw_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_yaw_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_yaw_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_yaw_d.Location = new System.Drawing.Point(238, 16);
             this.nPID_yaw_d.Maximum = new decimal(new int[] {
             50,
@@ -1211,7 +1232,7 @@
             0,
             0});
             this.nPID_yaw_d.Name = "nPID_yaw_d";
-            this.nPID_yaw_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_yaw_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_yaw_d.TabIndex = 2;
             // 
             // nPID_yaw_i
@@ -1219,6 +1240,7 @@
             this.nPID_yaw_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_yaw_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_yaw_i.DecimalPlaces = 3;
+            this.nPID_yaw_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_yaw_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -1231,7 +1253,7 @@
             0,
             196608});
             this.nPID_yaw_i.Name = "nPID_yaw_i";
-            this.nPID_yaw_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_yaw_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_yaw_i.TabIndex = 1;
             // 
             // nPID_yaw_p
@@ -1239,6 +1261,7 @@
             this.nPID_yaw_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_yaw_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_yaw_p.DecimalPlaces = 1;
+            this.nPID_yaw_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_yaw_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -1251,7 +1274,7 @@
             0,
             0});
             this.nPID_yaw_p.Name = "nPID_yaw_p";
-            this.nPID_yaw_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_yaw_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_yaw_p.TabIndex = 0;
             // 
             // groupBox5
@@ -1311,6 +1334,7 @@
             // 
             this.nPID_pitch_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_pitch_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_pitch_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_pitch_d.Location = new System.Drawing.Point(238, 14);
             this.nPID_pitch_d.Maximum = new decimal(new int[] {
             50,
@@ -1318,7 +1342,7 @@
             0,
             0});
             this.nPID_pitch_d.Name = "nPID_pitch_d";
-            this.nPID_pitch_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_pitch_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_pitch_d.TabIndex = 2;
             // 
             // nPID_pitch_i
@@ -1326,6 +1350,7 @@
             this.nPID_pitch_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_pitch_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_pitch_i.DecimalPlaces = 3;
+            this.nPID_pitch_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_pitch_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -1338,7 +1363,7 @@
             0,
             196608});
             this.nPID_pitch_i.Name = "nPID_pitch_i";
-            this.nPID_pitch_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_pitch_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_pitch_i.TabIndex = 1;
             // 
             // nPID_pitch_p
@@ -1346,6 +1371,7 @@
             this.nPID_pitch_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_pitch_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_pitch_p.DecimalPlaces = 1;
+            this.nPID_pitch_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_pitch_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -1358,7 +1384,7 @@
             0,
             0});
             this.nPID_pitch_p.Name = "nPID_pitch_p";
-            this.nPID_pitch_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_pitch_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_pitch_p.TabIndex = 0;
             // 
             // groupBox4
@@ -1418,6 +1444,7 @@
             // 
             this.nPID_roll_d.BackColor = System.Drawing.Color.LightGray;
             this.nPID_roll_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nPID_roll_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_roll_d.Location = new System.Drawing.Point(238, 15);
             this.nPID_roll_d.Maximum = new decimal(new int[] {
             50,
@@ -1425,7 +1452,7 @@
             0,
             0});
             this.nPID_roll_d.Name = "nPID_roll_d";
-            this.nPID_roll_d.Size = new System.Drawing.Size(68, 16);
+            this.nPID_roll_d.Size = new System.Drawing.Size(68, 18);
             this.nPID_roll_d.TabIndex = 2;
             // 
             // nPID_roll_i
@@ -1433,6 +1460,7 @@
             this.nPID_roll_i.BackColor = System.Drawing.Color.LightGray;
             this.nPID_roll_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_roll_i.DecimalPlaces = 3;
+            this.nPID_roll_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_roll_i.Increment = new decimal(new int[] {
             1,
             0,
@@ -1445,7 +1473,7 @@
             0,
             196608});
             this.nPID_roll_i.Name = "nPID_roll_i";
-            this.nPID_roll_i.Size = new System.Drawing.Size(68, 16);
+            this.nPID_roll_i.Size = new System.Drawing.Size(68, 18);
             this.nPID_roll_i.TabIndex = 1;
             // 
             // nPID_roll_p
@@ -1453,6 +1481,7 @@
             this.nPID_roll_p.BackColor = System.Drawing.Color.LightGray;
             this.nPID_roll_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPID_roll_p.DecimalPlaces = 1;
+            this.nPID_roll_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPID_roll_p.Increment = new decimal(new int[] {
             1,
             0,
@@ -1465,7 +1494,7 @@
             0,
             0});
             this.nPID_roll_p.Name = "nPID_roll_p";
-            this.nPID_roll_p.Size = new System.Drawing.Size(68, 16);
+            this.nPID_roll_p.Size = new System.Drawing.Size(68, 18);
             this.nPID_roll_p.TabIndex = 0;
             // 
             // tabPageRC
@@ -2048,6 +2077,8 @@
             // cb_gyro_yaw
             // 
             this.cb_gyro_yaw.AutoSize = true;
+            this.cb_gyro_yaw.Checked = true;
+            this.cb_gyro_yaw.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_gyro_yaw.Location = new System.Drawing.Point(9, 44);
             this.cb_gyro_yaw.Name = "cb_gyro_yaw";
             this.cb_gyro_yaw.Size = new System.Drawing.Size(15, 14);
@@ -2068,6 +2099,8 @@
             // cb_gyro_pitch
             // 
             this.cb_gyro_pitch.AutoSize = true;
+            this.cb_gyro_pitch.Checked = true;
+            this.cb_gyro_pitch.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_gyro_pitch.Location = new System.Drawing.Point(9, 30);
             this.cb_gyro_pitch.Name = "cb_gyro_pitch";
             this.cb_gyro_pitch.Size = new System.Drawing.Size(15, 14);
@@ -2088,6 +2121,8 @@
             // cb_gyro_roll
             // 
             this.cb_gyro_roll.AutoSize = true;
+            this.cb_gyro_roll.Checked = true;
+            this.cb_gyro_roll.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_gyro_roll.Location = new System.Drawing.Point(9, 16);
             this.cb_gyro_roll.Name = "cb_gyro_roll";
             this.cb_gyro_roll.Size = new System.Drawing.Size(15, 14);
@@ -2154,6 +2189,8 @@
             // cb_acc_z
             // 
             this.cb_acc_z.AutoSize = true;
+            this.cb_acc_z.Checked = true;
+            this.cb_acc_z.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_acc_z.Location = new System.Drawing.Point(9, 44);
             this.cb_acc_z.Name = "cb_acc_z";
             this.cb_acc_z.Size = new System.Drawing.Size(15, 14);
@@ -2173,6 +2210,8 @@
             // cb_acc_pitch
             // 
             this.cb_acc_pitch.AutoSize = true;
+            this.cb_acc_pitch.Checked = true;
+            this.cb_acc_pitch.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_acc_pitch.Location = new System.Drawing.Point(9, 30);
             this.cb_acc_pitch.Name = "cb_acc_pitch";
             this.cb_acc_pitch.Size = new System.Drawing.Size(15, 14);
@@ -2192,6 +2231,8 @@
             // cb_acc_roll
             // 
             this.cb_acc_roll.AutoSize = true;
+            this.cb_acc_roll.Checked = true;
+            this.cb_acc_roll.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_acc_roll.Location = new System.Drawing.Point(9, 16);
             this.cb_acc_roll.Name = "cb_acc_roll";
             this.cb_acc_roll.Size = new System.Drawing.Size(15, 14);
@@ -2234,6 +2275,20 @@
             this.cb_monitor_rate.Size = new System.Drawing.Size(57, 21);
             this.cb_monitor_rate.TabIndex = 3;
             this.cb_monitor_rate.SelectedIndexChanged += new System.EventHandler(this.cb_monitor_rate_SelectedIndexChanged);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
+            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
             // 
             // indPASST
             // 
@@ -2408,20 +2463,6 @@
             this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
             this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
             this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
-            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
             // 
             // tabPageFlighDeck
             // 
@@ -2615,6 +2656,7 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPageSettings.Controls.Add(this.l_i2cdatasupress);
             this.tabPageSettings.Controls.Add(this.b_check_update);
             this.tabPageSettings.Controls.Add(this.b_select_settings_folder);
             this.tabPageSettings.Controls.Add(this.l_Settings_folder);
@@ -2635,6 +2677,14 @@
             this.tabPageSettings.Size = new System.Drawing.Size(783, 445);
             this.tabPageSettings.TabIndex = 4;
             this.tabPageSettings.Text = "GUI Settings";
+            // 
+            // l_i2cdatasupress
+            // 
+            this.l_i2cdatasupress.AutoSize = true;
+            this.l_i2cdatasupress.Location = new System.Drawing.Point(154, 50);
+            this.l_i2cdatasupress.Name = "l_i2cdatasupress";
+            this.l_i2cdatasupress.Size = new System.Drawing.Size(0, 13);
+            this.l_i2cdatasupress.TabIndex = 29;
             // 
             // b_check_update
             // 
@@ -2848,7 +2898,7 @@
             this.rb_sw20.Size = new System.Drawing.Size(71, 17);
             this.rb_sw20.TabIndex = 10;
             this.rb_sw20.TabStop = true;
-            this.rb_sw20.Text = "DEV r569";
+            this.rb_sw20.Text = "SVN r569";
             this.rb_sw20.UseVisualStyleBackColor = true;
             this.rb_sw20.CheckedChanged += new System.EventHandler(this.rb_sw20_CheckedChanged);
             // 
@@ -2978,7 +3028,7 @@
             // 
             // b_connect
             // 
-            this.b_connect.Location = new System.Drawing.Point(109, 12);
+            this.b_connect.Location = new System.Drawing.Point(117, 12);
             this.b_connect.Name = "b_connect";
             this.b_connect.Size = new System.Drawing.Size(81, 45);
             this.b_connect.TabIndex = 10;
@@ -3342,6 +3392,7 @@
         private System.Windows.Forms.Label l_Settings_folder;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button b_check_update;
+        private System.Windows.Forms.Label l_i2cdatasupress;
     }
 }
 

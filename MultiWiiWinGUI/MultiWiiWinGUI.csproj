@@ -236,9 +236,7 @@
     <Content Include="Captures\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui_settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="gui_settings.xml" />
     <Content Include="logfields.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -76,7 +76,7 @@
             this.l_mwver.ForeColor = System.Drawing.Color.Maroon;
             this.l_mwver.Location = new System.Drawing.Point(386, 123);
             this.l_mwver.Name = "l_mwver";
-            this.l_mwver.Size = new System.Drawing.Size(200, 23);
+            this.l_mwver.Size = new System.Drawing.Size(200, 50);
             this.l_mwver.TabIndex = 5;
             this.l_mwver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 

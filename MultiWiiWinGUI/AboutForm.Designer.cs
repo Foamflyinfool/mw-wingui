@@ -82,11 +82,11 @@
             // l_mwver
             // 
             this.l_mwver.BackColor = System.Drawing.Color.Gray;
-            this.l_mwver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_mwver.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.l_mwver.ForeColor = System.Drawing.Color.Maroon;
-            this.l_mwver.Location = new System.Drawing.Point(389, 119);
+            this.l_mwver.Location = new System.Drawing.Point(378, 119);
             this.l_mwver.Name = "l_mwver";
-            this.l_mwver.Size = new System.Drawing.Size(191, 23);
+            this.l_mwver.Size = new System.Drawing.Size(202, 44);
             this.l_mwver.TabIndex = 6;
             this.l_mwver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -95,7 +95,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::MultiWiiWinGUI.Properties.Resources.splash;
-            this.ClientSize = new System.Drawing.Size(594, 274);
+            this.ClientSize = new System.Drawing.Size(590, 281);
             this.ControlBox = false;
             this.Controls.Add(this.l_mwver);
             this.Controls.Add(this.label3);
