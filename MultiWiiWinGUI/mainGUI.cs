@@ -37,7 +37,7 @@ namespace MultiWiiWinGUI
         #region Common variables (properties)
 
         const string sVersion = "1.01";
-        const string sVersionUrl = "http://mw-wingui.googlecode.com/files/version.xml";
+        const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
 
