@@ -1,3 +1,14 @@
+
+version 1.02
+It's no longer considered as a beta, this is the final v1, it was tested more than 120 people. in the last couple of days. and all issues was corrected.
+
+Corrected Heading indicator (it was 180deg off)
+Alt is now in meters (.1 precision as the original value is in dm)
+Added asyncvideosource layer to video capture chain, as a preparation for double buffered ground OSD
+Corrected TRI servo display, it's now working with SVNr569 (TRI servo moved to servo[5] in MultiWii code)
+Video capture filename corrected it’s YYMMDD-HHmm now.
+
+
 version 1.01
 
 Smarter COM port selection in Settings Wizard, thanks to TimeCop

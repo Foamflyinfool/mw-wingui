@@ -36,7 +36,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "1.01";
+        const string sVersion = "1.02";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -122,6 +122,11 @@ namespace MultiWiiWinGUI
         static VideoCaptureDevice videoSource;
         static TimeSpan tsFrameTimeStamp;
         static TimeSpan tsFrameRate;
+
+
+        static Pen drawPen;
+        static System.Drawing.SolidBrush drawBrush;
+        static System.Drawing.Font drawFont;
 
         //For logging
         StreamWriter wLogStream;
@@ -508,6 +513,11 @@ namespace MultiWiiWinGUI
             dropdown_devices.SelectedIndex = 0;
             cb_codec.SelectedIndex = 0;
 
+            //Drawing stuff for OSD
+            drawPen = new Pen(Color.White, 1);
+            drawFont = new System.Drawing.Font(FontFamily.GenericMonospace, 16.0F);
+            drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
+
             System.Threading.Thread.Sleep(2000);
             splash.Close();
 
@@ -762,6 +772,10 @@ namespace MultiWiiWinGUI
         private void bkgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
+            // Do not access the form's BackgroundWorker reference directly.
+            // Instead, use the reference provided by the sender parameter.
+            BackgroundWorker bw = sender as BackgroundWorker;
+
             try
             {
                 bool bIsPortOpen = serialPort.IsOpen;
@@ -815,8 +829,6 @@ namespace MultiWiiWinGUI
                 bSerialError = true;
                 return;
             }
-
-
         }
 
         private void bkgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -952,8 +964,8 @@ namespace MultiWiiWinGUI
                 if (cb_mag_yaw.Checked) { list_mag_yaw.Add((double)xTimeStamp, mw_gui.magz); }
                 l_mag_yaw.Text = "" + mw_gui.magz;
 
-                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, mw_gui.baro); }
-                l_alt.Text = "" + mw_gui.baro;
+                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, mw_gui.baro/10); }
+                l_alt.Text = "" + (double)mw_gui.baro/10;
 
                 if (cb_head.Checked) { list_head.Add((double)xTimeStamp, mw_gui.heading); }
                 l_head.Text = "" + mw_gui.heading;
@@ -1001,10 +1013,15 @@ namespace MultiWiiWinGUI
                 attitudeIndicatorInstrumentControl1.SetArtificalHorizon(-mw_gui.angy, -mw_gui.angx);
                 gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), true, Convert.ToBoolean(mw_gui.GPS_update));
 
+                //check if ver !=1.9 and copter is Tri then change servo5<->servo0
+                if (mw_gui.multiType == (byte)CopterType.Tri && gui_settings.iSoftwareVersion == 20)
+                {
+                    int temp = mw_gui.servos[0];
+                    mw_gui.servos[0] = mw_gui.servos[5];
+                    mw_gui.servos[5] = temp;
+                }
+
                 motorsIndicator1.SetMotorsIndicatorParameters(mw_gui.motors, mw_gui.servos, mw_gui.multiType);
-
-
-
 
                 //update indicator lamps
                 indNUNCHUK.SetStatus((mw_gui.present & 1) != 0);
@@ -1442,25 +1459,39 @@ namespace MultiWiiWinGUI
             videoSourcePlayer.SignalToStop();
             videoSourcePlayer.WaitForStop();
 
+            //add asynch layer
+            AsyncVideoSource asyncSource = new AsyncVideoSource(source, true);
+            // set NewFrame event handler
+            asyncSource.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
+            // start the video source
+            asyncSource.Start();
+
+
             // start new video source
-            videoSourcePlayer.VideoSource = source;
+            videoSourcePlayer.VideoSource = asyncSource;
             videoSourcePlayer.Start();
 
             this.Cursor = Cursors.Default;
         }
         // New frame received
-        private void videoSourcePlayer_NewFrame(object sender, ref Bitmap image)
+        private void videoSourcePlayer_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            //                    Graphics g = Graphics.FromImage( image );
+            Bitmap image = eventArgs.Frame;
+            //Graphics g = Graphics.FromImage(image);
+
+            //g.DrawString(String.Format("{0:0}", mw_gui.angx), drawFont, drawBrush, 100,100);
 
 
             if (bVideoRecording == true)
             {
-                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate);
-                if (vfwWriter != null) { vfwWriter.WriteVideoFrame(image,tsFrameTimeStamp); }
+                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate); 
+                if (vfwWriter != null)
+                {
+                    vfwWriter.WriteVideoFrame(image, tsFrameTimeStamp);
+                }
             }
+            //g.Dispose();
 
-            //                   g.Dispose( );
         }
 
         private void b_video_connect_Click(object sender, EventArgs e)
@@ -1498,7 +1529,7 @@ namespace MultiWiiWinGUI
                     l_capture_file.Text = "capture" + String.Format("-{0:yymmdd-hhmm}", DateTime.Now);
                     vfwWriter = new VideoFileWriter();
                     //create new video file
-                    vfwWriter.Open(gui_settings.sCaptureFolder + "\\capture" + String.Format("-{0:yymmdd-hhmm}", DateTime.Now) + ".avi", 640, 480, (int)nFrameRate.Value, (VideoCodec)cb_codec.SelectedIndex, (int)(1000000 * nBitRate.Value));
+                    vfwWriter.Open(gui_settings.sCaptureFolder + "\\capture" + String.Format("-{0:yyMMdd-hhmm}", DateTime.Now) + ".avi", 640, 480, (int)nFrameRate.Value, (VideoCodec)cb_codec.SelectedIndex, (int)(1000000 * nBitRate.Value));
                     b_Record.Text = "Recording";
                     b_Record.BackColor = Color.Red;
                     tsFrameTimeStamp = new TimeSpan(0);

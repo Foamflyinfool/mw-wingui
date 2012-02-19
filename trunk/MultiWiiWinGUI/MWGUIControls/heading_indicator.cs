@@ -76,7 +76,7 @@ namespace MultiWiiGUIControls
             Bitmap bmp = new Bitmap(136, 136);
             Graphics gfx = Graphics.FromImage(bmp);
             gfx.TranslateTransform(68f, 68f);
-            gfx.RotateTransform(Heading);
+            gfx.RotateTransform(-Heading);
             gfx.TranslateTransform(-68f, -68f);
             gfx.DrawImageUnscaled(bmpHeadingwheel, 0, 0);
             pe.Graphics.DrawImageUnscaled(bmp, 7, 7);
