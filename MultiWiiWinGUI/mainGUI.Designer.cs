@@ -177,7 +177,6 @@
             this.zgMonitor = new ZedGraph.ZedGraphControl();
             this.label3 = new System.Windows.Forms.Label();
             this.cb_monitor_rate = new System.Windows.Forms.ComboBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.indPASST = new MultiWiiGUIControls.indicator_lamp();
             this.indPOS = new MultiWiiGUIControls.indicator_lamp();
             this.indRTH = new MultiWiiGUIControls.indicator_lamp();
@@ -197,6 +196,7 @@
             this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
             this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -2276,20 +2276,6 @@
             this.cb_monitor_rate.TabIndex = 3;
             this.cb_monitor_rate.SelectedIndexChanged += new System.EventHandler(this.cb_monitor_rate_SelectedIndexChanged);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
-            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
-            // 
             // indPASST
             // 
             this.indPASST.indicator_color = 1;
@@ -2463,6 +2449,20 @@
             this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
             this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
             this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
+            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
             // 
             // tabPageFlighDeck
             // 
@@ -2651,7 +2651,6 @@
             this.videoSourcePlayer.TabIndex = 0;
             this.videoSourcePlayer.Text = "videoSourcePlayer";
             this.videoSourcePlayer.VideoSource = null;
-            this.videoSourcePlayer.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayer_NewFrame);
             // 
             // tabPageSettings
             // 
