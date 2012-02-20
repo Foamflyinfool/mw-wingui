@@ -229,10 +229,10 @@
             this.r_Mw20.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.r_Mw20.Location = new System.Drawing.Point(303, 166);
             this.r_Mw20.Name = "r_Mw20";
-            this.r_Mw20.Size = new System.Drawing.Size(82, 20);
+            this.r_Mw20.Size = new System.Drawing.Size(105, 20);
             this.r_Mw20.TabIndex = 7;
             this.r_Mw20.TabStop = true;
-            this.r_Mw20.Text = "r569 SVN";
+            this.r_Mw20.Text = "dev20120219";
             this.r_Mw20.UseVisualStyleBackColor = true;
             // 
             // label8

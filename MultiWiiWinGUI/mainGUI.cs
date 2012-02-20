@@ -36,7 +36,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "1.02";
+        const string sVersion = "1.03";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -54,7 +54,7 @@ namespace MultiWiiWinGUI
         const int iPacketSizeM20 = 155;             //M answer packet size for ver latest head
         const int iPacketSizeM19 = 125;             //M answer packet size for ver 1.9
         static int iPacketSizeM;                    //This will contain packet size 
-        const string sRelName20 = "SVN r569";
+        const string sRelName20 = "dev20120219";
         const string sRelName19 = "1.9";
         static string sRelName;
 
@@ -1649,8 +1649,9 @@ namespace MultiWiiWinGUI
             try
             {
                 this.Cursor = Cursors.AppStarting;
-                doc = XDocument.Load(sVersionUrl, LoadOptions.None);
+                doc = XDocument.Load("../../../version.xml", LoadOptions.None);
                 sVersionFromSVN = doc.Element("application").Element("version").Value;
+                string sCommentFromSVN = doc.Element("application").Element("comment").Value;
                 this.Cursor = Cursors.Default;
                 if (String.Compare(sVersionFromSVN, sVersion) == 0)
                 {
@@ -1659,7 +1660,7 @@ namespace MultiWiiWinGUI
                 else
                 {
 
-                    MessageBoxEx.Show(this, "A new version : " + sVersionFromSVN + " is available\r\nYou can download it from http://code.google.com/p/mw-wingui/downloads/list","Update available",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    MessageBoxEx.Show(this, "A new version : " + sVersionFromSVN + " is available\r\n"+sCommentFromSVN+"\r\nYou can download it from http://code.google.com/p/mw-wingui/downloads/list","Update available",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                 }
             }
             catch

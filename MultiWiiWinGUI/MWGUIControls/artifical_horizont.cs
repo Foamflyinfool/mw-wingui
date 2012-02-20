@@ -90,8 +90,6 @@ namespace MultiWiiGUIControls
             maskPen.Dispose();
 
 
-
-
         }
 
         #endregion
