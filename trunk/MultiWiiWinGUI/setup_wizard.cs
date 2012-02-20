@@ -82,36 +82,36 @@ namespace MultiWiiWinGUI
         private void b_finish_cancel_Click(object sender, EventArgs e)
         {
 
-            //We reached the last page, so all parameters should be valid
-            if (panelWizard.SelectedIndex == iLastPage)
-            {
+                //We reached the last page, so all parameters should be valid
+                if (panelWizard.SelectedIndex == iLastPage)
+                {
 
-                //Fill out the Settings class with control contents.
-                Settings.sLogFolder = l_Log_folder.Text;
-                Settings.sSettingsFolder = l_Settings_folder.Text;
-                Settings.sCaptureFolder = l_Captures_folder.Text;
-                Settings.sPreferedSerialSpeed = cb_SerialSpeed.SelectedItem.ToString();
-                Settings.sPreferedComPort = cb_SerialPort.SelectedItem.ToString();
-                if (r_Mw19.Checked) { Settings.iSoftwareVersion = 19; }
-                if (r_Mw20.Checked) { Settings.iSoftwareVersion = 20; }
-                Settings.bEnableLogging = cb_LogEnabled.Checked;
-                Settings.logGraw = cb_Log1.Checked;
-                Settings.logGatt = cb_Log2.Checked;
-                Settings.logGmag = cb_Log3.Checked;
-                Settings.logGrcc = cb_Log4.Checked;
-                Settings.logGrcx = cb_Log5.Checked;
-                Settings.logGmot = cb_Log6.Checked;
-                Settings.logGsrv = cb_Log7.Checked;
-                Settings.logGnav = cb_Log8.Checked;
-                Settings.logGpar = cb_Log9.Checked;
-                Settings.logGdbg = cb_Log10.Checked;
-           }
+                    //Fill out the Settings class with control contents.
+                    Settings.sLogFolder = l_Log_folder.Text;
+                    Settings.sSettingsFolder = l_Settings_folder.Text;
+                    Settings.sCaptureFolder = l_Captures_folder.Text;
+                    Settings.sPreferedSerialSpeed = cb_SerialSpeed.SelectedItem.ToString();
+                    Settings.sPreferedComPort = cb_SerialPort.Text;
+                    if (r_Mw19.Checked) { Settings.iSoftwareVersion = 19; }
+                    if (r_Mw20.Checked) { Settings.iSoftwareVersion = 20; }
+                    Settings.bEnableLogging = cb_LogEnabled.Checked;
+                    Settings.logGraw = cb_Log1.Checked;
+                    Settings.logGatt = cb_Log2.Checked;
+                    Settings.logGmag = cb_Log3.Checked;
+                    Settings.logGrcc = cb_Log4.Checked;
+                    Settings.logGrcx = cb_Log5.Checked;
+                    Settings.logGmot = cb_Log6.Checked;
+                    Settings.logGsrv = cb_Log7.Checked;
+                    Settings.logGnav = cb_Log8.Checked;
+                    Settings.logGpar = cb_Log9.Checked;
+                    Settings.logGdbg = cb_Log10.Checked;
+                }
 
-            //Write out the Settings struct
-            //if not at the Finish page, don't copy control values, so default values will remain valid
-            //No check for successfull writing... :) If it's not successfull the gui will exit at the next step anyway
-            Settings.save_to_xml(sGuiSettingsFilename);
-
+                //Write out the Settings struct
+                //if not at the Finish page, don't copy control values, so default values will remain valid
+                //No check for successfull writing... :) If it's not successfull the gui will exit at the next step anyway
+                Settings.save_to_xml(sGuiSettingsFilename);
+            
             this.Close();
         }
 

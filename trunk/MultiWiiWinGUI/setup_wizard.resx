@@ -128,7 +128,7 @@ familiar with the settings.</value>
   <data name="label8.Text" xml:space="preserve">
     <value>Please choose which software version you are using on your
 MultiWii controller. Due the recent changes in serial protocol,
-interim versions between 1.9 and r569  are not working.
+interim versions between 1.9 and dev20120219  are not working.
 You can change software version at the GUI Settings tab later
  if required. Using of dev20120203 is possible with some manual
  tweaking, see the tips at http://code.google.com/p/mw-wingui/</value>

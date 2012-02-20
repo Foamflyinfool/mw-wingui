@@ -1,3 +1,6 @@
+version 1.03
+Fixed settings wizard crash when run without any serial port
+Changed r569 to dev20120219
 
 version 1.02
 It's no longer considered as a beta, this is the final v1, it was tested more than 120 people. in the last couple of days. and all issues was corrected.

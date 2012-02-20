@@ -1,4 +1,5 @@
 <application>
 	<name>MWWinGUI</name>
-	<version>1.02</version>
+	<version>1.03</version>
+	<comment>Fixes a minor bug in settings wizard and changes r569->dev20120219</comment>
 </application>

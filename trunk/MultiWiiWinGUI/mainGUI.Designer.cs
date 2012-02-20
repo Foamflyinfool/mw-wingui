@@ -2894,10 +2894,10 @@
             this.rb_sw20.Checked = true;
             this.rb_sw20.Location = new System.Drawing.Point(19, 19);
             this.rb_sw20.Name = "rb_sw20";
-            this.rb_sw20.Size = new System.Drawing.Size(71, 17);
+            this.rb_sw20.Size = new System.Drawing.Size(91, 17);
             this.rb_sw20.TabIndex = 10;
             this.rb_sw20.TabStop = true;
-            this.rb_sw20.Text = "SVN r569";
+            this.rb_sw20.Text = "dev20120219";
             this.rb_sw20.UseVisualStyleBackColor = true;
             this.rb_sw20.CheckedChanged += new System.EventHandler(this.rb_sw20_CheckedChanged);
             // 
