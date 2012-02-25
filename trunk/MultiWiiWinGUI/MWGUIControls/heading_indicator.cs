@@ -109,7 +109,6 @@ namespace MultiWiiGUIControls
         /// <param name="aircraftHeading">The aircraft heading in °deg</param>
         public void SetHeadingIndicatorParameters(int aircraftHeading)
         {
-            aircraftHeading = -aircraftHeading;
             if (aircraftHeading < 0) { Heading = 360 + aircraftHeading; }
             else { Heading = aircraftHeading; }
             this.Refresh();

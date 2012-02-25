@@ -127,11 +127,11 @@ familiar with the settings.</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>Please choose which software version you are using on your
-MultiWii controller. Due the recent changes in serial protocol,
-interim versions between 1.9 and dev20120219  are not working.
-You can change software version at the GUI Settings tab later
- if required. Using of dev20120203 is possible with some manual
- tweaking, see the tips at http://code.google.com/p/mw-wingui/</value>
+MultiWii controller.  Use "2.0 dev" if you are using dev 
+release 20120219 or later. You can change software version at the
+GUI Settings tab later Using of dev20120203 is possible with 
+some manual tweaking, 
+see the tips at  http://code.google.com/p/mw-wingui/</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>You can set your preferred serial port and serial speed. So you 
@@ -152,6 +152,8 @@ change them at the GUI Settings tab.
 Please keep in mind that this program is under constant development
 and there could be bugs in it. If you find one, do not hesitate to report it
 at http://code.google.com/p/mw-wingui/
-</value>
+If you want to support this project or just want to encourage the previous 
+and further developments, feel free to click on the donate button at
+http://code.google.com/p/mw-wingui/</value>
   </data>
 </root>

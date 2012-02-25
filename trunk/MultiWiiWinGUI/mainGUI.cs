@@ -36,7 +36,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "1.03";
+        const string sVersion = "1.04";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -54,7 +54,7 @@ namespace MultiWiiWinGUI
         const int iPacketSizeM20 = 155;             //M answer packet size for ver latest head
         const int iPacketSizeM19 = 125;             //M answer packet size for ver 1.9
         static int iPacketSizeM;                    //This will contain packet size 
-        const string sRelName20 = "dev20120219";
+        const string sRelName20 = "2.0";
         const string sRelName19 = "1.9";
         static string sRelName;
 
@@ -635,8 +635,10 @@ namespace MultiWiiWinGUI
 
         private void b_log_browser_Click(object sender, EventArgs e)
         {
-            Form logbrowser = new LogBrowser();
+            LogBrowser logbrowser = new LogBrowser();
+            logbrowser.sInitialDirectory = gui_settings.sLogFolder;
             logbrowser.ShowDialog();
+            logbrowser.Dispose();
         }
 
         private void l_ports_label_DoubleClick(object sender, EventArgs e)
@@ -1667,6 +1669,15 @@ namespace MultiWiiWinGUI
             {
                 MessageBoxEx.Show(this, "Not Able to connect to SVN for version info");
             }
+
+        }
+
+        private void attitudeIndicatorInstrumentControl1_Click(object sender, EventArgs e)
+        {
+            Point c = System.Windows.Forms.Cursor.Position;
+            Point p = attitudeIndicatorInstrumentControl1.PointToClient(c);
+
+            attitudeIndicatorInstrumentControl1.ToggleArtificalHorizonType();
 
         }
 
