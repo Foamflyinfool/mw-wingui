@@ -1,3 +1,10 @@
+version 1.04
+Now setting refers to 1.9 and 2.0 since serial protocol will not change till the release of 2.0 MultiWii
+Fixed ISSUE5 - Tricopter front motor indicators were swapped
+Fixed ISSUE6 - LogBrowser openfiledialog does not open at log directory
+Fixed ISSUE7 - Heading indicator swapped East-West
+New feature  - Artifical horizon now can be switched to MultiWiiConf style roll/pitch indicator with a click on a control
+
 version 1.03
 Fixed settings wizard crash when run without any serial port
 Changed r569 to dev20120219

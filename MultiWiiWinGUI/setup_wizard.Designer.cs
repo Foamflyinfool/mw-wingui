@@ -229,10 +229,10 @@
             this.r_Mw20.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.r_Mw20.Location = new System.Drawing.Point(303, 166);
             this.r_Mw20.Name = "r_Mw20";
-            this.r_Mw20.Size = new System.Drawing.Size(105, 20);
+            this.r_Mw20.Size = new System.Drawing.Size(69, 20);
             this.r_Mw20.TabIndex = 7;
             this.r_Mw20.TabStop = true;
-            this.r_Mw20.Text = "dev20120219";
+            this.r_Mw20.Text = "2.0 dev";
             this.r_Mw20.UseVisualStyleBackColor = true;
             // 
             // label8
@@ -243,7 +243,7 @@
             this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label8.Location = new System.Drawing.Point(155, 48);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(384, 96);
+            this.label8.Size = new System.Drawing.Size(395, 96);
             this.label8.TabIndex = 6;
             this.label8.Text = resources.GetString("label8.Text");
             // 
@@ -747,7 +747,7 @@
             this.label12.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label12.Location = new System.Drawing.Point(155, 48);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(416, 80);
+            this.label12.Size = new System.Drawing.Size(427, 128);
             this.label12.TabIndex = 10;
             this.label12.Text = resources.GetString("label12.Text");
             // 

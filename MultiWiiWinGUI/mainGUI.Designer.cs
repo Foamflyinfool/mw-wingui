@@ -48,7 +48,6 @@
             this.label65 = new System.Windows.Forms.Label();
             this.trackbar_RC_Rate = new System.Windows.Forms.TrackBar();
             this.trackbar_RC_Expo = new System.Windows.Forms.TrackBar();
-            this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.label56 = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
@@ -112,8 +111,6 @@
             this.b_stop_live_rc = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.tabPageRealtime = new System.Windows.Forms.TabPage();
             this.l_i2cerrors = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -177,26 +174,6 @@
             this.zgMonitor = new ZedGraph.ZedGraphControl();
             this.label3 = new System.Windows.Forms.Label();
             this.cb_monitor_rate = new System.Windows.Forms.ComboBox();
-            this.indPASST = new MultiWiiGUIControls.indicator_lamp();
-            this.indPOS = new MultiWiiGUIControls.indicator_lamp();
-            this.indRTH = new MultiWiiGUIControls.indicator_lamp();
-            this.indHFREE = new MultiWiiGUIControls.indicator_lamp();
-            this.indHHOLD = new MultiWiiGUIControls.indicator_lamp();
-            this.indALTHOLD = new MultiWiiGUIControls.indicator_lamp();
-            this.indLEVEL = new MultiWiiGUIControls.indicator_lamp();
-            this.indARM = new MultiWiiGUIControls.indicator_lamp();
-            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
-            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
-            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
-            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
-            this.indACC = new MultiWiiGUIControls.indicator_lamp();
-            this.indNUNCHUK = new MultiWiiGUIControls.indicator_lamp();
-            this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
-            this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
-            this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
-            this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
-            this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -250,6 +227,29 @@
             this.bkgWorker = new System.ComponentModel.BackgroundWorker();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.b_about = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
+            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
+            this.indPASST = new MultiWiiGUIControls.indicator_lamp();
+            this.indPOS = new MultiWiiGUIControls.indicator_lamp();
+            this.indRTH = new MultiWiiGUIControls.indicator_lamp();
+            this.indHFREE = new MultiWiiGUIControls.indicator_lamp();
+            this.indHHOLD = new MultiWiiGUIControls.indicator_lamp();
+            this.indALTHOLD = new MultiWiiGUIControls.indicator_lamp();
+            this.indLEVEL = new MultiWiiGUIControls.indicator_lamp();
+            this.indARM = new MultiWiiGUIControls.indicator_lamp();
+            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
+            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
+            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
+            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
+            this.indACC = new MultiWiiGUIControls.indicator_lamp();
+            this.indNUNCHUK = new MultiWiiGUIControls.indicator_lamp();
+            this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
+            this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
+            this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
+            this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
+            this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).BeginInit();
@@ -293,18 +293,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_i)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).BeginInit();
             this.tabPageRC.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPageRealtime.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabPageFlighDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nFrameRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_serial_port
@@ -556,14 +556,6 @@
             this.trackbar_RC_Expo.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackbar_RC_Expo.Value = 80;
             this.trackbar_RC_Expo.Scroll += new System.EventHandler(this.trackbar_RC_Expo_Scroll);
-            // 
-            // rc_expo_control1
-            // 
-            this.rc_expo_control1.Location = new System.Drawing.Point(68, 14);
-            this.rc_expo_control1.Name = "rc_expo_control1";
-            this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
-            this.rc_expo_control1.TabIndex = 15;
-            this.rc_expo_control1.Text = "rc_expo_control1";
             // 
             // groupBox9
             // 
@@ -1542,24 +1534,6 @@
             this.label4.TabIndex = 18;
             this.label4.Text = "Orange border indicates, that setting was changed but not written to FC";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::MultiWiiWinGUI.Properties.Resources.checkbox_legend;
-            this.pictureBox1.Location = new System.Drawing.Point(6, 419);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(37, 20);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 17;
-            this.pictureBox1.TabStop = false;
-            // 
-            // rci_Control_settings
-            // 
-            this.rci_Control_settings.Location = new System.Drawing.Point(580, 292);
-            this.rci_Control_settings.Name = "rci_Control_settings";
-            this.rci_Control_settings.Size = new System.Drawing.Size(200, 150);
-            this.rci_Control_settings.TabIndex = 15;
-            this.rci_Control_settings.Text = "rc_input_control2";
-            // 
             // tabPageRealtime
             // 
             this.tabPageRealtime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2276,194 +2250,6 @@
             this.cb_monitor_rate.TabIndex = 3;
             this.cb_monitor_rate.SelectedIndexChanged += new System.EventHandler(this.cb_monitor_rate_SelectedIndexChanged);
             // 
-            // indPASST
-            // 
-            this.indPASST.indicator_color = 1;
-            this.indPASST.Location = new System.Drawing.Point(211, 419);
-            this.indPASST.Margin = new System.Windows.Forms.Padding(1);
-            this.indPASST.Name = "indPASST";
-            this.indPASST.Size = new System.Drawing.Size(50, 17);
-            this.indPASST.TabIndex = 100;
-            this.indPASST.Text = "PASSTHR";
-            // 
-            // indPOS
-            // 
-            this.indPOS.indicator_color = 1;
-            this.indPOS.Location = new System.Drawing.Point(274, 419);
-            this.indPOS.Margin = new System.Windows.Forms.Padding(1);
-            this.indPOS.Name = "indPOS";
-            this.indPOS.Size = new System.Drawing.Size(50, 17);
-            this.indPOS.TabIndex = 93;
-            this.indPOS.Text = "POSHOLD";
-            // 
-            // indRTH
-            // 
-            this.indRTH.indicator_color = 1;
-            this.indRTH.Location = new System.Drawing.Point(274, 400);
-            this.indRTH.Margin = new System.Windows.Forms.Padding(1);
-            this.indRTH.Name = "indRTH";
-            this.indRTH.Size = new System.Drawing.Size(50, 17);
-            this.indRTH.TabIndex = 92;
-            this.indRTH.Text = "RTH";
-            // 
-            // indHFREE
-            // 
-            this.indHFREE.indicator_color = 1;
-            this.indHFREE.Location = new System.Drawing.Point(274, 381);
-            this.indHFREE.Margin = new System.Windows.Forms.Padding(1);
-            this.indHFREE.Name = "indHFREE";
-            this.indHFREE.Size = new System.Drawing.Size(50, 17);
-            this.indHFREE.TabIndex = 91;
-            this.indHFREE.Text = "Head F";
-            // 
-            // indHHOLD
-            // 
-            this.indHHOLD.indicator_color = 1;
-            this.indHHOLD.Location = new System.Drawing.Point(274, 362);
-            this.indHHOLD.Margin = new System.Windows.Forms.Padding(1);
-            this.indHHOLD.Name = "indHHOLD";
-            this.indHHOLD.Size = new System.Drawing.Size(50, 17);
-            this.indHHOLD.TabIndex = 90;
-            this.indHHOLD.Text = "Head H";
-            // 
-            // indALTHOLD
-            // 
-            this.indALTHOLD.indicator_color = 1;
-            this.indALTHOLD.Location = new System.Drawing.Point(274, 343);
-            this.indALTHOLD.Margin = new System.Windows.Forms.Padding(1);
-            this.indALTHOLD.Name = "indALTHOLD";
-            this.indALTHOLD.Size = new System.Drawing.Size(50, 17);
-            this.indALTHOLD.TabIndex = 89;
-            this.indALTHOLD.Text = "ALTHOLD";
-            // 
-            // indLEVEL
-            // 
-            this.indLEVEL.indicator_color = 1;
-            this.indLEVEL.Location = new System.Drawing.Point(274, 324);
-            this.indLEVEL.Margin = new System.Windows.Forms.Padding(1);
-            this.indLEVEL.Name = "indLEVEL";
-            this.indLEVEL.Size = new System.Drawing.Size(50, 17);
-            this.indLEVEL.TabIndex = 88;
-            this.indLEVEL.Text = "LEVEL";
-            // 
-            // indARM
-            // 
-            this.indARM.indicator_color = 1;
-            this.indARM.Location = new System.Drawing.Point(274, 305);
-            this.indARM.Margin = new System.Windows.Forms.Padding(1);
-            this.indARM.Name = "indARM";
-            this.indARM.Size = new System.Drawing.Size(50, 17);
-            this.indARM.TabIndex = 87;
-            this.indARM.Text = "ARMED";
-            // 
-            // indGPS
-            // 
-            this.indGPS.Location = new System.Drawing.Point(211, 381);
-            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
-            this.indGPS.Name = "indGPS";
-            this.indGPS.Size = new System.Drawing.Size(50, 17);
-            this.indGPS.TabIndex = 86;
-            this.indGPS.Text = "GPS";
-            // 
-            // indSONAR
-            // 
-            this.indSONAR.Location = new System.Drawing.Point(211, 400);
-            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
-            this.indSONAR.Name = "indSONAR";
-            this.indSONAR.Size = new System.Drawing.Size(50, 17);
-            this.indSONAR.TabIndex = 85;
-            this.indSONAR.Text = "SONAR";
-            // 
-            // indMAG
-            // 
-            this.indMAG.Location = new System.Drawing.Point(211, 362);
-            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
-            this.indMAG.Name = "indMAG";
-            this.indMAG.Size = new System.Drawing.Size(50, 17);
-            this.indMAG.TabIndex = 84;
-            this.indMAG.Text = "MAG";
-            // 
-            // indBARO
-            // 
-            this.indBARO.Location = new System.Drawing.Point(211, 343);
-            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
-            this.indBARO.Name = "indBARO";
-            this.indBARO.Size = new System.Drawing.Size(50, 17);
-            this.indBARO.TabIndex = 83;
-            this.indBARO.Text = "BARO";
-            // 
-            // indACC
-            // 
-            this.indACC.Location = new System.Drawing.Point(211, 324);
-            this.indACC.Margin = new System.Windows.Forms.Padding(1);
-            this.indACC.Name = "indACC";
-            this.indACC.Size = new System.Drawing.Size(50, 17);
-            this.indACC.TabIndex = 82;
-            this.indACC.Text = "ACC";
-            // 
-            // indNUNCHUK
-            // 
-            this.indNUNCHUK.Location = new System.Drawing.Point(211, 305);
-            this.indNUNCHUK.Margin = new System.Windows.Forms.Padding(1);
-            this.indNUNCHUK.Name = "indNUNCHUK";
-            this.indNUNCHUK.Size = new System.Drawing.Size(50, 17);
-            this.indNUNCHUK.TabIndex = 81;
-            this.indNUNCHUK.Text = "NUNCH";
-            // 
-            // rc_input_control1
-            // 
-            this.rc_input_control1.Location = new System.Drawing.Point(0, 295);
-            this.rc_input_control1.Name = "rc_input_control1";
-            this.rc_input_control1.Size = new System.Drawing.Size(200, 150);
-            this.rc_input_control1.TabIndex = 76;
-            this.rc_input_control1.Text = "rc_input_control1";
-            // 
-            // motorsIndicator1
-            // 
-            this.motorsIndicator1.Location = new System.Drawing.Point(603, 27);
-            this.motorsIndicator1.Name = "motorsIndicator1";
-            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
-            this.motorsIndicator1.TabIndex = 75;
-            this.motorsIndicator1.Text = "motorsIndicator1";
-            // 
-            // gpsIndicator
-            // 
-            this.gpsIndicator.Location = new System.Drawing.Point(336, 295);
-            this.gpsIndicator.Name = "gpsIndicator";
-            this.gpsIndicator.Size = new System.Drawing.Size(150, 150);
-            this.gpsIndicator.TabIndex = 74;
-            this.gpsIndicator.Text = "gpsIndicator";
-            // 
-            // headingIndicatorInstrumentControl1
-            // 
-            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(633, 295);
-            this.headingIndicatorInstrumentControl1.Name = "headingIndicatorInstrumentControl1";
-            this.headingIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
-            this.headingIndicatorInstrumentControl1.TabIndex = 72;
-            this.headingIndicatorInstrumentControl1.Text = "headingIndicatorInstrumentControl1";
-            // 
-            // attitudeIndicatorInstrumentControl1
-            // 
-            this.attitudeIndicatorInstrumentControl1.Location = new System.Drawing.Point(486, 295);
-            this.attitudeIndicatorInstrumentControl1.Name = "attitudeIndicatorInstrumentControl1";
-            this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
-            this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
-            this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
-            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
-            // 
             // tabPageFlighDeck
             // 
             this.tabPageFlighDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2894,10 +2680,10 @@
             this.rb_sw20.Checked = true;
             this.rb_sw20.Location = new System.Drawing.Point(19, 19);
             this.rb_sw20.Name = "rb_sw20";
-            this.rb_sw20.Size = new System.Drawing.Size(91, 17);
+            this.rb_sw20.Size = new System.Drawing.Size(61, 17);
             this.rb_sw20.TabIndex = 10;
             this.rb_sw20.TabStop = true;
-            this.rb_sw20.Text = "dev20120219";
+            this.rb_sw20.Text = "2.0 dev";
             this.rb_sw20.UseVisualStyleBackColor = true;
             this.rb_sw20.CheckedChanged += new System.EventHandler(this.rb_sw20_CheckedChanged);
             // 
@@ -3065,6 +2851,221 @@
             this.b_about.UseVisualStyleBackColor = true;
             this.b_about.Click += new System.EventHandler(this.b_about_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::MultiWiiWinGUI.Properties.Resources.checkbox_legend;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 419);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(37, 20);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 17;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
+            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
+            // 
+            // rc_expo_control1
+            // 
+            this.rc_expo_control1.Location = new System.Drawing.Point(68, 14);
+            this.rc_expo_control1.Name = "rc_expo_control1";
+            this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
+            this.rc_expo_control1.TabIndex = 15;
+            this.rc_expo_control1.Text = "rc_expo_control1";
+            // 
+            // rci_Control_settings
+            // 
+            this.rci_Control_settings.Location = new System.Drawing.Point(580, 292);
+            this.rci_Control_settings.Name = "rci_Control_settings";
+            this.rci_Control_settings.Size = new System.Drawing.Size(200, 150);
+            this.rci_Control_settings.TabIndex = 15;
+            this.rci_Control_settings.Text = "rc_input_control2";
+            // 
+            // indPASST
+            // 
+            this.indPASST.indicator_color = 1;
+            this.indPASST.Location = new System.Drawing.Point(211, 419);
+            this.indPASST.Margin = new System.Windows.Forms.Padding(1);
+            this.indPASST.Name = "indPASST";
+            this.indPASST.Size = new System.Drawing.Size(50, 17);
+            this.indPASST.TabIndex = 100;
+            this.indPASST.Text = "PASSTHR";
+            // 
+            // indPOS
+            // 
+            this.indPOS.indicator_color = 1;
+            this.indPOS.Location = new System.Drawing.Point(274, 419);
+            this.indPOS.Margin = new System.Windows.Forms.Padding(1);
+            this.indPOS.Name = "indPOS";
+            this.indPOS.Size = new System.Drawing.Size(50, 17);
+            this.indPOS.TabIndex = 93;
+            this.indPOS.Text = "POSHOLD";
+            // 
+            // indRTH
+            // 
+            this.indRTH.indicator_color = 1;
+            this.indRTH.Location = new System.Drawing.Point(274, 400);
+            this.indRTH.Margin = new System.Windows.Forms.Padding(1);
+            this.indRTH.Name = "indRTH";
+            this.indRTH.Size = new System.Drawing.Size(50, 17);
+            this.indRTH.TabIndex = 92;
+            this.indRTH.Text = "RTH";
+            // 
+            // indHFREE
+            // 
+            this.indHFREE.indicator_color = 1;
+            this.indHFREE.Location = new System.Drawing.Point(274, 381);
+            this.indHFREE.Margin = new System.Windows.Forms.Padding(1);
+            this.indHFREE.Name = "indHFREE";
+            this.indHFREE.Size = new System.Drawing.Size(50, 17);
+            this.indHFREE.TabIndex = 91;
+            this.indHFREE.Text = "Head F";
+            // 
+            // indHHOLD
+            // 
+            this.indHHOLD.indicator_color = 1;
+            this.indHHOLD.Location = new System.Drawing.Point(274, 362);
+            this.indHHOLD.Margin = new System.Windows.Forms.Padding(1);
+            this.indHHOLD.Name = "indHHOLD";
+            this.indHHOLD.Size = new System.Drawing.Size(50, 17);
+            this.indHHOLD.TabIndex = 90;
+            this.indHHOLD.Text = "Head H";
+            // 
+            // indALTHOLD
+            // 
+            this.indALTHOLD.indicator_color = 1;
+            this.indALTHOLD.Location = new System.Drawing.Point(274, 343);
+            this.indALTHOLD.Margin = new System.Windows.Forms.Padding(1);
+            this.indALTHOLD.Name = "indALTHOLD";
+            this.indALTHOLD.Size = new System.Drawing.Size(50, 17);
+            this.indALTHOLD.TabIndex = 89;
+            this.indALTHOLD.Text = "ALTHOLD";
+            // 
+            // indLEVEL
+            // 
+            this.indLEVEL.indicator_color = 1;
+            this.indLEVEL.Location = new System.Drawing.Point(274, 324);
+            this.indLEVEL.Margin = new System.Windows.Forms.Padding(1);
+            this.indLEVEL.Name = "indLEVEL";
+            this.indLEVEL.Size = new System.Drawing.Size(50, 17);
+            this.indLEVEL.TabIndex = 88;
+            this.indLEVEL.Text = "LEVEL";
+            // 
+            // indARM
+            // 
+            this.indARM.indicator_color = 1;
+            this.indARM.Location = new System.Drawing.Point(274, 305);
+            this.indARM.Margin = new System.Windows.Forms.Padding(1);
+            this.indARM.Name = "indARM";
+            this.indARM.Size = new System.Drawing.Size(50, 17);
+            this.indARM.TabIndex = 87;
+            this.indARM.Text = "ARMED";
+            // 
+            // indGPS
+            // 
+            this.indGPS.Location = new System.Drawing.Point(211, 381);
+            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
+            this.indGPS.Name = "indGPS";
+            this.indGPS.Size = new System.Drawing.Size(50, 17);
+            this.indGPS.TabIndex = 86;
+            this.indGPS.Text = "GPS";
+            // 
+            // indSONAR
+            // 
+            this.indSONAR.Location = new System.Drawing.Point(211, 400);
+            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
+            this.indSONAR.Name = "indSONAR";
+            this.indSONAR.Size = new System.Drawing.Size(50, 17);
+            this.indSONAR.TabIndex = 85;
+            this.indSONAR.Text = "SONAR";
+            // 
+            // indMAG
+            // 
+            this.indMAG.Location = new System.Drawing.Point(211, 362);
+            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
+            this.indMAG.Name = "indMAG";
+            this.indMAG.Size = new System.Drawing.Size(50, 17);
+            this.indMAG.TabIndex = 84;
+            this.indMAG.Text = "MAG";
+            // 
+            // indBARO
+            // 
+            this.indBARO.Location = new System.Drawing.Point(211, 343);
+            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
+            this.indBARO.Name = "indBARO";
+            this.indBARO.Size = new System.Drawing.Size(50, 17);
+            this.indBARO.TabIndex = 83;
+            this.indBARO.Text = "BARO";
+            // 
+            // indACC
+            // 
+            this.indACC.Location = new System.Drawing.Point(211, 324);
+            this.indACC.Margin = new System.Windows.Forms.Padding(1);
+            this.indACC.Name = "indACC";
+            this.indACC.Size = new System.Drawing.Size(50, 17);
+            this.indACC.TabIndex = 82;
+            this.indACC.Text = "ACC";
+            // 
+            // indNUNCHUK
+            // 
+            this.indNUNCHUK.Location = new System.Drawing.Point(211, 305);
+            this.indNUNCHUK.Margin = new System.Windows.Forms.Padding(1);
+            this.indNUNCHUK.Name = "indNUNCHUK";
+            this.indNUNCHUK.Size = new System.Drawing.Size(50, 17);
+            this.indNUNCHUK.TabIndex = 81;
+            this.indNUNCHUK.Text = "NUNCH";
+            // 
+            // rc_input_control1
+            // 
+            this.rc_input_control1.Location = new System.Drawing.Point(0, 295);
+            this.rc_input_control1.Name = "rc_input_control1";
+            this.rc_input_control1.Size = new System.Drawing.Size(200, 150);
+            this.rc_input_control1.TabIndex = 76;
+            this.rc_input_control1.Text = "rc_input_control1";
+            // 
+            // motorsIndicator1
+            // 
+            this.motorsIndicator1.Location = new System.Drawing.Point(603, 27);
+            this.motorsIndicator1.Name = "motorsIndicator1";
+            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
+            this.motorsIndicator1.TabIndex = 75;
+            this.motorsIndicator1.Text = "motorsIndicator1";
+            // 
+            // gpsIndicator
+            // 
+            this.gpsIndicator.Location = new System.Drawing.Point(336, 295);
+            this.gpsIndicator.Name = "gpsIndicator";
+            this.gpsIndicator.Size = new System.Drawing.Size(150, 150);
+            this.gpsIndicator.TabIndex = 74;
+            this.gpsIndicator.Text = "gpsIndicator";
+            // 
+            // headingIndicatorInstrumentControl1
+            // 
+            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(633, 295);
+            this.headingIndicatorInstrumentControl1.Name = "headingIndicatorInstrumentControl1";
+            this.headingIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
+            this.headingIndicatorInstrumentControl1.TabIndex = 72;
+            this.headingIndicatorInstrumentControl1.Text = "headingIndicatorInstrumentControl1";
+            // 
+            // attitudeIndicatorInstrumentControl1
+            // 
+            this.attitudeIndicatorInstrumentControl1.Location = new System.Drawing.Point(484, 295);
+            this.attitudeIndicatorInstrumentControl1.Name = "attitudeIndicatorInstrumentControl1";
+            this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
+            this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
+            this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
+            this.attitudeIndicatorInstrumentControl1.Click += new System.EventHandler(this.attitudeIndicatorInstrumentControl1_Click);
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3145,7 +3146,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).EndInit();
             this.tabPageRC.ResumeLayout(false);
             this.tabPageRC.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPageRealtime.ResumeLayout(false);
             this.tabPageRealtime.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -3154,7 +3154,6 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabPageFlighDeck.ResumeLayout(false);
             this.tabPageFlighDeck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).EndInit();
@@ -3165,6 +3164,8 @@
             this.groupBox11.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

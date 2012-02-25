@@ -24,6 +24,9 @@ namespace MultiWiiWinGUI
 
         int graphs = 0;
 
+        public string sInitialDirectory;
+
+
         public LogBrowser()
         {
             InitializeComponent();
@@ -32,6 +35,7 @@ namespace MultiWiiWinGUI
         private void Form1_Load(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.InitialDirectory = sInitialDirectory;
             openFileDialog1.Filter = "Log Files|*.log";
             openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;
@@ -68,6 +72,7 @@ namespace MultiWiiWinGUI
             }
             else
             {
+                //this.Close();
                 return;
             }
         }

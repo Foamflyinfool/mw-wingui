@@ -221,6 +221,13 @@ namespace MultiWiiWinGUI.MWGUIControls {
             }
         }
         
+        public static System.Drawing.Bitmap Horizon_empty_Background {
+            get {
+                object obj = ResourceManager.GetObject("Horizon_empty_Background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap Horizon_GroundSky {
             get {
                 object obj = ResourceManager.GetObject("Horizon_GroundSky", resourceCulture);
@@ -305,6 +312,13 @@ namespace MultiWiiWinGUI.MWGUIControls {
             }
         }
         
+        public static System.Drawing.Bitmap pitch {
+            get {
+                object obj = ResourceManager.GetObject("pitch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap quadp {
             get {
                 object obj = ResourceManager.GetObject("quadp", resourceCulture);
@@ -333,9 +347,30 @@ namespace MultiWiiWinGUI.MWGUIControls {
             }
         }
         
+        public static System.Drawing.Bitmap roll {
+            get {
+                object obj = ResourceManager.GetObject("roll", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap SmallNeedleAltimeter {
             get {
                 object obj = ResourceManager.GetObject("SmallNeedleAltimeter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap toggle_off {
+            get {
+                object obj = ResourceManager.GetObject("toggle_off", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap toggle_on {
+            get {
+                object obj = ResourceManager.GetObject("toggle_on", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
