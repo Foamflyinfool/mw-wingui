@@ -1651,7 +1651,7 @@ namespace MultiWiiWinGUI
             try
             {
                 this.Cursor = Cursors.AppStarting;
-                doc = XDocument.Load("../../../version.xml", LoadOptions.None);
+                doc = XDocument.Load(sVersionUrl, LoadOptions.None);
                 sVersionFromSVN = doc.Element("application").Element("version").Value;
                 string sCommentFromSVN = doc.Element("application").Element("comment").Value;
                 this.Cursor = Cursors.Default;
