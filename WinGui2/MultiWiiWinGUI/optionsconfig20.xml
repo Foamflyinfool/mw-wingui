@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- This a config file for RC options for latest dev MultiWii Code-->
+<CONFIG>
+	<AUX_OPTION id="0"  name="LEVEL"    desc="Auto Leveling mode" />
+	<AUX_OPTION id="1"  name="ALTHOLD"  desc="Altitude hold" />
+	<AUX_OPTION id="2"  name="MAG"      desc="Heading hold with compass" />
+	<AUX_OPTION id="3"  name="CAMSTAB"  desc="Camera Stabilisation" />
+	<AUX_OPTION id="4"  name="CAMTRIG"  desc="Camera Trigger" />
+	<AUX_OPTION id="5"  name="ARM"      desc="Arm motors" />
+	<AUX_OPTION id="6"  name="RTH"      desc="Return to home" />
+	<AUX_OPTION id="7"  name="POSHOLD"  desc="Position hold" />
+	<AUX_OPTION id="8"  name="PASSTHRU" desc="Passthru for flying wings" />
+	<AUX_OPTION id="9"  name="HEADFREE" desc="Head free mode" />
+	<AUX_OPTION id="10" name="BEEPER"   desc="Activate beeper" />
+	<NUMBER_OF_PIDS value="8" />
+</CONFIG>
