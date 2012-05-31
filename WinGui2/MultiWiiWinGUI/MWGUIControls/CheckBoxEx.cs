@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
 using System.Data;
+using System.IO;
+using System.IO.Ports;
 
 namespace MultiWiiGUIControls
 {
@@ -19,8 +21,7 @@ namespace MultiWiiGUIControls
             if (m.Msg == 0x1328 && !DesignMode) m.Result = (IntPtr)1;
             else base.WndProc(ref m);
         }
-    } 
-
+    }
 
 
 

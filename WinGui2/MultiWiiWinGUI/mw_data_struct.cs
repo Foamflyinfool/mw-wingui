@@ -427,13 +427,14 @@ namespace MultiWiiWinGUI
         public int[] motors;
         public int rcRoll, rcPitch, rcYaw, rcThrottle;
         public int rcAux1, rcAux2, rcAux3, rcAux4;
-        public byte present;            //What sensors are present?
-        public byte mode;               //What mode are we in ?
+        public int present;            //What sensors are present?
+        public int mode;               //What mode are we in ?
         public int i2cErrors;
         public int cycleTime;
         public int angx;                //Must be /10
         public int angy;                //Must be /10
         public byte multiType;
+        public byte version;
         public byte[] pidP;
         public byte[] pidI;
         public byte[] pidD;
@@ -442,6 +443,8 @@ namespace MultiWiiWinGUI
         public byte RollPitchRate;
         public byte YawRate;
         public byte DynThrPID;
+        public byte ThrottleMID;
+        public byte ThrottleEXPO;
         public byte[] activation1;
         public byte[] activation2;
         public int GPS_distanceToHome;
@@ -449,6 +452,10 @@ namespace MultiWiiWinGUI
         public byte GPS_numSat;
         public byte GPS_fix;
         public byte GPS_update;
+        public int GPS_latitude;
+        public int GPS_longitude;
+        public int GPS_altitude;
+        public int GPS_speed;
         public int pMeterSum;
         public int powerTrigger;
         public byte vBat;
