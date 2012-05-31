@@ -78,7 +78,7 @@ namespace MultiWiiWinGUI
         static byte[] bSerialBuffer;
 
         static int iCheckBoxItems = 0;                          //number of checkboxItems (readed from optionsconfig.xml
-        static int iPidItems = 8;                                //number if Pid items (const definition)
+        static int iPidItems = 9;                                //number if Pid items (const definition)
         static mw_data_gui mw_gui;
         static mw_settings mw_params;
         static GUI_settings gui_settings;
@@ -130,6 +130,42 @@ namespace MultiWiiWinGUI
 
         //For logging
         StreamWriter wLogStream;
+
+        //Commands
+         const int     MSP_IDENT     = 100;
+
+         const int  MSP_STATUS               =101;
+         const int MSP_RAW_IMU              =102;
+         const int MSP_SERVO                =103;
+         const int MSP_MOTOR                =104;
+         const int MSP_RC                   =105;
+         const int MSP_RAW_GPS              =106;
+         const int MSP_COMP_GPS             =107;
+         const int MSP_ATTITUDE             =108;
+         const int MSP_ALTITUDE             =109;
+         const int MSP_BAT                  =110;
+         const int MSP_RC_TUNING            =111;
+         const int MSP_PID                  =112;
+         const int MSP_BOX                  =113;
+         const int MSP_MISC                 =114;
+
+         const int  MSP_SET_RAW_RC           =200;
+         const int MSP_SET_RAW_GPS          =201;
+         const int MSP_SET_PID              =202;
+         const int MSP_SET_BOX              =203;
+         const int MSP_SET_RC_TUNING        =204;
+         const int MSP_ACC_CALIBRATION      =205;
+         const int MSP_MAG_CALIBRATION      =206;
+         const int MSP_SET_MISC             =207;
+         const int MSP_RESET_CONF           =208;
+
+         const int MSP_EEPROM_WRITE = 250;
+         const int MSP_DEBUG                =254;
+
+
+
+
+
 
         #endregion
 
@@ -528,15 +564,28 @@ namespace MultiWiiWinGUI
         private void timer_rc_Tick(object sender, EventArgs e)
         {
             //Since it's not time critical we can wait for the pervious operation to completed
-            if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
+            MSPquery(MSP_RC);
+            MSPquery(MSP_BOX);
+
+            update_gui_test();
+            //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
 
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
             //Since it's not time critical we can wait for the pervious operation to completed
-            if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
+            MSPquery(MSP_IDENT); MSPquery(MSP_STATUS); MSPquery(MSP_RAW_IMU);
+            MSPquery(MSP_SERVO); MSPquery(MSP_MOTOR); MSPquery(MSP_RC);
+            MSPquery(MSP_RAW_GPS); MSPquery(MSP_COMP_GPS); MSPquery(MSP_ATTITUDE);
+            MSPquery(MSP_ALTITUDE); MSPquery(MSP_BAT); MSPquery(MSP_BOX);
+            MSPquery(MSP_MISC); MSPquery(MSP_DEBUG);
+
+            
+            
+            update_gui_test();
+            //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
 
@@ -587,11 +636,16 @@ namespace MultiWiiWinGUI
                 {
                     wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
                 }
-
+                MSPquery(MSP_PID);
+                MSPquery(MSP_RC_TUNING);
                 //Run BackgroundWorker Once
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
                 if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
                 if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
+                System.Threading.Thread.Sleep(500);
+                update_gui_test();
+
+
             }
         }
 
@@ -771,13 +825,44 @@ namespace MultiWiiWinGUI
 
         }
 
+
+        private byte read8(SerialPort s)
+        {
+
+            return ((byte)s.ReadByte());
+        }
+
+        private int read16(SerialPort s)
+        {
+            byte[] buffer = {0,0};
+            int retval;
+
+            buffer[0] = (byte)s.ReadByte();
+            buffer[1] = (byte)s.ReadByte();
+
+            retval = BitConverter.ToInt16(buffer,0);
+
+            return (retval);
+        }
+
+
+
         private void bkgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+
+            int stateMSP  = 0;
+            byte c,p,ptr;
+            int offset = 0;
+            int dataSize = 0;
+            int checksum = 0;
+            byte[] inBuf;
+
+            inBuf = new byte[100];   //init input buffer
 
             // Do not access the form's BackgroundWorker reference directly.
             // Instead, use the reference provided by the sender parameter.
             BackgroundWorker bw = sender as BackgroundWorker;
-
+            
             try
             {
                 bool bIsPortOpen = serialPort.IsOpen;
@@ -789,51 +874,226 @@ namespace MultiWiiWinGUI
                 return;
             }
 
+            bSerialError = false;
 
-            if (serialPort.IsOpen)
+            while (true)                // backgroundworker runs continously
             {
-                //Read whatever we had in the buffer
-                serialPort.ReadExisting();
-                //Write M for the rest
-                try
+
+                if (serialPort.IsOpen)
                 {
-                    serialPort.Write("M");
-                    for (int i = 0; i < iPacketSizeM; i++) { bSerialBuffer[i] = (byte)serialPort.ReadByte(); }
+                    //Just process what is received. Get received commands and put them into 
+                    while (serialPort.BytesToRead > 0 )
+                    {
+                        c = (byte)serialPort.ReadByte(); 
+                        if (stateMSP > 99)
+                        {
+                            if (offset < dataSize)
+                            {
+                                if (offset < dataSize) checksum ^= c;
+                                inBuf[offset++] = c;
+                            }
+                            else
+                            {
+
+                                if (checksum == c)
+                                {
+                                    switch (stateMSP)
+                                    {
+                                        case MSP_IDENT:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.version = (byte)inBuf[ptr++];
+                                            mw_gui.multiType = (byte)inBuf[ptr];
+                                            break;
+                                        case MSP_STATUS:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.cycleTime = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            mw_gui.i2cErrors = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            mw_gui.present = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            mw_gui.mode = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            break;
+                                        case MSP_RAW_IMU:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.ax = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            mw_gui.ay = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+                                            mw_gui.az = BitConverter.ToInt16(inBuf,ptr);ptr+=2;
+
+                                            mw_gui.gx = BitConverter.ToInt16(inBuf,ptr)/8;ptr+=2;
+                                            mw_gui.gy = BitConverter.ToInt16(inBuf,ptr)/8;ptr+=2;
+                                            mw_gui.gz = BitConverter.ToInt16(inBuf,ptr)/8;ptr+=2;
+
+                                            mw_gui.magx = BitConverter.ToInt16(inBuf,ptr)/3;ptr+=2; 
+                                            mw_gui.magy = BitConverter.ToInt16(inBuf,ptr)/3;ptr+=2;
+                                            mw_gui.magz = BitConverter.ToInt16(inBuf,ptr)/3;ptr+=2;
+                                            break;
+                                        case MSP_SERVO:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            for (int i = 0; i < 8; i++)
+                                            {
+                                                mw_gui.servos[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            }
+                                            break;
+                                        case MSP_MOTOR:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            for (int i=0;i<8; i++) {
+                                                mw_gui.motors[i] = BitConverter.ToInt16(inBuf,ptr); ptr += 2;
+                                            }
+                                            break;
+                                        case MSP_RC:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.rcRoll = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcPitch = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcYaw = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcThrottle = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcAux1 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcAux2 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcAux3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.rcAux4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                        case MSP_RAW_GPS:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.GPS_fix = (byte)inBuf[ptr++];
+                                            mw_gui.GPS_numSat = (byte)inBuf[ptr++];
+                                            mw_gui.GPS_latitude = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                                            mw_gui.GPS_longitude = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                                            mw_gui.GPS_altitude = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.GPS_speed    = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                        case MSP_COMP_GPS:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.GPS_distanceToHome = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.GPS_directionToHome = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.GPS_update = (byte)inBuf[ptr++];
+                                            break;
+                                        case MSP_ATTITUDE:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.angx = BitConverter.ToInt16(inBuf, ptr)/10; ptr += 2;
+                                            mw_gui.angy = BitConverter.ToInt16(inBuf, ptr)/10; ptr += 2;
+                                            mw_gui.heading = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                        case MSP_ALTITUDE:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.baro = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                                            break;
+                                        case MSP_BAT:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.vBat = (byte)inBuf[ptr++];
+                                            mw_gui.pMeterSum = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                        case MSP_RC_TUNING:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.rcRate = (byte)inBuf[ptr++];
+                                            mw_gui.rcExpo = (byte)inBuf[ptr++];
+                                            mw_gui.RollPitchRate = (byte)inBuf[ptr++];
+                                            mw_gui.YawRate = (byte)inBuf[ptr++];
+                                            mw_gui.DynThrPID = (byte)inBuf[ptr++];
+                                            mw_gui.ThrottleMID = (byte)inBuf[ptr++];
+                                            mw_gui.ThrottleEXPO = (byte)inBuf[ptr++];
+                                            break;
+                                        case MSP_PID:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            for (int i = 0; i < iPidItems; i++)
+                                            {
+                                                mw_gui.pidP[i] = (byte)inBuf[ptr++];
+                                                mw_gui.pidI[i] = (byte)inBuf[ptr++];
+                                                mw_gui.pidD[i] = (byte)inBuf[ptr++];
+                                            }
+                                            bOptions_needs_refresh = true;
+                                            break;
+                                        case MSP_BOX:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            for (int i = 0; i < iCheckBoxItems; i++)
+                                            {
+                                                mw_gui.activation1[i] = (byte)inBuf[ptr++];
+                                                mw_gui.activation2[i] = (byte)inBuf[ptr++];
+                                            }
+                                            break;
+                                        case MSP_MISC:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.powerTrigger = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                        case MSP_DEBUG:
+                                            stateMSP = 0;
+                                            ptr = 0;
+                                            mw_gui.debug1 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.debug2 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.debug3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            mw_gui.debug4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                                            break;
+                                    }
+                                }
+                                stateMSP = 0;
+                            }
+                        }
+
+                        if (stateMSP < 5)
+                        {
+                            if (stateMSP == 4)
+                            {
+                                if (c > 99)
+                                {
+                                    stateMSP = c;
+                                    offset = 0; checksum = 0; p = 0;
+                                }
+                                else
+                                {
+                                    stateMSP = 0;
+                                }
+                            }
+                            if (stateMSP == 3)
+                            {
+                                if (c < 100)
+                                {
+                                    stateMSP++;
+                                    dataSize = c;
+                                    if (dataSize > 63) dataSize = 63;
+                                }
+                                else
+                                {
+                                    stateMSP = c;
+                                }
+                            }
+                            switch ((char)c)
+                            {
+                                case '$':                                         //header detection $MW>
+                                    if (stateMSP == 0) stateMSP++;
+                                    break;
+                                case 'M':
+                                    if (stateMSP == 1) stateMSP++;
+                                    break;
+                                case '>':
+                                    if (stateMSP == 2) stateMSP++;
+                                    break;
+                            }
+                        }
+                    }
+
                 }
-                catch
+                else   //port not opened, (it could happen when U disconnect the usb cable while connected
                 {
-                    //Timeout occured Assume we are resetting
-                    System.Threading.Thread.Sleep(4000);         //Wait for the reset to be completed
-                    try
-                    {
-                        serialPort.Write("M");
-                        for (int i = 0; i < iPacketSizeM; i++) { bSerialBuffer[i] = (byte)serialPort.ReadByte(); }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("No valid answer from FC!\r\nCheck that your MultiWii software version is maching with the version selected at the GUI Settings tab (" + sRelName + ") and it's connected properly.", "Comm error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        bSerialError = true;
-                        return;
-                    }
+                    //bSerialError = true; //do nothing
+                    //return;
                 }
 
-                //check data packet trailer  M  and throw error message (and exit gracefully) if there is a missmatch
-                if (bSerialBuffer[iPacketSizeM - 1] != 'M')
-                {
-                    MessageBox.Show("Incoming data packet size does not match with expected packet structure\r\nIt seems the version setting in GUI does not match with FC software version.", "Software Version missmatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Environment.Exit(-1);
-                }
-
-                mw_gui.parse_input_packet(bSerialBuffer);
-            }
-            else   //port not opened, (it could happen when U disconnect the usb cable while connected
-            {
-                bSerialError = true;
-                return;
-            }
+            }// while
         }
 
-        private void bkgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+       // private void bkgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void update_gui_test()
         {
 
             if (bSerialError)
@@ -1681,6 +1941,17 @@ namespace MultiWiiWinGUI
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //textBox1.Text += "$M<" + (char)MSP_RC";
+            serialPort.Write("$M<" + (char)MSP_RC);
+            if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
+        }
+
+        private void MSPquery(int command)
+        {
+            serialPort.Write("$M<" + (char)command);
+        }
 
 
 

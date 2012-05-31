@@ -36,6 +36,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePID = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tComment = new System.Windows.Forms.TextBox();
@@ -111,6 +113,7 @@
             this.b_stop_live_rc = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPageRealtime = new System.Windows.Forms.TabPage();
             this.l_i2cerrors = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -174,6 +177,7 @@
             this.zgMonitor = new ZedGraph.ZedGraphControl();
             this.label3 = new System.Windows.Forms.Label();
             this.cb_monitor_rate = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -227,8 +231,6 @@
             this.bkgWorker = new System.ComponentModel.BackgroundWorker();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.b_about = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
             this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.indPASST = new MultiWiiGUIControls.indicator_lamp();
@@ -293,18 +295,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_i)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).BeginInit();
             this.tabPageRC.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPageRealtime.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabPageFlighDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nFrameRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_serial_port
@@ -359,16 +361,18 @@
             this.tabMain.Controls.Add(this.tabPageRealtime);
             this.tabMain.Controls.Add(this.tabPageFlighDeck);
             this.tabMain.Controls.Add(this.tabPageSettings);
-            this.tabMain.Location = new System.Drawing.Point(3, 66);
+            this.tabMain.Location = new System.Drawing.Point(-4, 66);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(791, 471);
+            this.tabMain.Size = new System.Drawing.Size(996, 503);
             this.tabMain.TabIndex = 9;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
             // tabPagePID
             // 
             this.tabPagePID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPagePID.Controls.Add(this.textBox1);
+            this.tabPagePID.Controls.Add(this.button1);
             this.tabPagePID.Controls.Add(this.label10);
             this.tabPagePID.Controls.Add(this.label9);
             this.tabPagePID.Controls.Add(this.tComment);
@@ -387,15 +391,33 @@
             this.tabPagePID.Location = new System.Drawing.Point(4, 22);
             this.tabPagePID.Name = "tabPagePID";
             this.tabPagePID.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePID.Size = new System.Drawing.Size(783, 445);
+            this.tabPagePID.Size = new System.Drawing.Size(988, 477);
             this.tabPagePID.TabIndex = 1;
             this.tabPagePID.Text = "Parameters";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(663, 111);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(294, 191);
+            this.textBox1.TabIndex = 26;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(663, 67);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(582, 404);
+            this.label10.Location = new System.Drawing.Point(497, 393);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(89, 13);
             this.label10.TabIndex = 24;
@@ -406,7 +428,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(429, 371);
+            this.label9.Location = new System.Drawing.Point(344, 360);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 23;
@@ -417,7 +439,7 @@
             this.tComment.BackColor = System.Drawing.Color.LightGray;
             this.tComment.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tComment.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tComment.Location = new System.Drawing.Point(432, 387);
+            this.tComment.Location = new System.Drawing.Point(347, 376);
             this.tComment.MaxLength = 40;
             this.tComment.Name = "tComment";
             this.tComment.Size = new System.Drawing.Size(239, 15);
@@ -428,7 +450,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(231, 385);
+            this.label8.Location = new System.Drawing.Point(146, 374);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(113, 13);
             this.label8.TabIndex = 21;
@@ -440,7 +462,7 @@
             this.nPAlarm.BackColor = System.Drawing.Color.LightGray;
             this.nPAlarm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPAlarm.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPAlarm.Location = new System.Drawing.Point(350, 384);
+            this.nPAlarm.Location = new System.Drawing.Point(265, 373);
             this.nPAlarm.Maximum = new decimal(new int[] {
             64000,
             0,
@@ -461,7 +483,7 @@
             this.groupBox13.Controls.Add(this.rc_expo_control1);
             this.groupBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox13.ForeColor = System.Drawing.Color.White;
-            this.groupBox13.Location = new System.Drawing.Point(426, 131);
+            this.groupBox13.Location = new System.Drawing.Point(341, 120);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(245, 230);
             this.groupBox13.TabIndex = 20;
@@ -567,7 +589,7 @@
             this.groupBox9.Controls.Add(this.nPID_vel_p);
             this.groupBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox9.ForeColor = System.Drawing.Color.White;
-            this.groupBox9.Location = new System.Drawing.Point(97, 222);
+            this.groupBox9.Location = new System.Drawing.Point(12, 211);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(321, 42);
             this.groupBox9.TabIndex = 7;
@@ -677,7 +699,7 @@
             this.groupBox8.Controls.Add(this.nPID_alt_p);
             this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox8.ForeColor = System.Drawing.Color.White;
-            this.groupBox8.Location = new System.Drawing.Point(97, 174);
+            this.groupBox8.Location = new System.Drawing.Point(12, 163);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(321, 42);
             this.groupBox8.TabIndex = 7;
@@ -787,7 +809,7 @@
             this.groupBox12.Controls.Add(this.nRATE_rp);
             this.groupBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox12.ForeColor = System.Drawing.Color.White;
-            this.groupBox12.Location = new System.Drawing.Point(424, 30);
+            this.groupBox12.Location = new System.Drawing.Point(339, 19);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(247, 95);
             this.groupBox12.TabIndex = 8;
@@ -903,7 +925,7 @@
             this.groupBoxGPS.Controls.Add(this.nPID_gps_p);
             this.groupBoxGPS.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxGPS.ForeColor = System.Drawing.Color.White;
-            this.groupBoxGPS.Location = new System.Drawing.Point(97, 271);
+            this.groupBoxGPS.Location = new System.Drawing.Point(12, 260);
             this.groupBoxGPS.Name = "groupBoxGPS";
             this.groupBoxGPS.Size = new System.Drawing.Size(321, 42);
             this.groupBoxGPS.TabIndex = 7;
@@ -1009,7 +1031,7 @@
             this.groupBox10.Controls.Add(this.nPID_mag_p);
             this.groupBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox10.ForeColor = System.Drawing.Color.White;
-            this.groupBox10.Location = new System.Drawing.Point(97, 368);
+            this.groupBox10.Location = new System.Drawing.Point(12, 357);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(118, 42);
             this.groupBox10.TabIndex = 7;
@@ -1059,7 +1081,7 @@
             this.groupBox7.Controls.Add(this.nPID_level_p);
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(97, 319);
+            this.groupBox7.Location = new System.Drawing.Point(12, 308);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(321, 42);
             this.groupBox7.TabIndex = 7;
@@ -1169,7 +1191,7 @@
             this.groupBox6.Controls.Add(this.nPID_yaw_p);
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(97, 126);
+            this.groupBox6.Location = new System.Drawing.Point(12, 115);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(321, 42);
             this.groupBox6.TabIndex = 7;
@@ -1279,7 +1301,7 @@
             this.groupBox5.Controls.Add(this.nPID_pitch_p);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(97, 78);
+            this.groupBox5.Location = new System.Drawing.Point(12, 67);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(321, 42);
             this.groupBox5.TabIndex = 7;
@@ -1389,7 +1411,7 @@
             this.groupBox4.Controls.Add(this.nPID_roll_p);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(97, 30);
+            this.groupBox4.Location = new System.Drawing.Point(12, 19);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(321, 42);
             this.groupBox4.TabIndex = 6;
@@ -1500,7 +1522,7 @@
             this.tabPageRC.Location = new System.Drawing.Point(4, 22);
             this.tabPageRC.Name = "tabPageRC";
             this.tabPageRC.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRC.Size = new System.Drawing.Size(783, 445);
+            this.tabPageRC.Size = new System.Drawing.Size(988, 477);
             this.tabPageRC.TabIndex = 0;
             this.tabPageRC.Text = "RC Control Settings";
             // 
@@ -1533,6 +1555,16 @@
             this.label4.Size = new System.Drawing.Size(343, 13);
             this.label4.TabIndex = 18;
             this.label4.Text = "Orange border indicates, that setting was changed but not written to FC";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::MultiWiiWinGUI.Properties.Resources.checkbox_legend;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 419);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(37, 20);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 17;
+            this.pictureBox1.TabStop = false;
             // 
             // tabPageRealtime
             // 
@@ -1595,7 +1627,7 @@
             this.tabPageRealtime.ForeColor = System.Drawing.Color.White;
             this.tabPageRealtime.Location = new System.Drawing.Point(4, 22);
             this.tabPageRealtime.Name = "tabPageRealtime";
-            this.tabPageRealtime.Size = new System.Drawing.Size(783, 445);
+            this.tabPageRealtime.Size = new System.Drawing.Size(988, 477);
             this.tabPageRealtime.TabIndex = 2;
             this.tabPageRealtime.Text = "Realtime Data";
             // 
@@ -2250,6 +2282,20 @@
             this.cb_monitor_rate.TabIndex = 3;
             this.cb_monitor_rate.SelectedIndexChanged += new System.EventHandler(this.cb_monitor_rate_SelectedIndexChanged);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
+            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(141, 182);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
+            // 
             // tabPageFlighDeck
             // 
             this.tabPageFlighDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2268,7 +2314,7 @@
             this.tabPageFlighDeck.Controls.Add(this.videoSourcePlayer);
             this.tabPageFlighDeck.Location = new System.Drawing.Point(4, 22);
             this.tabPageFlighDeck.Name = "tabPageFlighDeck";
-            this.tabPageFlighDeck.Size = new System.Drawing.Size(783, 445);
+            this.tabPageFlighDeck.Size = new System.Drawing.Size(988, 477);
             this.tabPageFlighDeck.TabIndex = 3;
             this.tabPageFlighDeck.Text = "VideoCapture";
             // 
@@ -2459,7 +2505,7 @@
             this.tabPageSettings.ForeColor = System.Drawing.Color.White;
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Size = new System.Drawing.Size(783, 445);
+            this.tabPageSettings.Size = new System.Drawing.Size(988, 477);
             this.tabPageSettings.TabIndex = 4;
             this.tabPageSettings.Text = "GUI Settings";
             // 
@@ -2839,7 +2885,6 @@
             // 
             this.bkgWorker.WorkerSupportsCancellation = true;
             this.bkgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bkgWorker_DoWork);
-            this.bkgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bkgWorker_RunWorkerCompleted);
             // 
             // b_about
             // 
@@ -2850,30 +2895,6 @@
             this.b_about.Text = "About";
             this.b_about.UseVisualStyleBackColor = true;
             this.b_about.Click += new System.EventHandler(this.b_about_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::MultiWiiWinGUI.Properties.Resources.checkbox_legend;
-            this.pictureBox1.Location = new System.Drawing.Point(6, 419);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(37, 20);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 17;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Image = global::MultiWiiWinGUI.Properties.Resources.sensor_pane;
-            this.pictureBox2.Location = new System.Drawing.Point(199, 295);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(138, 150);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
             // 
             // rc_expo_control1
             // 
@@ -3071,7 +3092,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(798, 540);
+            this.ClientSize = new System.Drawing.Size(990, 568);
             this.Controls.Add(this.b_about);
             this.Controls.Add(this.b_write_to_file);
             this.Controls.Add(this.b_log_browser);
@@ -3146,6 +3167,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).EndInit();
             this.tabPageRC.ResumeLayout(false);
             this.tabPageRC.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPageRealtime.ResumeLayout(false);
             this.tabPageRealtime.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -3154,6 +3176,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabPageFlighDeck.ResumeLayout(false);
             this.tabPageFlighDeck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).EndInit();
@@ -3164,8 +3187,6 @@
             this.groupBox11.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3393,6 +3414,8 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button b_check_update;
         private System.Windows.Forms.Label l_i2cdatasupress;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
