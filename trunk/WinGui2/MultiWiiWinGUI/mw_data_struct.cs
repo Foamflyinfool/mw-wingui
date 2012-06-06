@@ -36,6 +36,11 @@ namespace MultiWiiWinGUI
 
         public bool bSupressI2CErrorData { get; set; }
 
+
+
+
+
+
         //Constructor, set default values
         public GUI_settings()
         {
@@ -158,6 +163,58 @@ namespace MultiWiiWinGUI
 
     #endregion
 
+    #region PID
+
+    public class PID
+    {
+        //public fields
+
+        public string name;
+        public string description;
+        public Label pidLabel;
+
+        public byte P;
+        public bool Pshown;
+        public decimal Pmin;
+        public decimal Pmax;
+        public int Pprec;
+        public Label Plabel;
+        public NumericUpDown Pfield;
+
+
+        public byte I;
+        public bool Ishown;
+        public decimal Imin;
+        public decimal Imax;
+        public int Iprec;
+        public Label Ilabel;
+        public NumericUpDown Ifield;
+
+        public byte D;
+        public bool Dshown;
+        public decimal Dmin;
+        public decimal Dmax;
+        public int Dprec;
+        public Label Dlabel;
+        public NumericUpDown Dfield;
+
+        public PID()
+        {
+
+            P = 0;
+        }
+
+
+
+    }
+
+
+
+
+
+    #endregion
+
+
     #region mw_settings
     public class mw_settings
     {
@@ -173,9 +230,10 @@ namespace MultiWiiWinGUI
         public byte RollPitchRate;
         public byte YawRate;
         public byte DynThrPID;
+        public byte ThrottleMID;
+        public byte ThrottleEXPO;
 
-        public byte[] activation1;
-        public byte[] activation2;
+        public Int16[] activation;
 
         public int PowerTrigger;
 
@@ -187,6 +245,37 @@ namespace MultiWiiWinGUI
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
 
+        //Commands
+        const int MSP_IDENT = 100;
+
+        const int MSP_STATUS = 101;
+        const int MSP_RAW_IMU = 102;
+        const int MSP_SERVO = 103;
+        const int MSP_MOTOR = 104;
+        const int MSP_RC = 105;
+        const int MSP_RAW_GPS = 106;
+        const int MSP_COMP_GPS = 107;
+        const int MSP_ATTITUDE = 108;
+        const int MSP_ALTITUDE = 109;
+        const int MSP_BAT = 110;
+        const int MSP_RC_TUNING = 111;
+        const int MSP_PID = 112;
+        const int MSP_BOX = 113;
+        const int MSP_MISC = 114;
+
+        const int MSP_SET_RAW_RC = 200;
+        const int MSP_SET_RAW_GPS = 201;
+        const int MSP_SET_PID = 202;
+        const int MSP_SET_BOX = 203;
+        const int MSP_SET_RC_TUNING = 204;
+        const int MSP_ACC_CALIBRATION = 205;
+        const int MSP_MAG_CALIBRATION = 206;
+        const int MSP_SET_MISC = 207;
+        const int MSP_RESET_CONF = 208;
+
+        const int MSP_EEPROM_WRITE = 250;
+        const int MSP_DEBUG = 254;
+
         //Constructor
         public mw_settings(int pidItems, int checkboxItems, int iSoftwareVersion)
         {
@@ -194,8 +283,7 @@ namespace MultiWiiWinGUI
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
-            activation1 = new byte[checkboxItems];
-            activation2 = new byte[checkboxItems];
+            activation = new Int16[checkboxItems];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
@@ -213,70 +301,94 @@ namespace MultiWiiWinGUI
             byte[] buffer = new byte[250];          //this must be long enough
             int bptr = 0;                           //buffer pointer
             byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
+            byte checksum = 0;
 
             //Write out settings
             if (serialport.IsOpen)
             {
-                #region SoftwareVer == 20
-                if (iSwVer == 20)
+
+                //Write RC_TUNING
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = 7;
+                buffer[bptr++] = (byte)MSP_SET_RC_TUNING;
+
+                buffer[bptr++] = rcRate;
+                buffer[bptr++] = rcExpo;
+                buffer[bptr++] = RollPitchRate;
+                buffer[bptr++] = YawRate;
+                buffer[bptr++] = DynThrPID;
+                buffer[bptr++] = ThrottleMID;
+                buffer[bptr++] = ThrottleEXPO;
+                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
+
+                //Write PID's 
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = (byte)(3 * iPIDItems);
+                buffer[bptr++] = (byte)MSP_SET_PID;
+                for (int i = 0; i < iPIDItems; i++)
                 {
-                    buffer[bptr++] = 87;                    // W
-                    for (int i = 0; i < iPIDItems; i++)
-                    {
-                        buffer[bptr++] = pidP[i];
-                        buffer[bptr++] = pidI[i];
-                        buffer[bptr++] = pidD[i];
-                    }
-                    buffer[bptr++] = rcRate;
-                    buffer[bptr++] = rcExpo;
-                    buffer[bptr++] = RollPitchRate;
-                    buffer[bptr++] = YawRate;
-                    buffer[bptr++] = DynThrPID;
-                    for (int i = 0; i < iCheckBoxItems; i++)
-                    {
-                        buffer[bptr++] = activation1[i];
-                        buffer[bptr++] = activation2[i];
-                    }
-
-                    bInt16 = System.BitConverter.GetBytes(PowerTrigger);
-
-                    buffer[bptr++] = bInt16[0];
-                    buffer[bptr++] = bInt16[1];
+                    buffer[bptr++] = pidP[i];
+                    buffer[bptr++] = pidI[i];
+                    buffer[bptr++] = pidD[i];
                 }
-                #endregion
-                #region SoftwareVer == 19
-                if (iSwVer == 19)
+                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
+
+                //Then write checkboxitems
+
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = (byte)(2 * iCheckBoxItems);
+                buffer[bptr++] = (byte)MSP_SET_BOX;
+
+                for (int i = 0; i < iCheckBoxItems; i++)
                 {
-                    buffer[bptr++] = 87;                    // W
-                    for (int i = 0; i < 5; i++)
-                    {
-                        buffer[bptr++] = pidP[i];
-                        buffer[bptr++] = pidI[i];
-                        buffer[bptr++] = pidD[i];
-                    }
-                    buffer[bptr++] = pidP[5];           //Level P
-                    buffer[bptr++] = pidI[5];           //Level I
-
-                    buffer[bptr++] = pidP[6];           //Mag P
-
-                    buffer[bptr++] = rcRate;
-                    buffer[bptr++] = rcExpo;
-                    buffer[bptr++] = RollPitchRate;
-                    buffer[bptr++] = YawRate;
-                    buffer[bptr++] = DynThrPID;
-                    for (int i = 0; i < iCheckBoxItems; i++)
-                    {
-                        buffer[bptr++] = activation1[i];
-                        //buffer[bptr++] = activation2[i];
-                    }
-
-                    bInt16 = System.BitConverter.GetBytes(PowerTrigger);
-
-                    buffer[bptr++] = bInt16[0];
-                    buffer[bptr++] = bInt16[1];
+                    buffer[bptr++] = (byte)(activation[i] & 0x00ff);
+                    buffer[bptr++] = (byte)((activation[i] >> 8) & 0x00ff);
                 }
+                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
 
-                #endregion
+
+                //
+
+                //then the rest
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = (byte)(2);
+                buffer[bptr++] = (byte)MSP_SET_MISC;
+
+                buffer[bptr++] = (byte)(PowerTrigger & 0x00ff);
+                buffer[bptr++] = (byte)((PowerTrigger >> 8) & 0x00ff);
+
+                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
+
+
+                bptr = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = (byte)MSP_EEPROM_WRITE;
                 serialport.Write(buffer, 0, bptr);
 
             }
@@ -311,7 +423,7 @@ namespace MultiWiiWinGUI
 
             for (int i = 0; i < iCheckBoxItems; i++)
             {
-                tw.WriteStartElement("AUXFUNC id=\"" + i + "\" aux12=\"" + activation1[i] + "\" aux34=\"" + activation2[i] + "\"");
+                tw.WriteStartElement("AUXFUNC id=\"" + i + "\" aux1234=\"" + activation[i] + "\"");
                 tw.WriteEndElement();
             }
 
@@ -362,12 +474,10 @@ namespace MultiWiiWinGUI
                                 }
                                 if (String.Compare(reader.Name, "auxfunc", true) == 0 && reader.HasAttributes)
                                 {
-                                    int auxID = 0; byte a1 = 0; byte a2 = 0;
+                                    int auxID = 0; short a1 = 0; 
                                     auxID = Convert.ToInt16(reader.GetAttribute("id"));
-                                    a1 = Convert.ToByte(reader.GetAttribute("aux12"));
-                                    a2 = Convert.ToByte(reader.GetAttribute("aux34"));
-                                    activation1[auxID] = a1;
-                                    activation2[auxID] = a2;
+                                    a1 = Convert.ToByte(reader.GetAttribute("aux1234"));
+                                    activation[auxID] = a1;
                                 }
                                 if (String.Compare(reader.Name, "rcrate", true) == 0 && reader.HasAttributes) { rcRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "rcexpo", true) == 0 && reader.HasAttributes) { rcExpo = Convert.ToByte(reader.GetAttribute("value")); }
@@ -447,6 +557,7 @@ namespace MultiWiiWinGUI
         public byte ThrottleEXPO;
         public byte[] activation1;
         public byte[] activation2;
+        public Int16[] activation;
         public int GPS_distanceToHome;
         public int GPS_directionToHome;
         public byte GPS_numSat;
@@ -475,6 +586,8 @@ namespace MultiWiiWinGUI
             pidD = new byte[pidItems];
             activation1 = new byte[checkboxItems];
             activation2 = new byte[checkboxItems];
+
+            activation = new Int16[checkboxItems];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
