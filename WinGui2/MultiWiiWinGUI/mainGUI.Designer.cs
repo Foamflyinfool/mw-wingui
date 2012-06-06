@@ -36,8 +36,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePID = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tComment = new System.Windows.Forms.TextBox();
@@ -50,20 +48,6 @@
             this.label65 = new System.Windows.Forms.Label();
             this.trackbar_RC_Rate = new System.Windows.Forms.TrackBar();
             this.trackbar_RC_Expo = new System.Windows.Forms.TrackBar();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.label56 = new System.Windows.Forms.Label();
-            this.label57 = new System.Windows.Forms.Label();
-            this.label58 = new System.Windows.Forms.Label();
-            this.nPID_vel_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_vel_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_vel_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.nPID_alt_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_alt_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_alt_p = new System.Windows.Forms.NumericUpDown();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.label50 = new System.Windows.Forms.Label();
             this.label_sok = new System.Windows.Forms.Label();
@@ -71,44 +55,6 @@
             this.nRATE_tpid = new System.Windows.Forms.NumericUpDown();
             this.nRATE_yaw = new System.Windows.Forms.NumericUpDown();
             this.nRATE_rp = new System.Windows.Forms.NumericUpDown();
-            this.groupBoxGPS = new System.Windows.Forms.GroupBox();
-            this.label62 = new System.Windows.Forms.Label();
-            this.label63 = new System.Windows.Forms.Label();
-            this.label64 = new System.Windows.Forms.Label();
-            this.nPID_gps_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_gps_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_gps_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label61 = new System.Windows.Forms.Label();
-            this.nPID_mag_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.nPID_level_d = new System.Windows.Forms.NumericUpDown();
-            this.label51 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
-            this.nPID_level_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_level_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.label49 = new System.Windows.Forms.Label();
-            this.nPID_yaw_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_yaw_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_yaw_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label44 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.nPID_pitch_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_pitch_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_pitch_p = new System.Windows.Forms.NumericUpDown();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.nPID_roll_d = new System.Windows.Forms.NumericUpDown();
-            this.nPID_roll_i = new System.Windows.Forms.NumericUpDown();
-            this.nPID_roll_p = new System.Windows.Forms.NumericUpDown();
             this.tabPageRC = new System.Windows.Forms.TabPage();
             this.b_stop_live_rc = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -260,40 +206,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nRCRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Rate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Expo)).BeginInit();
-            this.groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_p)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_p)).BeginInit();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_tpid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_yaw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_rp)).BeginInit();
-            this.groupBoxGPS.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_p)).BeginInit();
-            this.groupBox10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_mag_p)).BeginInit();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_p)).BeginInit();
-            this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_p)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_p)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_d)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_i)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).BeginInit();
             this.tabPageRC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPageRealtime.SuspendLayout();
@@ -371,23 +287,13 @@
             // tabPagePID
             // 
             this.tabPagePID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tabPagePID.Controls.Add(this.textBox1);
-            this.tabPagePID.Controls.Add(this.button1);
             this.tabPagePID.Controls.Add(this.label10);
             this.tabPagePID.Controls.Add(this.label9);
             this.tabPagePID.Controls.Add(this.tComment);
             this.tabPagePID.Controls.Add(this.label8);
             this.tabPagePID.Controls.Add(this.nPAlarm);
             this.tabPagePID.Controls.Add(this.groupBox13);
-            this.tabPagePID.Controls.Add(this.groupBox9);
-            this.tabPagePID.Controls.Add(this.groupBox8);
             this.tabPagePID.Controls.Add(this.groupBox12);
-            this.tabPagePID.Controls.Add(this.groupBoxGPS);
-            this.tabPagePID.Controls.Add(this.groupBox10);
-            this.tabPagePID.Controls.Add(this.groupBox7);
-            this.tabPagePID.Controls.Add(this.groupBox6);
-            this.tabPagePID.Controls.Add(this.groupBox5);
-            this.tabPagePID.Controls.Add(this.groupBox4);
             this.tabPagePID.Location = new System.Drawing.Point(4, 22);
             this.tabPagePID.Name = "tabPagePID";
             this.tabPagePID.Padding = new System.Windows.Forms.Padding(3);
@@ -395,29 +301,11 @@
             this.tabPagePID.TabIndex = 1;
             this.tabPagePID.Text = "Parameters";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(663, 111);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(294, 191);
-            this.textBox1.TabIndex = 26;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(663, 67);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 25;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(497, 393);
+            this.label10.Location = new System.Drawing.Point(856, 357);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(89, 13);
             this.label10.TabIndex = 24;
@@ -428,7 +316,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(344, 360);
+            this.label9.Location = new System.Drawing.Point(705, 357);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 23;
@@ -439,7 +327,7 @@
             this.tComment.BackColor = System.Drawing.Color.LightGray;
             this.tComment.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tComment.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tComment.Location = new System.Drawing.Point(347, 376);
+            this.tComment.Location = new System.Drawing.Point(706, 372);
             this.tComment.MaxLength = 40;
             this.tComment.Name = "tComment";
             this.tComment.Size = new System.Drawing.Size(239, 15);
@@ -450,7 +338,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(146, 374);
+            this.label8.Location = new System.Drawing.Point(705, 401);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(113, 13);
             this.label8.TabIndex = 21;
@@ -462,7 +350,7 @@
             this.nPAlarm.BackColor = System.Drawing.Color.LightGray;
             this.nPAlarm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPAlarm.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPAlarm.Location = new System.Drawing.Point(265, 373);
+            this.nPAlarm.Location = new System.Drawing.Point(824, 396);
             this.nPAlarm.Maximum = new decimal(new int[] {
             64000,
             0,
@@ -483,7 +371,7 @@
             this.groupBox13.Controls.Add(this.rc_expo_control1);
             this.groupBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox13.ForeColor = System.Drawing.Color.White;
-            this.groupBox13.Location = new System.Drawing.Point(341, 120);
+            this.groupBox13.Location = new System.Drawing.Point(710, 120);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(245, 230);
             this.groupBox13.TabIndex = 20;
@@ -579,226 +467,6 @@
             this.trackbar_RC_Expo.Value = 80;
             this.trackbar_RC_Expo.Scroll += new System.EventHandler(this.trackbar_RC_Expo_Scroll);
             // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.label56);
-            this.groupBox9.Controls.Add(this.label57);
-            this.groupBox9.Controls.Add(this.label58);
-            this.groupBox9.Controls.Add(this.nPID_vel_d);
-            this.groupBox9.Controls.Add(this.nPID_vel_i);
-            this.groupBox9.Controls.Add(this.nPID_vel_p);
-            this.groupBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox9.ForeColor = System.Drawing.Color.White;
-            this.groupBox9.Location = new System.Drawing.Point(12, 211);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(321, 42);
-            this.groupBox9.TabIndex = 7;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Altitude/Velocity";
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.ForeColor = System.Drawing.Color.White;
-            this.label56.Location = new System.Drawing.Point(217, 18);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(16, 13);
-            this.label56.TabIndex = 5;
-            this.label56.Text = "D";
-            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label57.ForeColor = System.Drawing.Color.White;
-            this.label57.Location = new System.Drawing.Point(115, 18);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(11, 13);
-            this.label57.TabIndex = 4;
-            this.label57.Text = "I";
-            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label58
-            // 
-            this.label58.AutoSize = true;
-            this.label58.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label58.ForeColor = System.Drawing.Color.White;
-            this.label58.Location = new System.Drawing.Point(15, 18);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(15, 13);
-            this.label58.TabIndex = 3;
-            this.label58.Text = "P";
-            this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_vel_d
-            // 
-            this.nPID_vel_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_vel_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_vel_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_vel_d.Location = new System.Drawing.Point(238, 16);
-            this.nPID_vel_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_vel_d.Name = "nPID_vel_d";
-            this.nPID_vel_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_vel_d.TabIndex = 2;
-            // 
-            // nPID_vel_i
-            // 
-            this.nPID_vel_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_vel_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_vel_i.DecimalPlaces = 3;
-            this.nPID_vel_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_vel_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_vel_i.Location = new System.Drawing.Point(136, 16);
-            this.nPID_vel_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_vel_i.Name = "nPID_vel_i";
-            this.nPID_vel_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_vel_i.TabIndex = 1;
-            // 
-            // nPID_vel_p
-            // 
-            this.nPID_vel_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_vel_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_vel_p.DecimalPlaces = 1;
-            this.nPID_vel_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_vel_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_vel_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_vel_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_vel_p.Name = "nPID_vel_p";
-            this.nPID_vel_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_vel_p.TabIndex = 0;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.label53);
-            this.groupBox8.Controls.Add(this.label54);
-            this.groupBox8.Controls.Add(this.label55);
-            this.groupBox8.Controls.Add(this.nPID_alt_d);
-            this.groupBox8.Controls.Add(this.nPID_alt_i);
-            this.groupBox8.Controls.Add(this.nPID_alt_p);
-            this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox8.ForeColor = System.Drawing.Color.White;
-            this.groupBox8.Location = new System.Drawing.Point(12, 163);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(321, 42);
-            this.groupBox8.TabIndex = 7;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Altitude";
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.ForeColor = System.Drawing.Color.White;
-            this.label53.Location = new System.Drawing.Point(217, 16);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(16, 13);
-            this.label53.TabIndex = 5;
-            this.label53.Text = "D";
-            this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label54.ForeColor = System.Drawing.Color.White;
-            this.label54.Location = new System.Drawing.Point(115, 17);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(11, 13);
-            this.label54.TabIndex = 4;
-            this.label54.Text = "I";
-            this.label54.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.ForeColor = System.Drawing.Color.White;
-            this.label55.Location = new System.Drawing.Point(15, 18);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(15, 13);
-            this.label55.TabIndex = 3;
-            this.label55.Text = "P";
-            this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_alt_d
-            // 
-            this.nPID_alt_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_alt_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_alt_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_alt_d.Location = new System.Drawing.Point(238, 14);
-            this.nPID_alt_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_alt_d.Name = "nPID_alt_d";
-            this.nPID_alt_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_alt_d.TabIndex = 2;
-            // 
-            // nPID_alt_i
-            // 
-            this.nPID_alt_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_alt_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_alt_i.DecimalPlaces = 3;
-            this.nPID_alt_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_alt_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_alt_i.Location = new System.Drawing.Point(136, 15);
-            this.nPID_alt_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_alt_i.Name = "nPID_alt_i";
-            this.nPID_alt_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_alt_i.TabIndex = 1;
-            // 
-            // nPID_alt_p
-            // 
-            this.nPID_alt_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_alt_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_alt_p.DecimalPlaces = 1;
-            this.nPID_alt_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_alt_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_alt_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_alt_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_alt_p.Name = "nPID_alt_p";
-            this.nPID_alt_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_alt_p.TabIndex = 0;
-            // 
             // groupBox12
             // 
             this.groupBox12.Controls.Add(this.label50);
@@ -809,7 +477,7 @@
             this.groupBox12.Controls.Add(this.nRATE_rp);
             this.groupBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox12.ForeColor = System.Drawing.Color.White;
-            this.groupBox12.Location = new System.Drawing.Point(339, 19);
+            this.groupBox12.Location = new System.Drawing.Point(708, 19);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(247, 95);
             this.groupBox12.TabIndex = 8;
@@ -915,602 +583,6 @@
             this.nRATE_rp.Size = new System.Drawing.Size(68, 18);
             this.nRATE_rp.TabIndex = 0;
             // 
-            // groupBoxGPS
-            // 
-            this.groupBoxGPS.Controls.Add(this.label62);
-            this.groupBoxGPS.Controls.Add(this.label63);
-            this.groupBoxGPS.Controls.Add(this.label64);
-            this.groupBoxGPS.Controls.Add(this.nPID_gps_d);
-            this.groupBoxGPS.Controls.Add(this.nPID_gps_i);
-            this.groupBoxGPS.Controls.Add(this.nPID_gps_p);
-            this.groupBoxGPS.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxGPS.ForeColor = System.Drawing.Color.White;
-            this.groupBoxGPS.Location = new System.Drawing.Point(12, 260);
-            this.groupBoxGPS.Name = "groupBoxGPS";
-            this.groupBoxGPS.Size = new System.Drawing.Size(321, 42);
-            this.groupBoxGPS.TabIndex = 7;
-            this.groupBoxGPS.TabStop = false;
-            this.groupBoxGPS.Text = "GPS";
-            // 
-            // label62
-            // 
-            this.label62.AutoSize = true;
-            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label62.ForeColor = System.Drawing.Color.White;
-            this.label62.Location = new System.Drawing.Point(217, 17);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(16, 13);
-            this.label62.TabIndex = 5;
-            this.label62.Text = "D";
-            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label63.ForeColor = System.Drawing.Color.White;
-            this.label63.Location = new System.Drawing.Point(115, 17);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(11, 13);
-            this.label63.TabIndex = 4;
-            this.label63.Text = "I";
-            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label64.ForeColor = System.Drawing.Color.White;
-            this.label64.Location = new System.Drawing.Point(15, 18);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(15, 13);
-            this.label64.TabIndex = 3;
-            this.label64.Text = "P";
-            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_gps_d
-            // 
-            this.nPID_gps_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_gps_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_gps_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_gps_d.Location = new System.Drawing.Point(238, 15);
-            this.nPID_gps_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_gps_d.Name = "nPID_gps_d";
-            this.nPID_gps_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_gps_d.TabIndex = 2;
-            // 
-            // nPID_gps_i
-            // 
-            this.nPID_gps_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_gps_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_gps_i.DecimalPlaces = 3;
-            this.nPID_gps_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_gps_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_gps_i.Location = new System.Drawing.Point(136, 15);
-            this.nPID_gps_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_gps_i.Name = "nPID_gps_i";
-            this.nPID_gps_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_gps_i.TabIndex = 1;
-            // 
-            // nPID_gps_p
-            // 
-            this.nPID_gps_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_gps_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_gps_p.DecimalPlaces = 1;
-            this.nPID_gps_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_gps_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_gps_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_gps_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_gps_p.Name = "nPID_gps_p";
-            this.nPID_gps_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_gps_p.TabIndex = 0;
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.label61);
-            this.groupBox10.Controls.Add(this.nPID_mag_p);
-            this.groupBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox10.ForeColor = System.Drawing.Color.White;
-            this.groupBox10.Location = new System.Drawing.Point(12, 357);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(118, 42);
-            this.groupBox10.TabIndex = 7;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Magnetometer";
-            // 
-            // label61
-            // 
-            this.label61.AutoSize = true;
-            this.label61.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label61.ForeColor = System.Drawing.Color.White;
-            this.label61.Location = new System.Drawing.Point(15, 18);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(15, 13);
-            this.label61.TabIndex = 3;
-            this.label61.Text = "P";
-            this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_mag_p
-            // 
-            this.nPID_mag_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_mag_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_mag_p.DecimalPlaces = 1;
-            this.nPID_mag_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_mag_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_mag_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_mag_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_mag_p.Name = "nPID_mag_p";
-            this.nPID_mag_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_mag_p.TabIndex = 0;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.label23);
-            this.groupBox7.Controls.Add(this.nPID_level_d);
-            this.groupBox7.Controls.Add(this.label51);
-            this.groupBox7.Controls.Add(this.label52);
-            this.groupBox7.Controls.Add(this.nPID_level_i);
-            this.groupBox7.Controls.Add(this.nPID_level_p);
-            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(12, 308);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(321, 42);
-            this.groupBox7.TabIndex = 7;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Level";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(216, 18);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(16, 13);
-            this.label23.TabIndex = 6;
-            this.label23.Text = "D";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_level_d
-            // 
-            this.nPID_level_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_level_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_level_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_level_d.Location = new System.Drawing.Point(238, 16);
-            this.nPID_level_d.Maximum = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.nPID_level_d.Name = "nPID_level_d";
-            this.nPID_level_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_level_d.TabIndex = 6;
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label51.ForeColor = System.Drawing.Color.White;
-            this.label51.Location = new System.Drawing.Point(115, 18);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(11, 13);
-            this.label51.TabIndex = 4;
-            this.label51.Text = "I";
-            this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label52.ForeColor = System.Drawing.Color.White;
-            this.label52.Location = new System.Drawing.Point(15, 18);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(15, 13);
-            this.label52.TabIndex = 3;
-            this.label52.Text = "P";
-            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_level_i
-            // 
-            this.nPID_level_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_level_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_level_i.DecimalPlaces = 3;
-            this.nPID_level_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_level_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_level_i.Location = new System.Drawing.Point(136, 16);
-            this.nPID_level_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_level_i.Name = "nPID_level_i";
-            this.nPID_level_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_level_i.TabIndex = 1;
-            // 
-            // nPID_level_p
-            // 
-            this.nPID_level_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_level_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_level_p.DecimalPlaces = 1;
-            this.nPID_level_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_level_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_level_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_level_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_level_p.Name = "nPID_level_p";
-            this.nPID_level_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_level_p.TabIndex = 0;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.label47);
-            this.groupBox6.Controls.Add(this.label48);
-            this.groupBox6.Controls.Add(this.label49);
-            this.groupBox6.Controls.Add(this.nPID_yaw_d);
-            this.groupBox6.Controls.Add(this.nPID_yaw_i);
-            this.groupBox6.Controls.Add(this.nPID_yaw_p);
-            this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(12, 115);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(321, 42);
-            this.groupBox6.TabIndex = 7;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "YAW";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label47.ForeColor = System.Drawing.Color.White;
-            this.label47.Location = new System.Drawing.Point(217, 18);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(16, 13);
-            this.label47.TabIndex = 5;
-            this.label47.Text = "D";
-            this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label48.ForeColor = System.Drawing.Color.White;
-            this.label48.Location = new System.Drawing.Point(115, 18);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(11, 13);
-            this.label48.TabIndex = 4;
-            this.label48.Text = "I";
-            this.label48.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.ForeColor = System.Drawing.Color.White;
-            this.label49.Location = new System.Drawing.Point(15, 18);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(15, 13);
-            this.label49.TabIndex = 3;
-            this.label49.Text = "P";
-            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_yaw_d
-            // 
-            this.nPID_yaw_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_yaw_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_yaw_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_yaw_d.Location = new System.Drawing.Point(238, 16);
-            this.nPID_yaw_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_yaw_d.Name = "nPID_yaw_d";
-            this.nPID_yaw_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_yaw_d.TabIndex = 2;
-            // 
-            // nPID_yaw_i
-            // 
-            this.nPID_yaw_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_yaw_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_yaw_i.DecimalPlaces = 3;
-            this.nPID_yaw_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_yaw_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_yaw_i.Location = new System.Drawing.Point(136, 16);
-            this.nPID_yaw_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_yaw_i.Name = "nPID_yaw_i";
-            this.nPID_yaw_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_yaw_i.TabIndex = 1;
-            // 
-            // nPID_yaw_p
-            // 
-            this.nPID_yaw_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_yaw_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_yaw_p.DecimalPlaces = 1;
-            this.nPID_yaw_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_yaw_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_yaw_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_yaw_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_yaw_p.Name = "nPID_yaw_p";
-            this.nPID_yaw_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_yaw_p.TabIndex = 0;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label44);
-            this.groupBox5.Controls.Add(this.label45);
-            this.groupBox5.Controls.Add(this.label46);
-            this.groupBox5.Controls.Add(this.nPID_pitch_d);
-            this.groupBox5.Controls.Add(this.nPID_pitch_i);
-            this.groupBox5.Controls.Add(this.nPID_pitch_p);
-            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(12, 67);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(321, 42);
-            this.groupBox5.TabIndex = 7;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "PITCH";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label44.ForeColor = System.Drawing.Color.White;
-            this.label44.Location = new System.Drawing.Point(217, 16);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(16, 13);
-            this.label44.TabIndex = 5;
-            this.label44.Text = "D";
-            this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label45.ForeColor = System.Drawing.Color.White;
-            this.label45.Location = new System.Drawing.Point(115, 17);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(11, 13);
-            this.label45.TabIndex = 4;
-            this.label45.Text = "I";
-            this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.ForeColor = System.Drawing.Color.White;
-            this.label46.Location = new System.Drawing.Point(15, 18);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(15, 13);
-            this.label46.TabIndex = 3;
-            this.label46.Text = "P";
-            this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_pitch_d
-            // 
-            this.nPID_pitch_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_pitch_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_pitch_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_pitch_d.Location = new System.Drawing.Point(238, 14);
-            this.nPID_pitch_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_pitch_d.Name = "nPID_pitch_d";
-            this.nPID_pitch_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_pitch_d.TabIndex = 2;
-            // 
-            // nPID_pitch_i
-            // 
-            this.nPID_pitch_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_pitch_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_pitch_i.DecimalPlaces = 3;
-            this.nPID_pitch_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_pitch_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_pitch_i.Location = new System.Drawing.Point(136, 15);
-            this.nPID_pitch_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_pitch_i.Name = "nPID_pitch_i";
-            this.nPID_pitch_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_pitch_i.TabIndex = 1;
-            // 
-            // nPID_pitch_p
-            // 
-            this.nPID_pitch_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_pitch_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_pitch_p.DecimalPlaces = 1;
-            this.nPID_pitch_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_pitch_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_pitch_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_pitch_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_pitch_p.Name = "nPID_pitch_p";
-            this.nPID_pitch_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_pitch_p.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.label43);
-            this.groupBox4.Controls.Add(this.label42);
-            this.groupBox4.Controls.Add(this.label41);
-            this.groupBox4.Controls.Add(this.nPID_roll_d);
-            this.groupBox4.Controls.Add(this.nPID_roll_i);
-            this.groupBox4.Controls.Add(this.nPID_roll_p);
-            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(12, 19);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(321, 42);
-            this.groupBox4.TabIndex = 6;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "ROLL";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label43.ForeColor = System.Drawing.Color.White;
-            this.label43.Location = new System.Drawing.Point(217, 17);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(16, 13);
-            this.label43.TabIndex = 5;
-            this.label43.Text = "D";
-            this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label42.ForeColor = System.Drawing.Color.White;
-            this.label42.Location = new System.Drawing.Point(115, 18);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(11, 13);
-            this.label42.TabIndex = 4;
-            this.label42.Text = "I";
-            this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.ForeColor = System.Drawing.Color.White;
-            this.label41.Location = new System.Drawing.Point(15, 18);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(15, 13);
-            this.label41.TabIndex = 3;
-            this.label41.Text = "P";
-            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nPID_roll_d
-            // 
-            this.nPID_roll_d.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_roll_d.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_roll_d.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_roll_d.Location = new System.Drawing.Point(238, 15);
-            this.nPID_roll_d.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nPID_roll_d.Name = "nPID_roll_d";
-            this.nPID_roll_d.Size = new System.Drawing.Size(68, 18);
-            this.nPID_roll_d.TabIndex = 2;
-            // 
-            // nPID_roll_i
-            // 
-            this.nPID_roll_i.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_roll_i.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_roll_i.DecimalPlaces = 3;
-            this.nPID_roll_i.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_roll_i.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.nPID_roll_i.Location = new System.Drawing.Point(136, 16);
-            this.nPID_roll_i.Maximum = new decimal(new int[] {
-            250,
-            0,
-            0,
-            196608});
-            this.nPID_roll_i.Name = "nPID_roll_i";
-            this.nPID_roll_i.Size = new System.Drawing.Size(68, 18);
-            this.nPID_roll_i.TabIndex = 1;
-            // 
-            // nPID_roll_p
-            // 
-            this.nPID_roll_p.BackColor = System.Drawing.Color.LightGray;
-            this.nPID_roll_p.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nPID_roll_p.DecimalPlaces = 1;
-            this.nPID_roll_p.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPID_roll_p.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nPID_roll_p.Location = new System.Drawing.Point(36, 16);
-            this.nPID_roll_p.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nPID_roll_p.Name = "nPID_roll_p";
-            this.nPID_roll_p.Size = new System.Drawing.Size(68, 18);
-            this.nPID_roll_p.TabIndex = 0;
-            // 
             // tabPageRC
             // 
             this.tabPageRC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -1604,6 +676,7 @@
             this.tabPageRealtime.Controls.Add(this.zgMonitor);
             this.tabPageRealtime.Controls.Add(this.label3);
             this.tabPageRealtime.Controls.Add(this.cb_monitor_rate);
+            this.tabPageRealtime.Controls.Add(this.pictureBox2);
             this.tabPageRealtime.Controls.Add(this.indPASST);
             this.tabPageRealtime.Controls.Add(this.indPOS);
             this.tabPageRealtime.Controls.Add(this.indRTH);
@@ -1623,7 +696,6 @@
             this.tabPageRealtime.Controls.Add(this.gpsIndicator);
             this.tabPageRealtime.Controls.Add(this.headingIndicatorInstrumentControl1);
             this.tabPageRealtime.Controls.Add(this.attitudeIndicatorInstrumentControl1);
-            this.tabPageRealtime.Controls.Add(this.pictureBox2);
             this.tabPageRealtime.ForeColor = System.Drawing.Color.White;
             this.tabPageRealtime.Location = new System.Drawing.Point(4, 22);
             this.tabPageRealtime.Name = "tabPageRealtime";
@@ -3122,49 +2194,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.nRCRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Rate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Expo)).EndInit();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_vel_p)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_alt_p)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_tpid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_yaw)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_rp)).EndInit();
-            this.groupBoxGPS.ResumeLayout(false);
-            this.groupBoxGPS.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_gps_p)).EndInit();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_mag_p)).EndInit();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_level_p)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_yaw_p)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_pitch_p)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_d)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_i)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPID_roll_p)).EndInit();
             this.tabPageRC.ResumeLayout(false);
             this.tabPageRC.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -3268,56 +2302,6 @@
         private System.Windows.Forms.NumericUpDown nRATE_rp;
         private System.Windows.Forms.Button b_write_settings;
         private System.Windows.Forms.Button b_read_settings;
-        private System.Windows.Forms.GroupBox groupBoxGPS;
-        private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.Label label63;
-        private System.Windows.Forms.Label label64;
-        private System.Windows.Forms.NumericUpDown nPID_gps_d;
-        private System.Windows.Forms.NumericUpDown nPID_gps_i;
-        private System.Windows.Forms.NumericUpDown nPID_gps_p;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Label label61;
-        private System.Windows.Forms.NumericUpDown nPID_mag_p;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.Label label56;
-        private System.Windows.Forms.Label label57;
-        private System.Windows.Forms.Label label58;
-        private System.Windows.Forms.NumericUpDown nPID_vel_d;
-        private System.Windows.Forms.NumericUpDown nPID_vel_i;
-        private System.Windows.Forms.NumericUpDown nPID_vel_p;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Label label53;
-        private System.Windows.Forms.Label label54;
-        private System.Windows.Forms.Label label55;
-        private System.Windows.Forms.NumericUpDown nPID_alt_d;
-        private System.Windows.Forms.NumericUpDown nPID_alt_i;
-        private System.Windows.Forms.NumericUpDown nPID_alt_p;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.NumericUpDown nPID_level_i;
-        private System.Windows.Forms.NumericUpDown nPID_level_p;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.Label label49;
-        private System.Windows.Forms.NumericUpDown nPID_yaw_d;
-        private System.Windows.Forms.NumericUpDown nPID_yaw_i;
-        private System.Windows.Forms.NumericUpDown nPID_yaw_p;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.NumericUpDown nPID_pitch_d;
-        private System.Windows.Forms.NumericUpDown nPID_pitch_i;
-        private System.Windows.Forms.NumericUpDown nPID_pitch_p;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.NumericUpDown nPID_roll_d;
-        private System.Windows.Forms.NumericUpDown nPID_roll_i;
-        private System.Windows.Forms.NumericUpDown nPID_roll_p;
         private System.Windows.Forms.Button b_write_to_file;
         private System.Windows.Forms.Button b_load_from_file;
         private MultiWiiGUIControls.MWGUIMotors motorsIndicator1;
@@ -3407,15 +2391,11 @@
         private System.Windows.Forms.Label l_i2cerrors;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.NumericUpDown nPID_level_d;
         private System.Windows.Forms.Button b_select_settings_folder;
         private System.Windows.Forms.Label l_Settings_folder;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button b_check_update;
         private System.Windows.Forms.Label l_i2cdatasupress;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
     }
 }
 

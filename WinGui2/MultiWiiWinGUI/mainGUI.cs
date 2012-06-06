@@ -36,7 +36,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "1.04";
+        const string sVersion = "2.0 dev";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -67,6 +67,10 @@ namespace MultiWiiWinGUI
         static byte PID_GPS;
         static byte PID_LEVEL;
         static byte PID_MAG;
+
+
+        static PID[] Pid;
+
 
         static SerialPort serialPort;
         static bool isConnected = false;                        //is port connected or not ?
@@ -149,7 +153,7 @@ namespace MultiWiiWinGUI
          const int MSP_BOX                  =113;
          const int MSP_MISC                 =114;
 
-         const int  MSP_SET_RAW_RC           =200;
+         const int MSP_SET_RAW_RC           =200;
          const int MSP_SET_RAW_GPS          =201;
          const int MSP_SET_PID              =202;
          const int MSP_SET_BOX              =203;
@@ -159,7 +163,7 @@ namespace MultiWiiWinGUI
          const int MSP_SET_MISC             =207;
          const int MSP_RESET_CONF           =208;
 
-         const int MSP_EEPROM_WRITE = 250;
+         const int MSP_EEPROM_WRITE         =250;
          const int MSP_DEBUG                =254;
 
 
@@ -227,8 +231,8 @@ namespace MultiWiiWinGUI
                 PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_LEVEL = 5; PID_MAG = 6;
                 iPacketSizeM = iPacketSizeM19;
                 sRelName = sRelName19;
-                nPID_level_d.Visible = false;
-                groupBoxGPS.Visible = false;
+                //nPID_level_d.Visible = false;
+                //groupBoxGPS.Visible = false;
                 splash.sFcVersionLabel = "MultiWii version " + sRelName19;
                 splash.Refresh();
 
@@ -347,29 +351,108 @@ namespace MultiWiiWinGUI
                 this.tabPageRC.Controls.Add(cb_labels[z]);
             }
 
+            //Build PID control structure based on the Pid structure.
 
-            if (gui_settings.iSoftwareVersion == 19)
+            const int iLineSpace = 36;
+            const int iRow1 = 30;
+            const int iRow2 = 125;
+            const int iRow3 = 220;
+            const int iTopY = 25;
+            Font fontField = new Font(FontFamily.GenericSansSerif,9,FontStyle.Bold);
+            Size fieldSize = new Size(70, 18);
+
+            for (int i = 0; i < iPidItems; i++)
             {
-                //Hide AUX3-AUX4 settings
-                aux_labels[2].Visible = false;
-                aux_labels[3].Visible = false;
-                lmh_labels[2, 0].Visible = false;
-                lmh_labels[2, 1].Visible = false;
-                lmh_labels[2, 2].Visible = false;
-                lmh_labels[3, 0].Visible = false;
-                lmh_labels[3, 1].Visible = false;
-                lmh_labels[3, 2].Visible = false;
+                Pid[i].pidLabel = new System.Windows.Forms.Label();
+                Pid[i].pidLabel.Text = Pid[i].name;
+                Pid[i].pidLabel.Location = new Point(iRow1, 10 + i * iLineSpace);
+                Pid[i].pidLabel.Visible = true;
+                Pid[i].pidLabel.AutoSize = true;
+                Pid[i].pidLabel.ForeColor = Color.White;
+                Pid[i].pidLabel.TextAlign = ContentAlignment.MiddleRight;
+                toolTip1.SetToolTip(Pid[i].pidLabel, Pid[i].description);
+                this.tabPagePID.Controls.Add(Pid[i].pidLabel);
 
-                for (int i = 0; i < iCheckBoxItems; i++)
+                if (Pid[i].Pshown)
                 {
-                    aux[2, 0, i].Visible = false;
-                    aux[2, 1, i].Visible = false;
-                    aux[2, 2, i].Visible = false;
-                    aux[3, 0, i].Visible = false;
-                    aux[3, 1, i].Visible = false;
-                    aux[3, 2, i].Visible = false;
+                    Pid[i].Pfield = new System.Windows.Forms.NumericUpDown();
+                    Pid[i].Pfield.Location = new Point(iRow1, iTopY + i * iLineSpace);
+                    Pid[i].Pfield.Size = fieldSize;
+                    Pid[i].Pfield.Font = fontField;
+                    Pid[i].Pfield.BorderStyle = BorderStyle.None;
+                    Pid[i].Pfield.Maximum = Pid[i].Pmax;
+                    Pid[i].Pfield.Minimum = Pid[i].Pmin;
+                    Pid[i].Pfield.DecimalPlaces = decimals(Pid[i].Pprec);
+                    Pid[i].Pfield.Increment = 1/(decimal)Pid[i].Pprec;
+                    this.tabPagePID.Controls.Add(Pid[i].Pfield);
+
+                    Pid[i].Plabel = new System.Windows.Forms.Label();
+                    Pid[i].Plabel.Text = "P";
+                    Pid[i].Plabel.Font = fontField;
+                    Pid[i].Plabel.ForeColor = Color.White;
+                    Pid[i].Plabel.Location = new Point(iRow1 - 20, iTopY + i * iLineSpace);
+                    this.tabPagePID.Controls.Add(Pid[i].Plabel);
+
+
+
                 }
+                if (Pid[i].Ishown)
+                {
+                    Pid[i].Ifield = new System.Windows.Forms.NumericUpDown();
+                    Pid[i].Ifield.Location = new Point(iRow2, iTopY + i * iLineSpace);
+                    Pid[i].Ifield.Size = fieldSize;
+                    Pid[i].Ifield.Font = fontField;
+                    Pid[i].Ifield.BorderStyle = BorderStyle.None;
+                    Pid[i].Ifield.Maximum = Pid[i].Imax;
+                    Pid[i].Ifield.Minimum = Pid[i].Imin;
+                    Pid[i].Ifield.DecimalPlaces = decimals(Pid[i].Iprec);
+                    Pid[i].Ifield.Increment = 1 / (decimal)Pid[i].Iprec;
+                    this.tabPagePID.Controls.Add(Pid[i].Ifield);
+
+                    Pid[i].Ilabel = new System.Windows.Forms.Label();
+                    Pid[i].Ilabel.Text = "I";
+                    Pid[i].Ilabel.Font = fontField;
+                    Pid[i].Ilabel.ForeColor = Color.White;
+                    Pid[i].Ilabel.Location = new Point(iRow2 - 20, iTopY + i * iLineSpace);
+                    this.tabPagePID.Controls.Add(Pid[i].Ilabel);
+
+
+
+                }
+                if (Pid[i].Dshown)
+                {
+                    Pid[i].Dfield = new System.Windows.Forms.NumericUpDown();
+                    Pid[i].Dfield.Location = new Point(iRow3, iTopY + i * iLineSpace);
+                    Pid[i].Dfield.Size = fieldSize;
+                    Pid[i].Dfield.Font = fontField;
+                    Pid[i].Dfield.BorderStyle = BorderStyle.None;
+                    Pid[i].Dfield.Maximum = Pid[i].Dmax;
+                    Pid[i].Dfield.Minimum = Pid[i].Dmin;
+                    Pid[i].Dfield.DecimalPlaces = decimals(Pid[i].Dprec);
+                    Pid[i].Dfield.Increment = 1 / (decimal)Pid[i].Dprec;
+                    this.tabPagePID.Controls.Add(Pid[i].Dfield);
+
+                    Pid[i].Dlabel = new System.Windows.Forms.Label();
+                    Pid[i].Dlabel.Text = "D";
+                    Pid[i].Dlabel.Font = fontField;
+                    Pid[i].Dlabel.ForeColor = Color.White;
+                    Pid[i].Dlabel.Location = new Point(iRow3-20, iTopY + i * iLineSpace);
+                    this.tabPagePID.Controls.Add(Pid[i].Dlabel);
+
+                }
+
+
             }
+
+
+
+
+
+
+
+
+
+
 
             this.Refresh();
 
@@ -554,7 +637,7 @@ namespace MultiWiiWinGUI
             drawFont = new System.Drawing.Font(FontFamily.GenericMonospace, 16.0F);
             drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
 
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
             splash.Close();
 
 
@@ -567,7 +650,7 @@ namespace MultiWiiWinGUI
             MSPquery(MSP_RC);
             MSPquery(MSP_BOX);
 
-            update_gui_test();
+            update_gui();
             //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
@@ -584,7 +667,7 @@ namespace MultiWiiWinGUI
 
             
             
-            update_gui_test();
+            update_gui();
             //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
@@ -638,12 +721,17 @@ namespace MultiWiiWinGUI
                 }
                 MSPquery(MSP_PID);
                 MSPquery(MSP_RC_TUNING);
-                //Run BackgroundWorker Once
+                MSPquery(MSP_IDENT);
+                MSPquery(MSP_BOX);
+                MSPquery(MSP_MISC);
+
+                //Run BackgroundWorker
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
                 if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
                 if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
                 System.Threading.Thread.Sleep(500);
-                update_gui_test();
+                bOptions_needs_refresh = true;
+                update_gui();
 
 
             }
@@ -728,7 +816,13 @@ namespace MultiWiiWinGUI
 
             option_names = new string[20];
             option_desc = new string[100];
+
+            int iPidID = 0;
+
+            Pid = new PID[20];          //Max 20 PID values if we have more then we will ignore it
+
             iCheckBoxItems = 0;
+            iPidItems = 0;
 
             if (File.Exists(sOptionsConfigFilename))
             {
@@ -764,8 +858,64 @@ namespace MultiWiiWinGUI
                                 }
                                 iCheckBoxItems++;
                             }
-                            if (String.Compare(reader.Name, "number_of_pids", true) == 0 && reader.HasAttributes) { iPidItems = Convert.ToInt16(reader.GetAttribute("value")); }
+
+
+                            if (String.Compare(reader.Name, "pid", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                iPidID = Convert.ToInt16(reader.GetAttribute("id"));
+                                Pid[iPidID] = new PID();
+                                reader.MoveToAttribute("name");
+                                Pid[iPidID].name = reader.GetAttribute("name");
+                                reader.MoveToAttribute("desc");
+                                Pid[iPidID].description = reader.GetAttribute("desc");
+                                iPidItems++;
+                            }
+                            if (String.Compare(reader.Name, "p", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                iPidID = Convert.ToInt16(reader.GetAttribute("id"));
+                                reader.MoveToAttribute("shown");
+                                Pid[iPidID].Pshown = Convert.ToBoolean(reader.GetAttribute("shown"));
+                                reader.MoveToAttribute("min");
+                                Pid[iPidID].Pmin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                reader.MoveToAttribute("max");
+                                Pid[iPidID].Pmax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                reader.MoveToAttribute("prec");
+                                Pid[iPidID].Pprec = Convert.ToInt16(reader.GetAttribute("prec"));
+                            }
+                            if (String.Compare(reader.Name, "i", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                iPidID = Convert.ToInt16(reader.GetAttribute("id"));
+                                reader.MoveToAttribute("shown");
+                                Pid[iPidID].Ishown = Convert.ToBoolean(reader.GetAttribute("shown"));
+                                reader.MoveToAttribute("min");
+                                Pid[iPidID].Imin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                reader.MoveToAttribute("max");
+                                Pid[iPidID].Imax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                reader.MoveToAttribute("prec");
+                                Pid[iPidID].Iprec = Convert.ToInt16(reader.GetAttribute("prec"));
+                            }
+                            if (String.Compare(reader.Name, "d", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                iPidID = Convert.ToInt16(reader.GetAttribute("id"));
+                                reader.MoveToAttribute("shown");
+                                Pid[iPidID].Dshown = Convert.ToBoolean(reader.GetAttribute("shown"));
+                                reader.MoveToAttribute("min");
+                                Pid[iPidID].Dmin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                reader.MoveToAttribute("max");
+                                Pid[iPidID].Dmax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                reader.MoveToAttribute("prec");
+                                Pid[iPidID].Dprec = Convert.ToInt16(reader.GetAttribute("prec"));
+                            }
+
+
+                            
+                            
                             break;
+
                     }
                 }
             }
@@ -1017,8 +1167,9 @@ namespace MultiWiiWinGUI
                                             ptr = 0;
                                             for (int i = 0; i < iCheckBoxItems; i++)
                                             {
-                                                mw_gui.activation1[i] = (byte)inBuf[ptr++];
-                                                mw_gui.activation2[i] = (byte)inBuf[ptr++];
+                                                //mw_gui.activation1[i] = (byte)inBuf[ptr++];
+                                                //mw_gui.activation2[i] = (byte)inBuf[ptr++];
+                                                mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                                             }
                                             break;
                                         case MSP_MISC:
@@ -1093,7 +1244,7 @@ namespace MultiWiiWinGUI
         }
 
        // private void bkgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        private void update_gui_test()
+        private void update_gui()
         {
 
             if (bSerialError)
@@ -1276,7 +1427,7 @@ namespace MultiWiiWinGUI
                 gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), true, Convert.ToBoolean(mw_gui.GPS_update));
 
                 //check if ver !=1.9 and copter is Tri then change servo5<->servo0
-                if (mw_gui.multiType == (byte)CopterType.Tri && gui_settings.iSoftwareVersion == 20)
+                if (mw_gui.multiType == (byte)CopterType.Tri)
                 {
                     int temp = mw_gui.servos[0];
                     mw_gui.servos[0] = mw_gui.servos[5];
@@ -1294,18 +1445,7 @@ namespace MultiWiiWinGUI
 
                 
                 //Update mode lamps
-                if (gui_settings.iSoftwareVersion == 19)
-                {
-                    indLEVEL.SetStatus((mw_gui.mode & 1) != 0);             //0
-                    indALTHOLD.SetStatus((mw_gui.mode & 2) != 0);           //1
-                    indHHOLD.SetStatus((mw_gui.mode & 4) != 0);             //2
-                    indRTH.SetStatus((mw_gui.mode & 8) != 0);               //3
-                    indPOS.SetStatus((mw_gui.mode & 16) != 0);              //4
-                    indARM.SetStatus((mw_gui.mode & 32) != 0);              //5
-                    indHFREE.SetStatus((mw_gui.mode & 64) != 0);            //6
-                }
-                if (gui_settings.iSoftwareVersion == 20)
-                {
+
                     indLEVEL.SetStatus((mw_gui.activation2[0] & 128) != 0);             //0
                     indALTHOLD.SetStatus((mw_gui.activation2[1] & 128) != 0);           //1
                     indHHOLD.SetStatus((mw_gui.activation2[2] & 128) != 0);             //2
@@ -1314,7 +1454,6 @@ namespace MultiWiiWinGUI
                     indARM.SetStatus((mw_gui.activation2[5] & 128) != 0);
                     indHFREE.SetStatus((mw_gui.activation2[9] & 128) != 0);
                     indPASST.SetStatus((mw_gui.activation2[8] & 128) != 0);
-                }
 
                 l_cycletime.Text = String.Format("{0:0000} µs", mw_gui.cycleTime);
                 l_vbatt.Text = String.Format("{0:0.0} volts", (double)mw_gui.vBat / 10);
@@ -1333,8 +1472,10 @@ namespace MultiWiiWinGUI
         {
             CheckBoxEx cb = ((CheckBoxEx)(sender));
 
-            if (cb.aux < 2) { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation1[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; }
-            else { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation2[cb.item] & (1 << (cb.aux - 2) * 3 + cb.rclevel)) == 0) ? true : false; }
+            cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; 
+
+//            if (cb.aux < 2) { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation1[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; }
+//            else { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation2[cb.item] & (1 << (cb.aux - 2) * 3 + cb.rclevel)) == 0) ? true : false; }
         }
 
         private void b_stop_live_rc_Click(object sender, EventArgs e)
@@ -1372,7 +1513,7 @@ namespace MultiWiiWinGUI
 
             if (MessageBoxEx.Show(this, "Make sure that your copter is leveled!\r\nPress OK when ready, then keep copter steady for 5 seconds.", "Calibrating Accelerometer", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
-                serialPort.Write("S");
+                MSPquery(MSP_ACC_CALIBRATION);
             }
 
         }
@@ -1387,7 +1528,9 @@ namespace MultiWiiWinGUI
 
             if (MessageBoxEx.Show(this, "After pressing OK please rotate your copter around all three axes\r\n at least a full 360° turn for each axes. You will have 1 minute to finish", "Calibrating Magnetometer", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
-                serialPort.Write("E");
+
+                MSPquery(MSP_MAG_CALIBRATION);
+
             }
         }
 
@@ -1396,7 +1539,7 @@ namespace MultiWiiWinGUI
             if (isConnected)
             {
                 bOptions_needs_refresh = true;
-                if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
+                //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
             }
         }
 
@@ -1404,62 +1547,39 @@ namespace MultiWiiWinGUI
         {
             //Get parameters from GUI
 
-            mw_params.pidP[PID_ROLL] = (byte)(nPID_roll_p.Value * 10);
-            mw_params.pidI[PID_ROLL] = (byte)(nPID_roll_i.Value * 1000);
-            mw_params.pidD[PID_ROLL] = (byte)(nPID_roll_d.Value);
-
-            mw_params.pidP[PID_PITCH] = (byte)(nPID_pitch_p.Value * 10);
-            mw_params.pidI[PID_PITCH] = (byte)(nPID_pitch_i.Value * 1000);
-            mw_params.pidD[PID_PITCH] = (byte)(nPID_pitch_d.Value);
-
-            mw_params.pidP[PID_YAW] = (byte)(nPID_yaw_p.Value * 10);
-            mw_params.pidI[PID_YAW] = (byte)(nPID_yaw_i.Value * 1000);
-            mw_params.pidD[PID_YAW] = (byte)(nPID_yaw_d.Value);
-
-            mw_params.pidP[PID_ALT] = (byte)(nPID_alt_p.Value * 10);
-            mw_params.pidI[PID_ALT] = (byte)(nPID_alt_i.Value * 1000);
-            mw_params.pidD[PID_ALT] = (byte)(nPID_alt_d.Value);
-
-            mw_params.pidP[PID_VEL] = (byte)(nPID_vel_p.Value * 10);
-            mw_params.pidI[PID_VEL] = (byte)(nPID_vel_i.Value * 1000);
-            mw_params.pidD[PID_VEL] = (byte)(nPID_vel_d.Value);
-
-            if (gui_settings.iSoftwareVersion == 20)
+            for (int i = 0; i < iPidItems; i++)
             {
-                mw_params.pidP[PID_GPS] = (byte)(nPID_gps_p.Value * 10);
-                mw_params.pidI[PID_GPS] = (byte)(nPID_gps_i.Value * 1000);
-                mw_params.pidD[PID_GPS] = (byte)(nPID_gps_d.Value);
+                if (Pid[i].Pshown) { mw_gui.pidP[i] = (byte)(Pid[i].Pfield.Value * Pid[i].Pprec); }
+                if (Pid[i].Ishown) { mw_gui.pidI[i] = (byte)(Pid[i].Ifield.Value * Pid[i].Iprec); }
+                if (Pid[i].Dshown) { mw_gui.pidD[i] = (byte)(Pid[i].Dfield.Value * Pid[i].Dprec); }
+
+                mw_params.pidP[i] = mw_gui.pidP[i];
+                mw_params.pidI[i] = mw_gui.pidI[i];
+                mw_params.pidD[i] = mw_gui.pidD[i];
             }
-
-            mw_params.pidP[PID_LEVEL] = (byte)(nPID_level_p.Value * 10);
-            mw_params.pidI[PID_LEVEL] = (byte)(nPID_level_i.Value * 1000);
-            if (gui_settings.iSoftwareVersion == 20) { mw_params.pidD[PID_LEVEL] = (byte)(nPID_level_d.Value); }
-
-
-            mw_params.pidP[PID_MAG] = (byte)(nPID_mag_p.Value * 10);
 
             mw_params.RollPitchRate = (byte)(nRATE_rp.Value * 100);
             mw_params.YawRate = (byte)(nRATE_yaw.Value * 100);
             mw_params.DynThrPID = (byte)(nRATE_tpid.Value * 100);
 
             mw_params.rcExpo = (byte)(nRCExpo.Value * 100);
-            mw_params.rcRate = (byte)(nRCRate.Value * 50);
+            mw_params.rcRate = (byte)(nRCRate.Value * 100);
 
             mw_params.PowerTrigger = (int)nPAlarm.Value;
 
             for (int b = 0; b < iCheckBoxItems; b++)
             {
-                mw_params.activation1[b] = 0;
-                mw_params.activation2[b] = 0;
+                mw_params.activation[b] = 0;
                 for (byte a = 0; a < 3; a++)
                 {
-                    if (aux[0, a, b].Checked) mw_params.activation1[b] += (byte)(1 << a);
-                    if (aux[1, a, b].Checked) mw_params.activation1[b] += (byte)(1 << (3 + a));
-                    if (aux[2, a, b].Checked) mw_params.activation2[b] += (byte)(1 << a);
-                    if (aux[3, a, b].Checked) mw_params.activation2[b] += (byte)(1 << (3 + a));
+                    if (aux[0, a, b].Checked) mw_params.activation[b] += (short)(1 << a);
+                    if (aux[1, a, b].Checked) mw_params.activation[b] += (short)(1 << (3 + a));
+                    if (aux[2, a, b].Checked) mw_params.activation[b] += (short)(1 << (6 + a));
+                    if (aux[3, a, b].Checked) mw_params.activation[b] += (short)(1 << (9 + a));
 
                 }
             }
+
             mw_params.comment = tComment.Text;
         }
 
@@ -1472,10 +1592,10 @@ namespace MultiWiiWinGUI
             //Stop all timers
             timer_realtime.Stop();
             timer_rc.Stop();
-            while (bkgWorker.IsBusy)                    //Wait bkgWorker to completed
-            {
-                Application.DoEvents();
-            }
+            //while (bkgWorker.IsBusy)                    //Wait bkgWorker to completed
+            //{
+            //    Application.DoEvents();
+            //}
             update_params();                            //update parameters object from GUI controls.
             mw_params.write_settings(serialPort);
             System.Threading.Thread.Sleep(1000);
@@ -1504,35 +1624,35 @@ namespace MultiWiiWinGUI
 
             for (int i = 0; i < iCheckBoxItems; i++)
             {
-                aux[0, 0, i].Checked = (mw_gui.activation1[i] & (1 << 0)) == 0 ? false : true;
-                aux[0, 1, i].Checked = (mw_gui.activation1[i] & (1 << 1)) == 0 ? false : true;
-                aux[0, 2, i].Checked = (mw_gui.activation1[i] & (1 << 2)) == 0 ? false : true;
-                aux[1, 0, i].Checked = (mw_gui.activation1[i] & (1 << 3)) == 0 ? false : true;
-                aux[1, 1, i].Checked = (mw_gui.activation1[i] & (1 << 4)) == 0 ? false : true;
-                aux[1, 2, i].Checked = (mw_gui.activation1[i] & (1 << 5)) == 0 ? false : true;
-                aux[2, 0, i].Checked = (mw_gui.activation2[i] & (1 << 0)) == 0 ? false : true;
-                aux[2, 1, i].Checked = (mw_gui.activation2[i] & (1 << 1)) == 0 ? false : true;
-                aux[2, 2, i].Checked = (mw_gui.activation2[i] & (1 << 2)) == 0 ? false : true;
-                aux[3, 0, i].Checked = (mw_gui.activation2[i] & (1 << 3)) == 0 ? false : true;
-                aux[3, 1, i].Checked = (mw_gui.activation2[i] & (1 << 4)) == 0 ? false : true;
-                aux[3, 2, i].Checked = (mw_gui.activation2[i] & (1 << 5)) == 0 ? false : true;
+                aux[0, 0, i].Checked = (mw_gui.activation[i] & (1 << 0)) == 0 ? false : true;
+                aux[0, 1, i].Checked = (mw_gui.activation[i] & (1 << 1)) == 0 ? false : true;
+                aux[0, 2, i].Checked = (mw_gui.activation[i] & (1 << 2)) == 0 ? false : true;
+                aux[1, 0, i].Checked = (mw_gui.activation[i] & (1 << 3)) == 0 ? false : true;
+                aux[1, 1, i].Checked = (mw_gui.activation[i] & (1 << 4)) == 0 ? false : true;
+                aux[1, 2, i].Checked = (mw_gui.activation[i] & (1 << 5)) == 0 ? false : true;
+                aux[2, 0, i].Checked = (mw_gui.activation[i] & (1 << 6)) == 0 ? false : true;
+                aux[2, 1, i].Checked = (mw_gui.activation[i] & (1 << 7)) == 0 ? false : true;
+                aux[2, 2, i].Checked = (mw_gui.activation[i] & (1 << 8)) == 0 ? false : true;
+                aux[3, 0, i].Checked = (mw_gui.activation[i] & (1 << 9)) == 0 ? false : true;
+                aux[3, 1, i].Checked = (mw_gui.activation[i] & (1 << 10)) == 0 ? false : true;
+                aux[3, 2, i].Checked = (mw_gui.activation[i] & (1 << 11)) == 0 ? false : true;
             }
 
             for (int i = 0; i < iCheckBoxItems; i++)
             {
 
-                aux[0, 0, i].IsHighlighted = (aux[0, 0, i].Checked == ((mw_gui.activation1[i] & (1 << 0)) == 0)) ? true : false;
-                aux[0, 1, i].IsHighlighted = (aux[0, 1, i].Checked == ((mw_gui.activation1[i] & (1 << 1)) == 0)) ? true : false;
-                aux[0, 2, i].IsHighlighted = (aux[0, 2, i].Checked == ((mw_gui.activation1[i] & (1 << 2)) == 0)) ? true : false;
-                aux[1, 0, i].IsHighlighted = (aux[1, 0, i].Checked == ((mw_gui.activation1[i] & (1 << 3)) == 0)) ? true : false;
-                aux[1, 1, i].IsHighlighted = (aux[1, 1, i].Checked == ((mw_gui.activation1[i] & (1 << 4)) == 0)) ? true : false;
-                aux[1, 2, i].IsHighlighted = (aux[1, 2, i].Checked == ((mw_gui.activation1[i] & (1 << 5)) == 0)) ? true : false;
-                aux[2, 0, i].IsHighlighted = (aux[2, 0, i].Checked == ((mw_gui.activation2[i] & (1 << 0)) == 0)) ? true : false;
-                aux[2, 1, i].IsHighlighted = (aux[2, 1, i].Checked == ((mw_gui.activation2[i] & (1 << 1)) == 0)) ? true : false;
-                aux[2, 2, i].IsHighlighted = (aux[2, 2, i].Checked == ((mw_gui.activation2[i] & (1 << 2)) == 0)) ? true : false;
-                aux[3, 0, i].IsHighlighted = (aux[3, 0, i].Checked == ((mw_gui.activation2[i] & (1 << 3)) == 0)) ? true : false;
-                aux[3, 1, i].IsHighlighted = (aux[3, 1, i].Checked == ((mw_gui.activation2[i] & (1 << 4)) == 0)) ? true : false;
-                aux[3, 2, i].IsHighlighted = (aux[3, 2, i].Checked == ((mw_gui.activation2[i] & (1 << 5)) == 0)) ? true : false;
+                aux[0, 0, i].IsHighlighted = (aux[0, 0, i].Checked == ((mw_gui.activation[i] & (1 << 0)) == 0)) ? true : false;
+                aux[0, 1, i].IsHighlighted = (aux[0, 1, i].Checked == ((mw_gui.activation[i] & (1 << 1)) == 0)) ? true : false;
+                aux[0, 2, i].IsHighlighted = (aux[0, 2, i].Checked == ((mw_gui.activation[i] & (1 << 2)) == 0)) ? true : false;
+                aux[1, 0, i].IsHighlighted = (aux[1, 0, i].Checked == ((mw_gui.activation[i] & (1 << 3)) == 0)) ? true : false;
+                aux[1, 1, i].IsHighlighted = (aux[1, 1, i].Checked == ((mw_gui.activation[i] & (1 << 4)) == 0)) ? true : false;
+                aux[1, 2, i].IsHighlighted = (aux[1, 2, i].Checked == ((mw_gui.activation[i] & (1 << 5)) == 0)) ? true : false;
+                aux[2, 0, i].IsHighlighted = (aux[2, 0, i].Checked == ((mw_gui.activation[i] & (1 << 6)) == 0)) ? true : false;
+                aux[2, 1, i].IsHighlighted = (aux[2, 1, i].Checked == ((mw_gui.activation[i] & (1 << 7)) == 0)) ? true : false;
+                aux[2, 2, i].IsHighlighted = (aux[2, 2, i].Checked == ((mw_gui.activation[i] & (1 << 8)) == 0)) ? true : false;
+                aux[3, 0, i].IsHighlighted = (aux[3, 0, i].Checked == ((mw_gui.activation[i] & (1 << 9)) == 0)) ? true : false;
+                aux[3, 1, i].IsHighlighted = (aux[3, 1, i].Checked == ((mw_gui.activation[i] & (1 << 10)) == 0)) ? true : false;
+                aux[3, 2, i].IsHighlighted = (aux[3, 2, i].Checked == ((mw_gui.activation[i] & (1 << 11)) == 0)) ? true : false;
             }
 
 
@@ -1541,38 +1661,14 @@ namespace MultiWiiWinGUI
         private void update_pid_panel()
         {
             //fill out PID values from mw_gui. structure
-            nPID_roll_p.Value = (decimal)mw_gui.pidP[PID_ROLL] / 10;
-            nPID_roll_i.Value = (decimal)mw_gui.pidI[PID_ROLL] / 1000;
-            nPID_roll_d.Value = mw_gui.pidD[PID_ROLL];
 
-            nPID_pitch_p.Value = (decimal)mw_gui.pidP[PID_PITCH] / 10;
-            nPID_pitch_i.Value = (decimal)mw_gui.pidI[PID_PITCH] / 1000;
-            nPID_pitch_d.Value = mw_gui.pidD[PID_PITCH];
-
-            nPID_yaw_p.Value = (decimal)mw_gui.pidP[PID_YAW] / 10;
-            nPID_yaw_i.Value = (decimal)mw_gui.pidI[PID_YAW] / 1000;
-            nPID_yaw_d.Value = mw_gui.pidD[PID_YAW];
-
-            nPID_alt_p.Value = (decimal)mw_gui.pidP[PID_ALT] / 10;
-            nPID_alt_i.Value = (decimal)mw_gui.pidI[PID_ALT] / 1000;
-            nPID_alt_d.Value = mw_gui.pidD[PID_ALT];
-
-            nPID_vel_p.Value = (decimal)mw_gui.pidP[PID_VEL] / 10;
-            nPID_vel_i.Value = (decimal)mw_gui.pidI[PID_VEL] / 1000;
-            nPID_vel_d.Value = mw_gui.pidD[PID_VEL];
-
-            if (gui_settings.iSoftwareVersion == 20)
+            for (int i = 0; i < iPidItems; i++)
             {
-                nPID_gps_p.Value = (decimal)mw_gui.pidP[PID_GPS] / 10;
-                nPID_gps_i.Value = (decimal)mw_gui.pidI[PID_GPS] / 1000;
-                nPID_gps_d.Value = mw_gui.pidD[PID_GPS];
+                if (Pid[i].Pshown) { Pid[i].Pfield.Value = (decimal)mw_gui.pidP[i] / Pid[i].Pprec; }
+                if (Pid[i].Ishown) { Pid[i].Ifield.Value = (decimal)mw_gui.pidI[i] / Pid[i].Iprec; }
+                if (Pid[i].Dshown) { Pid[i].Dfield.Value = (decimal)mw_gui.pidD[i] / Pid[i].Dprec; }
+
             }
-
-            nPID_level_p.Value = (decimal)mw_gui.pidP[PID_LEVEL] / 10;
-            nPID_level_i.Value = (decimal)mw_gui.pidI[PID_LEVEL] / 1000;
-            if (gui_settings.iSoftwareVersion == 20) { nPID_level_d.Value = (decimal)mw_gui.pidD[PID_LEVEL]; }
-
-            nPID_mag_p.Value = (decimal)mw_gui.pidP[PID_MAG] / 10;
 
             nRATE_rp.Value = (decimal)mw_gui.RollPitchRate / 100;
             nRATE_yaw.Value = (decimal)mw_gui.YawRate / 100;
@@ -1581,8 +1677,8 @@ namespace MultiWiiWinGUI
             trackbar_RC_Expo.Value = mw_gui.rcExpo;
             nRCExpo.Value = (decimal)mw_gui.rcExpo / 100;
             trackbar_RC_Rate.Value = mw_gui.rcRate;
-            nRCRate.Value = (decimal)mw_gui.rcRate / 50;
-            rc_expo_control1.SetRCExpoParameters((double)mw_gui.rcRate / 50, (double)mw_gui.rcExpo / 100);
+            nRCRate.Value = (decimal)mw_gui.rcRate / 100;
+            rc_expo_control1.SetRCExpoParameters((double)mw_gui.rcRate / 100, (double)mw_gui.rcExpo / 100);
 
             nPAlarm.Value = mw_gui.powerTrigger;
 
@@ -1594,53 +1690,29 @@ namespace MultiWiiWinGUI
         {
             for (int i = 0; i < iCheckBoxItems; i++)
             {
-                aux[0, 0, i].Checked = (mw_params.activation1[i] & (1 << 0)) == 0 ? false : true;
-                aux[0, 1, i].Checked = (mw_params.activation1[i] & (1 << 1)) == 0 ? false : true;
-                aux[0, 2, i].Checked = (mw_params.activation1[i] & (1 << 2)) == 0 ? false : true;
-                aux[1, 0, i].Checked = (mw_params.activation1[i] & (1 << 3)) == 0 ? false : true;
-                aux[1, 1, i].Checked = (mw_params.activation1[i] & (1 << 4)) == 0 ? false : true;
-                aux[1, 2, i].Checked = (mw_params.activation1[i] & (1 << 5)) == 0 ? false : true;
-                aux[2, 0, i].Checked = (mw_params.activation2[i] & (1 << 0)) == 0 ? false : true;
-                aux[2, 1, i].Checked = (mw_params.activation2[i] & (1 << 1)) == 0 ? false : true;
-                aux[2, 2, i].Checked = (mw_params.activation2[i] & (1 << 2)) == 0 ? false : true;
-                aux[3, 0, i].Checked = (mw_params.activation2[i] & (1 << 3)) == 0 ? false : true;
-                aux[3, 1, i].Checked = (mw_params.activation2[i] & (1 << 4)) == 0 ? false : true;
-                aux[3, 2, i].Checked = (mw_params.activation2[i] & (1 << 5)) == 0 ? false : true;
+                aux[0, 0, i].Checked = (mw_params.activation[i] & (1 << 0)) == 0 ? false : true;
+                aux[0, 1, i].Checked = (mw_params.activation[i] & (1 << 1)) == 0 ? false : true;
+                aux[0, 2, i].Checked = (mw_params.activation[i] & (1 << 2)) == 0 ? false : true;
+                aux[1, 0, i].Checked = (mw_params.activation[i] & (1 << 3)) == 0 ? false : true;
+                aux[1, 1, i].Checked = (mw_params.activation[i] & (1 << 4)) == 0 ? false : true;
+                aux[1, 2, i].Checked = (mw_params.activation[i] & (1 << 5)) == 0 ? false : true;
+                aux[2, 0, i].Checked = (mw_params.activation[i] & (1 << 6)) == 0 ? false : true;
+                aux[2, 1, i].Checked = (mw_params.activation[i] & (1 << 7)) == 0 ? false : true;
+                aux[2, 2, i].Checked = (mw_params.activation[i] & (1 << 8)) == 0 ? false : true;
+                aux[3, 0, i].Checked = (mw_params.activation[i] & (1 << 9)) == 0 ? false : true;
+                aux[3, 1, i].Checked = (mw_params.activation[i] & (1 << 10)) == 0 ? false : true;
+                aux[3, 2, i].Checked = (mw_params.activation[i] & (1 << 11)) == 0 ? false : true;
             }
             //fill out PID values from mw_gui. structure
-            nPID_roll_p.Value = (decimal)mw_params.pidP[PID_ROLL] / 10;
-            nPID_roll_i.Value = (decimal)mw_params.pidI[PID_ROLL] / 1000;
-            nPID_roll_d.Value = mw_params.pidD[PID_ROLL];
 
-            nPID_pitch_p.Value = (decimal)mw_params.pidP[PID_PITCH] / 10;
-            nPID_pitch_i.Value = (decimal)mw_params.pidI[PID_PITCH] / 1000;
-            nPID_pitch_d.Value = mw_params.pidD[PID_PITCH];
-
-            nPID_yaw_p.Value = (decimal)mw_params.pidP[PID_YAW] / 10;
-            nPID_yaw_i.Value = (decimal)mw_params.pidI[PID_YAW] / 1000;
-            nPID_yaw_d.Value = mw_params.pidD[PID_YAW];
-
-            nPID_alt_p.Value = (decimal)mw_params.pidP[PID_ALT] / 10;
-            nPID_alt_i.Value = (decimal)mw_params.pidI[PID_ALT] / 1000;
-            nPID_alt_d.Value = mw_params.pidD[PID_ALT];
-
-            nPID_vel_p.Value = (decimal)mw_params.pidP[PID_VEL] / 10;
-            nPID_vel_i.Value = (decimal)mw_params.pidI[PID_VEL] / 1000;
-            nPID_vel_d.Value = mw_params.pidD[PID_VEL];
-
-            if (gui_settings.iSoftwareVersion == 20)
+            for (int i = 0; i < iPidItems; i++)
             {
-                nPID_gps_p.Value = (decimal)mw_params.pidP[PID_GPS] / 10;
-                nPID_gps_i.Value = (decimal)mw_params.pidI[PID_GPS] / 1000;
-                nPID_gps_d.Value = mw_params.pidD[PID_GPS];
+                if (Pid[i].Pshown) { Pid[i].Pfield.Value = (decimal)mw_gui.pidP[i] / Pid[i].Pprec; }
+                if (Pid[i].Ishown) { Pid[i].Ifield.Value = (decimal)mw_gui.pidI[i] / Pid[i].Iprec; }
+                if (Pid[i].Dshown) { Pid[i].Dfield.Value = (decimal)mw_gui.pidD[i] / Pid[i].Dprec; }
+
             }
-
-            nPID_level_p.Value = (decimal)mw_params.pidP[PID_LEVEL] / 10;
-            nPID_level_i.Value = (decimal)mw_params.pidI[PID_LEVEL] / 1000;
-            if (gui_settings.iSoftwareVersion == 20) { nPID_level_d.Value = (decimal)mw_params.pidD[PID_LEVEL]; }
-
-            nPID_mag_p.Value = (decimal)mw_params.pidP[PID_MAG] / 10;
-
+            
             nRATE_rp.Value = (decimal)mw_params.RollPitchRate / 100;
             nRATE_yaw.Value = (decimal)mw_params.YawRate / 100;
             nRATE_tpid.Value = (decimal)mw_params.DynThrPID / 100;
@@ -1648,8 +1720,8 @@ namespace MultiWiiWinGUI
             trackbar_RC_Expo.Value = mw_params.rcExpo;
             nRCExpo.Value = (decimal)mw_params.rcExpo / 100;
             trackbar_RC_Rate.Value = mw_params.rcRate;
-            nRCRate.Value = (decimal)mw_params.rcRate / 50;
-            rc_expo_control1.SetRCExpoParameters((double)mw_params.rcRate / 50, (double)mw_params.rcExpo / 100);
+            nRCRate.Value = (decimal)mw_params.rcRate / 100;
+            rc_expo_control1.SetRCExpoParameters((double)mw_params.rcRate / 100, (double)mw_params.rcExpo / 100);
 
             nPAlarm.Value = mw_params.PowerTrigger;
 
@@ -1950,11 +2022,25 @@ namespace MultiWiiWinGUI
 
         private void MSPquery(int command)
         {
-            serialPort.Write("$M<" + (char)command);
+            byte[] o;
+            o = new byte[5];
+            o[0] = (byte)'$';
+            o[1] = (byte)'M';
+            o[2] = (byte)'<';
+            o[3] = (byte)command;
+            serialPort.Write(o,0,4);
         }
 
 
+        private int decimals(int prec)
+        {
+            if (prec == 1) return (0);
+            if (prec == 10) return (1);
+            if (prec == 100) return (2);
+            if (prec == 1000) return (3);
 
+            return (0);
+        }
 
     }
 
