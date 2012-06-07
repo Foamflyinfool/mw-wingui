@@ -41,7 +41,6 @@
             this.tComment = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.nPAlarm = new System.Windows.Forms.NumericUpDown();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.nRCExpo = new System.Windows.Forms.NumericUpDown();
             this.nRCRate = new System.Windows.Forms.NumericUpDown();
             this.label66 = new System.Windows.Forms.Label();
@@ -155,9 +154,6 @@
             this.cb_Log3 = new System.Windows.Forms.CheckBox();
             this.cb_Log2 = new System.Windows.Forms.CheckBox();
             this.cb_Log1 = new System.Windows.Forms.CheckBox();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.rb_sw19 = new System.Windows.Forms.RadioButton();
-            this.rb_sw20 = new System.Windows.Forms.RadioButton();
             this.b_save_gui_settings = new System.Windows.Forms.Button();
             this.cb_Logging_enabled = new System.Windows.Forms.CheckBox();
             this.b_select_capture_folder = new System.Windows.Forms.Button();
@@ -198,10 +194,14 @@
             this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
             this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
+            this.throttle_expo_control1 = new MultiWiiGUIControls.throttle_expo_control();
+            this.trackBar_T_EXPO = new System.Windows.Forms.TrackBar();
+            this.trackBar_T_MID = new System.Windows.Forms.TrackBar();
+            this.nTMID = new System.Windows.Forms.NumericUpDown();
+            this.nTEXPO = new System.Windows.Forms.NumericUpDown();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).BeginInit();
-            this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nRCExpo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRCRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Rate)).BeginInit();
@@ -222,7 +222,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nFrameRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             this.groupBox11.SuspendLayout();
-            this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_EXPO)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_MID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nTMID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_serial_port
@@ -287,12 +290,23 @@
             // tabPagePID
             // 
             this.tabPagePID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPagePID.Controls.Add(this.nTEXPO);
+            this.tabPagePID.Controls.Add(this.nTMID);
+            this.tabPagePID.Controls.Add(this.trackBar_T_EXPO);
+            this.tabPagePID.Controls.Add(this.trackBar_T_MID);
+            this.tabPagePID.Controls.Add(this.throttle_expo_control1);
+            this.tabPagePID.Controls.Add(this.trackbar_RC_Rate);
+            this.tabPagePID.Controls.Add(this.label65);
+            this.tabPagePID.Controls.Add(this.trackbar_RC_Expo);
+            this.tabPagePID.Controls.Add(this.nRCRate);
+            this.tabPagePID.Controls.Add(this.nRCExpo);
+            this.tabPagePID.Controls.Add(this.label66);
             this.tabPagePID.Controls.Add(this.label10);
             this.tabPagePID.Controls.Add(this.label9);
             this.tabPagePID.Controls.Add(this.tComment);
             this.tabPagePID.Controls.Add(this.label8);
             this.tabPagePID.Controls.Add(this.nPAlarm);
-            this.tabPagePID.Controls.Add(this.groupBox13);
+            this.tabPagePID.Controls.Add(this.rc_expo_control1);
             this.tabPagePID.Controls.Add(this.groupBox12);
             this.tabPagePID.Location = new System.Drawing.Point(4, 22);
             this.tabPagePID.Name = "tabPagePID";
@@ -360,24 +374,6 @@
             this.nPAlarm.Size = new System.Drawing.Size(68, 18);
             this.nPAlarm.TabIndex = 6;
             // 
-            // groupBox13
-            // 
-            this.groupBox13.Controls.Add(this.nRCExpo);
-            this.groupBox13.Controls.Add(this.nRCRate);
-            this.groupBox13.Controls.Add(this.label66);
-            this.groupBox13.Controls.Add(this.label65);
-            this.groupBox13.Controls.Add(this.trackbar_RC_Rate);
-            this.groupBox13.Controls.Add(this.trackbar_RC_Expo);
-            this.groupBox13.Controls.Add(this.rc_expo_control1);
-            this.groupBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox13.ForeColor = System.Drawing.Color.White;
-            this.groupBox13.Location = new System.Drawing.Point(710, 120);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(245, 230);
-            this.groupBox13.TabIndex = 20;
-            this.groupBox13.TabStop = false;
-            this.groupBox13.Text = "RC Rate&&Expo";
-            // 
             // nRCExpo
             // 
             this.nRCExpo.BackColor = System.Drawing.Color.LightGray;
@@ -389,7 +385,7 @@
             0,
             0,
             131072});
-            this.nRCExpo.Location = new System.Drawing.Point(180, 121);
+            this.nRCExpo.Location = new System.Drawing.Point(458, 58);
             this.nRCExpo.Maximum = new decimal(new int[] {
             1,
             0,
@@ -411,7 +407,7 @@
             0,
             0,
             131072});
-            this.nRCRate.Location = new System.Drawing.Point(180, 178);
+            this.nRCRate.Location = new System.Drawing.Point(458, 109);
             this.nRCRate.Maximum = new decimal(new int[] {
             5,
             0,
@@ -426,9 +422,9 @@
             // 
             this.label66.AutoSize = true;
             this.label66.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label66.Location = new System.Drawing.Point(119, 123);
+            this.label66.Location = new System.Drawing.Point(455, 42);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(56, 13);
+            this.label66.Size = new System.Drawing.Size(49, 13);
             this.label66.TabIndex = 19;
             this.label66.Text = "RC Expo";
             // 
@@ -436,9 +432,9 @@
             // 
             this.label65.AutoSize = true;
             this.label65.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label65.Location = new System.Drawing.Point(119, 180);
+            this.label65.Location = new System.Drawing.Point(455, 92);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(55, 13);
+            this.label65.Size = new System.Drawing.Size(48, 13);
             this.label65.TabIndex = 18;
             this.label65.Text = "RC Rate";
             // 
@@ -446,10 +442,10 @@
             // 
             this.trackbar_RC_Rate.AutoSize = false;
             this.trackbar_RC_Rate.LargeChange = 1;
-            this.trackbar_RC_Rate.Location = new System.Drawing.Point(6, 204);
+            this.trackbar_RC_Rate.Location = new System.Drawing.Point(451, 160);
             this.trackbar_RC_Rate.Maximum = 250;
             this.trackbar_RC_Rate.Name = "trackbar_RC_Rate";
-            this.trackbar_RC_Rate.Size = new System.Drawing.Size(233, 20);
+            this.trackbar_RC_Rate.Size = new System.Drawing.Size(224, 20);
             this.trackbar_RC_Rate.TabIndex = 17;
             this.trackbar_RC_Rate.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackbar_RC_Rate.Value = 100;
@@ -458,10 +454,10 @@
             // trackbar_RC_Expo
             // 
             this.trackbar_RC_Expo.AutoSize = false;
-            this.trackbar_RC_Expo.Location = new System.Drawing.Point(6, 148);
+            this.trackbar_RC_Expo.Location = new System.Drawing.Point(451, 143);
             this.trackbar_RC_Expo.Maximum = 100;
             this.trackbar_RC_Expo.Name = "trackbar_RC_Expo";
-            this.trackbar_RC_Expo.Size = new System.Drawing.Size(233, 23);
+            this.trackbar_RC_Expo.Size = new System.Drawing.Size(224, 20);
             this.trackbar_RC_Expo.TabIndex = 16;
             this.trackbar_RC_Expo.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackbar_RC_Expo.Value = 80;
@@ -1565,7 +1561,6 @@
             this.tabPageSettings.Controls.Add(this.l_Settings_folder);
             this.tabPageSettings.Controls.Add(this.label27);
             this.tabPageSettings.Controls.Add(this.groupBox11);
-            this.tabPageSettings.Controls.Add(this.groupBox14);
             this.tabPageSettings.Controls.Add(this.b_save_gui_settings);
             this.tabPageSettings.Controls.Add(this.cb_Logging_enabled);
             this.tabPageSettings.Controls.Add(this.b_select_capture_folder);
@@ -1604,7 +1599,7 @@
             // 
             this.b_select_settings_folder.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_select_settings_folder.ForeColor = System.Drawing.Color.Black;
-            this.b_select_settings_folder.Location = new System.Drawing.Point(11, 219);
+            this.b_select_settings_folder.Location = new System.Drawing.Point(11, 119);
             this.b_select_settings_folder.Name = "b_select_settings_folder";
             this.b_select_settings_folder.Size = new System.Drawing.Size(35, 27);
             this.b_select_settings_folder.TabIndex = 26;
@@ -1615,7 +1610,7 @@
             // l_Settings_folder
             // 
             this.l_Settings_folder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.l_Settings_folder.Location = new System.Drawing.Point(48, 226);
+            this.l_Settings_folder.Location = new System.Drawing.Point(48, 126);
             this.l_Settings_folder.Name = "l_Settings_folder";
             this.l_Settings_folder.Size = new System.Drawing.Size(462, 19);
             this.l_Settings_folder.TabIndex = 25;
@@ -1624,7 +1619,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(45, 213);
+            this.label27.Location = new System.Drawing.Point(45, 113);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(74, 13);
             this.label27.TabIndex = 24;
@@ -1770,41 +1765,6 @@
             this.cb_Log1.UseVisualStyleBackColor = true;
             this.cb_Log1.Click += new System.EventHandler(this.log_option_Clicked);
             // 
-            // groupBox14
-            // 
-            this.groupBox14.Controls.Add(this.rb_sw19);
-            this.groupBox14.Controls.Add(this.rb_sw20);
-            this.groupBox14.ForeColor = System.Drawing.Color.White;
-            this.groupBox14.Location = new System.Drawing.Point(18, 29);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(130, 73);
-            this.groupBox14.TabIndex = 12;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "MultiWii SW version";
-            // 
-            // rb_sw19
-            // 
-            this.rb_sw19.AutoSize = true;
-            this.rb_sw19.Location = new System.Drawing.Point(19, 42);
-            this.rb_sw19.Name = "rb_sw19";
-            this.rb_sw19.Size = new System.Drawing.Size(77, 17);
-            this.rb_sw19.TabIndex = 11;
-            this.rb_sw19.Text = "1.9 release";
-            this.rb_sw19.UseVisualStyleBackColor = true;
-            // 
-            // rb_sw20
-            // 
-            this.rb_sw20.AutoSize = true;
-            this.rb_sw20.Checked = true;
-            this.rb_sw20.Location = new System.Drawing.Point(19, 19);
-            this.rb_sw20.Name = "rb_sw20";
-            this.rb_sw20.Size = new System.Drawing.Size(61, 17);
-            this.rb_sw20.TabIndex = 10;
-            this.rb_sw20.TabStop = true;
-            this.rb_sw20.Text = "2.0 dev";
-            this.rb_sw20.UseVisualStyleBackColor = true;
-            this.rb_sw20.CheckedChanged += new System.EventHandler(this.rb_sw20_CheckedChanged);
-            // 
             // b_save_gui_settings
             // 
             this.b_save_gui_settings.BackColor = System.Drawing.Color.Transparent;
@@ -1832,7 +1792,7 @@
             // 
             this.b_select_capture_folder.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_select_capture_folder.ForeColor = System.Drawing.Color.Black;
-            this.b_select_capture_folder.Location = new System.Drawing.Point(12, 178);
+            this.b_select_capture_folder.Location = new System.Drawing.Point(12, 78);
             this.b_select_capture_folder.Name = "b_select_capture_folder";
             this.b_select_capture_folder.Size = new System.Drawing.Size(35, 27);
             this.b_select_capture_folder.TabIndex = 5;
@@ -1843,7 +1803,7 @@
             // l_Capture_folder
             // 
             this.l_Capture_folder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.l_Capture_folder.Location = new System.Drawing.Point(49, 185);
+            this.l_Capture_folder.Location = new System.Drawing.Point(49, 85);
             this.l_Capture_folder.Name = "l_Capture_folder";
             this.l_Capture_folder.Size = new System.Drawing.Size(462, 19);
             this.l_Capture_folder.TabIndex = 4;
@@ -1852,7 +1812,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(46, 172);
+            this.label24.Location = new System.Drawing.Point(46, 72);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(102, 13);
             this.label24.TabIndex = 3;
@@ -1862,7 +1822,7 @@
             // 
             this.b_select_log_folder.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.b_select_log_folder.ForeColor = System.Drawing.Color.Black;
-            this.b_select_log_folder.Location = new System.Drawing.Point(11, 135);
+            this.b_select_log_folder.Location = new System.Drawing.Point(11, 35);
             this.b_select_log_folder.Name = "b_select_log_folder";
             this.b_select_log_folder.Size = new System.Drawing.Size(35, 27);
             this.b_select_log_folder.TabIndex = 2;
@@ -1874,7 +1834,7 @@
             // l_LogFolder
             // 
             this.l_LogFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.l_LogFolder.Location = new System.Drawing.Point(48, 142);
+            this.l_LogFolder.Location = new System.Drawing.Point(48, 42);
             this.l_LogFolder.Name = "l_LogFolder";
             this.l_LogFolder.Size = new System.Drawing.Size(462, 19);
             this.l_LogFolder.TabIndex = 1;
@@ -1883,7 +1843,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(45, 129);
+            this.label20.Location = new System.Drawing.Point(45, 29);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(96, 13);
             this.label20.TabIndex = 0;
@@ -1970,7 +1930,7 @@
             // 
             // rc_expo_control1
             // 
-            this.rc_expo_control1.Location = new System.Drawing.Point(68, 14);
+            this.rc_expo_control1.Location = new System.Drawing.Point(519, 37);
             this.rc_expo_control1.Name = "rc_expo_control1";
             this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
             this.rc_expo_control1.TabIndex = 15;
@@ -2159,6 +2119,81 @@
             this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
             this.attitudeIndicatorInstrumentControl1.Click += new System.EventHandler(this.attitudeIndicatorInstrumentControl1_Click);
             // 
+            // throttle_expo_control1
+            // 
+            this.throttle_expo_control1.Location = new System.Drawing.Point(521, 189);
+            this.throttle_expo_control1.Name = "throttle_expo_control1";
+            this.throttle_expo_control1.Size = new System.Drawing.Size(150, 100);
+            this.throttle_expo_control1.TabIndex = 25;
+            this.throttle_expo_control1.Text = "throttle_expo_control1";
+            // 
+            // trackBar_T_EXPO
+            // 
+            this.trackBar_T_EXPO.AutoSize = false;
+            this.trackBar_T_EXPO.LargeChange = 1;
+            this.trackBar_T_EXPO.Location = new System.Drawing.Point(453, 312);
+            this.trackBar_T_EXPO.Maximum = 100;
+            this.trackBar_T_EXPO.Name = "trackBar_T_EXPO";
+            this.trackBar_T_EXPO.Size = new System.Drawing.Size(224, 20);
+            this.trackBar_T_EXPO.TabIndex = 27;
+            this.trackBar_T_EXPO.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar_T_EXPO.Value = 100;
+            this.trackBar_T_EXPO.Scroll += new System.EventHandler(this.trackBar_T_EXPO_Scroll);
+            // 
+            // trackBar_T_MID
+            // 
+            this.trackBar_T_MID.AutoSize = false;
+            this.trackBar_T_MID.Location = new System.Drawing.Point(453, 295);
+            this.trackBar_T_MID.Maximum = 100;
+            this.trackBar_T_MID.Name = "trackBar_T_MID";
+            this.trackBar_T_MID.Size = new System.Drawing.Size(224, 20);
+            this.trackBar_T_MID.TabIndex = 26;
+            this.trackBar_T_MID.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar_T_MID.Value = 80;
+            this.trackBar_T_MID.Scroll += new System.EventHandler(this.trackBar_T_MID_Scroll);
+            // 
+            // nTMID
+            // 
+            this.nTMID.BackColor = System.Drawing.Color.LightGray;
+            this.nTMID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nTMID.DecimalPlaces = 2;
+            this.nTMID.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nTMID.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nTMID.Location = new System.Drawing.Point(458, 211);
+            this.nTMID.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nTMID.Name = "nTMID";
+            this.nTMID.Size = new System.Drawing.Size(55, 18);
+            this.nTMID.TabIndex = 28;
+            // 
+            // nTEXPO
+            // 
+            this.nTEXPO.BackColor = System.Drawing.Color.LightGray;
+            this.nTEXPO.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nTEXPO.DecimalPlaces = 2;
+            this.nTEXPO.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nTEXPO.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nTEXPO.Location = new System.Drawing.Point(458, 257);
+            this.nTEXPO.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nTEXPO.Name = "nTEXPO";
+            this.nTEXPO.Size = new System.Drawing.Size(55, 18);
+            this.nTEXPO.TabIndex = 29;
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2188,8 +2223,6 @@
             this.tabPagePID.ResumeLayout(false);
             this.tabPagePID.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).EndInit();
-            this.groupBox13.ResumeLayout(false);
-            this.groupBox13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nRCExpo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRCRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackbar_RC_Rate)).EndInit();
@@ -2219,8 +2252,10 @@
             this.tabPageSettings.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
-            this.groupBox14.ResumeLayout(false);
-            this.groupBox14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_EXPO)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_MID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nTMID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2310,7 +2345,6 @@
         private System.Windows.Forms.Button b_pause;
         private MultiWiiGUIControls.rc_input_control rci_Control_settings;
         private System.Windows.Forms.Timer timer_rc;
-        private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.Label label65;
         private System.Windows.Forms.TrackBar trackbar_RC_Rate;
@@ -2371,9 +2405,6 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button b_save_gui_settings;
         private System.Windows.Forms.CheckBox cb_Logging_enabled;
-        private System.Windows.Forms.GroupBox groupBox14;
-        private System.Windows.Forms.RadioButton rb_sw19;
-        private System.Windows.Forms.RadioButton rb_sw20;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button b_about;
         private System.Windows.Forms.Label l_capture_file;
@@ -2396,6 +2427,11 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button b_check_update;
         private System.Windows.Forms.Label l_i2cdatasupress;
+        private System.Windows.Forms.TrackBar trackBar_T_EXPO;
+        private System.Windows.Forms.TrackBar trackBar_T_MID;
+        private MultiWiiGUIControls.throttle_expo_control throttle_expo_control1;
+        private System.Windows.Forms.NumericUpDown nTEXPO;
+        private System.Windows.Forms.NumericUpDown nTMID;
     }
 }
 

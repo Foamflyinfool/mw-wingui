@@ -15,7 +15,7 @@ namespace MultiWiiWinGUI
     {
 
         private int iActualPage = 0;            //Start from here
-        private const int iLastPage = 5;        //Finish Page
+        private const int iLastPage = 4;        //Finish Page
         private GUI_settings Settings;
         const string sGuiSettingsFilename = "gui_settings.xml";
 
@@ -41,16 +41,15 @@ namespace MultiWiiWinGUI
         {
             if (iActualPage == 0) { b_prev.Enabled = false; }
             Settings = new GUI_settings();
+
             //Set default values and fill out gui controls
             Settings.bEnableLogging = false;
-            Settings.iSoftwareVersion = 19;
+            Settings.iSoftwareVersion = 21;
             Settings.sCaptureFolder = Directory.GetCurrentDirectory() + "\\Captures";
             Settings.sLogFolder = Directory.GetCurrentDirectory() + "\\Logs";
             Settings.sSettingsFolder = Directory.GetCurrentDirectory() + "\\Settings";
             Settings.sPreferedSerialSpeed = "115200";
 
-            r_Mw19.Checked = true;
-            
             // scan for serial ports on startup - maybe not needed as better scan on entering page 3
             //setup_scan_Ports();
             // add serial speeds
@@ -92,8 +91,7 @@ namespace MultiWiiWinGUI
                     Settings.sCaptureFolder = l_Captures_folder.Text;
                     Settings.sPreferedSerialSpeed = cb_SerialSpeed.SelectedItem.ToString();
                     Settings.sPreferedComPort = cb_SerialPort.Text;
-                    if (r_Mw19.Checked) { Settings.iSoftwareVersion = 19; }
-                    if (r_Mw20.Checked) { Settings.iSoftwareVersion = 20; }
+                    Settings.iSoftwareVersion = 21; 
                     Settings.bEnableLogging = cb_LogEnabled.Checked;
                     Settings.logGraw = cb_Log1.Checked;
                     Settings.logGatt = cb_Log2.Checked;

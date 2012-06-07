@@ -34,11 +34,6 @@ namespace MultiWiiWinGUI
         public bool logGpar { get; set; }
         public bool logGdbg { get; set; }
 
-        public bool bSupressI2CErrorData { get; set; }
-
-
-
-
 
 
         //Constructor, set default values
@@ -47,9 +42,8 @@ namespace MultiWiiWinGUI
             sLogFolder = Directory.GetCurrentDirectory();
             sCaptureFolder = Directory.GetCurrentDirectory();
             sSettingsFolder = Directory.GetCurrentDirectory();
-            iSoftwareVersion = 19;
+            iSoftwareVersion = 21;
             bEnableLogging = false;
-            bSupressI2CErrorData = false;
         }
 
 
@@ -88,11 +82,6 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("LOGNAV value=\"" + logGnav + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGPAR value=\"" + logGpar + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGDBG value=\"" + logGdbg + "\""); tw.WriteEndElement();
-
-            tw.WriteComment("Change this to TRUE if you using 20120203 release, this will depreciate serial protocol change in SVN r569");
-            tw.WriteComment("This will work only when FCVERSION==20");
-            tw.WriteStartElement("SUPRESSI2CERRORDATA value=\"" + bSupressI2CErrorData + "\""); tw.WriteEndElement();
-
             tw.WriteEndElement();
 
             tw.WriteEndDocument();
@@ -135,8 +124,6 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "lognav", true) == 0 && reader.HasAttributes) { logGnav = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logpar", true) == 0 && reader.HasAttributes) { logGpar = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logdbg", true) == 0 && reader.HasAttributes) { logGdbg = Convert.ToBoolean(reader.GetAttribute("value")); }
-
-                            if (String.Compare(reader.Name, "supressi2cerrordata", true) == 0 && reader.HasAttributes) { bSupressI2CErrorData = Convert.ToBoolean(reader.GetAttribute("value")); }
 
                             break;
                     }
@@ -555,8 +542,6 @@ namespace MultiWiiWinGUI
         public byte DynThrPID;
         public byte ThrottleMID;
         public byte ThrottleEXPO;
-        public byte[] activation1;
-        public byte[] activation2;
         public Int16[] activation;
         public int GPS_distanceToHome;
         public int GPS_directionToHome;
@@ -570,204 +555,31 @@ namespace MultiWiiWinGUI
         public int pMeterSum;
         public int powerTrigger;
         public byte vBat;
-        public int debug1, debug2, debug3,debug4;
+        public int debug1, debug2, debug3, debug4;
 
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
         private bool bCompatibilityMode;
 
         //Constructor
-        public mw_data_gui(int pidItems,int checkboxItems, int iSoftwareVersion, bool bCompatibility)
+        public mw_data_gui(int pidItems, int checkboxItems, int iSoftwareVersion)
         {
             motors = new int[8];
             servos = new int[8];
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
-            activation1 = new byte[checkboxItems];
-            activation2 = new byte[checkboxItems];
 
             activation = new Int16[checkboxItems];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
             iSwVer = iSoftwareVersion;
-            bCompatibilityMode = bCompatibility;
 
 
         }
 
-        public void parse_input_packet( byte[] packet)
-        {
-
-            int o = 2;                  //start offset (M and ver)
-            const int i16 = 2;          //one int16
-
-            #region SwVer = 20
-
-            if (iSwVer == 20)
-            {
-                ax = BitConverter.ToInt16(packet, o); o += i16;
-                ay = BitConverter.ToInt16(packet, o); o += i16;
-                az = BitConverter.ToInt16(packet, o); o += i16;
-
-                gx = BitConverter.ToInt16(packet, o) / 8; o += i16;
-                gy = BitConverter.ToInt16(packet, o) / 8; o += i16;
-                gz = BitConverter.ToInt16(packet, o) / 8; o += i16;
-
-                magx = BitConverter.ToInt16(packet, o) / 3; o += i16;
-                magy = BitConverter.ToInt16(packet, o) / 3; o += i16;
-                magz = BitConverter.ToInt16(packet, o) / 3; o += i16;
-
-                baro = BitConverter.ToInt16(packet, o); o += i16;
-                heading = BitConverter.ToInt16(packet, o); o += i16;
-
-                for (int i = 0; i < 8; i++)
-                {
-                    servos[i] = BitConverter.ToInt16(packet, o); o += i16;
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    motors[i] = BitConverter.ToInt16(packet, o); o += i16;
-                }
-
-                rcRoll = BitConverter.ToInt16(packet, o); o += i16;
-                rcPitch = BitConverter.ToInt16(packet, o); o += i16;
-                rcYaw = BitConverter.ToInt16(packet, o); o += i16;
-                rcThrottle = BitConverter.ToInt16(packet, o); o += i16;
-
-                rcAux1 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux2 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux3 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux4 = BitConverter.ToInt16(packet, o); o += i16;
-
-                present = packet[o++];
-                mode = packet[o++];
-                cycleTime = BitConverter.ToInt16(packet, o); o += i16;
-                //For 20120203dev compatibity
-                if (!bCompatibilityMode) { i2cErrors = BitConverter.ToInt16(packet, o); o += i16; }
-                angx = BitConverter.ToInt16(packet, o) / 10; o += i16;
-                angy = BitConverter.ToInt16(packet, o) / 10; o += i16;
-                multiType = packet[o++];
-
-                for (int i = 0; i < iPIDItems; i++)
-                {
-                    pidP[i] = packet[o++];
-                    pidI[i] = packet[o++];
-                    pidD[i] = packet[o++];
-                }
-                rcRate = packet[o++];
-                rcExpo = packet[o++];
-                RollPitchRate = packet[o++];
-                YawRate = packet[o++];
-                DynThrPID = packet[o++];
-
-                for (int i = 0; i < iCheckBoxItems; i++)
-                {
-                    activation1[i] = packet[o++];
-                    activation2[i] = packet[o++];
-                }
-                GPS_distanceToHome = BitConverter.ToInt16(packet, o); o += i16;
-                GPS_directionToHome = BitConverter.ToInt16(packet, o); o += i16;
-                GPS_numSat = packet[o++];
-                GPS_fix = packet[o++];
-                GPS_update = packet[o++];
-                pMeterSum = BitConverter.ToInt16(packet, o); o += i16;
-                powerTrigger = BitConverter.ToInt16(packet, o); o += i16;
-                vBat = packet[o++];
-
-                debug1 = BitConverter.ToInt16(packet, o); o += i16;
-                debug2 = BitConverter.ToInt16(packet, o); o += i16;
-                debug3 = BitConverter.ToInt16(packet, o); o += i16;
-                debug4 = BitConverter.ToInt16(packet, o); o += i16;
-            }
-            #endregion
-
-            #region SwVer = 19
-
-            if (iSwVer == 19)
-            {
-                ax = BitConverter.ToInt16(packet, o); o += i16;
-                ay = BitConverter.ToInt16(packet, o); o += i16;
-                az = BitConverter.ToInt16(packet, o); o += i16;
-
-                gx = BitConverter.ToInt16(packet, o); o += i16;
-                gy = BitConverter.ToInt16(packet, o); o += i16;
-                gz = BitConverter.ToInt16(packet, o); o += i16;
-
-                magx = BitConverter.ToInt16(packet, o); o += i16;
-                magy = BitConverter.ToInt16(packet, o); o += i16;
-                magz = BitConverter.ToInt16(packet, o); o += i16;
-
-                baro = BitConverter.ToInt16(packet, o); o += i16;
-                heading = BitConverter.ToInt16(packet, o); o += i16;
-
-                for (int i = 0; i < 4; i++)
-                {
-                    servos[i] = BitConverter.ToInt16(packet, o); o += i16;
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    motors[i] = BitConverter.ToInt16(packet, o); o += i16;
-                }
-
-                rcRoll = BitConverter.ToInt16(packet, o); o += i16;
-                rcPitch = BitConverter.ToInt16(packet, o); o += i16;
-                rcYaw = BitConverter.ToInt16(packet, o); o += i16;
-                rcThrottle = BitConverter.ToInt16(packet, o); o += i16;
-
-                rcAux1 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux2 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux3 = BitConverter.ToInt16(packet, o); o += i16;
-                rcAux4 = BitConverter.ToInt16(packet, o); o += i16;
-
-                present = packet[o++];
-                mode = packet[o++];
-                cycleTime = BitConverter.ToInt16(packet, o); o += i16;
-                angx = BitConverter.ToInt16(packet, o); o += i16;
-                angy = BitConverter.ToInt16(packet, o); o += i16;
-                multiType = packet[o++];
-
-                for (int i = 0; i < 5; i++)
-                {
-                    pidP[i] = packet[o++];
-                    pidI[i] = packet[o++];
-                    pidD[i] = packet[o++];
-                }
-                pidP[5] = packet[o++];          //Level P
-                pidI[5] = packet[o++];          //level I
-                pidP[6] = packet[o++];          //Mag P
-                rcRate = packet[o++];
-                rcExpo = packet[o++];
-                RollPitchRate = packet[o++];
-                YawRate = packet[o++];
-                DynThrPID = packet[o++];
-
-                for (int i = 0; i < iCheckBoxItems; i++)
-                {
-                    activation1[i] = packet[o++];
-                    //activation2[i] = packet[o++];
-                }
-                GPS_distanceToHome = BitConverter.ToInt16(packet, o); o += i16;
-                GPS_directionToHome = BitConverter.ToInt16(packet, o); o += i16;
-                GPS_numSat = packet[o++];
-                GPS_fix = packet[o++];
-                GPS_update = packet[o++];
-                pMeterSum = BitConverter.ToInt16(packet, o); o += i16;
-                powerTrigger = BitConverter.ToInt16(packet, o); o += i16;
-                vBat = packet[o++];
-
-                debug1 = BitConverter.ToInt16(packet, o); o += i16;
-                debug2 = BitConverter.ToInt16(packet, o); o += i16;
-                debug3 = BitConverter.ToInt16(packet, o); o += i16;
-                debug4 = BitConverter.ToInt16(packet, o); o += i16;
-            }
-            #endregion
-
-        }
 
     }
-#endregion
-
-
 }
+    #endregion

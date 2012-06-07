@@ -54,21 +54,9 @@ namespace MultiWiiWinGUI
         const int iPacketSizeM20 = 155;             //M answer packet size for ver latest head
         const int iPacketSizeM19 = 125;             //M answer packet size for ver 1.9
         static int iPacketSizeM;                    //This will contain packet size 
-        const string sRelName20 = "2.0";
-        const string sRelName19 = "1.9";
-        static string sRelName;
+        const string sRelName = "2.1";
 
-        //PID value positions is serial stream
-        static byte PID_ROLL;
-        static byte PID_PITCH;
-        static byte PID_YAW;
-        static byte PID_ALT;
-        static byte PID_VEL;
-        static byte PID_GPS;
-        static byte PID_LEVEL;
-        static byte PID_MAG;
-
-
+        //PID values
         static PID[] Pid;
 
 
@@ -91,8 +79,8 @@ namespace MultiWiiWinGUI
 
         static string[] option_names;
         static string[] option_desc;
-        static byte[] rcOptions1;               //The aux checkbox states are consolidates into these variable (for enable write to FC)
-        static byte[] rcOptions2;
+        //static byte[] rcOptions1;               //The aux checkbox states are consolidates into these variable (for enable write to FC)
+        //static byte[] rcOptions2;
 
         static LineItem curve_acc_roll, curve_acc_pitch, curve_acc_z;
         static LineItem curve_gyro_roll, curve_gyro_pitch, curve_gyro_yaw;
@@ -205,40 +193,14 @@ namespace MultiWiiWinGUI
             sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
 
-            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion,gui_settings.bSupressI2CErrorData);
+            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
 
             mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
 
-            //Define FC version dependant thingys :D
-            if (gui_settings.iSoftwareVersion == 20)
-            {
-                PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_GPS = 5; PID_LEVEL = 6; PID_MAG = 7;
-                iPacketSizeM = iPacketSizeM20;
-                sRelName = sRelName20;
-                splash.sFcVersionLabel = "MultiWii version " + sRelName20;
-                if (gui_settings.bSupressI2CErrorData)
-                {
-                    l_i2cdatasupress.Text = "dev20120203 combatibity mode enabled";
-                    iPacketSizeM = 153;     //This is hardcoded and eventually will be removed once MultiWii 2.0 is released
-                    splash.sFcVersionLabel += Environment.NewLine + "20120203 compatibility mode";
-                }
-                splash.Refresh();
+            splash.sFcVersionLabel = "MultiWii version " + sRelName;
+            splash.Refresh();
 
-
-            }
-            if (gui_settings.iSoftwareVersion == 19)
-            {
-                PID_ROLL = 0; PID_PITCH = 1; PID_YAW = 2; PID_ALT = 3; PID_VEL = 4; PID_LEVEL = 5; PID_MAG = 6;
-                iPacketSizeM = iPacketSizeM19;
-                sRelName = sRelName19;
-                //nPID_level_d.Visible = false;
-                //groupBoxGPS.Visible = false;
-                splash.sFcVersionLabel = "MultiWii version " + sRelName19;
-                splash.Refresh();
-
-            }
-
-            bSerialBuffer = new byte[iPacketSizeM];
+            bSerialBuffer = new byte[65];
 
             ToolTip toolTip1 = new ToolTip();
             toolTip1.AutoPopDelay = 5000;
@@ -246,8 +208,8 @@ namespace MultiWiiWinGUI
             toolTip1.ReshowDelay = 500;
             toolTip1.ShowAlways = true;
 
-            rcOptions1 = new byte[iCheckBoxItems];
-            rcOptions2 = new byte[iCheckBoxItems];
+            //rcOptions1 = new byte[iCheckBoxItems];
+            //rcOptions2 = new byte[iCheckBoxItems];
 
             //Fill out settings tab
             l_Capture_folder.Text = gui_settings.sCaptureFolder;
@@ -255,18 +217,6 @@ namespace MultiWiiWinGUI
             l_Settings_folder.Text = gui_settings.sSettingsFolder;
 
             cb_Logging_enabled.Checked = gui_settings.bEnableLogging;
-            switch (gui_settings.iSoftwareVersion)
-            {
-                case 19:
-                    rb_sw19.Checked = true;
-                    break;
-                case 20:
-                    rb_sw20.Checked = true;
-                    break;
-                default:
-                    rb_sw20.Checked = true;
-                    break;
-            }
 
             //Set log enties checkboxes
             cb_Log1.Checked = gui_settings.logGraw;
@@ -646,12 +596,11 @@ namespace MultiWiiWinGUI
 
         private void timer_rc_Tick(object sender, EventArgs e)
         {
-            //Since it's not time critical we can wait for the pervious operation to completed
+
             MSPquery(MSP_RC);
             MSPquery(MSP_BOX);
 
             update_gui();
-            //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
 
@@ -664,11 +613,7 @@ namespace MultiWiiWinGUI
             MSPquery(MSP_RAW_GPS); MSPquery(MSP_COMP_GPS); MSPquery(MSP_ATTITUDE);
             MSPquery(MSP_ALTITUDE); MSPquery(MSP_BAT); MSPquery(MSP_BOX);
             MSPquery(MSP_MISC); MSPquery(MSP_DEBUG);
-
-            
-            
             update_gui();
-            //if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
         }
 
@@ -677,7 +622,7 @@ namespace MultiWiiWinGUI
             //Check if we at GUI Settings, go to first screen when connect
             if (tabMain.SelectedIndex == 4) { tabMain.SelectedIndex = 0; }
 
-            if (serialPort.IsOpen)
+            if (serialPort.IsOpen)              //Disconnect
             {
                 b_connect.Text = "Connect";
                 isConnected = false;
@@ -692,7 +637,7 @@ namespace MultiWiiWinGUI
                     wLogStream.Dispose();
                 }
             }
-            else
+            else                               //Connect
             {
 
                 if (cb_serial_port.Text == "") { return; }  //if no port selected then do nothin' at connect
@@ -719,6 +664,7 @@ namespace MultiWiiWinGUI
                 {
                     wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
                 }
+
                 MSPquery(MSP_PID);
                 MSPquery(MSP_RC_TUNING);
                 MSPquery(MSP_IDENT);
@@ -729,7 +675,8 @@ namespace MultiWiiWinGUI
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
                 if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
                 if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(1000);
+
                 bOptions_needs_refresh = true;
                 update_gui();
 
@@ -1167,8 +1114,6 @@ namespace MultiWiiWinGUI
                                             ptr = 0;
                                             for (int i = 0; i < iCheckBoxItems; i++)
                                             {
-                                                //mw_gui.activation1[i] = (byte)inBuf[ptr++];
-                                                //mw_gui.activation2[i] = (byte)inBuf[ptr++];
                                                 mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                                             }
                                             break;
@@ -1446,14 +1391,14 @@ namespace MultiWiiWinGUI
                 
                 //Update mode lamps
 
-                    indLEVEL.SetStatus((mw_gui.activation2[0] & 128) != 0);             //0
-                    indALTHOLD.SetStatus((mw_gui.activation2[1] & 128) != 0);           //1
-                    indHHOLD.SetStatus((mw_gui.activation2[2] & 128) != 0);             //2
-                    indRTH.SetStatus((mw_gui.activation2[6] & 128) != 0);
-                    indPOS.SetStatus((mw_gui.activation2[7] & 128) != 0);
-                    indARM.SetStatus((mw_gui.activation2[5] & 128) != 0);
-                    indHFREE.SetStatus((mw_gui.activation2[9] & 128) != 0);
-                    indPASST.SetStatus((mw_gui.activation2[8] & 128) != 0);
+                //    indLEVEL.SetStatus((mw_gui.activation2[0] & 128) != 0);             //0
+                //    indALTHOLD.SetStatus((mw_gui.activation2[1] & 128) != 0);           //1
+                //    indHHOLD.SetStatus((mw_gui.activation2[2] & 128) != 0);             //2
+                //    indRTH.SetStatus((mw_gui.activation2[6] & 128) != 0);
+                //    indPOS.SetStatus((mw_gui.activation2[7] & 128) != 0);
+                //    indARM.SetStatus((mw_gui.activation2[5] & 128) != 0);
+                //    indHFREE.SetStatus((mw_gui.activation2[9] & 128) != 0);
+                //    indPASST.SetStatus((mw_gui.activation2[8] & 128) != 0);
 
                 l_cycletime.Text = String.Format("{0:0000} µs", mw_gui.cycleTime);
                 l_vbatt.Text = String.Format("{0:0.0} volts", (double)mw_gui.vBat / 10);
@@ -1474,8 +1419,6 @@ namespace MultiWiiWinGUI
 
             cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; 
 
-//            if (cb.aux < 2) { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation1[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; }
-//            else { cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation2[cb.item] & (1 << (cb.aux - 2) * 3 + cb.rclevel)) == 0) ? true : false; }
         }
 
         private void b_stop_live_rc_Click(object sender, EventArgs e)
@@ -1486,10 +1429,6 @@ namespace MultiWiiWinGUI
                 b_pause.ForeColor = Color.Red;
                 b_stop_live_rc.Text = "Start Live Read";
                 timer_rc.Stop();
-                //System.Threading.Thread.Sleep(300);         //Wait for 1 cycle to let backgroundworker finish it's last job.
-                //Cleanup highlighting
-                //for (int b = 0; b < iCheckBoxItems; b++) { cb_labels[b].BackColor = Color.Transparent; }
-                //for (int a = 0; a < 4; a++) { for (int b = 0; b < 3; b++) { lmh_labels[a, b].BackColor = Color.Transparent; } }
                 rci_Control_settings.SetRCInputParameters(0, 0, 0, 0, 0, 0, 0, 0);
 
             }
@@ -1564,6 +1503,8 @@ namespace MultiWiiWinGUI
 
             mw_params.rcExpo = (byte)(nRCExpo.Value * 100);
             mw_params.rcRate = (byte)(nRCRate.Value * 100);
+            mw_params.ThrottleMID = (byte)(nTMID.Value * 100);
+            mw_params.ThrottleEXPO = (byte)(nTEXPO.Value * 100);
 
             mw_params.PowerTrigger = (int)nPAlarm.Value;
 
@@ -1592,23 +1533,23 @@ namespace MultiWiiWinGUI
             //Stop all timers
             timer_realtime.Stop();
             timer_rc.Stop();
-            //while (bkgWorker.IsBusy)                    //Wait bkgWorker to completed
-            //{
-            //    Application.DoEvents();
-            //}
+            
             update_params();                            //update parameters object from GUI controls.
+
             mw_params.write_settings(serialPort);
             System.Threading.Thread.Sleep(1000);
-            //Invalidate gui parameters and reread those values
-            bOptions_needs_refresh = true;
-            while (bkgWorker.IsBusy)
-            {
-                Application.DoEvents();
-            }
-            bkgWorker.RunWorkerAsync();
 
+            MSPquery(MSP_PID);
+            MSPquery(MSP_RC_TUNING);
+            MSPquery(MSP_IDENT);
+            MSPquery(MSP_BOX);
+            MSPquery(MSP_MISC);
+            //Invalidate gui parameters and reread those values
             timer_rc.Enabled = timer_rc_state;
             timer_realtime.Enabled = timer_rt_state;
+
+            System.Threading.Thread.Sleep(200);
+            bOptions_needs_refresh = true;
 
         }
 
@@ -1680,6 +1621,12 @@ namespace MultiWiiWinGUI
             nRCRate.Value = (decimal)mw_gui.rcRate / 100;
             rc_expo_control1.SetRCExpoParameters((double)mw_gui.rcRate / 100, (double)mw_gui.rcExpo / 100);
 
+            nTEXPO.Value = (decimal)mw_params.ThrottleEXPO / 100;
+            trackBar_T_EXPO.Value = mw_params.ThrottleEXPO;
+            nTMID.Value = (decimal)mw_params.ThrottleMID / 100;
+            trackBar_T_MID.Value = mw_params.ThrottleMID;
+
+
             nPAlarm.Value = mw_gui.powerTrigger;
 
 
@@ -1722,6 +1669,12 @@ namespace MultiWiiWinGUI
             trackbar_RC_Rate.Value = mw_params.rcRate;
             nRCRate.Value = (decimal)mw_params.rcRate / 100;
             rc_expo_control1.SetRCExpoParameters((double)mw_params.rcRate / 100, (double)mw_params.rcExpo / 100);
+
+            nTEXPO.Value = (decimal)mw_params.ThrottleEXPO / 100;
+            trackBar_T_EXPO.Value = mw_params.ThrottleEXPO;
+            nTMID.Value = (decimal)mw_params.ThrottleMID / 100;
+            trackBar_T_MID.Value = mw_params.ThrottleMID;
+            throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100);
 
             nPAlarm.Value = mw_params.PowerTrigger;
 
@@ -1920,8 +1873,6 @@ namespace MultiWiiWinGUI
         private void b_save_gui_settings_Click(object sender, EventArgs e)
         {
 
-            if (rb_sw19.Checked) { gui_settings.iSoftwareVersion = 19; }
-            if (rb_sw20.Checked) { gui_settings.iSoftwareVersion = 20; }
             gui_settings.save_to_xml(sGuiSettingsFilename);
             b_save_gui_settings.BackColor = Color.Transparent;
             //Save settings to the settings file
@@ -1935,15 +1886,6 @@ namespace MultiWiiWinGUI
             }
         }
 
-        private void rb_sw20_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rb_sw20.Checked && gui_settings.iSoftwareVersion == 20) { bRestartNeeded = false; b_save_gui_settings.BackColor = Color.Transparent; return; }  //no change
-            if (rb_sw19.Checked && gui_settings.iSoftwareVersion == 19) { bRestartNeeded = false; b_save_gui_settings.BackColor = Color.Transparent; return; }
-            b_save_gui_settings.BackColor = Color.LightCoral;
-            bRestartNeeded = true;                              //Restart required when changing MW Software version            
-
-        }
-
         private void cb_Logging_enabled_Click(object sender, EventArgs e)
         {
             gui_settings.bEnableLogging = cb_Logging_enabled.Checked;
@@ -1954,12 +1896,7 @@ namespace MultiWiiWinGUI
         {
             frmAbout aboutform = new frmAbout();
             aboutform.sVersionLabel = sVersion;
-            if (gui_settings.iSoftwareVersion == 20)
-            {
-                aboutform.sFcVersionLabel = "MultiWii version " + sRelName20;
-                if (gui_settings.bSupressI2CErrorData) { aboutform.sFcVersionLabel += Environment.NewLine + "20120203 compatibility mode"; }
-            }
-            if (gui_settings.iSoftwareVersion == 19) { aboutform.sFcVersionLabel = "MultiWii version " + sRelName19; }
+            aboutform.sFcVersionLabel = "MultiWii version " + sRelName;
             aboutform.ShowDialog();
         }
 
@@ -2013,12 +1950,6 @@ namespace MultiWiiWinGUI
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //textBox1.Text += "$M<" + (char)MSP_RC";
-            serialPort.Write("$M<" + (char)MSP_RC);
-            if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
-        }
 
         private void MSPquery(int command)
         {
@@ -2041,6 +1972,21 @@ namespace MultiWiiWinGUI
 
             return (0);
         }
+
+        private void trackBar_T_MID_Scroll(object sender, EventArgs e)
+        {
+            nTMID.Value = (decimal)trackBar_T_MID.Value / 100;
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+        }
+
+        private void trackBar_T_EXPO_Scroll(object sender, EventArgs e)
+        {
+            nTEXPO.Value = (decimal)trackBar_T_EXPO.Value / 100;
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+        }
+
+
+
 
     }
 
