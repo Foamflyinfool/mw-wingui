@@ -113,6 +113,9 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MWGUIControls\throttle_expo_control.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="setup_wizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,7 +244,6 @@
     <Content Include="Captures\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui_settings.xml" />
     <Content Include="logfields.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -249,11 +251,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mwwingui.ico" />
-    <Content Include="optionsconfig19.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="optionsconfig20.xml">
+    <Content Include="optionsconfig21.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Settings\.placeholder.txt">
