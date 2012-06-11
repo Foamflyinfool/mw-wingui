@@ -133,9 +133,9 @@ namespace MultiWiiGUIControls
                         pe.Graphics.FillRectangle(drawBrushGreen, coord_tri[i, 0], coord_tri[i, 1] - h, 10, h);
                         pe.Graphics.DrawString(String.Format("{0:0}", motorvals[i]), drawFont, drawBrush, coord_tri[i, 0] + 12, coord_tri[i, 1] - 10);
                     }
-                    l = (int)((servovals[0] - 900) * (float)(coord_tri[3, 2] / 1200.0f));
+                    l = (int)((servovals[5] - 900) * (float)(coord_tri[3, 2] / 1200.0f));
                     pe.Graphics.FillRectangle(drawBrushGreen, coord_tri[3, 0], coord_tri[3, 1] - 10, l, 10);
-                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[0]), drawFont, drawBrush, coord_tri[3, 0], coord_tri[3, 1]);  //??? is servo 0 in new gui also?
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[5]), drawFont, drawBrush, coord_tri[3, 0], coord_tri[3, 1]);  
                     break;
                 case CopterType.Gimbal:
                     bmpGimbal.MakeTransparent(Color.Yellow);

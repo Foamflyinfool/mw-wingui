@@ -228,7 +228,7 @@ namespace MultiWiiWinGUI
         public string comment;
 
 
-        private string[] pidnames;
+        public string[] pidnames;
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
 
@@ -276,9 +276,7 @@ namespace MultiWiiWinGUI
             iCheckBoxItems = checkboxItems;
             iSwVer = iSoftwareVersion;
 
-            if (iSoftwareVersion == 20) { pidnames = new String[] { "ROLL", "PITCH", "YAW", "ALT", "VEL", "GPS", "LEVEL", "MAG" }; }
-            if (iSoftwareVersion == 19) { pidnames = new String[] { "ROLL", "PITCH", "YAW", "ALT", "VEL", "LEVEL", "MAG" }; }
-
+            pidnames = new string[pidItems];
 
         }
 
@@ -394,9 +392,8 @@ namespace MultiWiiWinGUI
             Version ver = assemName.Version;
             tw.WriteComment(String.Format("{0}, Version {1}", assemName.Name, ver.ToString()));
             tw.WriteComment("MultiWii FC Parameters file");
-            if (iSwVer == 20) { tw.WriteComment("MultiWii FC software revision DEV20120203"); }
-            if (iSwVer == 19) { tw.WriteComment("MultiWii FC software revision 1.9 released"); }
-
+            tw.WriteComment("MultiWii FC software revision 2.1dev"); 
+            
             tw.WriteStartElement("PARAMETERS");
 
             tw.WriteStartElement("VERSION value=\"" + iSwVer + "\""); tw.WriteEndElement();
@@ -416,6 +413,8 @@ namespace MultiWiiWinGUI
 
             tw.WriteStartElement("RCRATE value=\"" + rcRate + "\""); tw.WriteEndElement();
             tw.WriteStartElement("RCEXPO value=\"" + rcExpo + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("THMID value=\"" + ThrottleMID + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("THEXPO value=\"" + ThrottleMID + "\""); tw.WriteEndElement();
             tw.WriteStartElement("ROLLPITCHRATE value=\"" + RollPitchRate + "\""); tw.WriteEndElement();
             tw.WriteStartElement("YAWRATE value=\"" + YawRate + "\""); tw.WriteEndElement();
             tw.WriteStartElement("DYNTHRPID value=\"" + DynThrPID + "\""); tw.WriteEndElement();
@@ -468,6 +467,8 @@ namespace MultiWiiWinGUI
                                 }
                                 if (String.Compare(reader.Name, "rcrate", true) == 0 && reader.HasAttributes) { rcRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "rcexpo", true) == 0 && reader.HasAttributes) { rcExpo = Convert.ToByte(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "thmid", true) == 0 && reader.HasAttributes) { ThrottleMID = Convert.ToByte(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "thexpo", true) == 0 && reader.HasAttributes) { ThrottleEXPO  = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "rollpitchrate", true) == 0 && reader.HasAttributes) { RollPitchRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "yawrate", true) == 0 && reader.HasAttributes) { YawRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "dynthrpid", true) == 0 && reader.HasAttributes) { DynThrPID = Convert.ToByte(reader.GetAttribute("value")); }
