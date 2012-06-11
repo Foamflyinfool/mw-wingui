@@ -92,8 +92,15 @@
     <Reference Include="AForge.Video.FFMPEG">
       <HintPath>.\AForge.Video.FFMPEG.dll</HintPath>
     </Reference>
+    <Reference Include="GMap.NET.Core">
+      <HintPath>..\..\..\Gmap\GMap.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GMap.NET.WindowsForms">
+      <HintPath>..\..\..\Gmap\GMap.NET.WindowsForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -253,7 +260,19 @@
     <Content Include="mwwingui.ico" />
     <Content Include="optionsconfig21.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
+    <None Include="Resources\disconnect.png" />
+    <None Include="Resources\connect.png" />
+    <None Include="Resources\read_settings.png" />
+    <None Include="Resources\write_settings.png" />
+    <None Include="Resources\write_to_file.png" />
+    <None Include="Resources\load_from_file.png" />
+    <None Include="Resources\logbrowser.png" />
+    <None Include="Resources\start_log.png" />
+    <None Include="Resources\stop_log.png" />
+    <None Include="Resources\about.png" />
+    <None Include="Resources\earth-3.png" />
     <Content Include="Settings\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -283,9 +302,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
