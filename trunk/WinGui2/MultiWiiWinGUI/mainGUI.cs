@@ -32,6 +32,7 @@ using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using GMap.NET.MapProviders;
+using System.Globalization;
 
 namespace MultiWiiWinGUI
 {
@@ -75,7 +76,7 @@ namespace MultiWiiWinGUI
         static byte[] bSerialBuffer;
 
         static int iCheckBoxItems = 0;                          //number of checkboxItems (readed from optionsconfig.xml
-        static int iPidItems = 9;                                //number if Pid items (const definition)
+        static int iPidItems = 0;                                //number if Pid items (const definition)
         static mw_data_gui mw_gui;
         static mw_settings mw_params;
         static GUI_settings gui_settings;
@@ -107,6 +108,8 @@ namespace MultiWiiWinGUI
         System.Windows.Forms.Label[] cb_labels;
         System.Windows.Forms.Label[] aux_labels;
         System.Windows.Forms.Label[,] lmh_labels;
+        
+        CultureInfo culture = new CultureInfo("en-US");
 
 
         XmlTextReader reader;
@@ -432,8 +435,8 @@ namespace MultiWiiWinGUI
             const int iRow2 = 125;
             const int iRow3 = 220;
             const int iTopY = 25;
-            Font fontField = new Font(FontFamily.GenericSansSerif,9,FontStyle.Bold);
-            Size fieldSize = new Size(70, 18);
+            Font fontField = new Font("Tahoma", 9, FontStyle.Bold);
+            Size fieldSize = new Size(70, 25);
 
             for (int i = 0; i < iPidItems; i++)
             {
@@ -940,6 +943,8 @@ namespace MultiWiiWinGUI
                             }
 
 
+
+
                             if (String.Compare(reader.Name, "pid", true) == 0 && reader.HasAttributes)
                             {
                                 reader.MoveToAttribute("id");
@@ -958,9 +963,9 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Pshown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Pmin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                Pid[iPidID].Pmin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Pmax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                Pid[iPidID].Pmax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Pprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
@@ -971,9 +976,9 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Ishown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Imin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                Pid[iPidID].Imin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Imax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                Pid[iPidID].Imax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Iprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
@@ -984,9 +989,9 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Dshown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Dmin = Convert.ToDecimal(reader.GetAttribute("min"));
+                                Pid[iPidID].Dmin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Dmax = Convert.ToDecimal(reader.GetAttribute("max"));
+                                Pid[iPidID].Dmax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Dprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
@@ -1274,7 +1279,7 @@ namespace MultiWiiWinGUI
                             }
                             switch ((char)c)
                             {
-                                case '$':                                         //header detection $MW>
+                                case '$':                                         //header detection $M>
                                     if (stateMSP == 0) stateMSP++;
                                     break;
                                 case 'M':
