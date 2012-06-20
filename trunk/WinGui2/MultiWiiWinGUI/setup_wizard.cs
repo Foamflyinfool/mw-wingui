@@ -75,6 +75,10 @@ namespace MultiWiiWinGUI
             cb_Log9.Checked = Settings.logGpar;
             cb_Log10.Checked = Settings.logGdbg;
 
+
+
+
+
         }
 
 
