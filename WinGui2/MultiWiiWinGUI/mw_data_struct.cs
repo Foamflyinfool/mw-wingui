@@ -35,6 +35,21 @@ namespace MultiWiiWinGUI
         public bool logGdbg { get; set; }
 
 
+        public byte MSP_STATUS_rate_divider { get; set; }
+        public byte MSP_RAW_IMU_rate_divider { get; set; }
+        public byte MSP_SERVO_rate_divider { get; set; }
+        public byte MSP_MOTOR_rate_divider { get; set; }
+        public byte MSP_RAW_GPS_rate_divider { get; set; }
+        public byte MSP_COMP_GPS_rate_divider { get; set; }
+        public byte MSP_ATTITUDE_rate_divider { get; set; }
+        public byte MSP_ALTITUDE_rate_divider { get; set; }
+        public byte MSP_BAT_rate_divider { get; set; }
+        public byte MSP_RC_rate_divider { get; set; }
+        public byte MSP_MISC_rate_divider { get; set; }
+        public byte MSP_DEBUG_rate_divider { get; set; }
+
+
+
 
         //Constructor, set default values
         public GUI_settings()
@@ -44,6 +59,25 @@ namespace MultiWiiWinGUI
             sSettingsFolder = Directory.GetCurrentDirectory();
             iSoftwareVersion = 21;
             bEnableLogging = false;
+
+            //Refreh rate dividers (based on 20Hz refresh rate)
+            // 1 = 20Hz, 2=10Hz, 4=5Hz, 8=2.5Hz 10=2Hz 20=1Hz
+
+            MSP_STATUS_rate_divider = 10;
+            MSP_RAW_IMU_rate_divider = 1;
+            MSP_SERVO_rate_divider = 4;
+            MSP_MOTOR_rate_divider = 4;
+            MSP_RAW_GPS_rate_divider = 2;
+            MSP_COMP_GPS_rate_divider = 2;
+            MSP_ATTITUDE_rate_divider = 1;
+            MSP_ALTITUDE_rate_divider = 10;
+            MSP_BAT_rate_divider = 20;
+            MSP_RC_rate_divider = 2;
+            MSP_MISC_rate_divider = 10;
+            MSP_DEBUG_rate_divider = 2;
+
+
+
         }
 
 
@@ -82,11 +116,28 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("LOGNAV value=\"" + logGnav + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGPAR value=\"" + logGpar + "\""); tw.WriteEndElement();
             tw.WriteStartElement("LOGDBG value=\"" + logGdbg + "\""); tw.WriteEndElement();
+
+            tw.WriteStartElement("MSP_STATUS_RATE_DIV value=\"" + MSP_STATUS_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_RAW_IMU_RATE_DIV value=\"" + MSP_RAW_IMU_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_SERVO_RATE_DIV value=\"" + MSP_SERVO_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_MOTOR_RATE_DIV value=\"" + MSP_MOTOR_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_RAW_GPS_RATE_DIV value=\"" + MSP_RAW_GPS_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_COMP_GPS_RATE_DIV value=\"" + MSP_COMP_GPS_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_ATTITUDE_RATE_DIV value=\"" + MSP_ATTITUDE_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_ALTITUDE_RATE_DIV value=\"" + MSP_ALTITUDE_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_BAT_RATE_DIV value=\"" + MSP_BAT_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_RC_RATE_DIV value=\"" + MSP_RC_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_MISC_RATE_DIV value=\"" + MSP_MISC_rate_divider + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MSP_DEBUG_RATE_DIV value=\"" + MSP_DEBUG_rate_divider + "\""); tw.WriteEndElement();
+
+
+
             tw.WriteEndElement();
 
             tw.WriteEndDocument();
             tw.Close();
         }
+
 
         public bool read_from_xml(string filename)
         {
@@ -124,6 +175,21 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "lognav", true) == 0 && reader.HasAttributes) { logGnav = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logpar", true) == 0 && reader.HasAttributes) { logGpar = Convert.ToBoolean(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "logdbg", true) == 0 && reader.HasAttributes) { logGdbg = Convert.ToBoolean(reader.GetAttribute("value")); }
+
+                            if (String.Compare(reader.Name, "msp_status_rate_divider", true) == 0 && reader.HasAttributes) { MSP_STATUS_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_raw_imu_rate_divider", true) == 0 && reader.HasAttributes) { MSP_RAW_IMU_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_servo_rate_divider", true) == 0 && reader.HasAttributes) { MSP_SERVO_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_motor_rate_divider", true) == 0 && reader.HasAttributes) { MSP_MOTOR_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_raw_gps_rate_divider", true) == 0 && reader.HasAttributes) { MSP_RAW_GPS_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_comp_gps_rate_divider", true) == 0 && reader.HasAttributes) { MSP_COMP_GPS_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_attitude_rate_divider", true) == 0 && reader.HasAttributes) { MSP_ATTITUDE_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_altitude_rate_divider", true) == 0 && reader.HasAttributes) { MSP_ALTITUDE_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_bat_rate_divider", true) == 0 && reader.HasAttributes) { MSP_BAT_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_rc_rate_divider", true) == 0 && reader.HasAttributes) { MSP_RC_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_misc_rate_divider", true) == 0 && reader.HasAttributes) { MSP_MISC_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "msp_debug_rate_divider", true) == 0 && reader.HasAttributes) { MSP_DEBUG_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
+
+
 
                             break;
                     }
@@ -308,7 +374,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = DynThrPID;
                 buffer[bptr++] = ThrottleMID;
                 buffer[bptr++] = ThrottleEXPO;
-                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
@@ -326,7 +392,7 @@ namespace MultiWiiWinGUI
                     buffer[bptr++] = pidI[i];
                     buffer[bptr++] = pidD[i];
                 }
-                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
@@ -345,7 +411,7 @@ namespace MultiWiiWinGUI
                     buffer[bptr++] = (byte)(activation[i] & 0x00ff);
                     buffer[bptr++] = (byte)((activation[i] >> 8) & 0x00ff);
                 }
-                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
@@ -364,17 +430,23 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)(PowerTrigger & 0x00ff);
                 buffer[bptr++] = (byte)((PowerTrigger >> 8) & 0x00ff);
 
-                for (int i = 5; i < bptr; i++) checksum ^= buffer[i];
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
 
-                bptr = 0;
-                buffer[bptr++] = (byte)'$';
-                buffer[bptr++] = (byte)'M';
-                buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = (byte)MSP_EEPROM_WRITE;
-                serialport.Write(buffer, 0, bptr);
+                byte c = 0;
+                byte[] o;
+                o = new byte[10];
+                // with checksum 
+                o[0] = (byte)'$';
+                o[1] = (byte)'M';
+                o[2] = (byte)'<';
+                o[3] = (byte)0; c ^= o[3];       //no payload 
+                o[4] = (byte)MSP_EEPROM_WRITE; c ^= o[4];
+                o[5] = (byte)c;
+                serialport.Write(o, 0, 6);
+
 
             }
         }
@@ -526,13 +598,15 @@ namespace MultiWiiWinGUI
         public int rcRoll, rcPitch, rcYaw, rcThrottle;
         public int rcAux1, rcAux2, rcAux3, rcAux4;
         public int present;            //What sensors are present?
-        public int mode;               //What mode are we in ?
+        public UInt32 mode;               //What mode are we in ?
         public int i2cErrors;
         public int cycleTime;
         public int angx;                //Must be /10
         public int angy;                //Must be /10
         public byte multiType;
         public byte version;
+        public byte protocol_version;
+        public Int32 capability;
         public byte[] pidP;
         public byte[] pidI;
         public byte[] pidD;
