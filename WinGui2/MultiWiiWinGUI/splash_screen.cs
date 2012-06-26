@@ -24,12 +24,17 @@ namespace MultiWiiWinGUI
             set { this.l_mwver.Text = value; }
         }
 
-
+        public string sStatus
+        {
+            get { return this.lStatus.Text; }
+            set { this.lStatus.Text = value; }
+        }
 
         public splash_screen()
         {
             InitializeComponent();
             l_full_version.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            lStatus.Text = "Initializing...";
         }
 
     }

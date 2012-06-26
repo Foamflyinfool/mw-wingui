@@ -67,6 +67,13 @@ namespace MultiWiiWinGUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap back_arrow {
+            get {
+                object obj = ResourceManager.GetObject("back_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap checkbox_legend {
             get {
                 object obj = ResourceManager.GetObject("checkbox_legend", resourceCulture);
@@ -95,6 +102,13 @@ namespace MultiWiiWinGUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap home {
+            get {
+                object obj = ResourceManager.GetObject("home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap load_from_file {
             get {
                 object obj = ResourceManager.GetObject("load_from_file", resourceCulture);
@@ -109,9 +123,37 @@ namespace MultiWiiWinGUI.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap plane {
+            get {
+                object obj = ResourceManager.GetObject("plane", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap plane1 {
+            get {
+                object obj = ResourceManager.GetObject("plane1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap quadicon {
+            get {
+                object obj = ResourceManager.GetObject("quadicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap read_settings {
             get {
                 object obj = ResourceManager.GetObject("read_settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap reset {
+            get {
+                object obj = ResourceManager.GetObject("reset", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

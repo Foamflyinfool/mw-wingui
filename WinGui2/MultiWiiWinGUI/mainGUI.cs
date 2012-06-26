@@ -42,7 +42,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.1.02 Beta";
+        const string sVersion = "2.1.04 Beta";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -138,25 +138,40 @@ namespace MultiWiiWinGUI
         static int GPS_lat_old, GPS_lon_old;
 
 
-        //For Map
+        //Map Overlays
         GMapOverlay overlayCopterPosition;
+        GMapOverlay drawnpolygons;
+        static GMapOverlay routes;// static so can update from gcs
+        GMapOverlay markers;
+        GMapOverlay polygons;
+        GMapOverlay positions;
+        
+        
         static GMapProvider[] mapProviders;
-
         static PointLatLng copterPos = new PointLatLng(47.402489, 19.071558);       //Just the corrds of my flying place
+        static bool isMouseDown = false;
+        static bool isMouseDraging = false;
+
+        static bool bPosholdRecorded = false;
+        static bool bHomeRecorded = false;
 
         // marker
         GMapMarker currentMarker;
+        GMapMarkerRect CurentRectMarker = null;
         GMapMarker center = new GMapMarkerCross(new PointLatLng(0.0, 0.0));
-      
+
+        GMapPolygon drawnpolygon;
+        GMapPolygon polygon;
 
 
         // layers
-        static GMapOverlay routes;// static so can update from gcs
         static GMapRoute Grout;
         List<PointLatLng> points = new List<PointLatLng>();
 
         GMapMarkerCross copterPosMarker;
         PointLatLng GPS_pos;
+        PointLatLng end;
+        PointLatLng start;
 
 
         //Commands
@@ -176,6 +191,11 @@ namespace MultiWiiWinGUI
          const int MSP_PID                  =112;
          const int MSP_BOX                  =113;
          const int MSP_MISC                 =114;
+         const int MSP_MOTOR_PINS = 115;
+         const int MSP_BOXNAMES = 116;
+         const int MSP_PIDNAMES = 117;
+         const int MSP_WP = 118;
+
 
          const int MSP_SET_RAW_RC           =200;
          const int MSP_SET_RAW_GPS          =201;
@@ -186,6 +206,7 @@ namespace MultiWiiWinGUI
          const int MSP_MAG_CALIBRATION      =206;
          const int MSP_SET_MISC             =207;
          const int MSP_RESET_CONF           =208;
+         const int MSP_SET_WP = 209;
 
          const int MSP_EEPROM_WRITE         =250;
          const int MSP_DEBUG                =254;
@@ -218,7 +239,7 @@ namespace MultiWiiWinGUI
         public mainGUI()
         {
             InitializeComponent();
-
+            #region map_setup
             // config map             
             MainMap.MinZoom = 1;
             MainMap.MaxZoom = 20;
@@ -236,38 +257,29 @@ namespace MultiWiiWinGUI
             {
                 cbMapProviders.Items.Add(mapProviders[i]);
             }
-            cbMapProviders.SelectedIndex = 1;
-
 
 
             // map events
-            
-            //MainMap.OnCurrentPositionChanged += new CurrentPositionChanged(MainMap_OnCurrentPositionChanged);
+
+            MainMap.OnPositionChanged += new PositionChanged(MainMap_OnCurrentPositionChanged);
             //MainMap.OnTileLoadStart += new TileLoadStart(MainMap_OnTileLoadStart);
             //MainMap.OnTileLoadComplete += new TileLoadComplete(MainMap_OnTileLoadComplete);
             //MainMap.OnMarkerClick += new MarkerClick(MainMap_OnMarkerClick);
-            //MainMap.OnMapZoomChanged += new MapZoomChanged(MainMap_OnMapZoomChanged);
+            MainMap.OnMapZoomChanged += new MapZoomChanged(MainMap_OnMapZoomChanged);
             //MainMap.OnMapTypeChanged += new MapTypeChanged(MainMap_OnMapTypeChanged);
-            //MainMap.MouseMove += new MouseEventHandler(MainMap_MouseMove);
+            MainMap.MouseMove += new MouseEventHandler(MainMap_MouseMove);
             MainMap.MouseDown += new MouseEventHandler(MainMap_MouseDown);
-            //MainMap.MouseUp += new MouseEventHandler(MainMap_MouseUp);
-            //MainMap.OnMarkerEnter += new MarkerEnter(MainMap_OnMarkerEnter);
-            //MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
+            MainMap.MouseUp += new MouseEventHandler(MainMap_MouseUp);
+            MainMap.OnMarkerEnter += new MarkerEnter(MainMap_OnMarkerEnter);
+            MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
 
             currentMarker = new GMapMarkerGoogleRed(MainMap.Position);
             MainMap.MapScaleInfoEnabled = true;
-            
-            MainMap.ForceDoubleBuffer = true ;
+
+            MainMap.ForceDoubleBuffer = true;
             MainMap.Manager.Mode = AccessMode.ServerAndCache;
-            
-            MainMap.Zoom = MainMap.MaxZoom -1 ;
 
-
-            overlayCopterPosition = new GMapOverlay(MainMap,"position");
-            copterPosMarker = new GMapMarkerCross(copterPos);
-            overlayCopterPosition.Markers.Add(copterPosMarker);
             MainMap.Position = copterPos;
-            //points.Add(new PointLatLng(copterPos.Lat, copterPos.Lng));
 
             Pen penRoute = new Pen(Color.Yellow, 3);
             Pen penScale = new Pen(Color.Blue, 3);
@@ -275,15 +287,30 @@ namespace MultiWiiWinGUI
             MainMap.ScalePen = penScale;
 
             routes = new GMapOverlay(MainMap, "routes");
+            MainMap.Overlays.Add(routes);
+
+            drawnpolygons = new GMapOverlay(MainMap, "drawnpolygons");
+            MainMap.Overlays.Add(drawnpolygons);
+
+            markers = new GMapOverlay(MainMap, "objects");
+            MainMap.Overlays.Add(markers);
+
+            polygons = new GMapOverlay(MainMap, "polygons");
+            MainMap.Overlays.Add(polygons);
+
+            positions = new GMapOverlay(MainMap, "positions");
+            MainMap.Overlays.Add(positions);
+
+            positions.Markers.Clear();
+            positions.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0));
+
             Grout = new GMapRoute(points, "track");
             Grout.Stroke = penRoute;
             routes.Routes.Add(Grout);
-            
 
+            center = new GMapMarkerCross(MainMap.Position);
 
-            MainMap.Overlays.Add(routes);
-
-            MainMap.Overlays.Add(overlayCopterPosition);
+            #endregion
 
         }
 
@@ -316,6 +343,14 @@ namespace MultiWiiWinGUI
             mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
             mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
 
+
+            splash.sFcVersionLabel = "MultiWii version " + sRelName;
+            splash.sStatus = "Connecting to MAP server...";
+            splash.Refresh();
+
+
+
+
             //Quick hack to get pid names to mw_params untill redo the structures
             for (int i = 0; i < iPidItems; i++)
             {
@@ -323,9 +358,12 @@ namespace MultiWiiWinGUI
             }
 
 
+            cbMapProviders.SelectedIndex = gui_settings.iMapProviderSelectedIndex;
+            MainMap.MapProvider = mapProviders[gui_settings.iMapProviderSelectedIndex];
+            tb_mapzoom.Value = MainMap.MaxZoom;
+            MainMap.Zoom = MainMap.MaxZoom;
 
-
-            splash.sFcVersionLabel = "MultiWii version " + sRelName;
+            splash.sStatus = "Building up GUI elements...";
             splash.Refresh();
 
             bSerialBuffer = new byte[65];
@@ -362,7 +400,7 @@ namespace MultiWiiWinGUI
             //Build indicator lamps array
             indicators = new indicator_lamp[iCheckBoxItems];
             int row=0; int col=0;
-            int startx = 795; int starty = 181;
+            int startx =800; int starty = 3;
             for (int i=0;i<iCheckBoxItems;i++)
             {
                 indicators[i] = new indicator_lamp();
@@ -370,7 +408,8 @@ namespace MultiWiiWinGUI
                 indicators[i].Visible = true;
                 indicators[i].Text = option_indicators[i];
                 indicators[i].indicator_color = 1;
-                this.tabPageRealtime.Controls.Add(indicators[i]);
+                indicators[i].Anchor = AnchorStyles.Right;
+                this.splitContainer2.Panel2.Controls.Add(indicators[i]);
                 col++;
                 if (col == 3) { col = 0; row++; }
             }
@@ -729,6 +768,15 @@ namespace MultiWiiWinGUI
             drawFont = new System.Drawing.Font(FontFamily.GenericMonospace, 16.0F);
             drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
 
+
+            //Disable buttons that are not working till connected
+            b_reset.Enabled = false;
+            b_cal_acc.Enabled = false;
+            b_cal_mag.Enabled = false;
+            b_read_settings.Enabled = false;
+            b_write_settings.Enabled = false;
+
+
             //System.Threading.Thread.Sleep(2000);
             splash.Close();
 
@@ -757,6 +805,21 @@ namespace MultiWiiWinGUI
                 if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP_MISC);
                 if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP_DEBUG);
 
+                if ((mw_gui.mode & (1 << 5)) > 0)
+                {                         //armed
+                    if ((iRefreshDivider % 20) == 0) MSPqueryWP(0);         //get home position
+                }
+                else { mw_gui.GPS_home_lon = 0; mw_gui.GPS_home_lat = 0; bHomeRecorded = false; }
+                
+                if ((mw_gui.mode & (1 << 7)) > 0)
+                {                         //poshold
+                    if ((iRefreshDivider % 20) == 0) MSPqueryWP(16);         //get hold position
+                }
+                else { mw_gui.GPS_poshold_lon = 0; mw_gui.GPS_poshold_lat = 0; bPosholdRecorded = false; }
+
+
+
+
             }
             update_gui();
             iRefreshDivider--;
@@ -783,6 +846,16 @@ namespace MultiWiiWinGUI
                 {
                     closeLog();
                 }
+
+                //Disable buttons that are not working here
+                b_reset.Enabled = false;
+                b_cal_acc.Enabled = false;
+                b_cal_mag.Enabled = false;
+                b_read_settings.Enabled = false;
+                b_write_settings.Enabled = false;
+
+
+
             }
             else                               //Connect
             {
@@ -815,6 +888,14 @@ namespace MultiWiiWinGUI
 
                 serial_packet_count = 0;
                 serial_error_count = 0;
+
+                //Enable buttons that are not working here
+                b_reset.Enabled = true;
+                b_cal_acc.Enabled = true;
+                b_cal_mag.Enabled = true;
+                b_read_settings.Enabled = true;
+                b_write_settings.Enabled = true;
+
 
 
                 //We have to do it for a couple of times to ensure that we will have parameters loaded 
@@ -891,6 +972,10 @@ namespace MultiWiiWinGUI
             logbrowser.ShowDialog();
             logbrowser.Dispose();
         }
+
+
+
+
 
         private void l_ports_label_DoubleClick(object sender, EventArgs e)
         {
@@ -1217,6 +1302,25 @@ namespace MultiWiiWinGUI
                     mw_gui.debug3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.debug4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
+                case MSP_WP:
+                    ptr = 0;
+                    byte wp_no = (byte)inBuf[ptr++];
+                    if (wp_no == 0)
+                    {
+                        mw_gui.GPS_home_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mw_gui.GPS_home_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mw_gui.GPS_home_alt = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        //flag comes here but not care
+                    }
+                    if (wp_no == 16)
+                    {
+                        mw_gui.GPS_poshold_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mw_gui.GPS_poshold_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mw_gui.GPS_poshold_alt = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    }
+                    break;
+
+
             }
         }
 
@@ -1417,6 +1521,21 @@ namespace MultiWiiWinGUI
                     GPS_lat_old = mw_gui.GPS_latitude;
                     GPS_lon_old = mw_gui.GPS_longitude;
                 }
+
+                if (!bHomeRecorded && (mw_gui.GPS_home_lon != 0))
+                {
+                    addKMLMarker("Home position", mw_gui.GPS_home_lon, mw_gui.GPS_home_lat, mw_gui.GPS_altitude);
+                    bHomeRecorded = true;
+                }
+
+
+                if (!bPosholdRecorded && (mw_gui.GPS_poshold_lon != 0))
+                {
+                    addKMLMarker("PosHold", mw_gui.GPS_poshold_lon, mw_gui.GPS_poshold_lat, mw_gui.GPS_altitude);
+                    bPosholdRecorded = true;
+                }  
+
+
             }
 
 
@@ -1442,7 +1561,26 @@ namespace MultiWiiWinGUI
                     lGPS_lon.Text = Convert.ToString((decimal)mw_gui.GPS_longitude / 10000000);
                     GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
                     GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
-                    copterPosMarker.Position = GPS_pos;
+
+                    positions.Markers.Clear();
+
+
+                    if (((mw_gui.mode & (1 << 5)) > 0) && (mw_gui.GPS_home_lon!=0))       //ARMED
+                    {
+                        PointLatLng GPS_home = new PointLatLng((double)mw_gui.GPS_home_lat / 10000000, (double)mw_gui.GPS_home_lon / 10000000);
+                        positions.Markers.Add(new GMapMarkerHome(GPS_home));
+                    } 
+                        
+
+                    if (((mw_gui.mode & (1 << 7)) > 0) && (mw_gui.GPS_poshold_lon!=0))       //poshold
+                    {
+                        PointLatLng GPS_poshold = new PointLatLng((double)mw_gui.GPS_poshold_lat / 10000000, (double)mw_gui.GPS_poshold_lon / 10000000);
+                        positions.Markers.Add(new  GMapMarkerGoogleRed(GPS_poshold));
+                    }                        
+
+
+                    positions.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
+                    
                     Grout.Points.Add(GPS_pos);
                     MainMap.Position = GPS_pos;
                     MainMap.Invalidate();
@@ -2152,6 +2290,7 @@ namespace MultiWiiWinGUI
         }
 
 
+
         private void MSPquery(int command)
         {
             byte c = 0;
@@ -2168,6 +2307,23 @@ namespace MultiWiiWinGUI
             
 
         }
+
+        private void MSPqueryWP(int wp)
+        {
+            byte c = 0;
+            byte[] o;
+            o = new byte[10];
+            // with checksum 
+            o[0] = (byte)'$';
+            o[1] = (byte)'M';
+            o[2] = (byte)'<';
+            o[3] = (byte)1; c ^= o[3];       //one byte payload
+            o[4] = (byte)MSP_WP; c ^= o[4];
+            o[5] = (byte)wp; c ^= o[5];
+            o[6] = (byte)c;
+            serialPort.Write(o, 0, 7);
+        }
+
 
 
         private int decimals(int prec)
@@ -2265,7 +2421,10 @@ namespace MultiWiiWinGUI
             wKMLLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now));
             wKMLLogStream.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             wKMLLogStream.WriteLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">");
+            wKMLLogStream.WriteLine("<Document>");
+
             wKMLLogStream.WriteLine("<Placemark>");
+            wKMLLogStream.WriteLine("<Style><LineStyle><color>#ef00ffff</color><width>5</width></LineStyle></Style>");
             wKMLLogStream.WriteLine("<name>MultiWii flight log</name>");
             wKMLLogStream.WriteLine("<LineString>");
             wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
@@ -2279,6 +2438,7 @@ namespace MultiWiiWinGUI
             wKMLLogStream.WriteLine("</coordinates>");
             wKMLLogStream.WriteLine("</LineString>");
             wKMLLogStream.WriteLine("</Placemark>");
+            wKMLLogStream.WriteLine("</Document>");
             wKMLLogStream.WriteLine("</kml>");
             wKMLLogStream.Flush();
             wKMLLogStream.Close();
@@ -2287,7 +2447,40 @@ namespace MultiWiiWinGUI
         }
 
 
+        void addKMLMarker(string description, double lon, double lat, double alt)
+        {
+            //Close open LineStringPlacemark
+            wKMLLogStream.WriteLine("</coordinates>");
+            wKMLLogStream.WriteLine("</LineString>");
+            wKMLLogStream.WriteLine("</Placemark>");
 
+            wKMLLogStream.WriteLine("<Placemark>");
+            wKMLLogStream.WriteLine("<name>"+description+"</name>");
+            wKMLLogStream.WriteLine("<Point>");
+            wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
+            wKMLLogStream.WriteLine("<coordinates>");
+            wKMLLogStream.WriteLine("{0},{1},{2}", (decimal)lon / 10000000, (decimal)lat / 10000000, alt);
+            wKMLLogStream.WriteLine("</coordinates>");
+            wKMLLogStream.WriteLine("</Point>");
+            wKMLLogStream.WriteLine("</Placemark>");
+
+            //open another LineString
+            wKMLLogStream.WriteLine("<Placemark>");
+            wKMLLogStream.WriteLine("<Style><LineStyle><color>#ef00ffff</color><width>5</width></LineStyle></Style>");
+            wKMLLogStream.WriteLine("<name>MultiWii flight log</name>");
+            wKMLLogStream.WriteLine("<LineString>");
+            wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
+            wKMLLogStream.WriteLine("<tessellate>1</tessellate>");
+            wKMLLogStream.WriteLine("<coordinates>");
+
+
+        }
+
+
+
+
+
+/*
         void MainMap_MouseDown(object sender, MouseEventArgs e)
         {
 //            start = MainMap.FromLocalToLatLng(e.X, e.Y);
@@ -2308,9 +2501,282 @@ namespace MultiWiiWinGUI
             }
         }
 
+        void MainMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+            currentMarker.Position = point;
+
+
+
+        }
+*/
+
+        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color)
+        {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMapMarkerGoogleGreen m = new GMapMarkerGoogleGreen(point);
+                m.ToolTipMode = MarkerTooltipMode.Always;
+                m.ToolTipText = tag;
+                m.Tag = tag;
+
+                //ArdupilotMega.GMapMarkerRectWPRad mBorders = new ArdupilotMega.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                    mBorders.wprad = (int)float.Parse("5");
+                    mBorders.MainMap = MainMap;
+                    if (color.HasValue)
+                    {
+                        mBorders.Color = color.Value;
+                    }
+                }
+
+                markers.Markers.Add(m);
+                markers.Markers.Add(mBorders);
+        }
+
+        void RegeneratePolygon()
+        {
+            List<PointLatLng> polygonPoints = new List<PointLatLng>();
+
+            if (markers == null)
+                return;
+
+            foreach (GMapMarker m in markers.Markers)
+            {
+                if (m is GMapMarkerRect)
+                {
+                    m.Tag = polygonPoints.Count;
+                    polygonPoints.Add(m.Position);
+                }
+            }
+
+            if (polygon == null)
+            {
+                polygon = new GMapPolygon(polygonPoints, "polygon test");
+                polygons.Polygons.Add(polygon);
+            }
+            else
+            {
+                polygon.Points.Clear();
+                polygon.Points.AddRange(polygonPoints);
+
+                polygon.Stroke = new Pen(Color.Yellow, 4);
+                polygon.Fill = Brushes.Transparent;
+
+                if (polygons.Polygons.Count == 0)
+                {
+                    polygons.Polygons.Add(polygon);
+                }
+                else
+                {
+                        MainMap.UpdatePolygonLocalPosition(polygon);
+                }
+            }
+        }
+
+
+        // MapZoomChanged
+        void MainMap_OnMapZoomChanged()
+        {
+            if (MainMap.Zoom > 0)
+            {
+                tb_mapzoom.Value = (int)(MainMap.Zoom);
+                center.Position = MainMap.Position;
+            }
+        }
+
+
+        // current point changed
+        void MainMap_OnCurrentPositionChanged(PointLatLng point)
+        {
+            if (point.Lat > 90) { point.Lat = 90; }
+            if (point.Lat < -90) { point.Lat = -90; }
+            if (point.Lng > 180) { point.Lng = 180; }
+            if (point.Lng < -180) { point.Lng = -180; }
+            center.Position = point;
+            LMousePos.Text = "Lat:" + String.Format("{0:0.000000}", point.Lat) + " Lon:" + String.Format("{0:0.000000}", point.Lng);
+        }
+
+        void MainMap_OnMarkerLeave(GMapMarker item)
+        {
+            if (!isMouseDown)
+            {
+                if (item is GMapMarkerRect)
+                {
+                    CurentRectMarker = null;
+
+                    GMapMarkerRect rc = item as GMapMarkerRect;
+                    rc.Pen.Color = Color.Blue;
+                    MainMap.Invalidate(false);
+                }
+            }
+        }
+
+        void MainMap_OnMarkerEnter(GMapMarker item)
+        {
+            if (!isMouseDown)
+            {
+                if (item is GMapMarkerRect)
+                {
+                    GMapMarkerRect rc = item as GMapMarkerRect;
+                    rc.Pen.Color = Color.Red;
+                    MainMap.Invalidate(false);
+
+                    CurentRectMarker = rc;
+                }
+            }
+        }
+
+
+        void MainMap_MouseUp(object sender, MouseEventArgs e)
+        {
+            end = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+            if (e.Button == MouseButtons.Right) // ignore right clicks
+            {
+                return;
+            }
+
+            if (isMouseDown) // mouse down on some other object and dragged to here.
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    isMouseDown = false;
+                }
+                if (!isMouseDraging)
+                {
+                    if (CurentRectMarker != null)
+                    {
+                        // cant add WP in existing rect
+                    }
+                    else
+                    {
+                        //callMe(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
+                        //Adding waypoint will come here
+                        //addpolygonmarker("X", currentMarker.Position.Lng, currentMarker.Position.Lat, 0,Color.Pink);
+                        //RegeneratePolygon();
+
+
+                    }
+                }
+                else
+                {
+                    if (CurentRectMarker != null)
+                    {
+                        if (CurentRectMarker.InnerMarker.Tag.ToString().Contains("grid"))
+                        {
+                            drawnpolygon.Points[int.Parse(CurentRectMarker.InnerMarker.Tag.ToString().Replace("grid", "")) - 1] = new PointLatLng(end.Lat, end.Lng);
+                            MainMap.UpdatePolygonLocalPosition(drawnpolygon);
+                        }
+                        else
+                        {
+                            //callMeDrag(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
+                            //update existing point in datagrid
+                        }
+                        CurentRectMarker = null;
+                    }
+                }
+            }
+
+            isMouseDraging = false;
+        }
+
+        void MainMap_MouseDown(object sender, MouseEventArgs e)
+        {
+            start = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+            if (e.Button == MouseButtons.Left && Control.ModifierKeys != Keys.Alt)
+            {
+                isMouseDown = true;
+                isMouseDraging = false;
+
+                if (currentMarker.IsVisible)
+                {
+                   currentMarker.Position = MainMap.FromLocalToLatLng(e.X, e.Y);
+                }
+            }
+        }
+
+        // move current marker with left holding
+        void MainMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+            currentMarker.Position = point;
+
+            if (!isMouseDown)
+            {
+                LMousePos.Text = "Lat:" + String.Format("{0:0.000000}", point.Lat) + " Lon:" + String.Format("{0:0.000000}", point.Lng);
+            }
+
+            //draging
+            if (e.Button == MouseButtons.Left && isMouseDown)
+            {
+                isMouseDraging = true;
+                if (CurentRectMarker == null) // left click pan
+                {
+                    double latdif = start.Lat - point.Lat;
+                    double lngdif = start.Lng - point.Lng;
+                    MainMap.Position = new PointLatLng(center.Position.Lat + latdif, center.Position.Lng + lngdif);
+                }
+                else // move rect marker
+                {
+                    try
+                    {
+                        if (CurentRectMarker.InnerMarker.Tag.ToString().Contains("grid"))
+                        {
+                            drawnpolygon.Points[int.Parse(CurentRectMarker.InnerMarker.Tag.ToString().Replace("grid", "")) - 1] = new PointLatLng(point.Lat, point.Lng);
+                            MainMap.UpdatePolygonLocalPosition(drawnpolygon);
+                        }
+                    }
+                    catch { }
+
+                    PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+                    int? pIndex = (int?)CurentRectMarker.Tag;
+                    if (pIndex.HasValue)
+                    {
+                        if (pIndex < polygon.Points.Count)
+                        {
+                            polygon.Points[pIndex.Value] = pnew;
+                                MainMap.UpdatePolygonLocalPosition(polygon);
+                        }
+                    }
+
+                    if (currentMarker.IsVisible)
+                    {
+                        currentMarker.Position = pnew;
+                    }
+                    CurentRectMarker.Position = pnew;
+
+                    if (CurentRectMarker.InnerMarker != null)
+                    {
+                        CurentRectMarker.InnerMarker.Position = pnew;
+                    }
+                }
+            }
+
+        }
+
+
+
+
+
+
         private void cbMapProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            this.Cursor = Cursors.WaitCursor;
             MainMap.MapProvider = (GMapProvider)cbMapProviders.SelectedItem;
+            MainMap.MaxZoom = 19;
+            MainMap.Invalidate();
+            gui_settings.iMapProviderSelectedIndex = cbMapProviders.SelectedIndex;
+            gui_settings.save_to_xml(sGuiSettingsFilename);
+
+
+            this.Cursor = Cursors.Default;
+
         }
 
 
@@ -2510,6 +2976,95 @@ namespace MultiWiiWinGUI
             cb_mag_roll.Checked = false;
             cb_mag_yaw.Checked = false;
         }
+
+        private void videoSourcePlayer_SizeChanged(object sender, EventArgs e)
+        {
+
+            Size currentSize = videoSourcePlayer.Size;
+            currentSize.Width = currentSize.Height / 3 * 4;
+
+            if (splitContainer6.Panel1.Size.Width < currentSize.Width)
+            {
+                currentSize.Width = splitContainer6.Panel1.Size.Width;
+                currentSize.Height = currentSize.Width / 4 * 3;
+            }
+
+            videoSourcePlayer.Size = currentSize;
+
+
+        }
+
+        private void tb_mapzoom_Scroll(object sender, EventArgs e)
+        {
+
+            MainMap.Zoom = (double)tb_mapzoom.Value;
+
+        }
+
+        private void b_fetch_tiles_Click(object sender, EventArgs e)
+        {
+            RectLatLng area = MainMap.SelectedArea;
+            if (area.IsEmpty)
+            {
+                DialogResult res = MessageBox.Show("No ripp area defined, ripp displayed on screen?", "Rip", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
+                {
+                    area = MainMap.CurrentViewArea;
+                }
+            }
+
+            if (!area.IsEmpty)
+            {
+                DialogResult res = MessageBox.Show("Ready ripp at Zoom = " + (int)MainMap.Zoom + " ?", "GMap.NET", MessageBoxButtons.YesNo);
+
+                for (int i = 1; i <= MainMap.MaxZoom; i++)
+                {
+                    if (res == DialogResult.Yes)
+                    {
+                        TilePrefetcher obj = new TilePrefetcher();
+                        obj.ShowCompleteMessage = false;
+                        obj.Start(area, i, MainMap.MapProvider, 100);
+                    }
+                    else if (res == DialogResult.No)
+                    {
+                        continue;
+                    }
+                    else if (res == DialogResult.Cancel)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+        }
+
+        private void b_reset_Click(object sender, EventArgs e)
+        {
+            //bool timer_rt_state = timer_realtime.Enabled;
+
+            //Stop all timers
+            timer_realtime.Stop();
+            MSPquery(MSP_RESET_CONF);
+            System.Threading.Thread.Sleep(1000);
+
+            MSPquery(MSP_PID);
+            MSPquery(MSP_RC_TUNING);
+            MSPquery(MSP_IDENT);
+            MSPquery(MSP_BOX);
+            MSPquery(MSP_MISC);
+            //Invalidate gui parameters and reread those values
+
+            timer_realtime.Start();
+            System.Threading.Thread.Sleep(500);
+            bOptions_needs_refresh = true;
+            update_gui();   
+        }
+
+
 
 
 

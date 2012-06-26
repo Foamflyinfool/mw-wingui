@@ -32,6 +32,7 @@
             this.l_full_version = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.l_mwver = new System.Windows.Forms.Label();
+            this.lStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // l_version
@@ -80,6 +81,16 @@
             this.l_mwver.TabIndex = 5;
             this.l_mwver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lStatus
+            // 
+            this.lStatus.AutoSize = true;
+            this.lStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lStatus.Location = new System.Drawing.Point(2, 0);
+            this.lStatus.Name = "lStatus";
+            this.lStatus.Size = new System.Drawing.Size(91, 16);
+            this.lStatus.TabIndex = 6;
+            this.lStatus.Text = "asdasdcasdc";
+            // 
             // splash_screen
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -88,6 +99,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(598, 278);
             this.ControlBox = false;
+            this.Controls.Add(this.lStatus);
             this.Controls.Add(this.l_mwver);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.l_version);
@@ -111,6 +123,7 @@
         private System.Windows.Forms.Label l_full_version;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label l_mwver;
+        private System.Windows.Forms.Label lStatus;
 
     }
 }

@@ -120,6 +120,7 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="common.cs" />
     <Compile Include="MWGUIControls\throttle_expo_control.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -273,6 +274,12 @@
     <None Include="Resources\stop_log.png" />
     <None Include="Resources\about.png" />
     <None Include="Resources\earth-3.png" />
+    <None Include="Resources\back-arrow.png" />
+    <None Include="Resources\plane.png" />
+    <None Include="Resources\read_settings1.png" />
+    <None Include="Resources\quad.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\reset.png" />
     <Content Include="Settings\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
