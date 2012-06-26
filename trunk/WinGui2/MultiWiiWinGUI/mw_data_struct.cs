@@ -48,6 +48,8 @@ namespace MultiWiiWinGUI
         public byte MSP_MISC_rate_divider { get; set; }
         public byte MSP_DEBUG_rate_divider { get; set; }
 
+        public int iMapProviderSelectedIndex { get; set; }
+
 
 
 
@@ -76,6 +78,8 @@ namespace MultiWiiWinGUI
             MSP_MISC_rate_divider = 10;
             MSP_DEBUG_rate_divider = 2;
 
+
+            iMapProviderSelectedIndex = 1;  //Bing Map
 
 
         }
@@ -130,6 +134,8 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("MSP_MISC_RATE_DIV value=\"" + MSP_MISC_rate_divider + "\""); tw.WriteEndElement();
             tw.WriteStartElement("MSP_DEBUG_RATE_DIV value=\"" + MSP_DEBUG_rate_divider + "\""); tw.WriteEndElement();
 
+
+            tw.WriteStartElement("MAPPROVIDER value=\"" + iMapProviderSelectedIndex + "\""); tw.WriteEndElement();
 
 
             tw.WriteEndElement();
@@ -189,6 +195,7 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "msp_misc_rate_divider", true) == 0 && reader.HasAttributes) { MSP_MISC_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "msp_debug_rate_divider", true) == 0 && reader.HasAttributes) { MSP_DEBUG_rate_divider = Convert.ToByte(reader.GetAttribute("value")); }
 
+                            if (String.Compare(reader.Name, "mapprovider", true) == 0 && reader.HasAttributes) { iMapProviderSelectedIndex  = Convert.ToInt16(reader.GetAttribute("value")); }
 
 
                             break;
@@ -534,7 +541,7 @@ namespace MultiWiiWinGUI
                                 {
                                     int auxID = 0; short a1 = 0; 
                                     auxID = Convert.ToInt16(reader.GetAttribute("id"));
-                                    a1 = Convert.ToByte(reader.GetAttribute("aux1234"));
+                                    a1 = Convert.ToInt16(reader.GetAttribute("aux1234"));
                                     activation[auxID] = a1;
                                 }
                                 if (String.Compare(reader.Name, "rcrate", true) == 0 && reader.HasAttributes) { rcRate = Convert.ToByte(reader.GetAttribute("value")); }
@@ -627,6 +634,12 @@ namespace MultiWiiWinGUI
         public int GPS_longitude;
         public int GPS_altitude;
         public int GPS_speed;
+        public int GPS_home_lat;
+        public int GPS_home_lon;
+        public int GPS_home_alt;
+        public int GPS_poshold_lat;
+        public int GPS_poshold_lon;
+        public int GPS_poshold_alt;
         public int pMeterSum;
         public int powerTrigger;
         public byte vBat;
