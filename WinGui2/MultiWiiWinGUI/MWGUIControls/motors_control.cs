@@ -15,7 +15,7 @@ namespace MultiWiiGUIControls
 
         // Parameters
 
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, Octo8Coax, Octo8P, Octo8X };
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, Octo8Coax, Octo8P, Octo8X, Airplane, Heli120,Heli90,Vtail };
 
         static int[,] coord_quadX = {  { 120, 170, 70 },{ 120, 80, 70 },{ 40, 170, 70 },{ 40, 80, 70 }  };
         static int[,] coord_quadP = { { 75, 180, 70 }, { 125, 130, 70 }, { 25, 130, 70 }, { 75, 80, 70 } };
@@ -30,6 +30,10 @@ namespace MultiWiiGUIControls
         static int[,] coord_octo8c = { { 110, 170, 60 }, { 110, 70, 60 }, { 30, 170, 60 }, { 30, 70, 60 }, { 130, 180, 60 }, { 130, 80, 60 }, { 50, 180, 60 }, { 50, 80, 60 } };
         static int[,] coord_octo8p = { { 45, 80, 50 }, { 115, 80, 50 }, { 115, 160, 50 }, { 45, 160, 50 }, { 80, 60, 50 }, { 145, 120, 50 }, { 80, 180, 50 }, { 15, 120, 50 } };
         static int[,] coord_octo8x = { { 30, 80, 50 }, { 100, 60, 50 }, { 130, 150, 50 }, { 60, 170, 50 }, { 60, 60, 50 }, { 130, 80, 50 }, { 100, 170, 50 }, { 30, 150, 50 } };
+        static int[,] coord_airplane = { { 15, 125, 70 }, { 130, 125, 70 }, { 5, 170, 70 }, { 80, 167, 70 }, { 80, 75, 70 } };
+        static int[,] coord_heli120 = { { 85, 105, 70 }, { 50, 95, 70 }, { 75, 155, 70 }, { 120, 95, 70 }, { 10, 150, 110 } };
+        static int[,] coord_heli90 = { { 85, 105, 70 }, { 120, 95, 70 }, { 75, 155, 70 }, { 50, 95, 70 }, { 10, 150, 100 } };
+        static int[,] coord_vtail = { { 95, 170, 70 }, { 120, 80, 70 }, { 50, 170, 70 }, { 20, 80, 70 } };
 
         static CopterType CopterTypeToDraw = CopterType.QuadP;
         private static int[] motorvals = {1500,1500,1500,1500,1500,1500,1500,1500};
@@ -37,6 +41,7 @@ namespace MultiWiiGUIControls
 
         private int l;
         private int i;
+        private int hval;
         // Images
 
         Bitmap bmpQuadX = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.quadx);
@@ -52,6 +57,10 @@ namespace MultiWiiGUIControls
         Bitmap bmpOcto8x = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.octo8x);
         Bitmap bmpOcto8p = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.octo8p);
         Bitmap bmpOcto8c = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.octo8coax);
+        Bitmap bmpAirplane = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.airplane);
+        Bitmap bmpHeli120 = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.heli_120);
+        Bitmap bmpHeli90 = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.heli_90);
+        Bitmap bmpVtail = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.vtail);
 
         
         #endregion
@@ -265,6 +274,75 @@ namespace MultiWiiGUIControls
                         pe.Graphics.DrawString(String.Format("{0:0}", motorvals[i]), drawFont, drawBrush, coord_octo8x[i, 0] - 12, coord_octo8x[i, 1]+8);
                     }
                     break;
+                case CopterType.Vtail:
+                    bmpVtail.MakeTransparent(Color.Yellow);
+                    pe.Graphics.DrawRectangle(maskPen, 0, 0, bmpVtail.Width, bmpVtail.Height);
+                    pe.Graphics.DrawImageUnscaled(bmpVtail, 0, 0, bmpVtail.Width, bmpVtail.Height);
+                    for (i = 0; i < 4; i++)
+                    {
+                        int h = (int)((motorvals[i] - 900) * (float)(coord_y4[i, 2] / 1200.0f));
+                        pe.Graphics.FillRectangle(drawBrushGreen, coord_y4[i, 0], coord_y4[i, 1] - h, 10, h);
+                        pe.Graphics.DrawString(String.Format("{0:0}", motorvals[i]), drawFont, drawBrush, coord_y4[i, 0] + 12, coord_y4[i, 1] - 10);
+                    }
+                    break;
+                case CopterType.Airplane:
+                    bmpAirplane.MakeTransparent(Color.Yellow);
+                    pe.Graphics.DrawRectangle(maskPen, 0, 0, bmpAirplane.Width, bmpAirplane.Height);
+                    pe.Graphics.DrawImageUnscaled(bmpAirplane, 0, 0, bmpAirplane.Width, bmpAirplane.Height);
+
+                    hval = (int)((servovals[3] - 900) * (float)(coord_airplane[0, 2] / 1200.0f));          //Wing1
+                    pe.Graphics.FillRectangle(drawBrushGreen, coord_airplane[0, 0], coord_airplane[0, 1] - hval, 10, hval);
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[3]), drawFont, drawBrush, coord_airplane[0, 0] + 12, coord_airplane[0, 1] - 10);
+
+                    hval = (int)((servovals[4] - 900) * (float)(coord_airplane[1, 2] / 1200.0f));          //Wing2
+                    pe.Graphics.FillRectangle(drawBrushGreen, coord_airplane[1, 0], coord_airplane[1, 1] - hval, 10, hval);
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[4]), drawFont, drawBrush, coord_airplane[1, 0] + 12, coord_airplane[1, 1] - 10);
+
+                    hval = (int)((servovals[5] - 900) * (float)(coord_airplane[2, 2] / 1200.0f));          //Rudder
+                    pe.Graphics.FillRectangle(drawBrushGreen, coord_airplane[2, 0], coord_airplane[2, 1] - 10, hval, 10);
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[5]), drawFont, drawBrush, coord_airplane[2, 0], coord_airplane[2, 1] + 10);
+
+                    hval = (int)((servovals[6] - 900) * (float)(coord_airplane[3, 2] / 1200.0f));          //Elevator
+                    pe.Graphics.FillRectangle(drawBrushGreen, coord_airplane[3, 0], coord_airplane[3, 1] - hval, 10, hval);
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[6]), drawFont, drawBrush, coord_airplane[3, 0] + 12, coord_airplane[3, 1] - 12);
+
+                    hval = (int)((servovals[7] - 900) * (float)(coord_airplane[4, 2] / 1200.0f));          //Throttle
+                    pe.Graphics.FillRectangle(drawBrushGreen, coord_airplane[4, 0], coord_airplane[4, 1] - hval, 10, hval);
+                    pe.Graphics.DrawString(String.Format("{0:0}", servovals[7]), drawFont, drawBrush, coord_airplane[4, 0] + 12, coord_airplane[4, 1] - 10);
+                    break;
+                case CopterType.Heli120:
+                    bmpHeli120.MakeTransparent(Color.Yellow);
+                    pe.Graphics.DrawRectangle(maskPen, 0, 0, bmpHeli120.Width, bmpHeli120.Height);
+                    pe.Graphics.DrawImageUnscaled(bmpHeli120, 0, 0, bmpHeli120.Width, bmpHeli120.Height);
+
+                    for (i = 0; i <= 4; i++)
+                    {
+                        hval = (int)((servovals[3 + i] - 900) * (float)(coord_heli120[i, 2] / 1200.0f));
+                        if (i == 2) pe.Graphics.FillRectangle(drawBrushGreen, coord_heli120[i, 0], coord_heli120[i, 1] - 10, hval, 10);
+                        else pe.Graphics.FillRectangle(drawBrushGreen, coord_heli120[i, 0], coord_heli120[i, 1] - hval, 10, hval);
+                        pe.Graphics.DrawString(String.Format("{0:0}", servovals[3 + i]), drawFont, drawBrush, coord_heli120[i, 0], coord_heli120[i, 1] + 10);
+
+                    }
+                    break;
+
+                case CopterType.Heli90:
+                    bmpHeli90.MakeTransparent(Color.Yellow);
+                    pe.Graphics.DrawRectangle(maskPen, 0, 0, bmpHeli90.Width, bmpHeli90.Height);
+                    pe.Graphics.DrawImageUnscaled(bmpHeli90, 0, 0, bmpHeli90.Width, bmpHeli90.Height);
+
+                    for (i = 0; i <= 4; i++)
+                    {
+                        hval = (int)((servovals[3 + i] - 900) * (float)(coord_heli90[i, 2] / 1200.0f));
+                        if (i == 2) pe.Graphics.FillRectangle(drawBrushGreen, coord_heli90[i, 0], coord_heli90[i, 1] - 10, hval, 10);
+                        else pe.Graphics.FillRectangle(drawBrushGreen, coord_heli90[i, 0], coord_heli90[i, 1] - hval, 10, hval);
+                        pe.Graphics.DrawString(String.Format("{0:0}", servovals[3 + i]), drawFont, drawBrush, coord_heli90[i, 0], coord_heli120[i, 1] + 10);
+
+                    }
+                    break;
+
+
+
+
 
 
 

@@ -13,8 +13,8 @@
   <AUX_OPTION id="9"  name="HEADFREE" desc="Head free mode" ind="Head F"/>
   <AUX_OPTION id="10" name="BEEPER"   desc="Activate beeper" ind="BEEPER"/>
   <AUX_OPTION id="11" name="LEDMAX"   desc="Maximum illumination" ind="LEDMAX"/>
-  <AUX_OPTION id="12" name="LANDLIGHT"   desc="Landing Lights" ind="Land Li"/>
-  <AUX_OPTION id="13" name="HEADADJ"   desc="Adjust Head free mode" ind="Land Li"/>
+  <AUX_OPTION id="12" name="LANDLIGHT" desc="Landing Lights" ind="Land Li"/>
+  <AUX_OPTION id="13" name="HEADADJ"   desc="Adjust Head free mode - Temporary disables headfree mode, and reset headfree orientation when switched off" ind="HF Adj"/>
 
   <PID id="0" name="Roll" desc="Roll Rate control" />
 	  <P id="0" shown="true" min="0" max="20.0" prec="10" />

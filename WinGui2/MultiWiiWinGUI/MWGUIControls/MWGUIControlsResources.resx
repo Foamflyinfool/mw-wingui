@@ -280,4 +280,16 @@
   <data name="toggle_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\toggle_on.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="airplane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\airplane.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="heli_120" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\heli_120.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="heli_90" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\heli_90.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="vtail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\vtail.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

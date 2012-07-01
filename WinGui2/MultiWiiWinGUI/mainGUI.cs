@@ -42,7 +42,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.1.04 Beta";
+        const string sVersion = "2.1 RC1";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -136,6 +136,7 @@ namespace MultiWiiWinGUI
         static bool bKMLLogRunning = false;
 
         static int GPS_lat_old, GPS_lon_old;
+        static bool GPSPresent = true;
 
 
         //Map Overlays
@@ -1420,11 +1421,14 @@ namespace MultiWiiWinGUI
                                     {
                                         if (err_rcvd)
                                         {
-                                           // Console.WriteLine("Copter did not understand request type " + err_rcvd);
+                                            // Console.WriteLine("Copter did not understand request type " + err_rcvd);
                                         }
-                                        /* we got a valid response packet, evaluate it */
-                                        serial_packet_count++;
-                                        evaluate_command(cmd);
+                                        else
+                                        {
+                                            /* we got a valid response packet, evaluate it */
+                                            serial_packet_count++;
+                                            evaluate_command(cmd);
+                                        }
                                     }
                                     else
                                     {
@@ -2390,21 +2394,36 @@ namespace MultiWiiWinGUI
                 b_log.Text = "Start Log";
                 b_log.BackColor = Color.Gray;
                 b_log.Image = Properties.Resources.start_log;
+
             }
             else
             {
                 openLog();
-                b_log.Text = "Stop Log";
-                b_log.BackColor = Color.IndianRed;
-                b_log.Image = Properties.Resources.stop_log;
+                if (bLogRunning)
+                {
+                    b_log.Text = "Stop Log";
+                    b_log.BackColor = Color.IndianRed;
+                    b_log.Image = Properties.Resources.stop_log;
+                }
             }
         }
 
 
         void openLog()
         {
-            wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
-            bLogRunning = true;
+            try
+            {
+                wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
+            }
+            catch
+            {
+                MessageBox.Show("Unable to open log file at " + gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now), "Error opening log", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (wLogStream != null)
+            {
+                bLogRunning = true;
+            }
 
         }
 
@@ -2418,19 +2437,30 @@ namespace MultiWiiWinGUI
 
         void openKMLLog()
         {
-            wKMLLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now));
-            wKMLLogStream.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            wKMLLogStream.WriteLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">");
-            wKMLLogStream.WriteLine("<Document>");
 
-            wKMLLogStream.WriteLine("<Placemark>");
-            wKMLLogStream.WriteLine("<Style><LineStyle><color>#ef00ffff</color><width>5</width></LineStyle></Style>");
-            wKMLLogStream.WriteLine("<name>MultiWii flight log</name>");
-            wKMLLogStream.WriteLine("<LineString>");
-            wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
-            wKMLLogStream.WriteLine("<tessellate>1</tessellate>");
-            wKMLLogStream.WriteLine("<coordinates>");
-            bKMLLogRunning = true;
+            try
+            {
+                wKMLLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now));
+            }
+            catch
+            {
+                MessageBox.Show("Unable to open KMLlog file at " + gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now), "Error opening KMLlog", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (wKMLLogStream != null)
+            {
+                wKMLLogStream.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                wKMLLogStream.WriteLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">");
+                wKMLLogStream.WriteLine("<Document>");
+                wKMLLogStream.WriteLine("<Placemark>");
+                wKMLLogStream.WriteLine("<Style><LineStyle><color>#ef00ffff</color><width>5</width></LineStyle></Style>");
+                wKMLLogStream.WriteLine("<name>MultiWii flight log</name>");
+                wKMLLogStream.WriteLine("<LineString>");
+                wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
+                wKMLLogStream.WriteLine("<tessellate>1</tessellate>");
+                wKMLLogStream.WriteLine("<coordinates>");
+                bKMLLogRunning = true;
+            }
         }
         void closeKMLLog()
         {
@@ -2792,10 +2822,13 @@ namespace MultiWiiWinGUI
             }
             else
             {
-                b_start_KML_log.Text = "Stop STOP Log";
-                b_start_KML_log.BackColor = Color.IndianRed;
-                this.Refresh();
                 openKMLLog();
+                if (bKMLLogRunning)
+                {
+                    b_start_KML_log.Text = "Stop STOP Log";
+                    b_start_KML_log.BackColor = Color.IndianRed;
+                    this.Refresh();
+                }
             }
         }
 
