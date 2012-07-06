@@ -1545,11 +1545,14 @@ namespace MultiWiiWinGUI
 
             if (tabMain.SelectedIndex == 0 | tabMain.SelectedIndex == 1)        //Common tasks for both panel
             {
+
+                throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
                 if (bOptions_needs_refresh)
                 {
                     update_pid_panel();
                     update_aux_panel();
                     bOptions_needs_refresh = false;
+                    
                 }
             }
 
@@ -1967,7 +1970,7 @@ namespace MultiWiiWinGUI
             nTMID.Value = (decimal)mw_gui.ThrottleMID / 100;
             nTMID.BackColor = Color.White;
             trackBar_T_MID.Value = mw_gui.ThrottleMID;
-            throttle_expo_control1.SetRCExpoParameters((double)mw_gui.ThrottleMID/100, (double)mw_gui.ThrottleEXPO / 100);
+            throttle_expo_control1.SetRCExpoParameters((double)mw_gui.ThrottleMID/100, (double)mw_gui.ThrottleEXPO / 100,mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_gui.powerTrigger;
             nPAlarm.BackColor = Color.White;
@@ -2017,7 +2020,7 @@ namespace MultiWiiWinGUI
             trackBar_T_EXPO.Value = mw_params.ThrottleEXPO;
             nTMID.Value = (decimal)mw_params.ThrottleMID / 100;
             trackBar_T_MID.Value = mw_params.ThrottleMID;
-            throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100);
+            throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100,mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_params.PowerTrigger;
 
@@ -2343,19 +2346,19 @@ namespace MultiWiiWinGUI
         private void trackBar_T_MID_Scroll(object sender, EventArgs e)
         {
             nTMID.Value = (decimal)trackBar_T_MID.Value / 100;
-            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value,mw_gui.rcThrottle);
         }
 
         private void trackBar_T_EXPO_Scroll(object sender, EventArgs e)
         {
             nTEXPO.Value = (decimal)trackBar_T_EXPO.Value / 100;
-            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
         }
 
         private void nTMID_ValueChanged(object sender, EventArgs e)
         {
             trackBar_T_MID.Value = (int)(nTMID.Value * 100);
-            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
             if ((int)(nTMID.Value * 100) != mw_gui.ThrottleMID)
             {
                 nTMID.BackColor = Color.IndianRed;
@@ -2370,7 +2373,7 @@ namespace MultiWiiWinGUI
         private void nTEXPO_ValueChanged(object sender, EventArgs e)
         {
             trackBar_T_EXPO.Value = (int)(nTEXPO.Value * 100);
-            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value);
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
             if ((int)(nTEXPO.Value * 100) != mw_gui.ThrottleEXPO)
             {
                 nTEXPO.BackColor = Color.IndianRed;
