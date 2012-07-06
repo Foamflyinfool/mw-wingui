@@ -17,6 +17,7 @@ namespace MultiWiiGUIControls
         // Parameters
         private double T_MID  = 0.5f;
         private double T_EXPO = 0.5f;
+        private int Throttle = 1100;
         private Boolean got_data = false;
         private int[] lookupT = new int[11];
 
@@ -76,6 +77,7 @@ namespace MultiWiiGUIControls
             System.Drawing.Font drawFont = new System.Drawing.Font(FontFamily.GenericMonospace, 8.0F);
             System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
             System.Drawing.SolidBrush drawBrushBlue = new System.Drawing.SolidBrush(System.Drawing.Color.Blue);
+            System.Drawing.SolidBrush drawBrushRed = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
 
             bmpBackground.MakeTransparent(Color.Yellow);
             pe.Graphics.DrawImageUnscaled(bmpBackground, 0, 0);
@@ -84,6 +86,7 @@ namespace MultiWiiGUIControls
             double b = T_EXPO;
             double val;
 
+            int[] curvepoints = new int[75];
 
             for (int i = 0; i < 11; i++)
             {
@@ -103,6 +106,10 @@ namespace MultiWiiGUIControls
             Graphics gfx = Graphics.FromImage(bm);
             gfx.FillRectangle(drawBrushBlue, 0, 0, 3, 3);
 
+            Bitmap bl = new Bitmap(6, 6);
+            Graphics gfx1 = Graphics.FromImage(bl);
+            gfx1.FillRectangle(drawBrushRed, 0, 0, 5, 5);
+
             //Quick hack to scale the original rc rate box to this control size... I was lazy to rewrite the calculations...
             if (got_data)
             {
@@ -115,8 +122,18 @@ namespace MultiWiiGUIControls
                     int rccommand = lookupT[tmp2] + (tmp - tmp2 * 100) * (lookupT[tmp2 + 1] - lookupT[tmp2]) / 100;
                     val = rccommand * 70 / 1000;
                     pe.Graphics.DrawImageUnscaled(bm, (int)((double)(i) * 1.9f) + 9, 5 + (int)((70 - val) * 1.2f));
+                    curvepoints[i] = (int)((70 - val) * 1.2f);
                 }
+                curvepoints[70] = curvepoints[69];
+                curvepoints[71] = curvepoints[69];
+                curvepoints[72] = curvepoints[69];
+                curvepoints[73] = curvepoints[69];
 
+
+
+//                for (int i =0;i<20;i++) {
+                    pe.Graphics.DrawImageUnscaled(bl, (int)((double)((Math.Max(1100,Throttle) - 1100) * 70 / 900)* 1.9f)+9, curvepoints[(int)((double)((Math.Max(1100,Throttle) - 1100) * 70 / 900))]+2);
+//                    }
 
                 pe.Graphics.DrawString("Mid:" + String.Format("{0:0.00}", T_MID), drawFont, drawBrush, 10, 5);
                 pe.Graphics.DrawString("Expo:" + String.Format("{0:0.00}", T_EXPO), drawFont, drawBrush, 10, 15);
@@ -127,6 +144,8 @@ namespace MultiWiiGUIControls
             }
 
             gfx.Dispose();
+            gfx1.Dispose();
+            bl.Dispose();
             bm.Dispose();
             drawBrush.Dispose();
             drawBrushBlue.Dispose();
@@ -143,10 +162,11 @@ namespace MultiWiiGUIControls
         /// Define the values to be displayed on the indicator
         ///</summary>
 
-        public void SetRCExpoParameters(double throttle_MID, double throttle_EXPO)
+        public void SetRCExpoParameters(double throttle_MID, double throttle_EXPO, int rcThrottle)
         {
             T_MID = throttle_MID;
             T_EXPO = throttle_EXPO;
+            Throttle = rcThrottle;
             
             got_data = true;
             this.Refresh();
