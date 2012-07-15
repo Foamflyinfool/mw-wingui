@@ -85,6 +85,14 @@
     </CYC>
 	<!-- Attitude from inFlight DataFlash logging -->
 	<ATT>
+	  <F1>AngleRoll</F1>
+	  <F2>AnglePitch</F2>
+	  
+	  <F3>heading</F3>
+	  <F4>EstAlt</F4>
+	 </ATT> 
+	
+	<RAW>
 	  <F1>GyroRoll</F1>
 	  <F2>GyroPitch</F2>
 	  <F3>GyroYaw</F3>
@@ -93,16 +101,16 @@
 	  <F5>AccPITCH</F5>
 	  <F6>AccZ</F6>
 	  
-	  <F7>AngleRoll</F7>
-	  <F8>AnglePitch</F8>
-	  
-	  <F9>heading</F9>
-	 </ATT> 
+	  <F7>MagRoll</F7>
+	  <F8>MagPitch</F8>
+	  <F9>MagYaw</F9>
+	  <F10>BaroAlt</F10>
+	 </RAW> 
 	 <OUTP>
 	   <F1>Motor1</F1>
 	   <F2>Motor2</F2>
 	   <F3>Motor3</F3>
-	   <F4>Motor4</F4>
+	   <F4>Motor4/Servo1</F4>
 	 </OUTP>
 	 <RCDAT>
 	   <F1>Throttle</F1>
@@ -114,12 +122,16 @@
 	   <F7>Aux3</F7>
 	   <F8>Aux4</F8>
 	 </RCDAT>
+	 <GPSLEAD>
+	   <F1>Filtered Lat</F1>
+	   <F1>Filtered Lon</F1>
+     </GPSLEAD>	 
+	 
+	 
 	 <GPS>
 	   <F1>Numsat</F1>
 	   <F2>Lat</F2>
 	   <F3>Lon</F3>
-	   <F4>Lat_filtered</F4>
-	   <F5>Lon_filtered</F5>
 	   <F6>Alt</F6>
 	   <F7>speed</F7>
 	   <F8>course</F8>
