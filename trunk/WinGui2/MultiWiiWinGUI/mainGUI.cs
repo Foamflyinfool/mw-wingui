@@ -42,8 +42,8 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.1 RC1";
-        const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/version.xml";
+        const string sVersion = "2.1";
+        const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
 
@@ -3098,6 +3098,29 @@ namespace MultiWiiWinGUI
             System.Threading.Thread.Sleep(500);
             bOptions_needs_refresh = true;
             update_gui();   
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
+
+            if (isConnected)
+            {
+                MessageBoxEx.Show(this, "Please disconnect from flight controller before entering Log Download mode", "Disconnect First", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            log_downloader logDL = new log_downloader();
+            logDL.sLogDirectory = gui_settings.sLogFolder;
+            logDL.sSerialPortName = cb_serial_port.Text;
+            logDL.iSerialPortBaudrate = int.Parse(cb_serial_speed.Text);
+            logDL.ShowDialog();
+            logDL.Dispose();
+
+
+
+
         }
 
 

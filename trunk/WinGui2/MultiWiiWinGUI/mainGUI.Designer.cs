@@ -234,6 +234,7 @@
             this.b_log_browser = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.b_about = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
@@ -2310,7 +2311,6 @@
             this.b_check_update.TabIndex = 28;
             this.b_check_update.Text = "Check for Update";
             this.b_check_update.UseVisualStyleBackColor = true;
-            this.b_check_update.Visible = false;
             this.b_check_update.Click += new System.EventHandler(this.b_check_update_Click);
             // 
             // b_select_settings_folder
@@ -2579,6 +2579,7 @@
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.Color.Gray;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
@@ -2598,10 +2599,12 @@
             this.b_start_KML_log,
             this.b_log_browser,
             this.toolStripSeparator4,
-            this.b_about});
+            this.b_about,
+            this.toolStripButton1});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(990, 54);
             this.toolStrip1.TabIndex = 15;
             this.toolStrip1.Text = "toolStrip1";
@@ -2749,6 +2752,17 @@
             this.b_about.Text = "About";
             this.b_about.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.b_about.Click += new System.EventHandler(this.b_about_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 51);
+            this.toolStripButton1.Text = "LogDL";
+            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // mainGUI
             // 
@@ -3060,6 +3074,7 @@
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Button b_fetch_tiles;
         private System.Windows.Forms.ToolStripButton b_reset;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
 

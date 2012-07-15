@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>2.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -121,6 +121,12 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="common.cs" />
+    <Compile Include="log_downloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="log_downloader.Designer.cs">
+      <DependentUpon>log_downloader.cs</DependentUpon>
+    </Compile>
     <Compile Include="MWGUIControls\throttle_expo_control.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -187,6 +193,9 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="log_downloader.resx">
+      <DependentUpon>log_downloader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="setup_wizard.resx">
       <DependentUpon>setup_wizard.cs</DependentUpon>
