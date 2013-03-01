@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <!-- This a config file for RC options for latest dev MultiWii Code-->
 <CONFIG>
-  <AUX_OPTION id="0"  name="LEVEL"    desc="Auto Leveling mode" ind="LEVEL" />
-  <AUX_OPTION id="1"  name="ALTHOLD"  desc="Altitude hold" ind ="ALTHOLD"/>
-  <AUX_OPTION id="2"  name="MAG"      desc="Heading hold with compass" ind="Head H"/>
-  <AUX_OPTION id="3"  name="CAMSTAB"  desc="Camera Stabilisation" ind="CAMSTAB"/>
-  <AUX_OPTION id="4"  name="CAMTRIG"  desc="Camera Trigger" ind="CAMTRIG"/>
-  <AUX_OPTION id="5"  name="ARM"      desc="Arm motors" ind ="ARM"/>
-  <AUX_OPTION id="6"  name="RTH"      desc="Return to home" ind="RTH"/>
-  <AUX_OPTION id="7"  name="POSHOLD"  desc="Position hold" ind="POSHOLD"/>
-  <AUX_OPTION id="8"  name="PASSTHRU" desc="Passthru for flying wings" ind="PASSTHR"/>
-  <AUX_OPTION id="9"  name="HEADFREE" desc="Head free mode" ind="Head F"/>
-  <AUX_OPTION id="10" name="BEEPER"   desc="Activate beeper" ind="BEEPER"/>
-  <AUX_OPTION id="11" name="LEDMAX"   desc="Maximum illumination" ind="LEDMAX"/>
-  <AUX_OPTION id="12" name="LANDLIGHT" desc="Landing Lights" ind="Land Li"/>
-  <AUX_OPTION id="13" name="HEADADJ"   desc="Adjust Head free mode - Temporary disables headfree mode, and reset headfree orientation when switched off" ind="HF Adj"/>
-
+  
   <PID id="0" name="Roll" desc="Roll Rate control" />
 	  <P id="0" shown="true" min="0" max="20.0" prec="10" />
 	  <I id="0" shown="true" min="0" max="0.250" prec="1000" />
@@ -60,10 +46,5 @@
 	  <P id="8" shown="true" min="0" max="20.0" prec="10" />
 	  <I id="8" shown="false" min="0" max="2.54" prec="100" />
 	  <D id="8" shown="false" min="0" max="100" prec="1" />
-
-    <PID id="9" name="Velocity" desc="Velocity control for Altitude hold" />
-	  <P id="9" shown="true" min="0" max="20.0" prec="10" />
-	  <I id="9" shown="true" min="0" max="2.54" prec="100" />
-	  <D id="9" shown="true" min="0" max="100" prec="1" />
 
 	</CONFIG>
