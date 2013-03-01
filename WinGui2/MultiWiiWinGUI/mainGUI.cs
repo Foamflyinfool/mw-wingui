@@ -43,7 +43,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.1";
+        const string sVersion = "2.2 beta";
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -58,7 +58,7 @@ namespace MultiWiiWinGUI
         const int rcLow = 1300;
         const int rcMid = 1700;
 
-        const string sRelName = "2.1";
+        const string sRelName = "2.2";
 
         //PID values
         static PID[] Pid;
@@ -965,6 +965,13 @@ namespace MultiWiiWinGUI
                 {
                     x++;
                     System.Threading.Thread.Sleep(1);
+
+                    MSPquery(MSP_PID);
+                    MSPquery(MSP_RC_TUNING);
+                    MSPquery(MSP_IDENT);
+                    MSPquery(MSP_BOX);
+                    MSPquery(MSP_BOXNAMES);
+                    MSPquery(MSP_MISC);
 
                     if (x > 1000)
                     {
