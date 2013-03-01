@@ -14,8 +14,9 @@ namespace MultiWiiGUIControls
         #region Fields
 
         // Parameters
-        private int[] bar_pos = { 25, 40, 55, 70, 85, 100, 115, 130 };
-        private int[] RC_Values = {1000,1000,1000,1000,1000,1000,1000,1000};
+        private int[] bar_pos = { 25, 40, 55, 70, 85, 100, 115, 130, 145, 160, 175, 190 };
+        private int[] RC_Values = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
+        private int RC_Channels = 12;
 
         // Images
         Bitmap bmpBackground = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.rc_control);
@@ -48,7 +49,7 @@ namespace MultiWiiGUIControls
         {
             components = new System.ComponentModel.Container();
             this.Height = 200;
-            this.Width = 150;
+            this.Width = 225;
         }
         #endregion
 
@@ -67,8 +68,16 @@ namespace MultiWiiGUIControls
             bmpBackground.MakeTransparent(Color.Yellow);
             pe.Graphics.DrawImageUnscaled(bmpBackground, 0, 0);
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < RC_Channels; i++)
             {
+                string strLabel = "";
+                if (i == 0) { strLabel = "Thr"; }
+                if (i == 1) { strLabel = "Pitch"; }
+                if (i == 2) { strLabel = "Roll"; }
+                if (i == 3) { strLabel = "Yaw"; }
+                if (i > 3) { strLabel = "Aux" + (i - 3); }
+
+                pe.Graphics.DrawString(String.Format("{0:0}", strLabel), drawFont, drawBrush, 5, bar_pos[i] - 13);
                 pe.Graphics.DrawString(String.Format("{0:0}",RC_Values[i]), drawFont, drawBrush, 165,bar_pos[i]-13);
                 int w = (int)((RC_Values[i] - 1000)/(double)(1000/120));
                 if (w < 0) { w = 0; }
@@ -91,18 +100,18 @@ namespace MultiWiiGUIControls
         /// Set the bar values based on the input variables
         ///</summary>
 
-        public void SetRCInputParameters(int rcThr, int rcPitch, int rcRoll,int rcYaw,int rcAux1, int rcAux2, int rcAux3,int rcAux4)
+        public void SetRCInputParameters(int rcThr, int rcPitch, int rcRoll, int rcYaw, int[] rcAux, int RCchannels)
         {
-
             RC_Values[0] = rcThr;
             RC_Values[1] = rcPitch;
             RC_Values[2] = rcRoll;
             RC_Values[3] = rcYaw;
-            RC_Values[4] = rcAux1;
-            RC_Values[5] = rcAux2;
-            RC_Values[6] = rcAux3;
-            RC_Values[7] = rcAux4;
-
+            int i = 4;
+            foreach  (int Aux in rcAux) {
+                RC_Values[i] = Aux;
+                i++;
+            }
+            RC_Channels = RCchannels;
             this.Refresh();
         }
 
@@ -110,13 +119,13 @@ namespace MultiWiiGUIControls
         {
             get
             {
-                return new Size(200, 150);
+                return new Size(200, 225);
             }
         }
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
-            base.SetBoundsCore(x, y, 200, 150, specified);
+            base.SetBoundsCore(x, y, 200, 225, specified);
         }
 
         #endregion

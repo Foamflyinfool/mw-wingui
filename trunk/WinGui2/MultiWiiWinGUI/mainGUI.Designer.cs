@@ -61,8 +61,8 @@
             this.tabPageRC = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.tabPageRealtime = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.b_cal_acc = new System.Windows.Forms.Button();
@@ -212,6 +212,11 @@
             this.b_select_log_folder = new System.Windows.Forms.Button();
             this.l_LogFolder = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.tabPageCLI = new System.Windows.Forms.TabPage();
+            this.gbTerminal = new System.Windows.Forms.GroupBox();
+            this.cmdCLISend = new System.Windows.Forms.Button();
+            this.txtCLICommand = new System.Windows.Forms.TextBox();
+            this.txtCLIResult = new System.Windows.Forms.TextBox();
             this.timer_realtime = new System.Windows.Forms.Timer(this.components);
             this.bkgWorker = new System.ComponentModel.BackgroundWorker();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
@@ -299,6 +304,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.tabPageCLI.SuspendLayout();
+            this.gbTerminal.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -310,6 +317,7 @@
             this.tabMain.Controls.Add(this.tabPageMap);
             this.tabMain.Controls.Add(this.tabPageFlighDeck);
             this.tabMain.Controls.Add(this.tabPageSettings);
+            this.tabMain.Controls.Add(this.tabPageCLI);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Location = new System.Drawing.Point(0, 54);
             this.tabMain.Name = "tabMain";
@@ -726,8 +734,8 @@
             this.tabPageRC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tabPageRC.Controls.Add(this.label5);
             this.tabPageRC.Controls.Add(this.label4);
-            this.tabPageRC.Controls.Add(this.rci_Control_settings);
             this.tabPageRC.Controls.Add(this.pictureBox1);
+            this.tabPageRC.Controls.Add(this.rci_Control_settings);
             this.tabPageRC.Location = new System.Drawing.Point(4, 22);
             this.tabPageRC.Name = "tabPageRC";
             this.tabPageRC.Padding = new System.Windows.Forms.Padding(3);
@@ -740,7 +748,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(839, 159);
+            this.label5.Location = new System.Drawing.Point(839, 206);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 19;
@@ -757,15 +765,6 @@
             this.label4.TabIndex = 18;
             this.label4.Text = "Orange border indicates, that setting was changed but not written to FC";
             // 
-            // rci_Control_settings
-            // 
-            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
-            this.rci_Control_settings.Name = "rci_Control_settings";
-            this.rci_Control_settings.Size = new System.Drawing.Size(200, 150);
-            this.rci_Control_settings.TabIndex = 15;
-            this.rci_Control_settings.Text = "rc_input_control2";
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -776,6 +775,15 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
+            // 
+            // rci_Control_settings
+            // 
+            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
+            this.rci_Control_settings.Name = "rci_Control_settings";
+            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
+            this.rci_Control_settings.TabIndex = 15;
+            this.rci_Control_settings.Text = "rc_input_control2";
             // 
             // tabPageRealtime
             // 
@@ -1601,7 +1609,7 @@
             this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
             this.rc_input_control1.Name = "rc_input_control1";
-            this.rc_input_control1.Size = new System.Drawing.Size(200, 150);
+            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
             this.rc_input_control1.TabIndex = 76;
             this.rc_input_control1.Text = "rc_input_control1";
             // 
@@ -2567,6 +2575,66 @@
             this.label20.TabIndex = 0;
             this.label20.Text = "Data logging folder";
             // 
+            // tabPageCLI
+            // 
+            this.tabPageCLI.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPageCLI.Controls.Add(this.gbTerminal);
+            this.tabPageCLI.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCLI.Name = "tabPageCLI";
+            this.tabPageCLI.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCLI.Size = new System.Drawing.Size(982, 452);
+            this.tabPageCLI.TabIndex = 6;
+            this.tabPageCLI.Text = "CLI";
+            // 
+            // gbTerminal
+            // 
+            this.gbTerminal.Controls.Add(this.cmdCLISend);
+            this.gbTerminal.Controls.Add(this.txtCLICommand);
+            this.gbTerminal.Controls.Add(this.txtCLIResult);
+            this.gbTerminal.Location = new System.Drawing.Point(8, 6);
+            this.gbTerminal.Name = "gbTerminal";
+            this.gbTerminal.Size = new System.Drawing.Size(966, 438);
+            this.gbTerminal.TabIndex = 1;
+            this.gbTerminal.TabStop = false;
+            this.gbTerminal.Text = "Terminal";
+            // 
+            // cmdCLISend
+            // 
+            this.cmdCLISend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdCLISend.Location = new System.Drawing.Point(885, 410);
+            this.cmdCLISend.Name = "cmdCLISend";
+            this.cmdCLISend.Size = new System.Drawing.Size(75, 22);
+            this.cmdCLISend.TabIndex = 1;
+            this.cmdCLISend.Text = "Send";
+            this.cmdCLISend.UseVisualStyleBackColor = true;
+            this.cmdCLISend.Click += new System.EventHandler(this.cmdCLISend_Click);
+            // 
+            // txtCLICommand
+            // 
+            this.txtCLICommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCLICommand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtCLICommand.ForeColor = System.Drawing.SystemColors.Info;
+            this.txtCLICommand.Location = new System.Drawing.Point(6, 410);
+            this.txtCLICommand.Name = "txtCLICommand";
+            this.txtCLICommand.Size = new System.Drawing.Size(873, 20);
+            this.txtCLICommand.TabIndex = 0;
+            // 
+            // txtCLIResult
+            // 
+            this.txtCLIResult.AllowDrop = true;
+            this.txtCLIResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCLIResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtCLIResult.ForeColor = System.Drawing.SystemColors.Info;
+            this.txtCLIResult.Location = new System.Drawing.Point(6, 19);
+            this.txtCLIResult.Multiline = true;
+            this.txtCLIResult.Name = "txtCLIResult";
+            this.txtCLIResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtCLIResult.Size = new System.Drawing.Size(954, 385);
+            this.txtCLIResult.TabIndex = 0;
+            // 
             // timer_realtime
             // 
             this.timer_realtime.Tick += new System.EventHandler(this.timer_realtime_Tick);
@@ -2671,8 +2739,8 @@
             this.b_reset.Image = global::MultiWiiWinGUI.Properties.Resources.reset;
             this.b_reset.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.b_reset.Name = "b_reset";
-            this.b_reset.Size = new System.Drawing.Size(39, 51);
-            this.b_reset.Text = "Reset";
+            this.b_reset.Size = new System.Drawing.Size(83, 51);
+            this.b_reset.Text = "Load Defaults";
             this.b_reset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.b_reset.Click += new System.EventHandler(this.b_reset_Click);
             // 
@@ -2860,6 +2928,9 @@
             this.tabPageSettings.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
+            this.tabPageCLI.ResumeLayout(false);
+            this.gbTerminal.ResumeLayout(false);
+            this.gbTerminal.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -3074,6 +3145,11 @@
         private System.Windows.Forms.Button b_fetch_tiles;
         private System.Windows.Forms.ToolStripButton b_reset;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.TabPage tabPageCLI;
+        private System.Windows.Forms.GroupBox gbTerminal;
+        private System.Windows.Forms.Button cmdCLISend;
+        private System.Windows.Forms.TextBox txtCLICommand;
+        private System.Windows.Forms.TextBox txtCLIResult;
     }
 }
 

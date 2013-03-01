@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -108,7 +109,7 @@ namespace MultiWiiWinGUI
         System.Windows.Forms.Label[] cb_labels;
         System.Windows.Forms.Label[] aux_labels;
         System.Windows.Forms.Label[,] lmh_labels;
-        
+
         CultureInfo culture = new CultureInfo("en-US");
 
 
@@ -146,8 +147,8 @@ namespace MultiWiiWinGUI
         GMapOverlay markers;
         GMapOverlay polygons;
         GMapOverlay positions;
-        
-        
+
+
         static GMapProvider[] mapProviders;
         static PointLatLng copterPos = new PointLatLng(47.402489, 19.071558);       //Just the corrds of my flying place
         static bool isMouseDown = false;
@@ -176,63 +177,64 @@ namespace MultiWiiWinGUI
 
 
         //Commands
-         const int MSP_IDENT                =100;
+        const int MSP_IDENT = 100;
 
-         const int MSP_STATUS               =101;
-         const int MSP_RAW_IMU              =102;
-         const int MSP_SERVO                =103;
-         const int MSP_MOTOR                =104;
-         const int MSP_RC                   =105;
-         const int MSP_RAW_GPS              =106;
-         const int MSP_COMP_GPS             =107;
-         const int MSP_ATTITUDE             =108;
-         const int MSP_ALTITUDE             =109;
-         const int MSP_BAT                  =110;
-         const int MSP_RC_TUNING            =111;
-         const int MSP_PID                  =112;
-         const int MSP_BOX                  =113;
-         const int MSP_MISC                 =114;
-         const int MSP_MOTOR_PINS = 115;
-         const int MSP_BOXNAMES = 116;
-         const int MSP_PIDNAMES = 117;
-         const int MSP_WP = 118;
-
-
-         const int MSP_SET_RAW_RC           =200;
-         const int MSP_SET_RAW_GPS          =201;
-         const int MSP_SET_PID              =202;
-         const int MSP_SET_BOX              =203;
-         const int MSP_SET_RC_TUNING        =204;
-         const int MSP_ACC_CALIBRATION      =205;
-         const int MSP_MAG_CALIBRATION      =206;
-         const int MSP_SET_MISC             =207;
-         const int MSP_RESET_CONF           =208;
-         const int MSP_SET_WP = 209;
-
-         const int MSP_EEPROM_WRITE         =250;
-         const int MSP_DEBUG                =254;
+        const int MSP_STATUS = 101;
+        const int MSP_RAW_IMU = 102;
+        const int MSP_SERVO = 103;
+        const int MSP_MOTOR = 104;
+        const int MSP_RC = 105;
+        const int MSP_RAW_GPS = 106;
+        const int MSP_COMP_GPS = 107;
+        const int MSP_ATTITUDE = 108;
+        const int MSP_ALTITUDE = 109;
+        const int MSP_BAT = 110;
+        const int MSP_RC_TUNING = 111;
+        const int MSP_PID = 112;
+        const int MSP_BOX = 113;
+        const int MSP_MISC = 114;
+        const int MSP_MOTOR_PINS = 115;
+        const int MSP_BOXNAMES = 116;
+        const int MSP_PIDNAMES = 117;
+        const int MSP_WP = 118;
 
 
+        const int MSP_SET_RAW_RC = 200;
+        const int MSP_SET_RAW_GPS = 201;
+        const int MSP_SET_PID = 202;
+        const int MSP_SET_BOX = 203;
+        const int MSP_SET_RC_TUNING = 204;
+        const int MSP_ACC_CALIBRATION = 205;
+        const int MSP_MAG_CALIBRATION = 206;
+        const int MSP_SET_MISC = 207;
+        const int MSP_RESET_CONF = 208;
+        const int MSP_SET_WP = 209;
 
-          const byte IDLE = 0;
-          const byte HEADER_START = 1;
-          const byte HEADER_M = 2;
-          const byte HEADER_ARROW = 3;
-          const byte HEADER_SIZE = 4;
-          const byte HEADER_CMD = 5;
-          const byte HEADER_ERR = 6;
-
-         static byte[] inBuf;
+        const int MSP_EEPROM_WRITE = 250;
+        const int MSP_DEBUG = 254;
 
 
-         static byte c_state = IDLE;
-         static Boolean err_rcvd = false;
-         static byte offset = 0;
-         static byte dataSize = 0;
-         static byte checksum = 0;
-         static byte cmd;
-         static int serial_error_count = 0;
-         static int serial_packet_count = 0;
+
+        const byte IDLE = 0;
+        const byte HEADER_START = 1;
+        const byte HEADER_M = 2;
+        const byte HEADER_ARROW = 3;
+        const byte HEADER_SIZE = 4;
+        const byte HEADER_CMD = 5;
+        const byte HEADER_ERR = 6;
+
+        static byte[] inBuf;
+
+        static int AUX_CHANNELS = 4;
+
+        static byte c_state = IDLE;
+        static Boolean err_rcvd = false;
+        static byte offset = 0;
+        static byte dataSize = 0;
+        static byte checksum = 0;
+        static byte cmd;
+        static int serial_error_count = 0;
+        static int serial_packet_count = 0;
 
 
         #endregion
@@ -315,106 +317,25 @@ namespace MultiWiiWinGUI
 
         }
 
-        private void mainGUI_Load(object sender, EventArgs e)
+        private void create_RC_Checkboxes(string[] names)
         {
-            //First step, check it gui_settings file is exists or not, if not then start settings wizard
-            if (!File.Exists(sGuiSettingsFilename))
-            {
-                setup_wizard panelSetupWizard = new setup_wizard();
-                panelSetupWizard.ShowDialog();
-
-            }
-
-            //Now there must be a valid settings file, so we can continue with normal execution
-
-            splash_screen splash = new splash_screen();
-            splash.sVersionLabel = sVersion;
-            splash.Show();
-            splash.Refresh();
-            //Start with Settings file read, and parse exit if unsuccessfull
-            gui_settings = new GUI_settings();
-            if (!gui_settings.read_from_xml(sGuiSettingsFilename))
-            {
-                Environment.Exit(-1);
-            }
-
-            sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
-            read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
-
-            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
-            mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
-
-
-            splash.sFcVersionLabel = "MultiWii version " + sRelName;
-            splash.sStatus = "Connecting to MAP server...";
-            splash.Refresh();
-
-
-
-
-            //Quick hack to get pid names to mw_params untill redo the structures
-            for (int i = 0; i < iPidItems; i++)
-            {
-                mw_params.pidnames[i] = Pid[i].name;
-            }
-
-
-            cbMapProviders.SelectedIndex = gui_settings.iMapProviderSelectedIndex;
-            MainMap.MapProvider = mapProviders[gui_settings.iMapProviderSelectedIndex];
-            tb_mapzoom.Value = MainMap.MaxZoom;
-            MainMap.Zoom = MainMap.MaxZoom;
-
-            splash.sStatus = "Building up GUI elements...";
-            splash.Refresh();
-
-            bSerialBuffer = new byte[65];
-            inBuf = new byte[300];   //init input buffer
-
-            ToolTip toolTip1 = new ToolTip();
-            toolTip1.AutoPopDelay = 5000;
-            toolTip1.InitialDelay = 1000;
-            toolTip1.ReshowDelay = 500;
-            toolTip1.ShowAlways = true;
-
-            //rcOptions1 = new byte[iCheckBoxItems];
-            //rcOptions2 = new byte[iCheckBoxItems];
-
-            //Fill out settings tab
-            l_Capture_folder.Text = gui_settings.sCaptureFolder;
-            l_LogFolder.Text = gui_settings.sLogFolder;
-            l_Settings_folder.Text = gui_settings.sSettingsFolder;
-
-            cb_Logging_enabled.Checked = gui_settings.bEnableLogging;
-
-            //Set log enties checkboxes
-            cb_Log1.Checked = gui_settings.logGraw;
-            cb_Log2.Checked = gui_settings.logGatt;
-            cb_Log3.Checked = gui_settings.logGmag;
-            cb_Log4.Checked = gui_settings.logGrcc;
-            cb_Log5.Checked = gui_settings.logGrcx;
-            cb_Log6.Checked = gui_settings.logGmot;
-            cb_Log7.Checked = gui_settings.logGsrv;
-            cb_Log8.Checked = gui_settings.logGnav;
-            cb_Log9.Checked = gui_settings.logGpar;
-            cb_Log10.Checked = gui_settings.logGdbg;
 
             //Build indicator lamps array
             indicators = new indicator_lamp[iCheckBoxItems];
-            int row=0; int col=0;
-            int startx =800; int starty = 3;
-            for (int i=0;i<iCheckBoxItems;i++)
+            int row = 0; int col = 0;
+            int startx = 800; int starty = 3;
+            for (int i = 0; i < iCheckBoxItems; i++)
             {
                 indicators[i] = new indicator_lamp();
                 indicators[i].Location = new Point(startx + col * 52, starty + row * 19);
                 indicators[i].Visible = true;
-                indicators[i].Text = option_indicators[i];
+                indicators[i].Text = names[i];
                 indicators[i].indicator_color = 1;
                 indicators[i].Anchor = AnchorStyles.Right;
                 this.splitContainer2.Panel2.Controls.Add(indicators[i]);
                 col++;
                 if (col == 3) { col = 0; row++; }
             }
-
 
             //Build the RC control checkboxes structure
 
@@ -477,15 +398,130 @@ namespace MultiWiiWinGUI
             for (z = 0; z < iCheckBoxItems; z++)
             {
                 cb_labels[z] = new System.Windows.Forms.Label();
-                cb_labels[z].Text = option_names[z];
+                cb_labels[z].Text = names[z];
                 cb_labels[z].Location = new Point(10, starty + z * 25);
                 cb_labels[z].Visible = true;
                 cb_labels[z].AutoSize = true;
                 cb_labels[z].ForeColor = Color.White;
                 cb_labels[z].TextAlign = ContentAlignment.MiddleRight;
-                toolTip1.SetToolTip(cb_labels[z], option_desc[z]);
                 this.tabPageRC.Controls.Add(cb_labels[z]);
+
+
             }
+        }
+
+        private void delete_RC_Checkboxes()
+        {
+            int a, b, c;
+            if (aux != null)
+            {
+                for (c = 0; c < 4; c++)
+                {
+                    for (a = 0; a < 3; a++)
+                    {
+                        for (b = 0; b < iCheckBoxItems; b++)
+                        {
+                            this.tabPageRC.Controls.Remove(aux[c, a, b]);
+                            aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+                    this.tabPageRC.Controls.Remove(cb_labels[i]);
+                    this.splitContainer2.Panel2.Controls.Remove(indicators[i]);
+                }
+            }
+        }
+
+        private void mainGUI_Load(object sender, EventArgs e)
+        {
+            //First step, check it gui_settings file is exists or not, if not then start settings wizard
+            if (!File.Exists(sGuiSettingsFilename))
+            {
+                setup_wizard panelSetupWizard = new setup_wizard();
+                panelSetupWizard.ShowDialog();
+
+            }
+
+            //Now there must be a valid settings file, so we can continue with normal execution
+
+            splash_screen splash = new splash_screen();
+            splash.sVersionLabel = sVersion;
+            splash.Show();
+            splash.Refresh();
+            //Start with Settings file read, and parse exit if unsuccessfull
+            gui_settings = new GUI_settings();
+            if (!gui_settings.read_from_xml(sGuiSettingsFilename))
+            {
+                Environment.Exit(-1);
+            }
+
+            sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
+            read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
+            iCheckBoxItems = 24;                    //Theoretical maximum
+
+
+            mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
+            mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
+
+
+            splash.sFcVersionLabel = "MultiWii version " + sRelName;
+            splash.sStatus = "Connecting to MAP server...";
+            splash.Refresh();
+
+
+
+
+            //Quick hack to get pid names to mw_params untill redo the structures
+            for (int i = 0; i < iPidItems; i++)
+            {
+                mw_params.pidnames[i] = Pid[i].name;
+            }
+
+
+            cbMapProviders.SelectedIndex = gui_settings.iMapProviderSelectedIndex;
+            MainMap.MapProvider = mapProviders[gui_settings.iMapProviderSelectedIndex];
+            tb_mapzoom.Value = MainMap.MaxZoom;
+            MainMap.Zoom = MainMap.MaxZoom;
+
+            splash.sStatus = "Building up GUI elements...";
+            splash.Refresh();
+
+            bSerialBuffer = new byte[65];
+            inBuf = new byte[300];   //init input buffer
+
+            ToolTip toolTip1 = new ToolTip();
+            toolTip1.AutoPopDelay = 5000;
+            toolTip1.InitialDelay = 1000;
+            toolTip1.ReshowDelay = 500;
+            toolTip1.ShowAlways = true;
+
+            //rcOptions1 = new byte[iCheckBoxItems];
+            //rcOptions2 = new byte[iCheckBoxItems];
+
+            //Fill out settings tab
+            l_Capture_folder.Text = gui_settings.sCaptureFolder;
+            l_LogFolder.Text = gui_settings.sLogFolder;
+            l_Settings_folder.Text = gui_settings.sSettingsFolder;
+
+            cb_Logging_enabled.Checked = gui_settings.bEnableLogging;
+
+            //Set log enties checkboxes
+            cb_Log1.Checked = gui_settings.logGraw;
+            cb_Log2.Checked = gui_settings.logGatt;
+            cb_Log3.Checked = gui_settings.logGmag;
+            cb_Log4.Checked = gui_settings.logGrcc;
+            cb_Log5.Checked = gui_settings.logGrcx;
+            cb_Log6.Checked = gui_settings.logGmot;
+            cb_Log7.Checked = gui_settings.logGsrv;
+            cb_Log8.Checked = gui_settings.logGnav;
+            cb_Log9.Checked = gui_settings.logGpar;
+            cb_Log10.Checked = gui_settings.logGdbg;
+
+
+
 
             //Build PID control structure based on the Pid structure.
 
@@ -520,7 +556,7 @@ namespace MultiWiiWinGUI
                     Pid[i].Pfield.Maximum = Pid[i].Pmax;
                     Pid[i].Pfield.Minimum = Pid[i].Pmin;
                     Pid[i].Pfield.DecimalPlaces = decimals(Pid[i].Pprec);
-                    Pid[i].Pfield.Increment = 1/(decimal)Pid[i].Pprec;
+                    Pid[i].Pfield.Increment = 1 / (decimal)Pid[i].Pprec;
                     this.tabPagePID.Controls.Add(Pid[i].Pfield);
 
                     Pid[i].Plabel = new System.Windows.Forms.Label();
@@ -575,7 +611,7 @@ namespace MultiWiiWinGUI
                     Pid[i].Dlabel.Text = "D";
                     Pid[i].Dlabel.Font = fontField;
                     Pid[i].Dlabel.ForeColor = Color.White;
-                    Pid[i].Dlabel.Location = new Point(iRow3-20, iTopY + i * iLineSpace);
+                    Pid[i].Dlabel.Location = new Point(iRow3 - 20, iTopY + i * iLineSpace);
                     this.tabPagePID.Controls.Add(Pid[i].Dlabel);
 
                 }
@@ -732,9 +768,9 @@ namespace MultiWiiWinGUI
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = 300;
             myPane.XAxis.Type = AxisType.Linear;
-            
-            
-            
+
+
+
             zgMonitor.ScrollGrace = 0;
             xScale = zgMonitor.GraphPane.XAxis.Scale;
             zgMonitor.AxisChange();
@@ -784,12 +820,11 @@ namespace MultiWiiWinGUI
 
 
         }
-
-
+        
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
 
-            
+
             if (serialPort.BytesToRead == 0)
             {
 
@@ -811,7 +846,7 @@ namespace MultiWiiWinGUI
                     if ((iRefreshDivider % 20) == 0) MSPqueryWP(0);         //get home position
                 }
                 else { mw_gui.GPS_home_lon = 0; mw_gui.GPS_home_lat = 0; bHomeRecorded = false; }
-                
+
                 if ((mw_gui.mode & (1 << 7)) > 0)
                 {                         //poshold
                     if ((iRefreshDivider % 20) == 0) MSPqueryWP(16);         //get hold position
@@ -835,6 +870,7 @@ namespace MultiWiiWinGUI
 
             if (serialPort.IsOpen)              //Disconnect
             {
+                delete_RC_Checkboxes();
                 b_connect.Text = "Connect";
                 b_connect.Image = Properties.Resources.connect;
                 isConnected = false;
@@ -900,31 +936,60 @@ namespace MultiWiiWinGUI
 
 
                 //We have to do it for a couple of times to ensure that we will have parameters loaded 
-                for (int i=0;i<10;i++) {
+                for (int i = 0; i < 10; i++)
+                {
 
-                MSPquery(MSP_PID);
-                MSPquery(MSP_RC_TUNING);
-                MSPquery(MSP_IDENT);
-                MSPquery(MSP_BOX);
-                MSPquery(MSP_MISC);
+                    MSPquery(MSP_PID);
+                    MSPquery(MSP_RC_TUNING);
+                    MSPquery(MSP_IDENT);
+                    MSPquery(MSP_BOX);
+                    MSPquery(MSP_BOXNAMES);
+                    MSPquery(MSP_MISC);
                 }
 
-                
-                
+
+
                 //Run BackgroundWorker
                 if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
 
-                timer_realtime.Start();
+
 
                 //if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
                 //if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
                 //if (tabMain.SelectedIndex == 3 && !isPausedGPS) timer_GPS.Start();
                 System.Threading.Thread.Sleep(1000);
 
+
+                int x = 0;
+                while (mw_gui.bUpdateBoxNames == false)
+                {
+                    x++;
+                    System.Threading.Thread.Sleep(1);
+
+                    if (x > 1000)
+                    {
+                        MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        b_connect.Text = "Connect";
+                        b_connect.Image = Properties.Resources.connect;
+                        isConnected = false;
+                        timer_realtime.Stop();                       //Stop timer(s), whatever it takes
+                        //timer_rc.Stop();
+                        bkgWorker.CancelAsync();
+                        System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
+                        serialPort.Close();
+                        if (bLogRunning)
+                        {
+                            closeLog();
+                        }
+                        return;
+                    }
+                }
+                timer_realtime.Start();
                 bOptions_needs_refresh = true;
+                create_RC_Checkboxes(mw_gui.sBoxNames);
                 update_gui();
 
-             
+
 
 
             }
@@ -936,9 +1001,26 @@ namespace MultiWiiWinGUI
             timer_realtime.Interval = iRefreshIntervals[cb_monitor_rate.SelectedIndex];
         }
 
+        Boolean isCLI = false;
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (isConnected == true)
+            {
+                if (tabMain.SelectedTab == tabPageCLI)
+                {
+                    timer_realtime.Stop();
+                    isCLI = true;
+                    serialPort.Write("#");
+                }
+                else
+                {
+                    serialPort.Write("exit\r\n");
+                    serialPort.ReadExisting();
+                    isCLI = false;
+                    if (isConnected == true)
+                        timer_realtime.Start();
+                }
+            }
             switch (tabMain.SelectedIndex)
             {
                 case 2:
@@ -973,11 +1055,7 @@ namespace MultiWiiWinGUI
             logbrowser.ShowDialog();
             logbrowser.Dispose();
         }
-
-
-
-
-
+        
         private void l_ports_label_DoubleClick(object sender, EventArgs e)
         {
             serial_ports_enumerate();
@@ -1081,9 +1159,9 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Pshown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Pmin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
+                                Pid[iPidID].Pmin = Convert.ToDecimal(reader.GetAttribute("min"), culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Pmax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
+                                Pid[iPidID].Pmax = Convert.ToDecimal(reader.GetAttribute("max"), culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Pprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
@@ -1094,9 +1172,9 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Ishown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Imin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
+                                Pid[iPidID].Imin = Convert.ToDecimal(reader.GetAttribute("min"), culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Imax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
+                                Pid[iPidID].Imax = Convert.ToDecimal(reader.GetAttribute("max"), culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Iprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
@@ -1107,16 +1185,16 @@ namespace MultiWiiWinGUI
                                 reader.MoveToAttribute("shown");
                                 Pid[iPidID].Dshown = Convert.ToBoolean(reader.GetAttribute("shown"));
                                 reader.MoveToAttribute("min");
-                                Pid[iPidID].Dmin = Convert.ToDecimal(reader.GetAttribute("min"),culture);
+                                Pid[iPidID].Dmin = Convert.ToDecimal(reader.GetAttribute("min"), culture);
                                 reader.MoveToAttribute("max");
-                                Pid[iPidID].Dmax = Convert.ToDecimal(reader.GetAttribute("max"),culture);
+                                Pid[iPidID].Dmax = Convert.ToDecimal(reader.GetAttribute("max"), culture);
                                 reader.MoveToAttribute("prec");
                                 Pid[iPidID].Dprec = Convert.ToInt16(reader.GetAttribute("prec"));
                             }
 
 
-                            
-                            
+
+
                             break;
 
                     }
@@ -1134,8 +1212,7 @@ namespace MultiWiiWinGUI
                     reader.Close();
             }
         }
-
-
+        
         private void b_pause_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
@@ -1154,7 +1231,6 @@ namespace MultiWiiWinGUI
 
         }
 
-
         private byte read8(SerialPort s)
         {
 
@@ -1163,22 +1239,21 @@ namespace MultiWiiWinGUI
 
         private int read16(SerialPort s)
         {
-            byte[] buffer = {0,0};
+            byte[] buffer = { 0, 0 };
             int retval;
 
             buffer[0] = (byte)s.ReadByte();
             buffer[1] = (byte)s.ReadByte();
 
-            retval = BitConverter.ToInt16(buffer,0);
+            retval = BitConverter.ToInt16(buffer, 0);
 
             return (retval);
         }
 
-
         private void evaluate_command(byte cmd)
         {
 
-            byte ptr; 
+            byte ptr;
 
             switch (cmd)
             {
@@ -1230,10 +1305,22 @@ namespace MultiWiiWinGUI
                     mw_gui.rcPitch = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.rcYaw = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.rcThrottle = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    mw_gui.rcAux1 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    mw_gui.rcAux2 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    mw_gui.rcAux3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    mw_gui.rcAux4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    if (AUX_CHANNELS != ((dataSize / 2) - 4))
+                    {
+                        AUX_CHANNELS = (dataSize / 2) - 4;
+                    };
+                    for (int i = 0; i < AUX_CHANNELS; i++)
+                    {
+                        mw_gui.rcAUX[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    }
+                    //mw_gui.rcAUX[0] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[1] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[2] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[3] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[4] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[5] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[6] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    //mw_gui.rcAUX[7] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
                 case MSP_RAW_GPS:
                     ptr = 0;
@@ -1287,10 +1374,22 @@ namespace MultiWiiWinGUI
                     break;
                 case MSP_BOX:
                     ptr = 0;
-                    for (int i = 0; i < iCheckBoxItems; i++)
+                    if (mw_gui.activation.Length < dataSize / 2)
+                        mw_gui.activation = new short[dataSize / 2];
+                    for (int i = 0; i < (dataSize / 2); i++)
                     {
                         mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
+                    break;
+                case MSP_BOXNAMES:
+                    StringBuilder builder = new StringBuilder();
+                    ptr = 0;
+                    while (ptr < dataSize) builder.Append((char)inBuf[ptr++]);
+                    builder.Remove(builder.Length - 1, 1);
+                    mw_gui.sBoxNames = new string[builder.ToString().Split(';').Length];
+                    mw_gui.sBoxNames = builder.ToString().Split(';');
+                    iCheckBoxItems = mw_gui.sBoxNames.Length;
+                    mw_gui.bUpdateBoxNames = true;
                     break;
                 case MSP_MISC:
                     ptr = 0;
@@ -1325,13 +1424,6 @@ namespace MultiWiiWinGUI
             }
         }
 
-
-
-
-        
-
-
-
         private void bkgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
@@ -1340,7 +1432,7 @@ namespace MultiWiiWinGUI
             // Do not access the form's BackgroundWorker reference directly.
             // Instead, use the reference provided by the sender parameter.
             BackgroundWorker bw = sender as BackgroundWorker;
-            
+
             try
             {
                 bool bIsPortOpen = serialPort.IsOpen;
@@ -1362,96 +1454,103 @@ namespace MultiWiiWinGUI
                     //Just process what is received. Get received commands and put them into 
                     while (serialPort.BytesToRead > 0)
                     {
-                        c = (byte)serialPort.ReadByte();
-
-
-                        switch (c_state)
+                        if (isCLI == true)
                         {
-                            case IDLE:
-                                c_state = (c == '$') ? HEADER_START : IDLE;
-                                break;
-                            case HEADER_START:
-                                c_state = (c == 'M') ? HEADER_M : IDLE;
-                                break;
+                            inCLIBuffer = serialPort.ReadExisting();
+                            AccessToTB();
+                        }
+                        else
+                        {
+                            c = (byte)serialPort.ReadByte();
 
-                            case HEADER_M:
-                                if (c == '>')
-                                {
-                                    c_state = HEADER_ARROW;
-                                }
-                                else if (c == '!')
-                                {
-                                    c_state = HEADER_ERR;
-                                }
-                                else
-                                {
-                                    c_state = IDLE;
-                                }
-                                break;
 
-                            case HEADER_ARROW:
-                            case HEADER_ERR:
-                                /* is this an error message? */
-                                err_rcvd = (c_state == HEADER_ERR);        /* now we are expecting the payload size */
-                                dataSize = c;
-                                /* reset index variables */
-                                offset = 0;
-                                checksum = 0;
-                                checksum ^= c;
-                                c_state = HEADER_SIZE;
-                                if (dataSize > 100) { c_state = IDLE; }
+                            switch (c_state)
+                            {
+                                case IDLE:
+                                    c_state = (c == '$') ? HEADER_START : IDLE;
+                                    break;
+                                case HEADER_START:
+                                    c_state = (c == 'M') ? HEADER_M : IDLE;
+                                    break;
 
-                                break;
-                            case HEADER_SIZE:
-                                cmd = c;
-                                checksum ^= c;
-                                c_state = HEADER_CMD;
-                                break;
-                            case HEADER_CMD:
-                                if (offset < dataSize)
-                                {
-                                    checksum ^= c;
-                                    inBuf[offset++] = c;
-                                }
-                                else
-                                {
-
-                                    /* compare calculated and transferred checksum */
-                                    if (checksum == c)
+                                case HEADER_M:
+                                    if (c == '>')
                                     {
-                                        if (err_rcvd)
-                                        {
-                                            // Console.WriteLine("Copter did not understand request type " + err_rcvd);
-                                        }
-                                        else
-                                        {
-                                            /* we got a valid response packet, evaluate it */
-                                            serial_packet_count++;
-                                            evaluate_command(cmd);
-                                        }
+                                        c_state = HEADER_ARROW;
+                                    }
+                                    else if (c == '!')
+                                    {
+                                        c_state = HEADER_ERR;
                                     }
                                     else
                                     {
-                                        /*
-                                        Console.WriteLine("invalid checksum for command " + cmd + ": " + checksum + " expected, got " + c);
-                                        Console.Write("<" + cmd + " " + dataSize + "> {");
-                                        for (int i = 0; i < dataSize; i++)
-                                        {
-                                            if (i != 0) { Console.Write(' '); }
-                                            Console.Write(inBuf[i]);
-                                        }
-                                        Console.WriteLine("} [" + c + "]");
-                                         */
-
-                                        serial_error_count++;
-
+                                        c_state = IDLE;
                                     }
-                                    c_state = IDLE;
-                                }
-                                break;
+                                    break;
+
+                                case HEADER_ARROW:
+                                case HEADER_ERR:
+                                    /* is this an error message? */
+                                    err_rcvd = (c_state == HEADER_ERR);        /* now we are expecting the payload size */
+                                    dataSize = c;
+                                    /* reset index variables */
+                                    offset = 0;
+                                    checksum = 0;
+                                    checksum ^= c;
+                                    c_state = HEADER_SIZE;
+                                    if (dataSize > 150) { c_state = IDLE; }
+
+                                    break;
+                                case HEADER_SIZE:
+                                    cmd = c;
+                                    checksum ^= c;
+                                    c_state = HEADER_CMD;
+                                    break;
+                                case HEADER_CMD:
+                                    if (offset < dataSize)
+                                    {
+                                        checksum ^= c;
+                                        inBuf[offset++] = c;
+                                    }
+                                    else
+                                    {
+
+                                        /* compare calculated and transferred checksum */
+                                        if (checksum == c)
+                                        {
+                                            if (err_rcvd)
+                                            {
+                                                // Console.WriteLine("Copter did not understand request type " + err_rcvd);
+                                            }
+                                            else
+                                            {
+                                                /* we got a valid response packet, evaluate it */
+                                                serial_packet_count++;
+                                                evaluate_command(cmd);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            /*
+                                            Console.WriteLine("invalid checksum for command " + cmd + ": " + checksum + " expected, got " + c);
+                                            Console.Write("<" + cmd + " " + dataSize + "> {");
+                                            for (int i = 0; i < dataSize; i++)
+                                            {
+                                                if (i != 0) { Console.Write(' '); }
+                                                Console.Write(inBuf[i]);
+                                            }
+                                            Console.WriteLine("} [" + c + "]");
+                                             */
+
+                                            serial_error_count++;
+
+                                        }
+                                        c_state = IDLE;
+                                    }
+                                    break;
+                            }
                         }
                     }
-                    
                 }
                 else   //port not opened, (it could happen when U disconnect the usb cable while connected
                 {
@@ -1472,7 +1571,6 @@ namespace MultiWiiWinGUI
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_count);
 
-
             if (bSerialError)
             {
                 //Background worker returned error, disconnect serial port
@@ -1492,26 +1590,26 @@ namespace MultiWiiWinGUI
                 return;
             }
 
-            if (bLogRunning && wLogStream.BaseStream!=null)
+            if (bLogRunning && wLogStream.BaseStream != null)
             {
                 //RAW Sensor (acc, gyro)
                 if (gui_settings.logGraw) { wLogStream.WriteLine("GRAW,{0},{1},{2},{3},{4},{5}", mw_gui.ax, mw_gui.ay, mw_gui.az, mw_gui.gx, mw_gui.gy, mw_gui.gz); }
                 //Attitude
-                if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1}",mw_gui.angx,mw_gui.angy);}
+                if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1}", mw_gui.angx, mw_gui.angy); }
                 //Mag, head, baro
-                if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4}", mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro);}
+                if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4}", mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
                 //RC controls 
-                if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3}",mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw);}
+                if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3}", mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
                 //RC Aux controls
-                if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3}",mw_gui.rcAux1, mw_gui.rcAux2, mw_gui.rcAux3, mw_gui.rcAux4);}
+                if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3}", mw_gui.rcAUX[0], mw_gui.rcAUX[1], mw_gui.rcAUX[2], mw_gui.rcAUX[3], mw_gui.rcAUX[4], mw_gui.rcAUX[5], mw_gui.rcAUX[6], mw_gui.rcAUX[7]); }
                 //Motors
-                if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]);}
+                if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]); }
                 //Servos
-                if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]);}
+                if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]); }
                 // Nav-GPS
-                if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3}", mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome);}
+                if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3}", mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome); }
                 // Housekeeping
-                if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3}", mw_gui.cycleTime,mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum);}
+                if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3}", mw_gui.cycleTime, mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum); }
                 //Debug
                 if (gui_settings.logGdbg) { wLogStream.WriteLine("GDBG,{0},{1},{2},{3}", mw_gui.debug1, mw_gui.debug2, mw_gui.debug3, mw_gui.debug4); }
             }
@@ -1521,7 +1619,7 @@ namespace MultiWiiWinGUI
 
                 if (GPS_lat_old != mw_gui.GPS_latitude || GPS_lon_old != mw_gui.GPS_longitude)
                 {
-                    wKMLLogStream.WriteLine("{0},{1},{2}", (decimal)mw_gui.GPS_longitude / 10000000, (decimal)mw_gui.GPS_latitude / 10000000,mw_gui.GPS_altitude);
+                    wKMLLogStream.WriteLine("{0},{1},{2}", (decimal)mw_gui.GPS_longitude / 10000000, (decimal)mw_gui.GPS_latitude / 10000000, mw_gui.GPS_altitude);
                     GPS_lat_old = mw_gui.GPS_latitude;
                     GPS_lon_old = mw_gui.GPS_longitude;
                 }
@@ -1537,7 +1635,7 @@ namespace MultiWiiWinGUI
                 {
                     addKMLMarker("PosHold", mw_gui.GPS_poshold_lon, mw_gui.GPS_poshold_lat, mw_gui.GPS_altitude);
                     bPosholdRecorded = true;
-                }  
+                }
 
 
             }
@@ -1552,7 +1650,7 @@ namespace MultiWiiWinGUI
                     update_pid_panel();
                     update_aux_panel();
                     bOptions_needs_refresh = false;
-                    
+
                 }
             }
 
@@ -1572,22 +1670,22 @@ namespace MultiWiiWinGUI
                     positions.Markers.Clear();
 
 
-                    if (((mw_gui.mode & (1 << 5)) > 0) && (mw_gui.GPS_home_lon!=0))       //ARMED
+                    if (((mw_gui.mode & (1 << 5)) > 0) && (mw_gui.GPS_home_lon != 0))       //ARMED
                     {
                         PointLatLng GPS_home = new PointLatLng((double)mw_gui.GPS_home_lat / 10000000, (double)mw_gui.GPS_home_lon / 10000000);
                         positions.Markers.Add(new GMapMarkerHome(GPS_home));
-                    } 
-                        
+                    }
 
-                    if (((mw_gui.mode & (1 << 7)) > 0) && (mw_gui.GPS_poshold_lon!=0))       //poshold
+
+                    if (((mw_gui.mode & (1 << 7)) > 0) && (mw_gui.GPS_poshold_lon != 0))       //poshold
                     {
                         PointLatLng GPS_poshold = new PointLatLng((double)mw_gui.GPS_poshold_lat / 10000000, (double)mw_gui.GPS_poshold_lon / 10000000);
-                        positions.Markers.Add(new  GMapMarkerGoogleRed(GPS_poshold));
-                    }                        
+                        positions.Markers.Add(new GMapMarkerGoogleRed(GPS_poshold));
+                    }
 
 
                     positions.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
-                    
+
                     Grout.Points.Add(GPS_pos);
                     MainMap.Position = GPS_pos;
                     MainMap.Invalidate();
@@ -1608,30 +1706,30 @@ namespace MultiWiiWinGUI
             if (tabMain.SelectedIndex == 1)
             {
                 //update RC control values
-                rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAux1, mw_gui.rcAux2, mw_gui.rcAux3, mw_gui.rcAux4);
+                rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
                 //Show LMH postions above switches
-                lmh_labels[0, 0].BackColor = (mw_gui.rcAux1 < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[0, 1].BackColor = (mw_gui.rcAux1 > rcLow && mw_gui.rcAux1 < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[0, 2].BackColor = (mw_gui.rcAux1 > rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[0, 0].BackColor = (mw_gui.rcAUX[0] < rcLow) ? Color.Green : Color.Transparent;
+                lmh_labels[0, 1].BackColor = (mw_gui.rcAUX[0] > rcLow && mw_gui.rcAUX[0] < rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[0, 2].BackColor = (mw_gui.rcAUX[0] > rcMid) ? Color.Green : Color.Transparent;
 
-                lmh_labels[1, 0].BackColor = (mw_gui.rcAux2 < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[1, 1].BackColor = (mw_gui.rcAux2 > rcLow && mw_gui.rcAux2 < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[1, 2].BackColor = (mw_gui.rcAux2 > rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[1, 0].BackColor = (mw_gui.rcAUX[1] < rcLow) ? Color.Green : Color.Transparent;
+                lmh_labels[1, 1].BackColor = (mw_gui.rcAUX[1] > rcLow && mw_gui.rcAUX[1] < rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[1, 2].BackColor = (mw_gui.rcAUX[1] > rcMid) ? Color.Green : Color.Transparent;
 
-                lmh_labels[2, 0].BackColor = (mw_gui.rcAux3 < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[2, 1].BackColor = (mw_gui.rcAux3 > rcLow && mw_gui.rcAux3 < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[2, 2].BackColor = (mw_gui.rcAux3 > rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[2, 0].BackColor = (mw_gui.rcAUX[2] < rcLow) ? Color.Green : Color.Transparent;
+                lmh_labels[2, 1].BackColor = (mw_gui.rcAUX[2] > rcLow && mw_gui.rcAUX[2] < rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[2, 2].BackColor = (mw_gui.rcAUX[2] > rcMid) ? Color.Green : Color.Transparent;
 
-                lmh_labels[3, 0].BackColor = (mw_gui.rcAux4 < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[3, 1].BackColor = (mw_gui.rcAux4 > rcLow && mw_gui.rcAux4 < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[3, 2].BackColor = (mw_gui.rcAux4 > rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[3, 0].BackColor = (mw_gui.rcAUX[3] < rcLow) ? Color.Green : Color.Transparent;
+                lmh_labels[3, 1].BackColor = (mw_gui.rcAUX[3] > rcLow && mw_gui.rcAUX[7] < rcMid) ? Color.Green : Color.Transparent;
+                lmh_labels[3, 2].BackColor = (mw_gui.rcAUX[3] > rcMid) ? Color.Green : Color.Transparent;
 
                 //evaluate rc_options and recolor mode which supposed to be ON at the current rc values
                 byte act1, act2, opt1, opt2;
 
                 //Construct options switch mask based on rcAux input
-                opt1 = (byte)(Convert.ToByte(mw_gui.rcAux1 < 1300) + Convert.ToByte(1300 < mw_gui.rcAux1 && mw_gui.rcAux1 < 1700) * 2 + Convert.ToByte(mw_gui.rcAux1 > 1700) * 4 + Convert.ToByte(mw_gui.rcAux2 < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAux2 && mw_gui.rcAux2 < 1700) * 16 + Convert.ToByte(mw_gui.rcAux2 > 1700) * 32);
-                opt2 = (byte)(Convert.ToByte(mw_gui.rcAux3 < 1300) + Convert.ToByte(1300 < mw_gui.rcAux3 && mw_gui.rcAux3 < 1700) * 2 + Convert.ToByte(mw_gui.rcAux3 > 1700) * 4 + Convert.ToByte(mw_gui.rcAux4 < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAux4 && mw_gui.rcAux4 < 1700) * 16 + Convert.ToByte(mw_gui.rcAux4 > 1700) * 32);
+                opt1 = (byte)(Convert.ToByte(mw_gui.rcAUX[0] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[0] && mw_gui.rcAUX[0] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[0] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[1] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[1] && mw_gui.rcAUX[1] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[1] > 1700) * 32);
+                opt2 = (byte)(Convert.ToByte(mw_gui.rcAUX[2] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[2] && mw_gui.rcAUX[2] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[2] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[3] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[3] && mw_gui.rcAUX[3] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[3] > 1700) * 32);
 
                 //Compare with switchbox settings
                 for (int b = 0; b < iCheckBoxItems; b++)
@@ -1680,8 +1778,8 @@ namespace MultiWiiWinGUI
                 if (cb_mag_yaw.Checked) { list_mag_yaw.Add((double)xTimeStamp, mw_gui.magz); }
                 l_mag_yaw.Text = "" + mw_gui.magz;
 
-                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, mw_gui.baro/100); }
-                l_alt.Text = "" + (double)mw_gui.baro/100;
+                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, (double)mw_gui.baro / 100.0f); }
+                l_alt.Text = "" + (double)mw_gui.baro / 100;
 
                 if (cb_head.Checked) { list_head.Add((double)xTimeStamp, mw_gui.heading); }
                 l_head.Text = "" + mw_gui.heading;
@@ -1710,7 +1808,7 @@ namespace MultiWiiWinGUI
                 zgMonitor.AxisChange();
                 zgMonitor.Invalidate();
 
-                rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAux1, mw_gui.rcAux2, mw_gui.rcAux3, mw_gui.rcAux4);
+                rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
 
                 curve_acc_roll.IsVisible = cb_acc_roll.Checked;
                 curve_acc_pitch.IsVisible = cb_acc_pitch.Checked;
@@ -1753,7 +1851,7 @@ namespace MultiWiiWinGUI
                 l_cycletime.Text = String.Format("{0:0000} µs", mw_gui.cycleTime);
                 l_vbatt.Text = String.Format("{0:0.0} volts", (double)mw_gui.vBat / 10);
                 l_powersum.Text = String.Format("{0:0}", mw_gui.pMeterSum);
-                l_i2cerrors.Text = String.Format("{0:0}",mw_gui.i2cErrors);
+                l_i2cerrors.Text = String.Format("{0:0}", mw_gui.i2cErrors);
 
             } //end if tab=realtime;
         }
@@ -1768,7 +1866,7 @@ namespace MultiWiiWinGUI
         {
             CheckBoxEx cb = ((CheckBoxEx)(sender));
 
-            cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false; 
+            cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false;
 
         }
 
@@ -1814,7 +1912,7 @@ namespace MultiWiiWinGUI
                 MSPquery(MSP_IDENT);
                 MSPquery(MSP_BOX);
                 MSPquery(MSP_MISC);
-                System.Threading.Thread.Sleep(500); 
+                System.Threading.Thread.Sleep(500);
                 bOptions_needs_refresh = true;
                 update_gui();
             }
@@ -1885,7 +1983,7 @@ namespace MultiWiiWinGUI
             timer_realtime.Start();
             System.Threading.Thread.Sleep(500);
             bOptions_needs_refresh = true;
-            update_gui();           
+            update_gui();
 
 
         }
@@ -1970,7 +2068,7 @@ namespace MultiWiiWinGUI
             nTMID.Value = (decimal)mw_gui.ThrottleMID / 100;
             nTMID.BackColor = Color.White;
             trackBar_T_MID.Value = mw_gui.ThrottleMID;
-            throttle_expo_control1.SetRCExpoParameters((double)mw_gui.ThrottleMID/100, (double)mw_gui.ThrottleEXPO / 100,mw_gui.rcThrottle);
+            throttle_expo_control1.SetRCExpoParameters((double)mw_gui.ThrottleMID / 100, (double)mw_gui.ThrottleEXPO / 100, mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_gui.powerTrigger;
             nPAlarm.BackColor = Color.White;
@@ -2005,7 +2103,7 @@ namespace MultiWiiWinGUI
                 if (Pid[i].Dshown) { Pid[i].Dfield.Value = (decimal)mw_params.pidD[i] / Pid[i].Dprec; }
 
             }
-            
+
             nRATE_rp.Value = (decimal)mw_params.RollPitchRate / 100;
             nRATE_yaw.Value = (decimal)mw_params.YawRate / 100;
             nRATE_tpid.Value = (decimal)mw_params.DynThrPID / 100;
@@ -2020,7 +2118,7 @@ namespace MultiWiiWinGUI
             trackBar_T_EXPO.Value = mw_params.ThrottleEXPO;
             nTMID.Value = (decimal)mw_params.ThrottleMID / 100;
             trackBar_T_MID.Value = mw_params.ThrottleMID;
-            throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100,mw_gui.rcThrottle);
+            throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100, mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_params.PowerTrigger;
 
@@ -2117,7 +2215,7 @@ namespace MultiWiiWinGUI
 
             if (bVideoRecording == true)
             {
-                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate); 
+                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate);
                 if (vfwWriter != null)
                 {
                     vfwWriter.WriteVideoFrame(image, tsFrameTimeStamp);
@@ -2272,12 +2370,12 @@ namespace MultiWiiWinGUI
                 this.Cursor = Cursors.Default;
                 if (String.Compare(sVersionFromSVN, sVersion) == 0)
                 {
-                    MessageBoxEx.Show(this, "You have the latest version : " + sVersionFromSVN, "No update available",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    MessageBoxEx.Show(this, "You have the latest version : " + sVersionFromSVN, "No update available", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
 
-                    MessageBoxEx.Show(this, "A new version : " + sVersionFromSVN + " is available\r\n"+sCommentFromSVN+"\r\nYou can download it from http://code.google.com/p/mw-wingui/downloads/list","Update available",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    MessageBoxEx.Show(this, "A new version : " + sVersionFromSVN + " is available\r\n" + sCommentFromSVN + "\r\nYou can download it from http://code.google.com/p/mw-wingui/downloads/list", "Update available", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch
@@ -2295,9 +2393,7 @@ namespace MultiWiiWinGUI
             attitudeIndicatorInstrumentControl1.ToggleArtificalHorizonType();
 
         }
-
-
-
+                
         private void MSPquery(int command)
         {
             byte c = 0;
@@ -2311,7 +2407,7 @@ namespace MultiWiiWinGUI
             o[4] = (byte)command; c ^= o[4];
             o[5] = (byte)c;
             serialPort.Write(o, 0, 6);
-            
+
 
         }
 
@@ -2330,9 +2426,7 @@ namespace MultiWiiWinGUI
             o[6] = (byte)c;
             serialPort.Write(o, 0, 7);
         }
-
-
-
+        
         private int decimals(int prec)
         {
             if (prec == 1) return (0);
@@ -2346,7 +2440,7 @@ namespace MultiWiiWinGUI
         private void trackBar_T_MID_Scroll(object sender, EventArgs e)
         {
             nTMID.Value = (decimal)trackBar_T_MID.Value / 100;
-            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value,mw_gui.rcThrottle);
+            throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
         }
 
         private void trackBar_T_EXPO_Scroll(object sender, EventArgs e)
@@ -2383,11 +2477,8 @@ namespace MultiWiiWinGUI
                 nTEXPO.BackColor = Color.White;
             }
 
-        }     
-
-
-
-
+        }
+        
         private void b_log_Click(object sender, EventArgs e)
         {
             if (bLogRunning)        //Close
@@ -2410,8 +2501,7 @@ namespace MultiWiiWinGUI
                 }
             }
         }
-
-
+        
         void openLog()
         {
             try
@@ -2465,6 +2555,7 @@ namespace MultiWiiWinGUI
                 bKMLLogRunning = true;
             }
         }
+     
         void closeKMLLog()
         {
 
@@ -2478,8 +2569,7 @@ namespace MultiWiiWinGUI
             wKMLLogStream.Dispose();
             bKMLLogRunning = false;
         }
-
-
+        
         void addKMLMarker(string description, double lon, double lat, double alt)
         {
             //Close open LineStringPlacemark
@@ -2488,7 +2578,7 @@ namespace MultiWiiWinGUI
             wKMLLogStream.WriteLine("</Placemark>");
 
             wKMLLogStream.WriteLine("<Placemark>");
-            wKMLLogStream.WriteLine("<name>"+description+"</name>");
+            wKMLLogStream.WriteLine("<name>" + description + "</name>");
             wKMLLogStream.WriteLine("<Point>");
             wKMLLogStream.WriteLine("<altitudeMode>absolute</altitudeMode>");
             wKMLLogStream.WriteLine("<coordinates>");
@@ -2508,64 +2598,60 @@ namespace MultiWiiWinGUI
 
 
         }
-
-
-
-
-
-/*
-        void MainMap_MouseDown(object sender, MouseEventArgs e)
-        {
-//            start = MainMap.FromLocalToLatLng(e.X, e.Y);
-
-            if (e.Button == MouseButtons.Left)
-            {
-
-//                copterPosMarker.Position = start;
- //               points.Add(new PointLatLng(copterPos.Lat, copterPos.Lng));
- //               Grout.Points.Add(start);
-//                    = new GMapRoute(points, "track");
- //               //routes.Routes.Add(Grout);
- //               MainMap.Position = start;
-//                MainMap.Invalidate();
-
-
-
-            }
-        }
-
-        void MainMap_MouseMove(object sender, MouseEventArgs e)
-        {
-            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
-            currentMarker.Position = point;
-
-
-
-        }
-*/
-
-        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color)
-        {
-                PointLatLng point = new PointLatLng(lat, lng);
-                GMapMarkerGoogleGreen m = new GMapMarkerGoogleGreen(point);
-                m.ToolTipMode = MarkerTooltipMode.Always;
-                m.ToolTipText = tag;
-                m.Tag = tag;
-
-                //ArdupilotMega.GMapMarkerRectWPRad mBorders = new ArdupilotMega.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
-                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+        
+        /*
+                void MainMap_MouseDown(object sender, MouseEventArgs e)
                 {
-                    mBorders.InnerMarker = m;
-                    mBorders.wprad = (int)float.Parse("5");
-                    mBorders.MainMap = MainMap;
-                    if (color.HasValue)
+        //            start = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+                    if (e.Button == MouseButtons.Left)
                     {
-                        mBorders.Color = color.Value;
+
+        //                copterPosMarker.Position = start;
+         //               points.Add(new PointLatLng(copterPos.Lat, copterPos.Lng));
+         //               Grout.Points.Add(start);
+        //                    = new GMapRoute(points, "track");
+         //               //routes.Routes.Add(Grout);
+         //               MainMap.Position = start;
+        //                MainMap.Invalidate();
+
+
+
                     }
                 }
 
-                markers.Markers.Add(m);
-                markers.Markers.Add(mBorders);
+                void MainMap_MouseMove(object sender, MouseEventArgs e)
+                {
+                    PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+                    currentMarker.Position = point;
+
+
+
+                }
+        */
+
+        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color)
+        {
+            PointLatLng point = new PointLatLng(lat, lng);
+            GMapMarkerGoogleGreen m = new GMapMarkerGoogleGreen(point);
+            m.ToolTipMode = MarkerTooltipMode.Always;
+            m.ToolTipText = tag;
+            m.Tag = tag;
+
+            //ArdupilotMega.GMapMarkerRectWPRad mBorders = new ArdupilotMega.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
+            GMapMarkerRect mBorders = new GMapMarkerRect(point);
+            {
+                mBorders.InnerMarker = m;
+                mBorders.wprad = (int)float.Parse("5");
+                mBorders.MainMap = MainMap;
+                if (color.HasValue)
+                {
+                    mBorders.Color = color.Value;
+                }
+            }
+
+            markers.Markers.Add(m);
+            markers.Markers.Add(mBorders);
         }
 
         void RegeneratePolygon()
@@ -2603,12 +2689,11 @@ namespace MultiWiiWinGUI
                 }
                 else
                 {
-                        MainMap.UpdatePolygonLocalPosition(polygon);
+                    MainMap.UpdatePolygonLocalPosition(polygon);
                 }
             }
         }
-
-
+        
         // MapZoomChanged
         void MainMap_OnMapZoomChanged()
         {
@@ -2618,8 +2703,7 @@ namespace MultiWiiWinGUI
                 center.Position = MainMap.Position;
             }
         }
-
-
+        
         // current point changed
         void MainMap_OnCurrentPositionChanged(PointLatLng point)
         {
@@ -2660,8 +2744,7 @@ namespace MultiWiiWinGUI
                 }
             }
         }
-
-
+        
         void MainMap_MouseUp(object sender, MouseEventArgs e)
         {
             end = MainMap.FromLocalToLatLng(e.X, e.Y);
@@ -2726,7 +2809,7 @@ namespace MultiWiiWinGUI
 
                 if (currentMarker.IsVisible)
                 {
-                   currentMarker.Position = MainMap.FromLocalToLatLng(e.X, e.Y);
+                    currentMarker.Position = MainMap.FromLocalToLatLng(e.X, e.Y);
                 }
             }
         }
@@ -2773,7 +2856,7 @@ namespace MultiWiiWinGUI
                         if (pIndex < polygon.Points.Count)
                         {
                             polygon.Points[pIndex.Value] = pnew;
-                                MainMap.UpdatePolygonLocalPosition(polygon);
+                            MainMap.UpdatePolygonLocalPosition(polygon);
                         }
                     }
 
@@ -2791,12 +2874,7 @@ namespace MultiWiiWinGUI
             }
 
         }
-
-
-
-
-
-
+        
         private void cbMapProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -2811,9 +2889,7 @@ namespace MultiWiiWinGUI
             this.Cursor = Cursors.Default;
 
         }
-
-
-
+        
         private void b_start_KML_log_Click(object sender, EventArgs e)
         {
             if (bKMLLogRunning)
@@ -2839,8 +2915,7 @@ namespace MultiWiiWinGUI
         {
             Grout.Points.Clear();
         }
-
-
+        
         #region ValueChangedEvents
 
         private void pfield_valuechange(object sender, EventArgs e)
@@ -2859,7 +2934,7 @@ namespace MultiWiiWinGUI
                     }
                 }
             }
-        
+
         }
 
         private void ifield_valuechange(object sender, EventArgs e)
@@ -2901,7 +2976,7 @@ namespace MultiWiiWinGUI
 
         private void nRATE_rp_ValueChanged(object sender, EventArgs e)
         {
-            if (nRATE_rp.Value != (decimal)mw_gui.RollPitchRate / 100)  { nRATE_rp.BackColor = Color.IndianRed; }
+            if (nRATE_rp.Value != (decimal)mw_gui.RollPitchRate / 100) { nRATE_rp.BackColor = Color.IndianRed; }
             else { nRATE_rp.BackColor = Color.White; }
         }
 
@@ -2919,7 +2994,7 @@ namespace MultiWiiWinGUI
 
         private void nPAlarm_ValueChanged(object sender, EventArgs e)
         {
-            if (nPAlarm.Value != (decimal)mw_gui.powerTrigger ) { nPAlarm.BackColor = Color.IndianRed; }
+            if (nPAlarm.Value != (decimal)mw_gui.powerTrigger) { nPAlarm.BackColor = Color.IndianRed; }
             else { nPAlarm.BackColor = Color.White; }
         }
 
@@ -3097,7 +3172,7 @@ namespace MultiWiiWinGUI
             timer_realtime.Start();
             System.Threading.Thread.Sleep(500);
             bOptions_needs_refresh = true;
-            update_gui();   
+            update_gui();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -3123,12 +3198,23 @@ namespace MultiWiiWinGUI
 
         }
 
+        string inCLIBuffer;
 
+        void AccessToTB()
+        {
+            if (txtCLIResult.InvokeRequired)
+            {
+                txtCLIResult.Invoke(new MethodInvoker(AccessToTB));
+                return;
+            }
+            txtCLIResult.AppendText(inCLIBuffer);
+        }
 
-
-
-        
-
+        private void cmdCLISend_Click(object sender, EventArgs e)
+        {
+            serialPort.Write(txtCLICommand.Text + "\r\n");
+            txtCLICommand.Text = "";
+        }
     }
 
 }

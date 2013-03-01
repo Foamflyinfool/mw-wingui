@@ -322,6 +322,11 @@ namespace MultiWiiWinGUI
         const int MSP_PID = 112;
         const int MSP_BOX = 113;
         const int MSP_MISC = 114;
+        const int MSP_MOTOR_PINS = 115;
+        const int MSP_BOXNAMES = 116;
+        const int MSP_PIDNAMES = 117;
+        const int MSP_WP = 118;
+
 
         const int MSP_SET_RAW_RC = 200;
         const int MSP_SET_RAW_GPS = 201;
@@ -332,6 +337,7 @@ namespace MultiWiiWinGUI
         const int MSP_MAG_CALIBRATION = 206;
         const int MSP_SET_MISC = 207;
         const int MSP_RESET_CONF = 208;
+        const int MSP_SET_WP = 209;
 
         const int MSP_EEPROM_WRITE = 250;
         const int MSP_DEBUG = 254;
@@ -603,7 +609,8 @@ namespace MultiWiiWinGUI
         public int[] servos;
         public int[] motors;
         public int rcRoll, rcPitch, rcYaw, rcThrottle;
-        public int rcAux1, rcAux2, rcAux3, rcAux4;
+        public int[] rcAUX;
+        //public int rcAux1, rcAux2, rcAux3, rcAux4, rcAux5, rcAux6, rcAux7, rcAux8;
         public int present;            //What sensors are present?
         public UInt32 mode;               //What mode are we in ?
         public int i2cErrors;
@@ -625,6 +632,8 @@ namespace MultiWiiWinGUI
         public byte ThrottleMID;
         public byte ThrottleEXPO;
         public Int16[] activation;
+        public string[] sBoxNames;
+        public bool bUpdateBoxNames;
         public int GPS_distanceToHome;
         public int GPS_directionToHome;
         public byte GPS_numSat;
@@ -654,6 +663,8 @@ namespace MultiWiiWinGUI
         {
             motors = new int[8];
             servos = new int[8];
+            rcAUX = new int[8];
+
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
@@ -663,6 +674,7 @@ namespace MultiWiiWinGUI
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
             iSwVer = iSoftwareVersion;
+            bUpdateBoxNames = false;
 
 
         }
