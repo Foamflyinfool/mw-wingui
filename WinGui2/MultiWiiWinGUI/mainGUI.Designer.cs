@@ -240,6 +240,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.b_about = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.label46 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
@@ -1891,6 +1892,7 @@
             // 
             // splitContainer9.Panel2
             // 
+            this.splitContainer9.Panel2.Controls.Add(this.label46);
             this.splitContainer9.Panel2.Controls.Add(this.LMousePos);
             this.splitContainer9.Panel2.Controls.Add(this.label45);
             this.splitContainer9.Size = new System.Drawing.Size(771, 417);
@@ -1943,6 +1945,7 @@
             this.LMousePos.Size = new System.Drawing.Size(22, 13);
             this.LMousePos.TabIndex = 35;
             this.LMousePos.Text = "0,0";
+            this.LMousePos.Click += new System.EventHandler(this.LMousePos_Click);
             // 
             // label45
             // 
@@ -2831,6 +2834,16 @@
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label46.Location = new System.Drawing.Point(405, 42);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(41, 13);
+            this.label46.TabIndex = 36;
+            this.label46.Text = "label46";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3150,6 +3163,7 @@
         private System.Windows.Forms.Button cmdCLISend;
         private System.Windows.Forms.TextBox txtCLICommand;
         private System.Windows.Forms.TextBox txtCLIResult;
+        private System.Windows.Forms.Label label46;
     }
 }
 
