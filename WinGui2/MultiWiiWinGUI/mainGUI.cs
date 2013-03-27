@@ -165,6 +165,8 @@ namespace MultiWiiWinGUI
         GMapPolygon drawnpolygon;
         GMapPolygon polygon;
 
+        GMapMarkerGoogleRed GPS_clicktogomarker;
+
 
         // layers
         static GMapRoute Grout;
@@ -2783,6 +2785,11 @@ namespace MultiWiiWinGUI
 
             if (e.Button == MouseButtons.Right) // ignore right clicks
             {
+                 lClicktoGoPos.Text = "Lat:" + String.Format("{0:0.000000}", end.Lat) + " Lon:" + String.Format("{0:0.000000}", end.Lng); 
+                 PointLatLng GPS_clicktogo = new PointLatLng(end.Lat, end.Lng); 
+                 positions.Markers.Remove(GPS_clicktogomarker); 
+                 GPS_clicktogomarker = new GMapMarkerGoogleRed(GPS_clicktogo); 
+                 positions.Markers.Add(GPS_clicktogomarker); 
                 return;
             }
 
