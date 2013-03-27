@@ -663,7 +663,7 @@ namespace MultiWiiWinGUI
         {
             motors = new int[8];
             servos = new int[8];
-            rcAUX = new int[8];
+            rcAUX = new int[8];        //for sbus
 
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];

@@ -165,7 +165,6 @@ namespace MultiWiiWinGUI
         GMapPolygon drawnpolygon;
         GMapPolygon polygon;
 
-        GMapMarkerGoogleRed GPS_clicktogomarker;
 
         // layers
         static GMapRoute Grout;
@@ -463,23 +462,21 @@ namespace MultiWiiWinGUI
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
             iCheckBoxItems = 24;                    //Theoretical maximum
 
+            splash.sStatus = "Building internal data structures...";
+            splash.Refresh();
 
             mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
             mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
-
-
-            splash.sFcVersionLabel = "MultiWii version " + sRelName;
-            splash.sStatus = "Connecting to MAP server...";
-            splash.Refresh();
-
-
-
 
             //Quick hack to get pid names to mw_params untill redo the structures
             for (int i = 0; i < iPidItems; i++)
             {
                 mw_params.pidnames[i] = Pid[i].name;
             }
+
+            splash.sFcVersionLabel = "MultiWii version " + sRelName;
+            splash.sStatus = "Connecting to MAP server...";
+            splash.Refresh();
 
 
             cbMapProviders.SelectedIndex = gui_settings.iMapProviderSelectedIndex;
@@ -522,6 +519,8 @@ namespace MultiWiiWinGUI
             cb_Log10.Checked = gui_settings.logGdbg;
 
 
+            splash.sStatus = "Build PID structures...";
+            splash.Refresh();
 
 
             //Build PID control structure based on the Pid structure.
@@ -629,6 +628,8 @@ namespace MultiWiiWinGUI
 
             this.Refresh();
 
+            splash.sStatus = "Check serial ports...";
+            splash.Refresh();
 
 
 
@@ -663,11 +664,20 @@ namespace MultiWiiWinGUI
             }
             cb_monitor_rate.SelectedIndex = 0;              //20Hz is the default
 
+            splash.sStatus = "Setup Timers...";
+            splash.Refresh();
+
+
+
             //Setup timers
             timer_realtime.Tick += new EventHandler(timer_realtime_Tick);
             timer_realtime.Interval = iRefreshIntervals[cb_monitor_rate.SelectedIndex];
             timer_realtime.Enabled = true;
             timer_realtime.Stop();
+
+
+            splash.sStatus = "Setup zgMonitor control...";
+            splash.Refresh();
 
 
             //Set up zgMonitor control for real time monitoring
@@ -727,12 +737,15 @@ namespace MultiWiiWinGUI
             // Show the x axis grid
             myPane.XAxis.MajorGrid.IsVisible = true;
             myPane.YAxis.MajorGrid.IsVisible = true;
+            myPane.XAxis.MajorGrid.Color = Color.DarkGray;
+            myPane.YAxis.MajorGrid.Color = Color.DarkGray;
+
 
             myPane.XAxis.Scale.IsVisible = false;
 
             // Make the Y axis scale red
-            myPane.YAxis.Scale.FontSpec.FontColor = Color.White;
-            myPane.YAxis.Title.FontSpec.FontColor = Color.White;
+            myPane.YAxis.Scale.FontSpec.FontColor = Color.DarkGray;
+            myPane.YAxis.Title.FontSpec.FontColor = Color.DarkGray;
             // turn off the opposite tics so the Y tics don't show up on the Y2 axis
             myPane.YAxis.MajorTic.IsOpposite = false;
             myPane.YAxis.MinorTic.IsOpposite = false;
@@ -740,13 +753,17 @@ namespace MultiWiiWinGUI
             myPane.YAxis.MajorGrid.IsZeroLine = true;
             // Align the Y axis labels so they are flush to the axis
             myPane.YAxis.Scale.Align = AlignP.Inside;
+            myPane.YAxis.Color = Color.DarkGray;
             myPane.YAxis.Scale.IsVisible = false;
             // Manually set the axis range
-            myPane.YAxis.Scale.Min = -150;
-            myPane.YAxis.Scale.Max = 150;
+            myPane.YAxis.Scale.Min = -300;
+            myPane.YAxis.Scale.Max = 300;
+            myPane.XAxis.Color = Color.DarkGray;
 
-            myPane.Chart.Fill = new Fill(Color.DimGray, Color.DarkGray, 45.0f);
-            myPane.Fill = new Fill(Color.DimGray, Color.DimGray, 45.0f);
+            myPane.Border.Color = Color.FromArgb(64, 64, 64);
+
+            myPane.Chart.Fill = new Fill(Color.Black, Color.Black, 45.0f);
+            myPane.Fill = new Fill(Color.FromArgb(64, 64, 64), Color.FromArgb(64, 64, 64), 45.0f); 
             myPane.Legend.IsVisible = false;
             myPane.XAxis.Scale.IsVisible = false;
             myPane.YAxis.Scale.IsVisible = true;
@@ -763,8 +780,8 @@ namespace MultiWiiWinGUI
             }
 
 
-            myPane.YAxis.Title.FontSpec.FontColor = Color.White;
-            myPane.XAxis.Title.FontSpec.FontColor = Color.White;
+            myPane.YAxis.Title.FontSpec.FontColor = Color.DarkGray;
+            myPane.XAxis.Title.FontSpec.FontColor = Color.DarkGray;
 
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = 300;
@@ -775,6 +792,12 @@ namespace MultiWiiWinGUI
             zgMonitor.ScrollGrace = 0;
             xScale = zgMonitor.GraphPane.XAxis.Scale;
             zgMonitor.AxisChange();
+
+
+            splash.sStatus = "Init video capture structures...";
+            splash.Refresh();
+
+
 
             //Init video capture dev
             try
@@ -1317,6 +1340,7 @@ namespace MultiWiiWinGUI
                     {
                         AUX_CHANNELS = (dataSize / 2) - 4;
                     };
+                    if (AUX_CHANNELS > 8) AUX_CHANNELS = 8;   //DO not process channels above 12 (SBUS issue)
                     for (int i = 0; i < AUX_CHANNELS; i++)
                     {
                         mw_gui.rcAUX[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -2514,11 +2538,11 @@ namespace MultiWiiWinGUI
         {
             try
             {
-                wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now));
+                wLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yyyyMMdd-hhmm}.log", DateTime.Now));
             }
             catch
             {
-                MessageBox.Show("Unable to open log file at " + gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yymmdd-hhmm}.log", DateTime.Now), "Error opening log", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to open log file at " + gui_settings.sLogFolder + "\\mwguilog" + String.Format("-{0:yyyyMMdd-hhmm}.log", DateTime.Now), "Error opening log", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (wLogStream != null)
@@ -2541,11 +2565,11 @@ namespace MultiWiiWinGUI
 
             try
             {
-                wKMLLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now));
+                wKMLLogStream = new StreamWriter(gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yyyyMMdd-hhmm}.kml", DateTime.Now));
             }
             catch
             {
-                MessageBox.Show("Unable to open KMLlog file at " + gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yymmdd-hhmm}.kml", DateTime.Now), "Error opening KMLlog", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to open KMLlog file at " + gui_settings.sLogFolder + "\\mwgpstrack" + String.Format("-{0:yyyyMMdd-hhmm}.kml", DateTime.Now), "Error opening KMLlog", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (wKMLLogStream != null)
@@ -2759,16 +2783,6 @@ namespace MultiWiiWinGUI
 
             if (e.Button == MouseButtons.Right) // ignore right clicks
             {
-
-                label46.Text = "Lat:" + String.Format("{0:0.000000}", end.Lat) + " Lon:" + String.Format("{0:0.000000}", end.Lng);
-
-                PointLatLng GPS_clicktogo = new PointLatLng(end.Lat, end.Lng);
-               
-                positions.Markers.Remove(GPS_clicktogomarker); 
-                GPS_clicktogomarker = new GMapMarkerGoogleRed(GPS_clicktogo);
-                positions.Markers.Add(GPS_clicktogomarker);
-
-
                 return;
             }
 
@@ -3234,7 +3248,7 @@ namespace MultiWiiWinGUI
             txtCLICommand.Text = "";
         }
 
-        private void LMousePos_Click(object sender, EventArgs e)
+        private void zgMonitor_Load(object sender, EventArgs e)
         {
 
         }
