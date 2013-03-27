@@ -1,3 +1,7 @@
+verison 2.2
+
+
+
 version 1.04
 Now setting refers to 1.9 and 2.0 since serial protocol will not change till the release of 2.0 MultiWii
 Fixed ISSUE5 - Tricopter front motor indicators were swapped

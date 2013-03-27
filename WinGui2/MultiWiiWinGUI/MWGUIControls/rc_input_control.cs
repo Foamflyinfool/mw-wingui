@@ -15,8 +15,8 @@ namespace MultiWiiGUIControls
 
         // Parameters
         private int[] bar_pos = { 25, 40, 55, 70, 85, 100, 115, 130, 145, 160, 175, 190 };
-        private int[] RC_Values = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
-        private int RC_Channels = 12;
+        private int[] RC_Values = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,1000,1000,1000,1000,1000,1000,1000 };
+        private int RC_Channels = 18;
 
         // Images
         Bitmap bmpBackground = new Bitmap(MultiWiiWinGUI.MWGUIControls.MWGUIControlsResources.rc_control);
@@ -70,20 +70,23 @@ namespace MultiWiiGUIControls
 
             for (int i = 0; i < RC_Channels; i++)
             {
-                string strLabel = "";
-                if (i == 0) { strLabel = "Thr"; }
-                if (i == 1) { strLabel = "Pitch"; }
-                if (i == 2) { strLabel = "Roll"; }
-                if (i == 3) { strLabel = "Yaw"; }
-                if (i > 3) { strLabel = "Aux" + (i - 3); }
+                if (i < 12)     //do not draw above channel 12
+                {
+                    string strLabel = "";
+                    if (i == 0) { strLabel = "Thr"; }
+                    if (i == 1) { strLabel = "Pitch"; }
+                    if (i == 2) { strLabel = "Roll"; }
+                    if (i == 3) { strLabel = "Yaw"; }
+                    if (i > 3) { strLabel = "Aux" + (i - 3); }
 
-                pe.Graphics.DrawString(String.Format("{0:0}", strLabel), drawFont, drawBrush, 5, bar_pos[i] - 13);
-                pe.Graphics.DrawString(String.Format("{0:0}",RC_Values[i]), drawFont, drawBrush, 165,bar_pos[i]-13);
-                int w = (int)((RC_Values[i] - 1000)/(double)(1000/120));
-                if (w < 0) { w = 0; }
-                if (w > 120) { w = 120; }
+                    pe.Graphics.DrawString(String.Format("{0:0}", strLabel), drawFont, drawBrush, 5, bar_pos[i] - 13);
+                    pe.Graphics.DrawString(String.Format("{0:0}", RC_Values[i]), drawFont, drawBrush, 165, bar_pos[i] - 13);
+                    int w = (int)((RC_Values[i] - 1000) / (double)(1000 / 120));
+                    if (w < 0) { w = 0; }
+                    if (w > 120) { w = 120; }
 
-                pe.Graphics.FillRectangle(drawBrushGreen, 40, bar_pos[i]-10, w, 10);
+                    pe.Graphics.FillRectangle(drawBrushGreen, 40, bar_pos[i] - 10, w, 10);
+                }
             }
 
             drawFont.Dispose();
