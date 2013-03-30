@@ -332,6 +332,9 @@
     <None Include="Resources\heli_90.bmp" />
     <None Include="Resources\heli_120.bmp" />
     <None Include="Resources\vtail.bmp" />
+    <Content Include="Resources\del_btn.png" />
+    <Content Include="Resources\down_btn.png" />
+    <Content Include="Resources\up_btn.png" />
     <Content Include="Settings\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

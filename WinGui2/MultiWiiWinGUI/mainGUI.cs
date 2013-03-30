@@ -144,10 +144,12 @@ namespace MultiWiiWinGUI
         GMapOverlay overlayCopterPosition;
         GMapOverlay drawnpolygons;
         static GMapOverlay routes;// static so can update from gcs
-        GMapOverlay markers;
-        GMapOverlay polygons;
-        GMapOverlay positions;
+        static GMapOverlay markers;
+        static GMapOverlay objects;
 
+        static GMapOverlay polygons;
+        GMapOverlay positions;
+        List<PointLatLngAlt> pointlist = new List<PointLatLngAlt>(); // used to calc distance
 
         static GMapProvider[] mapProviders;
         static PointLatLng copterPos = new PointLatLng(47.402489, 19.071558);       //Just the corrds of my flying place
@@ -237,6 +239,9 @@ namespace MultiWiiWinGUI
         static byte cmd;
         static int serial_error_count = 0;
         static int serial_packet_count = 0;
+
+
+        static int selectedrow;
 
 
         #endregion
@@ -845,8 +850,10 @@ namespace MultiWiiWinGUI
 
 
 
+
+
         }
-        
+
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
 
@@ -2667,6 +2674,7 @@ namespace MultiWiiWinGUI
         private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color)
         {
             PointLatLng point = new PointLatLng(lat, lng);
+            
             GMapMarkerGoogleGreen m = new GMapMarkerGoogleGreen(point);
             m.ToolTipMode = MarkerTooltipMode.Always;
             m.ToolTipText = tag;
@@ -2807,7 +2815,10 @@ namespace MultiWiiWinGUI
                     }
                     else
                     {
-                        //callMe(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
+                        //add WP at the given point
+                        addWP(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
+
+                        
                         //Adding waypoint will come here
                         //addpolygonmarker("X", currentMarker.Position.Lng, currentMarker.Position.Lat, 0,Color.Pink);
                         //RegeneratePolygon();
@@ -2819,17 +2830,8 @@ namespace MultiWiiWinGUI
                 {
                     if (CurentRectMarker != null)
                     {
-                        if (CurentRectMarker.InnerMarker.Tag.ToString().Contains("grid"))
-                        {
-                            drawnpolygon.Points[int.Parse(CurentRectMarker.InnerMarker.Tag.ToString().Replace("grid", "")) - 1] = new PointLatLng(end.Lat, end.Lng);
-                            MainMap.UpdatePolygonLocalPosition(drawnpolygon);
-                        }
-                        else
-                        {
-                            //callMeDrag(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
+                             dragMarkerCallback(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
                             //update existing point in datagrid
-                        }
-                        CurentRectMarker = null;
                     }
                 }
             }
@@ -3255,10 +3257,101 @@ namespace MultiWiiWinGUI
             txtCLICommand.Text = "";
         }
 
-        private void zgMonitor_Load(object sender, EventArgs e)
-        {
+//Mission planner Commands
 
+
+        private void missionDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) { return; }
+            if (e.ColumnIndex == DEL.Index && (e.RowIndex + 0) < missionDataGrid.RowCount) // delete
+            {
+                missionDataGrid.Rows.RemoveAt(e.RowIndex);
+            }
+            if (e.ColumnIndex == UP.Index && e.RowIndex != 0) // up
+            {
+                DataGridViewRow myrow = missionDataGrid.CurrentRow;
+                missionDataGrid.Rows.Remove(myrow);
+                missionDataGrid.Rows.Insert(e.RowIndex - 1, myrow);
+            }
+            if (e.ColumnIndex == Down.Index && e.RowIndex < missionDataGrid.RowCount - 1) // down
+            {
+                DataGridViewRow myrow = missionDataGrid.CurrentRow;
+                missionDataGrid.Rows.Remove(myrow);
+                missionDataGrid.Rows.Insert(e.RowIndex + 1, myrow);
+            }
+
+            updateMap();
+  
         }
+            private void addWP(double Lat, double Lon, int Alt)
+            {
+                selectedrow = missionDataGrid.Rows.Add();
+
+                missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow;
+                missionDataGrid.Rows[selectedrow].Cells[Action.Index].Value = "WAYPOINT";
+                missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = Lat.ToString("0.0000000");
+                missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = Lon.ToString("0.0000000");
+                missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = 0;
+
+                missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
+
+                updateMap();
+
+            }
+
+            public void dragMarkerCallback(string pointno, double lat, double lng, int alt)
+            {
+                if (pointno == "")
+                {
+                    return;
+                }
+
+                selectedrow = int.Parse(pointno) - 1;
+                missionDataGrid.CurrentCell = missionDataGrid[1, selectedrow];
+                missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = lat.ToString("0.0000000");
+                missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = lng.ToString("0.0000000");
+                //missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = alt;
+
+                missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
+
+            }
+
+    
+            private void updateMap()
+            {
+                pointlist = new List<PointLatLngAlt>();
+                    //objects.Markers.Clear();
+                if (markers != null) // hasnt been created yet
+                {
+                    markers.Markers.Clear();
+                }
+
+                    for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+                    {
+                                string cell2 = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
+                                string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
+                                string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
+
+                                if (cell4 == "0" || cell3 == "0")
+                                    continue;
+                                if (cell4 == "?" || cell3 == "?")
+                                    continue;
+
+                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), (int)double.Parse(cell2), (a + 1).ToString()));
+                                addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), Color.Aqua);
+
+                    }
+
+                    RegeneratePolygon();
+            }
+
+            private void missionDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+            {
+                updateMap();
+            }
+
+
+        
     }
 
 }
