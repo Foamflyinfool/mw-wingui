@@ -38,7 +38,6 @@
             this.nTMID = new System.Windows.Forms.NumericUpDown();
             this.trackBar_T_EXPO = new System.Windows.Forms.TrackBar();
             this.trackBar_T_MID = new System.Windows.Forms.TrackBar();
-            this.throttle_expo_control1 = new MultiWiiGUIControls.throttle_expo_control();
             this.trackbar_RC_Rate = new System.Windows.Forms.TrackBar();
             this.label65 = new System.Windows.Forms.Label();
             this.trackbar_RC_Expo = new System.Windows.Forms.TrackBar();
@@ -50,7 +49,6 @@
             this.tComment = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.nPAlarm = new System.Windows.Forms.NumericUpDown();
-            this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.label50 = new System.Windows.Forms.Label();
             this.label_sok = new System.Windows.Forms.Label();
@@ -62,7 +60,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.tabPageRealtime = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.b_cal_acc = new System.Windows.Forms.Button();
@@ -131,30 +128,21 @@
             this.cb_head = new System.Windows.Forms.CheckBox();
             this.l_head = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
-            this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
-            this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
-            this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.l_i2cerrors = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
-            this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
             this.label21 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.l_vbatt = new System.Windows.Forms.Label();
-            this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
             this.label7 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
             this.l_powersum = new System.Windows.Forms.Label();
-            this.indACC = new MultiWiiGUIControls.indicator_lamp();
             this.label41 = new System.Windows.Forms.Label();
-            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
-            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
-            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
-            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
-            this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
             this.tabPageMap = new System.Windows.Forms.TabPage();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.label23 = new System.Windows.Forms.Label();
             this.b_fetch_tiles = new System.Windows.Forms.Button();
+            this.cbMapProviders = new System.Windows.Forms.ComboBox();
             this.b_Clear_Route = new System.Windows.Forms.Button();
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
@@ -162,17 +150,16 @@
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
             this.lClicktoGoPos = new System.Windows.Forms.Label();
             this.LMousePos = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.cbMapProviders = new System.Windows.Forms.ComboBox();
-            this.label25 = new System.Windows.Forms.Label();
             this.l_GPS_numsat = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
-            this.lGPS_lon = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
             this.l_GPS_alt = new System.Windows.Forms.Label();
+            this.lGPS_lon = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
             this.lGPS_lat = new System.Windows.Forms.Label();
+            this.missionDataGrid = new System.Windows.Forms.DataGridView();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer();
@@ -241,6 +228,32 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.b_about = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.No = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Par1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LATCOL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LONCOL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ALTCOL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UP = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Down = new System.Windows.Forms.DataGridViewImageColumn();
+            this.DEL = new System.Windows.Forms.DataGridViewImageColumn();
+            this.throttle_expo_control1 = new MultiWiiGUIControls.throttle_expo_control();
+            this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
+            this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
+            this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
+            this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
+            this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
+            this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
+            this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
+            this.indACC = new MultiWiiGUIControls.indicator_lamp();
+            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
+            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
+            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
+            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
+            this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
@@ -296,6 +309,7 @@
             this.splitContainer9.Panel2.SuspendLayout();
             this.splitContainer9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_mapzoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).BeginInit();
             this.tabPageFlighDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
             this.splitContainer6.Panel1.SuspendLayout();
@@ -446,14 +460,6 @@
             this.trackBar_T_MID.Value = 80;
             this.trackBar_T_MID.Scroll += new System.EventHandler(this.trackBar_T_MID_Scroll);
             // 
-            // throttle_expo_control1
-            // 
-            this.throttle_expo_control1.Location = new System.Drawing.Point(521, 189);
-            this.throttle_expo_control1.Name = "throttle_expo_control1";
-            this.throttle_expo_control1.Size = new System.Drawing.Size(150, 100);
-            this.throttle_expo_control1.TabIndex = 25;
-            this.throttle_expo_control1.Text = "throttle_expo_control1";
-            // 
             // trackbar_RC_Rate
             // 
             this.trackbar_RC_Rate.AutoSize = false;
@@ -602,14 +608,6 @@
             this.nPAlarm.Size = new System.Drawing.Size(68, 18);
             this.nPAlarm.TabIndex = 6;
             this.nPAlarm.ValueChanged += new System.EventHandler(this.nPAlarm_ValueChanged);
-            // 
-            // rc_expo_control1
-            // 
-            this.rc_expo_control1.Location = new System.Drawing.Point(519, 37);
-            this.rc_expo_control1.Name = "rc_expo_control1";
-            this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
-            this.rc_expo_control1.TabIndex = 15;
-            this.rc_expo_control1.Text = "rc_expo_control1";
             // 
             // groupBox12
             // 
@@ -776,15 +774,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
-            // 
-            // rci_Control_settings
-            // 
-            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
-            this.rci_Control_settings.Name = "rci_Control_settings";
-            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
-            this.rci_Control_settings.TabIndex = 15;
-            this.rci_Control_settings.Text = "rc_input_control2";
             // 
             // tabPageRealtime
             // 
@@ -1033,7 +1022,6 @@
             this.zgMonitor.ScrollMinY2 = 0D;
             this.zgMonitor.Size = new System.Drawing.Size(474, 227);
             this.zgMonitor.TabIndex = 5;
-            this.zgMonitor.Load += new System.EventHandler(this.zgMonitor_Load);
             // 
             // label28
             // 
@@ -1608,32 +1596,6 @@
             this.label26.TabIndex = 57;
             this.label26.Text = "HEAD";
             // 
-            // rc_input_control1
-            // 
-            this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
-            this.rc_input_control1.Name = "rc_input_control1";
-            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
-            this.rc_input_control1.TabIndex = 76;
-            this.rc_input_control1.Text = "rc_input_control1";
-            // 
-            // motorsIndicator1
-            // 
-            this.motorsIndicator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.motorsIndicator1.Location = new System.Drawing.Point(6, 6);
-            this.motorsIndicator1.Name = "motorsIndicator1";
-            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
-            this.motorsIndicator1.TabIndex = 75;
-            this.motorsIndicator1.Text = "motorsIndicator1";
-            // 
-            // gpsIndicator
-            // 
-            this.gpsIndicator.Location = new System.Drawing.Point(0, 3);
-            this.gpsIndicator.Name = "gpsIndicator";
-            this.gpsIndicator.Size = new System.Drawing.Size(150, 150);
-            this.gpsIndicator.TabIndex = 74;
-            this.gpsIndicator.Text = "gpsIndicator";
-            // 
             // l_i2cerrors
             // 
             this.l_i2cerrors.AutoSize = true;
@@ -1652,15 +1614,6 @@
             this.label44.Size = new System.Drawing.Size(65, 13);
             this.label44.TabIndex = 107;
             this.label44.Text = "Packet error";
-            // 
-            // attitudeIndicatorInstrumentControl1
-            // 
-            this.attitudeIndicatorInstrumentControl1.Location = new System.Drawing.Point(156, 3);
-            this.attitudeIndicatorInstrumentControl1.Name = "attitudeIndicatorInstrumentControl1";
-            this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
-            this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
-            this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
-            this.attitudeIndicatorInstrumentControl1.Click += new System.EventHandler(this.attitudeIndicatorInstrumentControl1_Click);
             // 
             // label21
             // 
@@ -1701,14 +1654,6 @@
             this.l_vbatt.TabIndex = 97;
             this.l_vbatt.Text = "0.0 volts";
             // 
-            // headingIndicatorInstrumentControl1
-            // 
-            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(312, 3);
-            this.headingIndicatorInstrumentControl1.Name = "headingIndicatorInstrumentControl1";
-            this.headingIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
-            this.headingIndicatorInstrumentControl1.TabIndex = 72;
-            this.headingIndicatorInstrumentControl1.Text = "headingIndicatorInstrumentControl1";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -1738,15 +1683,6 @@
             this.l_powersum.TabIndex = 96;
             this.l_powersum.Text = "0000";
             // 
-            // indACC
-            // 
-            this.indACC.Location = new System.Drawing.Point(466, 3);
-            this.indACC.Margin = new System.Windows.Forms.Padding(1);
-            this.indACC.Name = "indACC";
-            this.indACC.Size = new System.Drawing.Size(50, 17);
-            this.indACC.TabIndex = 82;
-            this.indACC.Text = "ACC";
-            // 
             // label41
             // 
             this.label41.AutoSize = true;
@@ -1755,51 +1691,6 @@
             this.label41.Size = new System.Drawing.Size(13, 13);
             this.label41.TabIndex = 104;
             this.label41.Text = "0";
-            // 
-            // indBARO
-            // 
-            this.indBARO.Location = new System.Drawing.Point(518, 3);
-            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
-            this.indBARO.Name = "indBARO";
-            this.indBARO.Size = new System.Drawing.Size(50, 17);
-            this.indBARO.TabIndex = 83;
-            this.indBARO.Text = "BARO";
-            // 
-            // indMAG
-            // 
-            this.indMAG.Location = new System.Drawing.Point(570, 3);
-            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
-            this.indMAG.Name = "indMAG";
-            this.indMAG.Size = new System.Drawing.Size(50, 17);
-            this.indMAG.TabIndex = 84;
-            this.indMAG.Text = "MAG";
-            // 
-            // indSONAR
-            // 
-            this.indSONAR.Location = new System.Drawing.Point(518, 22);
-            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
-            this.indSONAR.Name = "indSONAR";
-            this.indSONAR.Size = new System.Drawing.Size(50, 17);
-            this.indSONAR.TabIndex = 85;
-            this.indSONAR.Text = "SONAR";
-            // 
-            // indGPS
-            // 
-            this.indGPS.Location = new System.Drawing.Point(466, 22);
-            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
-            this.indGPS.Name = "indGPS";
-            this.indGPS.Size = new System.Drawing.Size(50, 17);
-            this.indGPS.TabIndex = 86;
-            this.indGPS.Text = "GPS";
-            // 
-            // indOPTIC
-            // 
-            this.indOPTIC.Location = new System.Drawing.Point(570, 22);
-            this.indOPTIC.Margin = new System.Windows.Forms.Padding(1);
-            this.indOPTIC.Name = "indOPTIC";
-            this.indOPTIC.Size = new System.Drawing.Size(50, 17);
-            this.indOPTIC.TabIndex = 103;
-            this.indOPTIC.Text = "OPTIC";
             // 
             // tabPageMap
             // 
@@ -1821,7 +1712,9 @@
             // 
             // splitContainer7.Panel1
             // 
+            this.splitContainer7.Panel1.Controls.Add(this.label23);
             this.splitContainer7.Panel1.Controls.Add(this.b_fetch_tiles);
+            this.splitContainer7.Panel1.Controls.Add(this.cbMapProviders);
             this.splitContainer7.Panel1.Controls.Add(this.b_Clear_Route);
             // 
             // splitContainer7.Panel2
@@ -1830,6 +1723,17 @@
             this.splitContainer7.Size = new System.Drawing.Size(982, 452);
             this.splitContainer7.SplitterDistance = 31;
             this.splitContainer7.TabIndex = 10;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label23.AutoSize = true;
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(562, 8);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(70, 13);
+            this.label23.TabIndex = 33;
+            this.label23.Text = "Map Provider";
             // 
             // b_fetch_tiles
             // 
@@ -1841,6 +1745,16 @@
             this.b_fetch_tiles.Text = "Fetch MAP";
             this.b_fetch_tiles.UseVisualStyleBackColor = true;
             this.b_fetch_tiles.Click += new System.EventHandler(this.b_fetch_tiles_Click);
+            // 
+            // cbMapProviders
+            // 
+            this.cbMapProviders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMapProviders.FormattingEnabled = true;
+            this.cbMapProviders.Location = new System.Drawing.Point(638, 5);
+            this.cbMapProviders.Name = "cbMapProviders";
+            this.cbMapProviders.Size = new System.Drawing.Size(145, 21);
+            this.cbMapProviders.TabIndex = 32;
+            this.cbMapProviders.SelectedIndexChanged += new System.EventHandler(this.cbMapProviders_SelectedIndexChanged);
             // 
             // b_Clear_Route
             // 
@@ -1862,22 +1776,15 @@
             // 
             // splitContainer8.Panel1
             // 
+            this.splitContainer8.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.splitContainer8.Panel1.Controls.Add(this.splitContainer9);
             // 
             // splitContainer8.Panel2
             // 
-            this.splitContainer8.Panel2.Controls.Add(this.label23);
-            this.splitContainer8.Panel2.Controls.Add(this.cbMapProviders);
-            this.splitContainer8.Panel2.Controls.Add(this.label25);
-            this.splitContainer8.Panel2.Controls.Add(this.l_GPS_numsat);
-            this.splitContainer8.Panel2.Controls.Add(this.label32);
-            this.splitContainer8.Panel2.Controls.Add(this.label39);
-            this.splitContainer8.Panel2.Controls.Add(this.lGPS_lon);
-            this.splitContainer8.Panel2.Controls.Add(this.l_GPS_alt);
-            this.splitContainer8.Panel2.Controls.Add(this.label34);
-            this.splitContainer8.Panel2.Controls.Add(this.lGPS_lat);
+            this.splitContainer8.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.splitContainer8.Panel2.Controls.Add(this.missionDataGrid);
             this.splitContainer8.Size = new System.Drawing.Size(982, 417);
-            this.splitContainer8.SplitterDistance = 771;
+            this.splitContainer8.SplitterDistance = 574;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9
@@ -1895,23 +1802,33 @@
             // 
             // splitContainer9.Panel2
             // 
+            this.splitContainer9.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.splitContainer9.Panel2.Controls.Add(this.lClicktoGoPos);
             this.splitContainer9.Panel2.Controls.Add(this.LMousePos);
+            this.splitContainer9.Panel2.Controls.Add(this.l_GPS_numsat);
+            this.splitContainer9.Panel2.Controls.Add(this.label25);
+            this.splitContainer9.Panel2.Controls.Add(this.label39);
+            this.splitContainer9.Panel2.Controls.Add(this.label32);
+            this.splitContainer9.Panel2.Controls.Add(this.l_GPS_alt);
+            this.splitContainer9.Panel2.Controls.Add(this.lGPS_lon);
+            this.splitContainer9.Panel2.Controls.Add(this.label34);
             this.splitContainer9.Panel2.Controls.Add(this.label45);
-            this.splitContainer9.Size = new System.Drawing.Size(771, 417);
-            this.splitContainer9.SplitterDistance = 321;
+            this.splitContainer9.Panel2.Controls.Add(this.lGPS_lat);
+            this.splitContainer9.Size = new System.Drawing.Size(574, 417);
+            this.splitContainer9.SplitterDistance = 336;
             this.splitContainer9.TabIndex = 0;
             // 
             // tb_mapzoom
             // 
+            this.tb_mapzoom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tb_mapzoom.Dock = System.Windows.Forms.DockStyle.Right;
             this.tb_mapzoom.LargeChange = 1;
-            this.tb_mapzoom.Location = new System.Drawing.Point(726, 0);
+            this.tb_mapzoom.Location = new System.Drawing.Point(529, 0);
             this.tb_mapzoom.Maximum = 19;
             this.tb_mapzoom.Minimum = 2;
             this.tb_mapzoom.Name = "tb_mapzoom";
             this.tb_mapzoom.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_mapzoom.Size = new System.Drawing.Size(45, 321);
+            this.tb_mapzoom.Size = new System.Drawing.Size(45, 336);
             this.tb_mapzoom.TabIndex = 32;
             this.tb_mapzoom.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.tb_mapzoom.Value = 19;
@@ -1919,6 +1836,7 @@
             // 
             // MainMap
             // 
+            this.MainMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.MainMap.Bearing = 0F;
             this.MainMap.CanDragMap = true;
             this.MainMap.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1935,7 +1853,7 @@
             this.MainMap.RetryLoadTile = 0;
             this.MainMap.RoutesEnabled = true;
             this.MainMap.ShowTileGridLines = false;
-            this.MainMap.Size = new System.Drawing.Size(771, 321);
+            this.MainMap.Size = new System.Drawing.Size(574, 336);
             this.MainMap.TabIndex = 33;
             this.MainMap.Zoom = 0D;
             // 
@@ -1959,6 +1877,79 @@
             this.LMousePos.TabIndex = 35;
             this.LMousePos.Text = "0,0";
             // 
+            // l_GPS_numsat
+            // 
+            this.l_GPS_numsat.AutoSize = true;
+            this.l_GPS_numsat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_GPS_numsat.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.l_GPS_numsat.Location = new System.Drawing.Point(360, 16);
+            this.l_GPS_numsat.Name = "l_GPS_numsat";
+            this.l_GPS_numsat.Size = new System.Drawing.Size(16, 16);
+            this.l_GPS_numsat.TabIndex = 8;
+            this.l_GPS_numsat.Text = "0";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label25.Location = new System.Drawing.Point(159, 3);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(45, 13);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "Latitude";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label39.Location = new System.Drawing.Point(360, 3);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(23, 13);
+            this.label39.TabIndex = 7;
+            this.label39.Text = "Sat";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label32.Location = new System.Drawing.Point(226, 3);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(54, 13);
+            this.label32.TabIndex = 2;
+            this.label32.Text = "Longitude";
+            // 
+            // l_GPS_alt
+            // 
+            this.l_GPS_alt.AutoSize = true;
+            this.l_GPS_alt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_GPS_alt.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.l_GPS_alt.Location = new System.Drawing.Point(297, 16);
+            this.l_GPS_alt.Name = "l_GPS_alt";
+            this.l_GPS_alt.Size = new System.Drawing.Size(16, 16);
+            this.l_GPS_alt.TabIndex = 6;
+            this.l_GPS_alt.Text = "0";
+            // 
+            // lGPS_lon
+            // 
+            this.lGPS_lon.AutoSize = true;
+            this.lGPS_lon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lGPS_lon.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lGPS_lon.Location = new System.Drawing.Point(226, 16);
+            this.lGPS_lon.Name = "lGPS_lon";
+            this.lGPS_lon.Size = new System.Drawing.Size(16, 16);
+            this.lGPS_lon.TabIndex = 3;
+            this.lGPS_lon.Text = "0";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label34.Location = new System.Drawing.Point(297, 3);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(43, 13);
+            this.label34.TabIndex = 5;
+            this.label34.Text = "GPS alt";
+            // 
             // label45
             // 
             this.label45.AutoSize = true;
@@ -1969,110 +1960,42 @@
             this.label45.TabIndex = 34;
             this.label45.Text = "POS@Mouse";
             // 
-            // label23
-            // 
-            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label23.AutoSize = true;
-            this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(54, 306);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(70, 13);
-            this.label23.TabIndex = 33;
-            this.label23.Text = "Map Provider";
-            // 
-            // cbMapProviders
-            // 
-            this.cbMapProviders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbMapProviders.FormattingEnabled = true;
-            this.cbMapProviders.Location = new System.Drawing.Point(54, 325);
-            this.cbMapProviders.Name = "cbMapProviders";
-            this.cbMapProviders.Size = new System.Drawing.Size(145, 21);
-            this.cbMapProviders.TabIndex = 32;
-            this.cbMapProviders.SelectedIndexChanged += new System.EventHandler(this.cbMapProviders_SelectedIndexChanged);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label25.Location = new System.Drawing.Point(3, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(45, 13);
-            this.label25.TabIndex = 1;
-            this.label25.Text = "Latitude";
-            // 
-            // l_GPS_numsat
-            // 
-            this.l_GPS_numsat.AutoSize = true;
-            this.l_GPS_numsat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l_GPS_numsat.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.l_GPS_numsat.Location = new System.Drawing.Point(3, 109);
-            this.l_GPS_numsat.Name = "l_GPS_numsat";
-            this.l_GPS_numsat.Size = new System.Drawing.Size(16, 16);
-            this.l_GPS_numsat.TabIndex = 8;
-            this.l_GPS_numsat.Text = "0";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label32.Location = new System.Drawing.Point(3, 29);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(54, 13);
-            this.label32.TabIndex = 2;
-            this.label32.Text = "Longitude";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label39.Location = new System.Drawing.Point(3, 96);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(23, 13);
-            this.label39.TabIndex = 7;
-            this.label39.Text = "Sat";
-            // 
-            // lGPS_lon
-            // 
-            this.lGPS_lon.AutoSize = true;
-            this.lGPS_lon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lGPS_lon.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lGPS_lon.Location = new System.Drawing.Point(3, 42);
-            this.lGPS_lon.Name = "lGPS_lon";
-            this.lGPS_lon.Size = new System.Drawing.Size(16, 16);
-            this.lGPS_lon.TabIndex = 3;
-            this.lGPS_lon.Text = "0";
-            // 
-            // l_GPS_alt
-            // 
-            this.l_GPS_alt.AutoSize = true;
-            this.l_GPS_alt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l_GPS_alt.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.l_GPS_alt.Location = new System.Drawing.Point(3, 80);
-            this.l_GPS_alt.Name = "l_GPS_alt";
-            this.l_GPS_alt.Size = new System.Drawing.Size(16, 16);
-            this.l_GPS_alt.TabIndex = 6;
-            this.l_GPS_alt.Text = "0";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label34.Location = new System.Drawing.Point(3, 67);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(43, 13);
-            this.label34.TabIndex = 5;
-            this.label34.Text = "GPS alt";
-            // 
             // lGPS_lat
             // 
             this.lGPS_lat.AutoSize = true;
             this.lGPS_lat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lGPS_lat.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lGPS_lat.Location = new System.Drawing.Point(3, 13);
+            this.lGPS_lat.Location = new System.Drawing.Point(159, 16);
             this.lGPS_lat.Name = "lGPS_lat";
             this.lGPS_lat.Size = new System.Drawing.Size(16, 16);
             this.lGPS_lat.TabIndex = 4;
             this.lGPS_lat.Text = "0";
+            // 
+            // missionDataGrid
+            // 
+            this.missionDataGrid.AllowUserToAddRows = false;
+            this.missionDataGrid.AllowUserToDeleteRows = false;
+            this.missionDataGrid.AllowUserToResizeRows = false;
+            this.missionDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.missionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.missionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.No,
+            this.Action,
+            this.Par1,
+            this.LATCOL,
+            this.LONCOL,
+            this.ALTCOL,
+            this.UP,
+            this.Down,
+            this.DEL});
+            this.missionDataGrid.Location = new System.Drawing.Point(4, 4);
+            this.missionDataGrid.Name = "missionDataGrid";
+            this.missionDataGrid.RowHeadersVisible = false;
+            this.missionDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.missionDataGrid.Size = new System.Drawing.Size(397, 405);
+            this.missionDataGrid.TabIndex = 0;
+            this.missionDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellContentClick);
+            this.missionDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellEndEdit);
             // 
             // tabPageFlighDeck
             // 
@@ -2846,6 +2769,215 @@
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // dataGridViewImageColumn1
+            // 
+            this.dataGridViewImageColumn1.HeaderText = "";
+            this.dataGridViewImageColumn1.Image = global::MultiWiiWinGUI.Properties.Resources.up_btn;
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.Width = 16;
+            // 
+            // dataGridViewImageColumn2
+            // 
+            this.dataGridViewImageColumn2.HeaderText = "";
+            this.dataGridViewImageColumn2.Image = global::MultiWiiWinGUI.Properties.Resources.down_btn;
+            this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
+            this.dataGridViewImageColumn2.Width = 16;
+            // 
+            // dataGridViewImageColumn3
+            // 
+            this.dataGridViewImageColumn3.HeaderText = "";
+            this.dataGridViewImageColumn3.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
+            this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
+            this.dataGridViewImageColumn3.Width = 16;
+            // 
+            // No
+            // 
+            this.No.HeaderText = "#";
+            this.No.Name = "No";
+            this.No.ReadOnly = true;
+            this.No.Width = 20;
+            // 
+            // Action
+            // 
+            this.Action.HeaderText = "Action";
+            this.Action.Items.AddRange(new object[] {
+            "WAYPOINT",
+            "POSHOLD_UNLIM",
+            "POSHOLD_TIME",
+            "RTH",
+            "DO_JUMP"});
+            this.Action.Name = "Action";
+            this.Action.Width = 90;
+            // 
+            // Par1
+            // 
+            this.Par1.HeaderText = "P1";
+            this.Par1.Name = "Par1";
+            this.Par1.Width = 50;
+            // 
+            // LATCOL
+            // 
+            this.LATCOL.HeaderText = "Lat";
+            this.LATCOL.Name = "LATCOL";
+            this.LATCOL.ReadOnly = true;
+            this.LATCOL.Width = 65;
+            // 
+            // LONCOL
+            // 
+            this.LONCOL.HeaderText = "Lon";
+            this.LONCOL.Name = "LONCOL";
+            this.LONCOL.ReadOnly = true;
+            this.LONCOL.Width = 65;
+            // 
+            // ALTCOL
+            // 
+            this.ALTCOL.HeaderText = "Alt";
+            this.ALTCOL.Name = "ALTCOL";
+            this.ALTCOL.Width = 40;
+            // 
+            // UP
+            // 
+            this.UP.HeaderText = "";
+            this.UP.Image = global::MultiWiiWinGUI.Properties.Resources.up_btn;
+            this.UP.Name = "UP";
+            this.UP.Width = 18;
+            // 
+            // Down
+            // 
+            this.Down.HeaderText = "";
+            this.Down.Image = global::MultiWiiWinGUI.Properties.Resources.down_btn;
+            this.Down.Name = "Down";
+            this.Down.Width = 18;
+            // 
+            // DEL
+            // 
+            this.DEL.HeaderText = "";
+            this.DEL.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
+            this.DEL.Name = "DEL";
+            this.DEL.Width = 18;
+            // 
+            // throttle_expo_control1
+            // 
+            this.throttle_expo_control1.Location = new System.Drawing.Point(521, 189);
+            this.throttle_expo_control1.Name = "throttle_expo_control1";
+            this.throttle_expo_control1.Size = new System.Drawing.Size(150, 100);
+            this.throttle_expo_control1.TabIndex = 25;
+            this.throttle_expo_control1.Text = "throttle_expo_control1";
+            // 
+            // rc_expo_control1
+            // 
+            this.rc_expo_control1.Location = new System.Drawing.Point(519, 37);
+            this.rc_expo_control1.Name = "rc_expo_control1";
+            this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
+            this.rc_expo_control1.TabIndex = 15;
+            this.rc_expo_control1.Text = "rc_expo_control1";
+            // 
+            // rci_Control_settings
+            // 
+            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
+            this.rci_Control_settings.Name = "rci_Control_settings";
+            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
+            this.rci_Control_settings.TabIndex = 15;
+            this.rci_Control_settings.Text = "rc_input_control2";
+            // 
+            // rc_input_control1
+            // 
+            this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
+            this.rc_input_control1.Name = "rc_input_control1";
+            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
+            this.rc_input_control1.TabIndex = 76;
+            this.rc_input_control1.Text = "rc_input_control1";
+            // 
+            // motorsIndicator1
+            // 
+            this.motorsIndicator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.motorsIndicator1.Location = new System.Drawing.Point(6, 6);
+            this.motorsIndicator1.Name = "motorsIndicator1";
+            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
+            this.motorsIndicator1.TabIndex = 75;
+            this.motorsIndicator1.Text = "motorsIndicator1";
+            // 
+            // gpsIndicator
+            // 
+            this.gpsIndicator.Location = new System.Drawing.Point(0, 3);
+            this.gpsIndicator.Name = "gpsIndicator";
+            this.gpsIndicator.Size = new System.Drawing.Size(150, 150);
+            this.gpsIndicator.TabIndex = 74;
+            this.gpsIndicator.Text = "gpsIndicator";
+            // 
+            // attitudeIndicatorInstrumentControl1
+            // 
+            this.attitudeIndicatorInstrumentControl1.Location = new System.Drawing.Point(156, 3);
+            this.attitudeIndicatorInstrumentControl1.Name = "attitudeIndicatorInstrumentControl1";
+            this.attitudeIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
+            this.attitudeIndicatorInstrumentControl1.TabIndex = 71;
+            this.attitudeIndicatorInstrumentControl1.Text = "attitudeIndicatorInstrumentControl1";
+            this.attitudeIndicatorInstrumentControl1.Click += new System.EventHandler(this.attitudeIndicatorInstrumentControl1_Click);
+            // 
+            // headingIndicatorInstrumentControl1
+            // 
+            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(312, 3);
+            this.headingIndicatorInstrumentControl1.Name = "headingIndicatorInstrumentControl1";
+            this.headingIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
+            this.headingIndicatorInstrumentControl1.TabIndex = 72;
+            this.headingIndicatorInstrumentControl1.Text = "headingIndicatorInstrumentControl1";
+            // 
+            // indACC
+            // 
+            this.indACC.Location = new System.Drawing.Point(466, 3);
+            this.indACC.Margin = new System.Windows.Forms.Padding(1);
+            this.indACC.Name = "indACC";
+            this.indACC.Size = new System.Drawing.Size(50, 17);
+            this.indACC.TabIndex = 82;
+            this.indACC.Text = "ACC";
+            // 
+            // indBARO
+            // 
+            this.indBARO.Location = new System.Drawing.Point(518, 3);
+            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
+            this.indBARO.Name = "indBARO";
+            this.indBARO.Size = new System.Drawing.Size(50, 17);
+            this.indBARO.TabIndex = 83;
+            this.indBARO.Text = "BARO";
+            // 
+            // indMAG
+            // 
+            this.indMAG.Location = new System.Drawing.Point(570, 3);
+            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
+            this.indMAG.Name = "indMAG";
+            this.indMAG.Size = new System.Drawing.Size(50, 17);
+            this.indMAG.TabIndex = 84;
+            this.indMAG.Text = "MAG";
+            // 
+            // indSONAR
+            // 
+            this.indSONAR.Location = new System.Drawing.Point(518, 22);
+            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
+            this.indSONAR.Name = "indSONAR";
+            this.indSONAR.Size = new System.Drawing.Size(50, 17);
+            this.indSONAR.TabIndex = 85;
+            this.indSONAR.Text = "SONAR";
+            // 
+            // indGPS
+            // 
+            this.indGPS.Location = new System.Drawing.Point(466, 22);
+            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
+            this.indGPS.Name = "indGPS";
+            this.indGPS.Size = new System.Drawing.Size(50, 17);
+            this.indGPS.TabIndex = 86;
+            this.indGPS.Text = "GPS";
+            // 
+            // indOPTIC
+            // 
+            this.indOPTIC.Location = new System.Drawing.Point(570, 22);
+            this.indOPTIC.Margin = new System.Windows.Forms.Padding(1);
+            this.indOPTIC.Name = "indOPTIC";
+            this.indOPTIC.Size = new System.Drawing.Size(50, 17);
+            this.indOPTIC.TabIndex = 103;
+            this.indOPTIC.Text = "OPTIC";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2915,12 +3047,12 @@
             this.groupBox3.PerformLayout();
             this.tabPageMap.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel1.PerformLayout();
             this.splitContainer7.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
             this.splitContainer8.Panel1.ResumeLayout(false);
             this.splitContainer8.Panel2.ResumeLayout(false);
-            this.splitContainer8.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
             this.splitContainer8.ResumeLayout(false);
             this.splitContainer9.Panel1.ResumeLayout(false);
@@ -2930,6 +3062,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).EndInit();
             this.splitContainer9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tb_mapzoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).EndInit();
             this.tabPageFlighDeck.ResumeLayout(false);
             this.tabPageFlighDeck.PerformLayout();
             this.splitContainer6.Panel1.ResumeLayout(false);
@@ -3166,6 +3299,19 @@
         private System.Windows.Forms.TextBox txtCLICommand;
         private System.Windows.Forms.TextBox txtCLIResult;
         private System.Windows.Forms.Label lClicktoGoPos;
+        private System.Windows.Forms.DataGridView missionDataGrid;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn2;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn No;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Action;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LATCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LONCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ALTCOL;
+        private System.Windows.Forms.DataGridViewImageColumn UP;
+        private System.Windows.Forms.DataGridViewImageColumn Down;
+        private System.Windows.Forms.DataGridViewImageColumn DEL;
     }
 }
 
