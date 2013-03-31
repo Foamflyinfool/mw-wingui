@@ -139,42 +139,34 @@ namespace MultiWiiWinGUI
         static int GPS_lat_old, GPS_lon_old;
         static bool GPSPresent = true;
 
+        //Routes on Map
+        static GMapRoute GMRouteFlightPath;
+        static GMapRoute GMRouteMission;
 
         //Map Overlays
-        GMapOverlay overlayCopterPosition;
-        GMapOverlay drawnpolygons;
-        static GMapOverlay routes;// static so can update from gcs
-        static GMapOverlay markers;
-        static GMapOverlay objects;
-
-        static GMapOverlay polygons;
-        GMapOverlay positions;
-        List<PointLatLngAlt> pointlist = new List<PointLatLngAlt>(); // used to calc distance
+        static GMapOverlay GMOverlayFlightPath;// static so can update from gcs
+        static GMapOverlay GMOverlayWaypoints;
+        static GMapOverlay GMOverlayMission;
+        static GMapOverlay GMOverlayLiveData;
 
         static GMapProvider[] mapProviders;
         static PointLatLng copterPos = new PointLatLng(47.402489, 19.071558);       //Just the corrds of my flying place
+
         static bool isMouseDown = false;
         static bool isMouseDraging = false;
 
         static bool bPosholdRecorded = false;
         static bool bHomeRecorded = false;
 
-        // marker
+        // markers
         GMapMarker currentMarker;
         GMapMarkerRect CurentRectMarker = null;
         GMapMarker center = new GMapMarkerCross(new PointLatLng(0.0, 0.0));
-
-        GMapPolygon drawnpolygon;
-        GMapPolygon polygon;
-
         GMapMarkerGoogleRed GPS_clicktogomarker;
 
 
-        // layers
-        static GMapRoute Grout;
         List<PointLatLng> points = new List<PointLatLng>();
 
-        GMapMarkerCross copterPosMarker;
         PointLatLng GPS_pos;
         PointLatLng end;
         PointLatLng start;
@@ -242,6 +234,8 @@ namespace MultiWiiWinGUI
 
 
         static int selectedrow;
+        static bool bClickToGoEnabled = false;
+        static int iDefAlt = 25;        //Default altitude 25meters
 
 
         #endregion
@@ -272,11 +266,8 @@ namespace MultiWiiWinGUI
             // map events
 
             MainMap.OnPositionChanged += new PositionChanged(MainMap_OnCurrentPositionChanged);
-            //MainMap.OnTileLoadStart += new TileLoadStart(MainMap_OnTileLoadStart);
-            //MainMap.OnTileLoadComplete += new TileLoadComplete(MainMap_OnTileLoadComplete);
             //MainMap.OnMarkerClick += new MarkerClick(MainMap_OnMarkerClick);
             MainMap.OnMapZoomChanged += new MapZoomChanged(MainMap_OnMapZoomChanged);
-            //MainMap.OnMapTypeChanged += new MapTypeChanged(MainMap_OnMapTypeChanged);
             MainMap.MouseMove += new MouseEventHandler(MainMap_MouseMove);
             MainMap.MouseDown += new MouseEventHandler(MainMap_MouseDown);
             MainMap.MouseUp += new MouseEventHandler(MainMap_MouseUp);
@@ -284,10 +275,10 @@ namespace MultiWiiWinGUI
             MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
 
             currentMarker = new GMapMarkerGoogleRed(MainMap.Position);
-            MainMap.MapScaleInfoEnabled = true;
+            //MainMap.MapScaleInfoEnabled = true;
 
             MainMap.ForceDoubleBuffer = true;
-            MainMap.Manager.Mode = AccessMode.ServerAndCache;
+            MainMap.Manager.Mode = AccessMode.ServerAndCache; 
 
             MainMap.Position = copterPos;
 
@@ -296,29 +287,28 @@ namespace MultiWiiWinGUI
 
             MainMap.ScalePen = penScale;
 
-            routes = new GMapOverlay(MainMap, "routes");
-            MainMap.Overlays.Add(routes);
+            GMOverlayFlightPath = new GMapOverlay(MainMap, "flightpath");
+            MainMap.Overlays.Add(GMOverlayFlightPath);
 
-            drawnpolygons = new GMapOverlay(MainMap, "drawnpolygons");
-            MainMap.Overlays.Add(drawnpolygons);
+            GMOverlayWaypoints = new GMapOverlay(MainMap, "waypoints");
+            MainMap.Overlays.Add(GMOverlayWaypoints);
 
-            markers = new GMapOverlay(MainMap, "objects");
-            MainMap.Overlays.Add(markers);
+            GMOverlayMission = new GMapOverlay(MainMap, "missionroute");
+            MainMap.Overlays.Add(GMOverlayMission);
 
-            polygons = new GMapOverlay(MainMap, "polygons");
-            MainMap.Overlays.Add(polygons);
+            GMOverlayLiveData = new GMapOverlay(MainMap, "livedata");
+            MainMap.Overlays.Add(GMOverlayLiveData);
 
-            positions = new GMapOverlay(MainMap, "positions");
-            MainMap.Overlays.Add(positions);
+            GMOverlayLiveData.Markers.Clear();
+            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0));
 
-            positions.Markers.Clear();
-            positions.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0));
-
-            Grout = new GMapRoute(points, "track");
-            Grout.Stroke = penRoute;
-            routes.Routes.Add(Grout);
+            GMRouteFlightPath = new GMapRoute(points, "flightpath");
+            GMRouteFlightPath.Stroke = penRoute;
+            GMOverlayFlightPath.Routes.Add(GMRouteFlightPath);
 
             center = new GMapMarkerCross(MainMap.Position);
+
+
 
             #endregion
 
@@ -624,12 +614,19 @@ namespace MultiWiiWinGUI
                 }
 
 
+                //Set up stuff at the mission palane
+                txtDefAlt.Text = iDefAlt.ToString();
+
+
             }
 
 
+            //Tooltips (needs improvement)
+
             toolTip1.SetToolTip(b_check_all_ACC, "Select all ACC values");
             toolTip1.SetToolTip(b_uncheck_all_ACC, "Deselect all ACC values");
-
+            toolTip1.SetToolTip(lDefAlt, "Default waypoint altitude (in Above Ground Level where Home position Ground level is zero)");
+            toolTip1.SetToolTip(txtDefAlt, "Default waypoint altitude (in Above Ground Level where Home position Ground level is zero)");
 
 
 
@@ -1708,26 +1705,26 @@ namespace MultiWiiWinGUI
                     GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
                     GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
 
-                    positions.Markers.Clear();
+                    GMOverlayLiveData.Markers.Clear();
 
 
                     if (((mw_gui.mode & (1 << 5)) > 0) && (mw_gui.GPS_home_lon != 0))       //ARMED
                     {
                         PointLatLng GPS_home = new PointLatLng((double)mw_gui.GPS_home_lat / 10000000, (double)mw_gui.GPS_home_lon / 10000000);
-                        positions.Markers.Add(new GMapMarkerHome(GPS_home));
+                        GMOverlayLiveData.Markers.Add(new GMapMarkerHome(GPS_home));
                     }
 
 
                     if (((mw_gui.mode & (1 << 7)) > 0) && (mw_gui.GPS_poshold_lon != 0))       //poshold
                     {
                         PointLatLng GPS_poshold = new PointLatLng((double)mw_gui.GPS_poshold_lat / 10000000, (double)mw_gui.GPS_poshold_lon / 10000000);
-                        positions.Markers.Add(new GMapMarkerGoogleRed(GPS_poshold));
+                        GMOverlayLiveData.Markers.Add(new GMapMarkerGoogleRed(GPS_poshold));
                     }
 
 
-                    positions.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
+                    GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
 
-                    Grout.Points.Add(GPS_pos);
+                    GMRouteFlightPath.Points.Add(GPS_pos);
                     MainMap.Position = GPS_pos;
                     MainMap.Invalidate();
 
@@ -2670,17 +2667,40 @@ namespace MultiWiiWinGUI
 
                 }
         */
+      
 
-        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color)
+       
+
+        private void AddWPMarker(string tag, double lng, double lat, int alt, Color? color, int markertype)
         {
             PointLatLng point = new PointLatLng(lat, lng);
-            
-            GMapMarkerGoogleGreen m = new GMapMarkerGoogleGreen(point);
+
+            GMapMarker m = new GMapMarkerGoogleGreen(point);
+
+            switch (markertype)
+            {
+                case 0:
+                    m = new GMapMarkerWP(point);
+                    break;
+                case 1:
+                    m = new GMapMarkerPosHold(point);
+                    break;
+                case 2:  
+                    m = new GMapMarkerPosHold(point);
+                    break;
+                case 3:  
+                    m = new GMapMarkerGoogleRed(point);
+                    break;
+                default:
+                    m = new GMapMarkerGoogleGreen(point);
+                    break;
+
+            }
+
             m.ToolTipMode = MarkerTooltipMode.Always;
             m.ToolTipText = tag;
             m.Tag = tag;
 
-            //ArdupilotMega.GMapMarkerRectWPRad mBorders = new ArdupilotMega.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
             GMapMarkerRect mBorders = new GMapMarkerRect(point);
             {
                 mBorders.InnerMarker = m;
@@ -2692,18 +2712,18 @@ namespace MultiWiiWinGUI
                 }
             }
 
-            markers.Markers.Add(m);
-            markers.Markers.Add(mBorders);
+            GMOverlayWaypoints.Markers.Add(m);
+            GMOverlayWaypoints.Markers.Add(mBorders);
         }
 
-        void RegeneratePolygon()
+        void RegenerateMissionRoute()
         {
             List<PointLatLng> polygonPoints = new List<PointLatLng>();
 
-            if (markers == null)
+            if (GMOverlayWaypoints == null)
                 return;
 
-            foreach (GMapMarker m in markers.Markers)
+            foreach (GMapMarker m in GMOverlayWaypoints.Markers)
             {
                 if (m is GMapMarkerRect)
                 {
@@ -2711,29 +2731,32 @@ namespace MultiWiiWinGUI
                     polygonPoints.Add(m.Position);
                 }
             }
-
-            if (polygon == null)
+            if (GMRouteMission == null)
             {
-                polygon = new GMapPolygon(polygonPoints, "polygon test");
-                polygons.Polygons.Add(polygon);
+                GMRouteMission = new GMapRoute(polygonPoints, "wp route");
+                GMRouteMission.Stroke = new Pen(Color.Aquamarine, 3);
+                
+                GMOverlayMission.Routes.Add(GMRouteMission);
             }
             else
             {
-                polygon.Points.Clear();
-                polygon.Points.AddRange(polygonPoints);
+                GMRouteMission.Points.Clear();
+                GMRouteMission.Points.AddRange(polygonPoints);
 
-                polygon.Stroke = new Pen(Color.Yellow, 4);
-                polygon.Fill = Brushes.Transparent;
-
-                if (polygons.Polygons.Count == 0)
+                if (GMOverlayMission.Routes.Count == 0)
                 {
-                    polygons.Polygons.Add(polygon);
+                    GMOverlayMission.Routes.Add(GMRouteMission);
                 }
                 else
                 {
-                    MainMap.UpdatePolygonLocalPosition(polygon);
+                    MainMap.UpdateRouteLocalPosition(GMRouteMission);
                 }
             }
+            GMOverlayMission.IsVisibile = false;
+            MainMap.Invalidate();
+            GMOverlayMission.IsVisibile = true;
+            MainMap.Invalidate();
+
         }
         
         // MapZoomChanged
@@ -2791,13 +2814,12 @@ namespace MultiWiiWinGUI
         {
             end = MainMap.FromLocalToLatLng(e.X, e.Y);
 
-            if (e.Button == MouseButtons.Right) // ignore right clicks
+            if (e.Button == MouseButtons.Right && bClickToGoEnabled) // Right Click is the click to go IF it is enabled
             {
-                 lClicktoGoPos.Text = "Lat:" + String.Format("{0:0.000000}", end.Lat) + " Lon:" + String.Format("{0:0.000000}", end.Lng); 
                  PointLatLng GPS_clicktogo = new PointLatLng(end.Lat, end.Lng); 
-                 positions.Markers.Remove(GPS_clicktogomarker); 
+                 GMOverlayLiveData.Markers.Remove(GPS_clicktogomarker); 
                  GPS_clicktogomarker = new GMapMarkerGoogleRed(GPS_clicktogo); 
-                 positions.Markers.Add(GPS_clicktogomarker); 
+                 GMOverlayLiveData.Markers.Add(GPS_clicktogomarker); 
                 return;
             }
 
@@ -2815,15 +2837,7 @@ namespace MultiWiiWinGUI
                     }
                     else
                     {
-                        //add WP at the given point
-                        addWP(currentMarker.Position.Lat, currentMarker.Position.Lng, 0);
-
-                        
-                        //Adding waypoint will come here
-                        //addpolygonmarker("X", currentMarker.Position.Lng, currentMarker.Position.Lat, 0,Color.Pink);
-                        //RegeneratePolygon();
-
-
+                        addWP(currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
                     }
                 }
                 else
@@ -2877,27 +2891,20 @@ namespace MultiWiiWinGUI
                     double lngdif = start.Lng - point.Lng;
                     MainMap.Position = new PointLatLng(center.Position.Lat + latdif, center.Position.Lng + lngdif);
                 }
-                else // move rect marker
+                else 
                 {
-                    try
-                    {
-                        if (CurentRectMarker.InnerMarker.Tag.ToString().Contains("grid"))
-                        {
-                            drawnpolygon.Points[int.Parse(CurentRectMarker.InnerMarker.Tag.ToString().Replace("grid", "")) - 1] = new PointLatLng(point.Lat, point.Lng);
-                            MainMap.UpdatePolygonLocalPosition(drawnpolygon);
-                        }
-                    }
-                    catch { }
 
                     PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
 
                     int? pIndex = (int?)CurentRectMarker.Tag;
                     if (pIndex.HasValue)
                     {
-                        if (pIndex < polygon.Points.Count)
+                        if (pIndex < GMRouteMission.Points.Count)
                         {
-                            polygon.Points[pIndex.Value] = pnew;
-                            MainMap.UpdatePolygonLocalPosition(polygon);
+                            GMRouteMission.Points[pIndex.Value] = pnew;
+                            MainMap.UpdateRouteLocalPosition(GMRouteMission);
+                            lDistance.Text = String.Format("Mission total dist.:{0:N1} m", GMRouteMission.Distance * 1000);
+
                         }
                     }
 
@@ -2954,7 +2961,7 @@ namespace MultiWiiWinGUI
 
         private void b_Clear_Route_Click(object sender, EventArgs e)
         {
-            Grout.Points.Clear();
+            GMRouteFlightPath.Points.Clear();
         }
         
         #region ValueChangedEvents
@@ -3281,17 +3288,22 @@ namespace MultiWiiWinGUI
             }
 
             updateMap();
+            updateIndex();
   
         }
             private void addWP(double Lat, double Lon, int Alt)
             {
+                if (missionDataGrid.Rows.Count >= 15)
+                    return;
+
+
                 selectedrow = missionDataGrid.Rows.Add();
 
-                missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow;
+                missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow+1;
                 missionDataGrid.Rows[selectedrow].Cells[Action.Index].Value = "WAYPOINT";
                 missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = Lat.ToString("0.0000000");
                 missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = Lon.ToString("0.0000000");
-                missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = 0;
+                missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = Alt;
 
                 missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
 
@@ -3310,46 +3322,154 @@ namespace MultiWiiWinGUI
                 missionDataGrid.CurrentCell = missionDataGrid[1, selectedrow];
                 missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = lat.ToString("0.0000000");
                 missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = lng.ToString("0.0000000");
-                //missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = alt;
-
                 missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
 
             }
 
+            private void updateIndex()
+            {
+
+                for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+                {
+                    missionDataGrid.Rows[a].Cells[No.Index].Value = a + 1;
+                    if (missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString() == "RTH")
+                    {
+                        missionDataGrid.Rows[a].Cells[LATCOL.Index].Value = 0;
+                        missionDataGrid.Rows[a].Cells[LONCOL.Index].Value = 0;
+                    }
+                }
+                missionDataGrid.EndEdit();
+            }
     
             private void updateMap()
             {
-                pointlist = new List<PointLatLngAlt>();
-                    //objects.Markers.Clear();
-                if (markers != null) // hasnt been created yet
+                int command = 0 ;
+                
+                if (GMOverlayWaypoints != null) // hasnt been created yet
                 {
-                    markers.Markers.Clear();
+                    GMOverlayWaypoints.Markers.Clear();
                 }
 
-                    for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
-                    {
-                                string cell2 = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
-                                string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
-                                string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
+                if (GMRouteMission != null)
+                {
+                    GMRouteMission.Points.Clear();
 
-                                if (cell4 == "0" || cell3 == "0")
-                                    continue;
-                                if (cell4 == "?" || cell3 == "?")
-                                    continue;
+                }
 
-                                pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), (int)double.Parse(cell2), (a + 1).ToString()));
-                                addpolygonmarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), Color.Aqua);
+                for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+                {
+                    string cell1 = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
+                    string cell2 = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
+                    string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
+                    string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
 
-                    }
+                    if (cell1 == "WAYPOINT") command = 0;
+                    if (cell1 == "POSHOLD_UNLIM") command = 1;
+                    if (cell1 == "POSHOLD_TIME") command = 2;
+                    if (cell1 == "RTH") command = 3;
+                    if (cell1 == "DO_JUMP") command = 4;
 
-                    RegeneratePolygon();
+
+                   
+                    if (cell4 == "0" || cell3 == "0")
+                        continue;
+                    if (cell4 == "?" || cell3 == "?")
+                        continue;
+                    if (cell1 == "RTH" || cell1 == "DO_JUMP")
+                        break ;
+
+                    AddWPMarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), null, command);
+
+                    if (cell1 == "POSHOLD_UNLIM")
+                        break;
+
+                }
+
+                    RegenerateMissionRoute();
+                    lDistance.Text = String.Format("Mission total dist.:{0:N1} m", GMRouteMission.Distance * 1000);
             }
 
             private void missionDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
             {
                 updateMap();
+                updateIndex();
             }
 
+           private void cbShowMission_CheckedChanged(object sender, EventArgs e)
+            {
+                GMOverlayMission.IsVisibile = cbShowMission.Checked;
+                MainMap.Invalidate();
+            }
+
+            private void cbShowWP_CheckedChanged(object sender, EventArgs e)
+            {
+                GMOverlayWaypoints.IsVisibile = cbShowWP.Checked;
+                MainMap.Invalidate();
+            }
+
+            private void cbShowPos_CheckedChanged(object sender, EventArgs e)
+            {
+                GMOverlayLiveData.IsVisibile = cbShowPos.Checked;
+                MainMap.Invalidate();
+
+            }
+
+            private void cbShowFlightPath_CheckedChanged(object sender, EventArgs e)
+            {
+                GMOverlayFlightPath.IsVisibile = cbShowFlightPath.Checked;
+            }
+
+            private void bClickToGo_Click(object sender, EventArgs e)
+            {
+                if (bClickToGoEnabled)
+                {
+                    bClickToGo.BackColor = Color.LightGray;
+                    bClickToGo.ForeColor = Color.Black;
+                    bClickToGo.Text = "Go to Click disabled";
+                    bClickToGoEnabled = false;
+                    GMOverlayLiveData.Markers.Remove(GPS_clicktogomarker);
+                }
+                else
+                {
+                    bClickToGo.BackColor = Color.Red;
+                    bClickToGo.ForeColor = Color.White;
+                    bClickToGo.Text = "Go to Click enabled";
+                    bClickToGoEnabled = true;
+                }
+            }
+
+            private void txtDefAlt_TextChanged(object sender, EventArgs e)
+            {
+                int i = Convert.ToInt16(txtDefAlt.Text);
+                if (i < 2 || i > 400)
+                {
+                    MessageBoxEx.Show(this, "Default altitude must be between 2m and 400m", "Altitude error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    txtDefAlt.Text = iDefAlt.ToString();
+                    return;
+
+                }
+                iDefAlt = i;
+            }
+
+
+            private void txtDefAlt_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.KeyCode == Keys.Enter) 
+                {
+                    int i = Convert.ToInt16(txtDefAlt.Text);
+                    if (i < 2 || i > 400)
+                    {
+                        MessageBoxEx.Show(this, "Default altitude must be between 2m and 400m", "Altitude error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        txtDefAlt.Text = iDefAlt.ToString();
+                        return;
+
+                    }
+                    iDefAlt = i;
+                }
+
+            }
+
+   
 
         
     }
