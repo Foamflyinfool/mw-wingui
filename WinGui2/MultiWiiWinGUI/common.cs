@@ -145,12 +145,52 @@ namespace MultiWiiWinGUI
             Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
             Image pic = global::MultiWiiWinGUI.Properties.Resources.home;
-            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height-14);
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
             g.Transform = temp;
- 
+
         }
     }
 
+    public class GMapMarkerPosHold : GMapMarker
+    {
+        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.phicon.Width, global::MultiWiiWinGUI.Properties.Resources.phicon.Height);
+
+        public GMapMarkerPosHold(PointLatLng p)
+            : base(p)
+        {
+            Size = SizeSt;
+        }
+
+        public override void OnRender(Graphics g)
+        {
+            Matrix temp = g.Transform;
+            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
+            Image pic = global::MultiWiiWinGUI.Properties.Resources.phicon;
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
+            g.Transform = temp;
+
+        }
+    }
+    public class GMapMarkerWP : GMapMarker
+    {
+        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.wpicon.Width, global::MultiWiiWinGUI.Properties.Resources.wpicon.Height);
+
+        public GMapMarkerWP(PointLatLng p)
+            : base(p)
+        {
+            Size = SizeSt;
+        }
+
+        public override void OnRender(Graphics g)
+        {
+            Matrix temp = g.Transform;
+            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
+            Image pic = global::MultiWiiWinGUI.Properties.Resources.wpicon;
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
+            g.Transform = temp;
+
+        }
+    }
 
     public class PointLatLngAlt
     {
