@@ -108,16 +108,16 @@ namespace MultiWiiGUIControls
             {
                 if (indicator_color == 0)
                 {
-                    pe.Graphics.DrawString(Text, drawFont, drawBrushWhite, 1 + (48 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
+                    pe.Graphics.DrawString(Text, drawFont, drawBrushWhite, 1 + (63 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
                 }
                 else
                 {
-                    pe.Graphics.DrawString(Text, drawFont, drawBrushOrange, 1 + (48 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
+                    pe.Graphics.DrawString(Text, drawFont, drawBrushOrange, 1 + (63 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
                 }
             }
             else
             {
-                pe.Graphics.DrawString(Text, drawFont, drawBrushDim, 1 + (48 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
+                pe.Graphics.DrawString(Text, drawFont, drawBrushDim, 1 + (63 - stringSize.Width) / 2, (15 - stringSize.Height) / 2);
             }
 
             //Dispose objects
@@ -146,13 +146,13 @@ namespace MultiWiiGUIControls
         {
             get
             {
-                return new Size(50, 17);
+                return new Size(65, 17);
             }
         }
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
-            base.SetBoundsCore(x, y, 50, 17, specified);
+            base.SetBoundsCore(x, y, 65, 17, specified);
         }
 
 

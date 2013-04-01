@@ -334,6 +334,10 @@
     <None Include="Resources\vtail.bmp" />
     <Content Include="Resources\del_btn.png" />
     <Content Include="Resources\down_btn.png" />
+    <Content Include="Resources\i_green_off.bmp" />
+    <Content Include="Resources\i_green_on.bmp" />
+    <Content Include="Resources\i_red_off.bmp" />
+    <Content Include="Resources\i_red_on.bmp" />
     <Content Include="Resources\poshold.png" />
     <Content Include="Resources\poshold_unlim.png" />
     <Content Include="Resources\up_btn.png" />
