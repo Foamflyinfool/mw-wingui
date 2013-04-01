@@ -214,18 +214,6 @@
   <data name="checkbox_legend" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\checkbox_legend.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="i_green_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\i_green_off.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="i_green_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\i_green_on.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="i_red_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\i_red_off.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="i_red_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\i_red_on.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bicopter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\bicopter.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -291,5 +279,17 @@
   </data>
   <data name="vtail" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vtail.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_green_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i_green_off.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_green_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i_green_on.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_red_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i_red_off.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i_red_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\i_red_on.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

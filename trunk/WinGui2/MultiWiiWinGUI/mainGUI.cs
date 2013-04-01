@@ -322,11 +322,11 @@ namespace MultiWiiWinGUI
             //Build indicator lamps array
             indicators = new indicator_lamp[iCheckBoxItems];
             int row = 0; int col = 0;
-            int startx = 800; int starty = 3;
+            int startx = 780; int starty = 3;
             for (int i = 0; i < iCheckBoxItems; i++)
             {
                 indicators[i] = new indicator_lamp();
-                indicators[i].Location = new Point(startx + col * 52, starty + row * 19);
+                indicators[i].Location = new Point(startx + col * 67, starty + row * 19);
                 indicators[i].Visible = true;
                 indicators[i].Text = names[i];
                 indicators[i].indicator_color = 1;
@@ -1876,7 +1876,7 @@ namespace MultiWiiWinGUI
 
                 headingIndicatorInstrumentControl1.SetHeadingIndicatorParameters(mw_gui.heading);
                 attitudeIndicatorInstrumentControl1.SetArtificalHorizon(-mw_gui.angy, -mw_gui.angx);
-                gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), true, Convert.ToBoolean(mw_gui.GPS_update));
+                gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
 
                 motorsIndicator1.SetMotorsIndicatorParameters(mw_gui.motors, mw_gui.servos, mw_gui.multiType);
 
