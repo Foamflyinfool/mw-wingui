@@ -164,13 +164,16 @@
             this.b_fetch_tiles = new System.Windows.Forms.Button();
             this.cbMapProviders = new System.Windows.Forms.ComboBox();
             this.b_Clear_Route = new System.Windows.Forms.Button();
-            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
+            this.spcontMapMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.LMousePos = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
             this.tb_mapzoom = new System.Windows.Forms.TrackBar();
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
+            this.cbSendGTCAlt = new System.Windows.Forms.CheckBox();
+            this.txtGTCAlt = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.bClickToGo = new System.Windows.Forms.Button();
-            this.lClicktoGoPos = new System.Windows.Forms.Label();
-            this.LMousePos = new System.Windows.Forms.Label();
             this.l_GPS_numsat = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
@@ -178,11 +181,8 @@
             this.l_GPS_alt = new System.Windows.Forms.Label();
             this.lGPS_lon = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
             this.lGPS_lat = new System.Windows.Forms.Label();
-            this.lDefAlt = new System.Windows.Forms.Label();
-            this.txtDefAlt = new System.Windows.Forms.TextBox();
-            this.lDistance = new System.Windows.Forms.Label();
+            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.missionDataGrid = new System.Windows.Forms.DataGridView();
             this.No = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Action = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -193,6 +193,14 @@
             this.UP = new System.Windows.Forms.DataGridViewImageColumn();
             this.Down = new System.Windows.Forms.DataGridViewImageColumn();
             this.DEL = new System.Windows.Forms.DataGridViewImageColumn();
+            this.lDistLastWP = new System.Windows.Forms.Label();
+            this.btnLoadMission = new System.Windows.Forms.Button();
+            this.btnSaveMission = new System.Windows.Forms.Button();
+            this.btnDownLoadMission = new System.Windows.Forms.Button();
+            this.btnUploadMission = new System.Windows.Forms.Button();
+            this.txtDefAlt = new System.Windows.Forms.TextBox();
+            this.lDistance = new System.Windows.Forms.Label();
+            this.lDefAlt = new System.Windows.Forms.Label();
             this.tabPageFlighDeck = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer();
@@ -310,15 +318,19 @@
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).BeginInit();
-            this.splitContainer8.Panel1.SuspendLayout();
-            this.splitContainer8.Panel2.SuspendLayout();
-            this.splitContainer8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spcontMapMain)).BeginInit();
+            this.spcontMapMain.Panel1.SuspendLayout();
+            this.spcontMapMain.Panel2.SuspendLayout();
+            this.spcontMapMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
             this.splitContainer9.Panel1.SuspendLayout();
             this.splitContainer9.Panel2.SuspendLayout();
             this.splitContainer9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_mapzoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).BeginInit();
+            this.splitContainer8.Panel1.SuspendLayout();
+            this.splitContainer8.Panel2.SuspendLayout();
+            this.splitContainer8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).BeginInit();
             this.tabPageFlighDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
@@ -1832,7 +1844,7 @@
             this.tabPageMap.Name = "tabPageMap";
             this.tabPageMap.Size = new System.Drawing.Size(982, 452);
             this.tabPageMap.TabIndex = 5;
-            this.tabPageMap.Text = "Map";
+            this.tabPageMap.Text = "Mission";
             // 
             // splitContainer7
             // 
@@ -1855,7 +1867,7 @@
             // 
             // splitContainer7.Panel2
             // 
-            this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
+            this.splitContainer7.Panel2.Controls.Add(this.spcontMapMain);
             this.splitContainer7.Size = new System.Drawing.Size(982, 452);
             this.splitContainer7.SplitterDistance = 31;
             this.splitContainer7.TabIndex = 10;
@@ -1959,29 +1971,27 @@
             this.b_Clear_Route.UseVisualStyleBackColor = true;
             this.b_Clear_Route.Click += new System.EventHandler(this.b_Clear_Route_Click);
             // 
-            // splitContainer8
+            // spcontMapMain
             // 
-            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer8.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer8.Name = "splitContainer8";
+            this.spcontMapMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spcontMapMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.spcontMapMain.Location = new System.Drawing.Point(0, 0);
+            this.spcontMapMain.Margin = new System.Windows.Forms.Padding(0);
+            this.spcontMapMain.Name = "spcontMapMain";
             // 
-            // splitContainer8.Panel1
+            // spcontMapMain.Panel1
             // 
-            this.splitContainer8.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.splitContainer8.Panel1.Controls.Add(this.splitContainer9);
+            this.spcontMapMain.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.spcontMapMain.Panel1.Controls.Add(this.splitContainer9);
             // 
-            // splitContainer8.Panel2
+            // spcontMapMain.Panel2
             // 
-            this.splitContainer8.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.splitContainer8.Panel2.Controls.Add(this.lDefAlt);
-            this.splitContainer8.Panel2.Controls.Add(this.txtDefAlt);
-            this.splitContainer8.Panel2.Controls.Add(this.lDistance);
-            this.splitContainer8.Panel2.Controls.Add(this.missionDataGrid);
-            this.splitContainer8.Panel2.Leave += new System.EventHandler(this.txtDefAlt_TextChanged);
-            this.splitContainer8.Size = new System.Drawing.Size(982, 417);
-            this.splitContainer8.SplitterDistance = 574;
-            this.splitContainer8.TabIndex = 0;
+            this.spcontMapMain.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.spcontMapMain.Panel2.Controls.Add(this.splitContainer8);
+            this.spcontMapMain.Panel2.Leave += new System.EventHandler(this.txtDefAlt_TextChanged);
+            this.spcontMapMain.Size = new System.Drawing.Size(982, 417);
+            this.spcontMapMain.SplitterDistance = 577;
+            this.spcontMapMain.TabIndex = 0;
             // 
             // splitContainer9
             // 
@@ -1993,15 +2003,18 @@
             // 
             // splitContainer9.Panel1
             // 
+            this.splitContainer9.Panel1.Controls.Add(this.LMousePos);
+            this.splitContainer9.Panel1.Controls.Add(this.label45);
             this.splitContainer9.Panel1.Controls.Add(this.tb_mapzoom);
             this.splitContainer9.Panel1.Controls.Add(this.MainMap);
             // 
             // splitContainer9.Panel2
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.splitContainer9.Panel2.Controls.Add(this.cbSendGTCAlt);
+            this.splitContainer9.Panel2.Controls.Add(this.txtGTCAlt);
+            this.splitContainer9.Panel2.Controls.Add(this.label46);
             this.splitContainer9.Panel2.Controls.Add(this.bClickToGo);
-            this.splitContainer9.Panel2.Controls.Add(this.lClicktoGoPos);
-            this.splitContainer9.Panel2.Controls.Add(this.LMousePos);
             this.splitContainer9.Panel2.Controls.Add(this.l_GPS_numsat);
             this.splitContainer9.Panel2.Controls.Add(this.label25);
             this.splitContainer9.Panel2.Controls.Add(this.label39);
@@ -2009,23 +2022,43 @@
             this.splitContainer9.Panel2.Controls.Add(this.l_GPS_alt);
             this.splitContainer9.Panel2.Controls.Add(this.lGPS_lon);
             this.splitContainer9.Panel2.Controls.Add(this.label34);
-            this.splitContainer9.Panel2.Controls.Add(this.label45);
             this.splitContainer9.Panel2.Controls.Add(this.lGPS_lat);
-            this.splitContainer9.Size = new System.Drawing.Size(574, 417);
-            this.splitContainer9.SplitterDistance = 336;
+            this.splitContainer9.Size = new System.Drawing.Size(577, 417);
+            this.splitContainer9.SplitterDistance = 342;
             this.splitContainer9.TabIndex = 0;
+            // 
+            // LMousePos
+            // 
+            this.LMousePos.AutoSize = true;
+            this.LMousePos.ForeColor = System.Drawing.Color.White;
+            this.LMousePos.Location = new System.Drawing.Point(-3, 13);
+            this.LMousePos.Name = "LMousePos";
+            this.LMousePos.Size = new System.Drawing.Size(22, 13);
+            this.LMousePos.TabIndex = 35;
+            this.LMousePos.Text = "0,0";
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.BackColor = System.Drawing.Color.Transparent;
+            this.label45.ForeColor = System.Drawing.Color.White;
+            this.label45.Location = new System.Drawing.Point(-3, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(72, 13);
+            this.label45.TabIndex = 34;
+            this.label45.Text = "POS@Mouse";
             // 
             // tb_mapzoom
             // 
             this.tb_mapzoom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tb_mapzoom.Dock = System.Windows.Forms.DockStyle.Right;
             this.tb_mapzoom.LargeChange = 1;
-            this.tb_mapzoom.Location = new System.Drawing.Point(529, 0);
+            this.tb_mapzoom.Location = new System.Drawing.Point(532, 0);
             this.tb_mapzoom.Maximum = 19;
             this.tb_mapzoom.Minimum = 2;
             this.tb_mapzoom.Name = "tb_mapzoom";
             this.tb_mapzoom.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_mapzoom.Size = new System.Drawing.Size(45, 336);
+            this.tb_mapzoom.Size = new System.Drawing.Size(45, 342);
             this.tb_mapzoom.TabIndex = 32;
             this.tb_mapzoom.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.tb_mapzoom.Value = 19;
@@ -2050,39 +2083,54 @@
             this.MainMap.RetryLoadTile = 0;
             this.MainMap.RoutesEnabled = true;
             this.MainMap.ShowTileGridLines = false;
-            this.MainMap.Size = new System.Drawing.Size(574, 336);
+            this.MainMap.Size = new System.Drawing.Size(577, 342);
             this.MainMap.TabIndex = 33;
             this.MainMap.Zoom = 0D;
             // 
+            // cbSendGTCAlt
+            // 
+            this.cbSendGTCAlt.AutoSize = true;
+            this.cbSendGTCAlt.Checked = true;
+            this.cbSendGTCAlt.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSendGTCAlt.ForeColor = System.Drawing.Color.White;
+            this.cbSendGTCAlt.Location = new System.Drawing.Point(227, 45);
+            this.cbSendGTCAlt.Name = "cbSendGTCAlt";
+            this.cbSendGTCAlt.Size = new System.Drawing.Size(86, 17);
+            this.cbSendGTCAlt.TabIndex = 38;
+            this.cbSendGTCAlt.Text = "Send GtC alt";
+            this.cbSendGTCAlt.UseVisualStyleBackColor = true;
+            this.cbSendGTCAlt.CheckedChanged += new System.EventHandler(this.cbSendGTCAlt_CheckedChanged);
+            // 
+            // txtGTCAlt
+            // 
+            this.txtGTCAlt.BackColor = System.Drawing.Color.White;
+            this.txtGTCAlt.ForeColor = System.Drawing.Color.Black;
+            this.txtGTCAlt.Location = new System.Drawing.Point(190, 43);
+            this.txtGTCAlt.MaxLength = 3;
+            this.txtGTCAlt.Multiline = true;
+            this.txtGTCAlt.Name = "txtGTCAlt";
+            this.txtGTCAlt.Size = new System.Drawing.Size(31, 20);
+            this.txtGTCAlt.TabIndex = 8;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.ForeColor = System.Drawing.Color.White;
+            this.label46.Location = new System.Drawing.Point(128, 46);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(65, 13);
+            this.label46.TabIndex = 8;
+            this.label46.Text = "GtC altitude:";
+            // 
             // bClickToGo
             // 
-            this.bClickToGo.Location = new System.Drawing.Point(9, 46);
+            this.bClickToGo.Location = new System.Drawing.Point(8, 41);
             this.bClickToGo.Name = "bClickToGo";
             this.bClickToGo.Size = new System.Drawing.Size(113, 23);
             this.bClickToGo.TabIndex = 37;
             this.bClickToGo.Text = "Go to Click disabled";
             this.bClickToGo.UseVisualStyleBackColor = true;
             this.bClickToGo.Click += new System.EventHandler(this.bClickToGo_Click);
-            // 
-            // lClicktoGoPos
-            // 
-            this.lClicktoGoPos.AutoSize = true;
-            this.lClicktoGoPos.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lClicktoGoPos.Location = new System.Drawing.Point(454, 8);
-            this.lClicktoGoPos.Name = "lClicktoGoPos";
-            this.lClicktoGoPos.Size = new System.Drawing.Size(41, 13);
-            this.lClicktoGoPos.TabIndex = 36;
-            this.lClicktoGoPos.Text = "label46";
-            // 
-            // LMousePos
-            // 
-            this.LMousePos.AutoSize = true;
-            this.LMousePos.ForeColor = System.Drawing.Color.White;
-            this.LMousePos.Location = new System.Drawing.Point(8, 16);
-            this.LMousePos.Name = "LMousePos";
-            this.LMousePos.Size = new System.Drawing.Size(22, 13);
-            this.LMousePos.TabIndex = 35;
-            this.LMousePos.Text = "0,0";
             // 
             // l_GPS_numsat
             // 
@@ -2099,7 +2147,7 @@
             // 
             this.label25.AutoSize = true;
             this.label25.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label25.Location = new System.Drawing.Point(159, 3);
+            this.label25.Location = new System.Drawing.Point(8, 3);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(45, 13);
             this.label25.TabIndex = 1;
@@ -2119,7 +2167,7 @@
             // 
             this.label32.AutoSize = true;
             this.label32.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label32.Location = new System.Drawing.Point(226, 3);
+            this.label32.Location = new System.Drawing.Point(128, 3);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(54, 13);
             this.label32.TabIndex = 2;
@@ -2141,7 +2189,7 @@
             this.lGPS_lon.AutoSize = true;
             this.lGPS_lon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lGPS_lon.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lGPS_lon.Location = new System.Drawing.Point(226, 16);
+            this.lGPS_lon.Location = new System.Drawing.Point(128, 16);
             this.lGPS_lon.Name = "lGPS_lon";
             this.lGPS_lon.Size = new System.Drawing.Size(16, 16);
             this.lGPS_lon.TabIndex = 3;
@@ -2157,60 +2205,42 @@
             this.label34.TabIndex = 5;
             this.label34.Text = "GPS alt";
             // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.ForeColor = System.Drawing.Color.White;
-            this.label45.Location = new System.Drawing.Point(8, 3);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(72, 13);
-            this.label45.TabIndex = 34;
-            this.label45.Text = "POS@Mouse";
-            // 
             // lGPS_lat
             // 
             this.lGPS_lat.AutoSize = true;
             this.lGPS_lat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lGPS_lat.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lGPS_lat.Location = new System.Drawing.Point(159, 16);
+            this.lGPS_lat.Location = new System.Drawing.Point(8, 16);
             this.lGPS_lat.Name = "lGPS_lat";
             this.lGPS_lat.Size = new System.Drawing.Size(16, 16);
             this.lGPS_lat.TabIndex = 4;
             this.lGPS_lat.Text = "0";
             // 
-            // lDefAlt
+            // splitContainer8
             // 
-            this.lDefAlt.AutoSize = true;
-            this.lDefAlt.ForeColor = System.Drawing.Color.White;
-            this.lDefAlt.Location = new System.Drawing.Point(16, 392);
-            this.lDefAlt.Name = "lDefAlt";
-            this.lDefAlt.Size = new System.Drawing.Size(108, 13);
-            this.lDefAlt.TabIndex = 3;
-            this.lDefAlt.Text = "Default altitude (AGL)";
+            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer8.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer8.Name = "splitContainer8";
+            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // txtDefAlt
+            // splitContainer8.Panel1
             // 
-            this.txtDefAlt.BackColor = System.Drawing.Color.Gray;
-            this.txtDefAlt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDefAlt.ForeColor = System.Drawing.Color.White;
-            this.txtDefAlt.Location = new System.Drawing.Point(130, 389);
-            this.txtDefAlt.MaxLength = 3;
-            this.txtDefAlt.Multiline = true;
-            this.txtDefAlt.Name = "txtDefAlt";
-            this.txtDefAlt.Size = new System.Drawing.Size(31, 20);
-            this.txtDefAlt.TabIndex = 2;
-            this.txtDefAlt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDefAlt_KeyDown);
-            this.txtDefAlt.Leave += new System.EventHandler(this.txtDefAlt_TextChanged);
+            this.splitContainer8.Panel1.Controls.Add(this.missionDataGrid);
             // 
-            // lDistance
+            // splitContainer8.Panel2
             // 
-            this.lDistance.AutoSize = true;
-            this.lDistance.ForeColor = System.Drawing.Color.White;
-            this.lDistance.Location = new System.Drawing.Point(13, 364);
-            this.lDistance.Name = "lDistance";
-            this.lDistance.Size = new System.Drawing.Size(111, 13);
-            this.lDistance.TabIndex = 1;
-            this.lDistance.Text = "Mission total distance:";
+            this.splitContainer8.Panel2.Controls.Add(this.lDistLastWP);
+            this.splitContainer8.Panel2.Controls.Add(this.btnLoadMission);
+            this.splitContainer8.Panel2.Controls.Add(this.btnSaveMission);
+            this.splitContainer8.Panel2.Controls.Add(this.btnDownLoadMission);
+            this.splitContainer8.Panel2.Controls.Add(this.btnUploadMission);
+            this.splitContainer8.Panel2.Controls.Add(this.txtDefAlt);
+            this.splitContainer8.Panel2.Controls.Add(this.lDistance);
+            this.splitContainer8.Panel2.Controls.Add(this.lDefAlt);
+            this.splitContainer8.Size = new System.Drawing.Size(401, 417);
+            this.splitContainer8.SplitterDistance = 285;
+            this.splitContainer8.TabIndex = 0;
             // 
             // missionDataGrid
             // 
@@ -2247,13 +2277,15 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            this.missionDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.missionDataGrid.EnableHeadersVisualStyles = false;
-            this.missionDataGrid.Location = new System.Drawing.Point(4, 4);
+            this.missionDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.missionDataGrid.Margin = new System.Windows.Forms.Padding(1);
             this.missionDataGrid.Name = "missionDataGrid";
             this.missionDataGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.missionDataGrid.RowHeadersVisible = false;
-            this.missionDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.missionDataGrid.Size = new System.Drawing.Size(397, 357);
+            this.missionDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.missionDataGrid.Size = new System.Drawing.Size(401, 285);
             this.missionDataGrid.TabIndex = 0;
             this.missionDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellContentClick);
             this.missionDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellEndEdit);
@@ -2282,7 +2314,7 @@
             // 
             this.Par1.HeaderText = "P1";
             this.Par1.Name = "Par1";
-            this.Par1.Width = 50;
+            this.Par1.Width = 45;
             // 
             // LATCOL
             // 
@@ -2324,6 +2356,87 @@
             this.DEL.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
             this.DEL.Name = "DEL";
             this.DEL.Width = 18;
+            // 
+            // lDistLastWP
+            // 
+            this.lDistLastWP.AutoSize = true;
+            this.lDistLastWP.ForeColor = System.Drawing.Color.White;
+            this.lDistLastWP.Location = new System.Drawing.Point(152, 10);
+            this.lDistLastWP.Name = "lDistLastWP";
+            this.lDistLastWP.Size = new System.Drawing.Size(91, 13);
+            this.lDistLastWP.TabIndex = 8;
+            this.lDistLastWP.Text = "Dist from last WP:";
+            // 
+            // btnLoadMission
+            // 
+            this.btnLoadMission.Location = new System.Drawing.Point(291, 94);
+            this.btnLoadMission.Name = "btnLoadMission";
+            this.btnLoadMission.Size = new System.Drawing.Size(102, 23);
+            this.btnLoadMission.TabIndex = 7;
+            this.btnLoadMission.Text = "Load Mission";
+            this.btnLoadMission.UseVisualStyleBackColor = true;
+            this.btnLoadMission.Click += new System.EventHandler(this.btnLoadMission_Click);
+            // 
+            // btnSaveMission
+            // 
+            this.btnSaveMission.Location = new System.Drawing.Point(291, 66);
+            this.btnSaveMission.Name = "btnSaveMission";
+            this.btnSaveMission.Size = new System.Drawing.Size(102, 23);
+            this.btnSaveMission.TabIndex = 6;
+            this.btnSaveMission.Text = "Save Mission";
+            this.btnSaveMission.UseVisualStyleBackColor = true;
+            this.btnSaveMission.Click += new System.EventHandler(this.btnSaveMission_Click);
+            // 
+            // btnDownLoadMission
+            // 
+            this.btnDownLoadMission.Location = new System.Drawing.Point(13, 94);
+            this.btnDownLoadMission.Name = "btnDownLoadMission";
+            this.btnDownLoadMission.Size = new System.Drawing.Size(102, 23);
+            this.btnDownLoadMission.TabIndex = 5;
+            this.btnDownLoadMission.Text = "Download mission";
+            this.btnDownLoadMission.UseVisualStyleBackColor = true;
+            // 
+            // btnUploadMission
+            // 
+            this.btnUploadMission.Location = new System.Drawing.Point(13, 65);
+            this.btnUploadMission.Name = "btnUploadMission";
+            this.btnUploadMission.Size = new System.Drawing.Size(102, 23);
+            this.btnUploadMission.TabIndex = 4;
+            this.btnUploadMission.Text = "Upload mission";
+            this.btnUploadMission.UseVisualStyleBackColor = true;
+            // 
+            // txtDefAlt
+            // 
+            this.txtDefAlt.BackColor = System.Drawing.Color.White;
+            this.txtDefAlt.ForeColor = System.Drawing.Color.Black;
+            this.txtDefAlt.Location = new System.Drawing.Point(124, 27);
+            this.txtDefAlt.MaxLength = 3;
+            this.txtDefAlt.Multiline = true;
+            this.txtDefAlt.Name = "txtDefAlt";
+            this.txtDefAlt.Size = new System.Drawing.Size(31, 20);
+            this.txtDefAlt.TabIndex = 2;
+            this.txtDefAlt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDefAlt_KeyDown);
+            this.txtDefAlt.Leave += new System.EventHandler(this.txtDefAlt_TextChanged);
+            // 
+            // lDistance
+            // 
+            this.lDistance.AutoSize = true;
+            this.lDistance.ForeColor = System.Drawing.Color.White;
+            this.lDistance.Location = new System.Drawing.Point(10, 10);
+            this.lDistance.Name = "lDistance";
+            this.lDistance.Size = new System.Drawing.Size(111, 13);
+            this.lDistance.TabIndex = 1;
+            this.lDistance.Text = "Mission total distance:";
+            // 
+            // lDefAlt
+            // 
+            this.lDefAlt.AutoSize = true;
+            this.lDefAlt.ForeColor = System.Drawing.Color.White;
+            this.lDefAlt.Location = new System.Drawing.Point(10, 29);
+            this.lDefAlt.Name = "lDefAlt";
+            this.lDefAlt.Size = new System.Drawing.Size(108, 13);
+            this.lDefAlt.TabIndex = 3;
+            this.lDefAlt.Text = "Default altitude (AGL)";
             // 
             // tabPageFlighDeck
             // 
@@ -2912,7 +3025,7 @@
             // 
             // toolStrip1
             // 
-            this.toolStrip1.BackColor = System.Drawing.Color.Gray;
+            this.toolStrip1.BackColor = System.Drawing.Color.Silver;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3191,11 +3304,10 @@
             this.splitContainer7.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
-            this.splitContainer8.Panel1.ResumeLayout(false);
-            this.splitContainer8.Panel2.ResumeLayout(false);
-            this.splitContainer8.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
-            this.splitContainer8.ResumeLayout(false);
+            this.spcontMapMain.Panel1.ResumeLayout(false);
+            this.spcontMapMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spcontMapMain)).EndInit();
+            this.spcontMapMain.ResumeLayout(false);
             this.splitContainer9.Panel1.ResumeLayout(false);
             this.splitContainer9.Panel1.PerformLayout();
             this.splitContainer9.Panel2.ResumeLayout(false);
@@ -3203,6 +3315,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).EndInit();
             this.splitContainer9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tb_mapzoom)).EndInit();
+            this.splitContainer8.Panel1.ResumeLayout(false);
+            this.splitContainer8.Panel2.ResumeLayout(false);
+            this.splitContainer8.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
+            this.splitContainer8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).EndInit();
             this.tabPageFlighDeck.ResumeLayout(false);
             this.tabPageFlighDeck.PerformLayout();
@@ -3423,7 +3540,7 @@
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.SplitContainer splitContainer7;
-        private System.Windows.Forms.SplitContainer splitContainer8;
+        private System.Windows.Forms.SplitContainer spcontMapMain;
         private System.Windows.Forms.SplitContainer splitContainer9;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.ComboBox cbMapProviders;
@@ -3439,11 +3556,18 @@
         private System.Windows.Forms.Button cmdCLISend;
         private System.Windows.Forms.TextBox txtCLICommand;
         private System.Windows.Forms.TextBox txtCLIResult;
-        private System.Windows.Forms.Label lClicktoGoPos;
         private System.Windows.Forms.DataGridView missionDataGrid;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn2;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn3;
+        private System.Windows.Forms.Label lDistance;
+        private System.Windows.Forms.CheckBox cbShowMission;
+        private System.Windows.Forms.CheckBox cbShowWP;
+        private System.Windows.Forms.CheckBox cbShowFlightPath;
+        private System.Windows.Forms.CheckBox cbShowPos;
+        private System.Windows.Forms.Button bClickToGo;
+        private System.Windows.Forms.Label lDefAlt;
+        private System.Windows.Forms.TextBox txtDefAlt;
         private System.Windows.Forms.DataGridViewTextBoxColumn No;
         private System.Windows.Forms.DataGridViewComboBoxColumn Action;
         private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
@@ -3453,14 +3577,15 @@
         private System.Windows.Forms.DataGridViewImageColumn UP;
         private System.Windows.Forms.DataGridViewImageColumn Down;
         private System.Windows.Forms.DataGridViewImageColumn DEL;
-        private System.Windows.Forms.Label lDistance;
-        private System.Windows.Forms.CheckBox cbShowMission;
-        private System.Windows.Forms.CheckBox cbShowWP;
-        private System.Windows.Forms.CheckBox cbShowFlightPath;
-        private System.Windows.Forms.CheckBox cbShowPos;
-        private System.Windows.Forms.Button bClickToGo;
-        private System.Windows.Forms.Label lDefAlt;
-        private System.Windows.Forms.TextBox txtDefAlt;
+        private System.Windows.Forms.SplitContainer splitContainer8;
+        private System.Windows.Forms.Button btnLoadMission;
+        private System.Windows.Forms.Button btnSaveMission;
+        private System.Windows.Forms.Button btnDownLoadMission;
+        private System.Windows.Forms.Button btnUploadMission;
+        private System.Windows.Forms.TextBox txtGTCAlt;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.Label lDistLastWP;
+        private System.Windows.Forms.CheckBox cbSendGTCAlt;
     }
 }
 
