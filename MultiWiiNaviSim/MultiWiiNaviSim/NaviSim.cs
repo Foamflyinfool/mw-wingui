@@ -33,6 +33,13 @@ namespace MultiWiiNaviSim
 
         static int GPS_lat_old, GPS_lon_old;
         static bool GPSPresent = true;
+        static int iWindLat = 0;
+        static int iWindLon = 0;
+        static int iAngleLat = 0;
+        static int iAngleLon = 0;
+        static double SpeedLat = 0;
+        static double SpeedLon = 0;
+
 
         //Routes on Map
         static GMapRoute GMRouteFlightPath;
@@ -274,8 +281,17 @@ namespace MultiWiiNaviSim
 
             GPS_pos_old = GPS_pos;
 
-            GPS_pos.Lat -= 0.000011;
-            GPS_pos.Lng += 0.000001;
+
+            //movement = iWindLat / 10;
+
+            SpeedLat += (iAngleLat * 0.01);
+            SpeedLon += (iAngleLon * 0.01);
+
+            lSpeedLon.Text = String.Format("Angle induced speed (LON) {0:N1} m/s", SpeedLon);
+            lSpeedLat.Text = String.Format("Angle induced speed (LAT) {0:N1} m/s", SpeedLat);
+
+            GPS_pos.Lat += (0.0000009009*iWindLat)+(0.0000009009*SpeedLat);
+            GPS_pos.Lng += (0.0000009009*iWindLon)+(0.0000009009*SpeedLon);
 
             double distance = MainMap.MapProvider.Projection.GetDistance(GPS_pos, GPS_pos_old);
             distance = distance * 1000; //convert it to meters;
@@ -284,7 +300,7 @@ namespace MultiWiiNaviSim
 
 
             //lDist.Text = distance.ToString();
-            lDist.Text = String.Format("{0:N2}m/s",speed);
+            lDist.Text = String.Format("Speed:{0:N2} m/s",speed);
 
             GMOverlayLiveData.Markers.Clear();
             GMapMarker m = new GMapMarkerGoogleGreen(GPS_pos);
@@ -298,6 +314,10 @@ namespace MultiWiiNaviSim
             GMRouteFlightPath.Points.Add(GPS_pos);
             MainMap.Position = GPS_pos;
             MainMap.Invalidate();
+
+
+            Output_NEMA(GPS_pos.Lat, GPS_pos.Lng, 100, 45, 100);
+
 
             if (serialPort.BytesToRead == 0)
             {
@@ -471,6 +491,105 @@ namespace MultiWiiNaviSim
 
         }
 
+        private void trackBarLatWind_Scroll(object sender, EventArgs e)
+        {
+            iWindLat = trackBarLatWind.Value;
+            lLatWind.Text = String.Format("Wind Speed (LAT) {0:N0} m/s", iWindLat);
+        }
+
+        private void trackBarLonWind_Scroll(object sender, EventArgs e)
+        {
+            iWindLon = trackBarLonWind.Value;
+            lLonWind.Text = String.Format("Wind Speed (LON) {0:N0} m/s", iWindLon);
+        }
+
+        private void trackBarAngleLon_Scroll(object sender, EventArgs e)
+        {
+            iAngleLon = trackBarAngleLon.Value;
+            lAngleLon.Text = String.Format("Angle (LON) {0:N0} deg", iAngleLon);
+
+        }
+
+        private void trackBarAngleLat_Scroll(object sender, EventArgs e)
+        {
+            iAngleLat = trackBarAngleLat.Value;
+            lAngleLat.Text = String.Format("Angle (LAT) {0:N0} deg", iAngleLat);
+
+        }
+
+
+
+
+        // Speed in Kph
+        // Course over ground relative to North
+        // Output_NEMA - Output the position in NMEA
+        // Latitude & Longtitude in degrees, Altitude in meters Speed in meters/sec
+
+        void Output_NEMA(double Lat, double Lon, double Alt, double Course, double Speed)
+        {
+            int LatDeg;				// latitude - degree part
+            double LatMin;				// latitude - minute part
+            char LatDir;				// latitude - direction N/S
+            int LonDeg;				// longtitude - degree part
+            double LonMin;				// longtitude - minute part
+            char LonDir;				// longtitude - direction E/W
+
+            if (Lat >= 0)
+                LatDir = 'N';
+            else
+                LatDir = 'S';
+
+            Lat = Math.Abs(Lat);
+            LatDeg = Convert.ToInt32(Lat);
+            LatMin = (Lat - LatDeg) * 60.0;
+
+            if (Lon >= 0)
+                LonDir = 'E';
+            else
+                LonDir = 'W';
+
+            Lon = Math.Abs(Lon);
+            LonDeg = Convert.ToInt32(Lon);
+            LonMin = (Lon - LonDeg) * 60.0;
+
+            // $GPGGA - 1st in epoc - 5 satellites in view, FixQual = 1, 45m Geoidal separation HDOP = 2.4
+
+
+            string strGPGGA = "";
+
+            strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},1,05,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+            byte crc = do_crc(strGPGGA);
+            strGPGGA += String.Format("{0:X}", crc);
+	
+            string strGPRMC = "";
+            strGPRMC = String.Format("$GPRMC,122445.00,A,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},{6:N2},45.4,121212,,,A*",LatDeg,LatMin,LatDir,LonDeg,LonMin,LonDir,Speed*1.943844);
+            crc = do_crc(strGPRMC);
+            strGPRMC += String.Format("{0:X}", crc);
+        
+       
+        }
+       // calculate a CRC for the line of input
+       private byte do_crc(string pch)
+       {
+           byte crc;
+           int ptr = 0;  //This will be the pointer in the string
+
+
+           if (pch[ptr] != '$')
+               return 0;		// does not start with '$' - so can't CRC
+
+           ptr++;			// skip '$'
+           crc = 0;
+
+           // scan between '$' and '*' (or until CR LF or EOL)
+           while ((pch[ptr] != '*') && (pch[ptr] != '\0') && (pch[ptr] != '\r') && (pch[ptr] != '\n'))
+           { // checksum calcualtion done over characters between '$' and '*'
+               crc ^= BitConverter.GetBytes(pch[ptr])[0];
+               ptr++;
+           }
+
+           return crc;
+       }
 
 
     }

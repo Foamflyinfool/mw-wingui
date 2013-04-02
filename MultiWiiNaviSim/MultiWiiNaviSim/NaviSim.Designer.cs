@@ -39,15 +39,32 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
-            this.MainMap = new GMap.NET.WindowsForms.GMapControl();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.cbMapProviders = new System.Windows.Forms.ComboBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.MainMap = new GMap.NET.WindowsForms.GMapControl();
+            this.lSpeedLat = new System.Windows.Forms.Label();
+            this.lSpeedLon = new System.Windows.Forms.Label();
+            this.lAngleLat = new System.Windows.Forms.Label();
+            this.lAngleLon = new System.Windows.Forms.Label();
+            this.trackBarAngleLat = new System.Windows.Forms.TrackBar();
+            this.trackBarAngleLon = new System.Windows.Forms.TrackBar();
+            this.trackBarLonWind = new System.Windows.Forms.TrackBar();
+            this.lLatWind = new System.Windows.Forms.Label();
+            this.trackBarLatWind = new System.Windows.Forms.TrackBar();
             this.lDist = new System.Windows.Forms.Label();
+            this.lLonWind = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
             this.splitContainerLeft.Panel1.SuspendLayout();
             this.splitContainerLeft.Panel2.SuspendLayout();
             this.splitContainerLeft.SuspendLayout();
-            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAngleLat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAngleLon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarLonWind)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarLatWind)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_serial_port
@@ -127,6 +144,7 @@
             // 
             this.splitContainerLeft.Panel1.Controls.Add(this.cb_serial_port);
             this.splitContainerLeft.Panel1.Controls.Add(this.b_connect);
+            this.splitContainerLeft.Panel1.Controls.Add(this.cbMapProviders);
             this.splitContainerLeft.Panel1.Controls.Add(this.label2);
             this.splitContainerLeft.Panel1.Controls.Add(this.label3);
             this.splitContainerLeft.Panel1.Controls.Add(this.cb_monitor_rate);
@@ -135,11 +153,48 @@
             // 
             // splitContainerLeft.Panel2
             // 
-            this.splitContainerLeft.Panel2.Controls.Add(this.MainMap);
+            this.splitContainerLeft.Panel2.Controls.Add(this.splitContainer1);
             this.splitContainerLeft.Size = new System.Drawing.Size(884, 462);
             this.splitContainerLeft.SplitterDistance = 76;
             this.splitContainerLeft.SplitterWidth = 1;
             this.splitContainerLeft.TabIndex = 7;
+            // 
+            // cbMapProviders
+            // 
+            this.cbMapProviders.FormattingEnabled = true;
+            this.cbMapProviders.Location = new System.Drawing.Point(741, 36);
+            this.cbMapProviders.Name = "cbMapProviders";
+            this.cbMapProviders.Size = new System.Drawing.Size(121, 21);
+            this.cbMapProviders.TabIndex = 0;
+            this.cbMapProviders.SelectedIndexChanged += new System.EventHandler(this.cbMapProviders_SelectedIndexChanged);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.MainMap);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.lSpeedLat);
+            this.splitContainer1.Panel2.Controls.Add(this.lSpeedLon);
+            this.splitContainer1.Panel2.Controls.Add(this.lAngleLat);
+            this.splitContainer1.Panel2.Controls.Add(this.lAngleLon);
+            this.splitContainer1.Panel2.Controls.Add(this.trackBarAngleLat);
+            this.splitContainer1.Panel2.Controls.Add(this.trackBarAngleLon);
+            this.splitContainer1.Panel2.Controls.Add(this.trackBarLonWind);
+            this.splitContainer1.Panel2.Controls.Add(this.lLatWind);
+            this.splitContainer1.Panel2.Controls.Add(this.trackBarLatWind);
+            this.splitContainer1.Panel2.Controls.Add(this.lDist);
+            this.splitContainer1.Panel2.Controls.Add(this.lLonWind);
+            this.splitContainer1.Size = new System.Drawing.Size(884, 385);
+            this.splitContainer1.SplitterDistance = 561;
+            this.splitContainer1.TabIndex = 6;
             // 
             // MainMap
             // 
@@ -159,44 +214,120 @@
             this.MainMap.RetryLoadTile = 0;
             this.MainMap.RoutesEnabled = true;
             this.MainMap.ShowTileGridLines = false;
-            this.MainMap.Size = new System.Drawing.Size(884, 385);
+            this.MainMap.Size = new System.Drawing.Size(561, 385);
             this.MainMap.TabIndex = 0;
             this.MainMap.Zoom = 18D;
             // 
-            // panel1
+            // lSpeedLat
             // 
-            this.panel1.Controls.Add(this.lDist);
-            this.panel1.Controls.Add(this.cbMapProviders);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(562, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(322, 462);
-            this.panel1.TabIndex = 8;
+            this.lSpeedLat.AutoSize = true;
+            this.lSpeedLat.Location = new System.Drawing.Point(16, 296);
+            this.lSpeedLat.Name = "lSpeedLat";
+            this.lSpeedLat.Size = new System.Drawing.Size(166, 13);
+            this.lSpeedLat.TabIndex = 11;
+            this.lSpeedLat.Text = "Angle induced speed (LAT) 0 m/s";
             // 
-            // cbMapProviders
+            // lSpeedLon
             // 
-            this.cbMapProviders.FormattingEnabled = true;
-            this.cbMapProviders.Location = new System.Drawing.Point(16, 429);
-            this.cbMapProviders.Name = "cbMapProviders";
-            this.cbMapProviders.Size = new System.Drawing.Size(121, 21);
-            this.cbMapProviders.TabIndex = 0;
-            this.cbMapProviders.SelectedIndexChanged += new System.EventHandler(this.cbMapProviders_SelectedIndexChanged);
+            this.lSpeedLon.AutoSize = true;
+            this.lSpeedLon.Location = new System.Drawing.Point(16, 269);
+            this.lSpeedLon.Name = "lSpeedLon";
+            this.lSpeedLon.Size = new System.Drawing.Size(168, 13);
+            this.lSpeedLon.TabIndex = 10;
+            this.lSpeedLon.Text = "Angle induced speed (LON) 0 m/s";
+            // 
+            // lAngleLat
+            // 
+            this.lAngleLat.AutoSize = true;
+            this.lAngleLat.Location = new System.Drawing.Point(155, 205);
+            this.lAngleLat.Name = "lAngleLat";
+            this.lAngleLat.Size = new System.Drawing.Size(93, 13);
+            this.lAngleLat.TabIndex = 9;
+            this.lAngleLat.Text = "Angle (LAT) 0 deg";
+            // 
+            // lAngleLon
+            // 
+            this.lAngleLon.AutoSize = true;
+            this.lAngleLon.Location = new System.Drawing.Point(155, 154);
+            this.lAngleLon.Name = "lAngleLon";
+            this.lAngleLon.Size = new System.Drawing.Size(95, 13);
+            this.lAngleLon.TabIndex = 8;
+            this.lAngleLon.Text = "Angle (LON) 0 deg";
+            // 
+            // trackBarAngleLat
+            // 
+            this.trackBarAngleLat.LargeChange = 1;
+            this.trackBarAngleLat.Location = new System.Drawing.Point(14, 221);
+            this.trackBarAngleLat.Maximum = 45;
+            this.trackBarAngleLat.Minimum = -45;
+            this.trackBarAngleLat.Name = "trackBarAngleLat";
+            this.trackBarAngleLat.Size = new System.Drawing.Size(291, 45);
+            this.trackBarAngleLat.TabIndex = 7;
+            this.trackBarAngleLat.Scroll += new System.EventHandler(this.trackBarAngleLat_Scroll);
+            // 
+            // trackBarAngleLon
+            // 
+            this.trackBarAngleLon.LargeChange = 1;
+            this.trackBarAngleLon.Location = new System.Drawing.Point(14, 170);
+            this.trackBarAngleLon.Maximum = 45;
+            this.trackBarAngleLon.Minimum = -45;
+            this.trackBarAngleLon.Name = "trackBarAngleLon";
+            this.trackBarAngleLon.Size = new System.Drawing.Size(291, 45);
+            this.trackBarAngleLon.TabIndex = 6;
+            this.trackBarAngleLon.Scroll += new System.EventHandler(this.trackBarAngleLon_Scroll);
+            // 
+            // trackBarLonWind
+            // 
+            this.trackBarLonWind.LargeChange = 1;
+            this.trackBarLonWind.Location = new System.Drawing.Point(16, 47);
+            this.trackBarLonWind.Minimum = -10;
+            this.trackBarLonWind.Name = "trackBarLonWind";
+            this.trackBarLonWind.Size = new System.Drawing.Size(291, 45);
+            this.trackBarLonWind.TabIndex = 3;
+            this.trackBarLonWind.Scroll += new System.EventHandler(this.trackBarLonWind_Scroll);
+            // 
+            // lLatWind
+            // 
+            this.lLatWind.AutoSize = true;
+            this.lLatWind.Location = new System.Drawing.Point(155, 95);
+            this.lLatWind.Name = "lLatWind";
+            this.lLatWind.Size = new System.Drawing.Size(125, 13);
+            this.lLatWind.TabIndex = 4;
+            this.lLatWind.Text = "Wind Speed (LAT) 0 m/s";
+            // 
+            // trackBarLatWind
+            // 
+            this.trackBarLatWind.LargeChange = 1;
+            this.trackBarLatWind.Location = new System.Drawing.Point(15, 111);
+            this.trackBarLatWind.Minimum = -10;
+            this.trackBarLatWind.Name = "trackBarLatWind";
+            this.trackBarLatWind.Size = new System.Drawing.Size(291, 45);
+            this.trackBarLatWind.TabIndex = 2;
+            this.trackBarLatWind.Scroll += new System.EventHandler(this.trackBarLatWind_Scroll);
             // 
             // lDist
             // 
             this.lDist.AutoSize = true;
-            this.lDist.Location = new System.Drawing.Point(16, 13);
+            this.lDist.Location = new System.Drawing.Point(12, 9);
             this.lDist.Name = "lDist";
-            this.lDist.Size = new System.Drawing.Size(35, 13);
+            this.lDist.Size = new System.Drawing.Size(38, 13);
             this.lDist.TabIndex = 1;
-            this.lDist.Text = "label4";
+            this.lDist.Text = "Speed";
+            // 
+            // lLonWind
+            // 
+            this.lLonWind.AutoSize = true;
+            this.lLonWind.Location = new System.Drawing.Point(155, 31);
+            this.lLonWind.Name = "lLonWind";
+            this.lLonWind.Size = new System.Drawing.Size(127, 13);
+            this.lLonWind.TabIndex = 5;
+            this.lLonWind.Text = "Wind Speed (LON) 0 m/s";
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 462);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.splitContainerLeft);
             this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "mainForm";
@@ -207,8 +338,15 @@
             this.splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).EndInit();
             this.splitContainerLeft.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAngleLat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAngleLon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarLonWind)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarLatWind)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -226,9 +364,19 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.SplitContainer splitContainerLeft;
         private GMap.NET.WindowsForms.GMapControl MainMap;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ComboBox cbMapProviders;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label lLatWind;
+        private System.Windows.Forms.TrackBar trackBarLatWind;
         private System.Windows.Forms.Label lDist;
+        private System.Windows.Forms.TrackBar trackBarLonWind;
+        private System.Windows.Forms.Label lLonWind;
+        private System.Windows.Forms.Label lSpeedLat;
+        private System.Windows.Forms.Label lSpeedLon;
+        private System.Windows.Forms.Label lAngleLat;
+        private System.Windows.Forms.Label lAngleLon;
+        private System.Windows.Forms.TrackBar trackBarAngleLat;
+        private System.Windows.Forms.TrackBar trackBarAngleLon;
     }
 }
 
