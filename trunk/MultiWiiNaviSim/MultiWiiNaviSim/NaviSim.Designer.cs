@@ -53,6 +53,8 @@
             this.trackBarLatWind = new System.Windows.Forms.TrackBar();
             this.lDist = new System.Windows.Forms.Label();
             this.lLonWind = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
             this.splitContainerLeft.Panel1.SuspendLayout();
             this.splitContainerLeft.Panel2.SuspendLayout();
@@ -104,6 +106,7 @@
             // bkgWorker
             // 
             this.bkgWorker.WorkerSupportsCancellation = true;
+            this.bkgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bkgWorker_DoWork);
             // 
             // label1
             // 
@@ -181,6 +184,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.lSpeedLat);
             this.splitContainer1.Panel2.Controls.Add(this.lSpeedLon);
             this.splitContainer1.Panel2.Controls.Add(this.lAngleLat);
@@ -323,6 +328,24 @@
             this.lLonWind.TabIndex = 5;
             this.lLonWind.Text = "Wind Speed (LON) 0 m/s";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 343);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "label4";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(140, 343);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "label5";
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -377,6 +400,8 @@
         private System.Windows.Forms.Label lAngleLon;
         private System.Windows.Forms.TrackBar trackBarAngleLat;
         private System.Windows.Forms.TrackBar trackBarAngleLon;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }
 
