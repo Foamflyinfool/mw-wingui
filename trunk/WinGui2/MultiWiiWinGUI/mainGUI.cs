@@ -885,7 +885,7 @@ namespace MultiWiiWinGUI
                     bHomeRecorded = false;
                 }
 
-                if (isBoxActive("POSHOLD"))
+                if (isBoxActive("GPS HOLD"))
                 {                                                            //poshold
                     if ((iRefreshDivider % 20) == 0) MSPqueryWP(16);         //get hold position
                 }
@@ -1728,7 +1728,7 @@ namespace MultiWiiWinGUI
                     }
 
 
-                    if (isBoxActive("POSHOLD") && (mw_gui.GPS_poshold_lon != 0))       //poshold
+                    if (isBoxActive("GPS HOLD") && (mw_gui.GPS_poshold_lon != 0))       //poshold
                     {
                         PointLatLng GPS_poshold = new PointLatLng((double)mw_gui.GPS_poshold_lat / 10000000, (double)mw_gui.GPS_poshold_lon / 10000000);
                         GMOverlayLiveData.Markers.Add(new GMapMarkerGoogleRed(GPS_poshold));
@@ -3685,6 +3685,11 @@ namespace MultiWiiWinGUI
             private bool isBoxActive(int boxid)
             {
                 return ((mw_gui.mode & (1 << boxid)) > 0);
+            }
+
+            private void cb_serial_port_Click(object sender, EventArgs e)
+            {
+
             }
 
 
