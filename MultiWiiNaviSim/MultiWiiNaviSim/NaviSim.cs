@@ -30,7 +30,7 @@ namespace MultiWiiNaviSim
         string[] sRefreshSpeeds = { "10 Hz"};
         int[] iRefreshIntervals = { 100 };
 
-
+        static Int16 nav_lat, nav_lon;
         static int GPS_lat_old, GPS_lon_old;
         static bool GPSPresent = true;
         static int iWindLat = 0;
@@ -44,6 +44,9 @@ namespace MultiWiiNaviSim
         //Routes on Map
         static GMapRoute GMRouteFlightPath;
         static GMapRoute GMRouteMission;
+
+        static GMapMarker m = new GMapMarkerGoogleGreen(copterPos);
+        static GMapMarkerRect mBorders = new GMapMarkerRect(copterPos);
 
         //Map Overlays
         static GMapOverlay GMOverlayFlightPath;// static so can update from gcs
@@ -140,9 +143,9 @@ namespace MultiWiiNaviSim
             GMOverlayLiveData = new GMapOverlay(MainMap, "livedata");
             MainMap.Overlays.Add(GMOverlayLiveData);
 
-            GMOverlayLiveData.Markers.Clear();
-            GMapMarker m = new GMapMarkerGoogleGreen(copterPos);
-            GMapMarkerRect mBorders = new GMapMarkerRect(copterPos);
+            m.Position = GPS_pos;
+            mBorders.Position = GPS_pos;
+
             mBorders.InnerMarker = m;
             mBorders.wprad = (int)float.Parse("5");
             mBorders.MainMap = MainMap;
@@ -284,8 +287,27 @@ namespace MultiWiiNaviSim
 
             //movement = iWindLat / 10;
 
-            SpeedLat += (iAngleLat * 0.01);
-            SpeedLon += (iAngleLon * 0.01);
+            SpeedLat += ((nav_lat/100) * 0.1);
+            SpeedLon += ((nav_lon/100) * 0.1);
+
+            if (SpeedLon > 0)
+            {
+                SpeedLon -= 0.0005;           //Friction
+            }
+            else if (SpeedLon < 0)
+            {
+                SpeedLon += 0.0005;
+            }
+
+            if (SpeedLat > 0)
+            {
+                SpeedLat -= 0.0005;           //Friction
+            }
+            else if (SpeedLat < 0)
+            {
+                SpeedLat += 0.0005;
+            }
+
 
             lSpeedLon.Text = String.Format("Angle induced speed (LON) {0:N1} m/s", SpeedLon);
             lSpeedLat.Text = String.Format("Angle induced speed (LAT) {0:N1} m/s", SpeedLat);
@@ -293,36 +315,34 @@ namespace MultiWiiNaviSim
             GPS_pos.Lat += (0.0000009009*iWindLat)+(0.0000009009*SpeedLat);
             GPS_pos.Lng += (0.0000009009*iWindLon)+(0.0000009009*SpeedLon);
 
+
             double distance = MainMap.MapProvider.Projection.GetDistance(GPS_pos, GPS_pos_old);
             distance = distance * 1000; //convert it to meters;
 
             double speed = distance * 10;
 
 
-            //lDist.Text = distance.ToString();
             lDist.Text = String.Format("Speed:{0:N2} m/s",speed);
 
-            GMOverlayLiveData.Markers.Clear();
-            GMapMarker m = new GMapMarkerGoogleGreen(GPS_pos);
-            GMapMarkerRect mBorders = new GMapMarkerRect(GPS_pos);
-            mBorders.InnerMarker = m;
-            mBorders.wprad = (int)float.Parse("5");
-            mBorders.MainMap = MainMap;
-            GMOverlayLiveData.Markers.Add(m);
-            GMOverlayLiveData.Markers.Add(mBorders);
+            //GMOverlayLiveData.Markers.Clear();
+            //GMapMarker m = new GMapMarkerGoogleGreen(GPS_pos);
+            //GMapMarkerRect mBorders = new GMapMarkerRect(GPS_pos);
+            //mBorders.InnerMarker = m;
+            //mBorders.wprad = (int)float.Parse("5");
+            //mBorders.MainMap = MainMap;
+            //GMOverlayLiveData.Markers.Add(m);
+            //GMOverlayLiveData.Markers.Add(mBorders);
+
+            m.Position = GPS_pos;
+            mBorders.Position = GPS_pos; 
             
+
             GMRouteFlightPath.Points.Add(GPS_pos);
             MainMap.Position = GPS_pos;
             MainMap.Invalidate();
 
 
-            Output_NEMA(GPS_pos.Lat, GPS_pos.Lng, 100, 45, 100);
-
-
-            if (serialPort.BytesToRead == 0)
-            {
-                //Do some cool stuff
-            }
+            Output_NEMA(serialPort, GPS_pos.Lat, GPS_pos.Lng, 100, 45, 100);
 
         }
 
@@ -417,12 +437,11 @@ namespace MultiWiiNaviSim
                 {
                     if (CurentRectMarker != null)
                     {
-                        //dragMarkerCallback(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
                         //update existing point in datagrid
                     }
                 }
             }
-
+            if (isConnected) timer_realtime.Start();
             isMouseDraging = false;
         }
 
@@ -451,15 +470,7 @@ namespace MultiWiiNaviSim
 
             if (!isMouseDown)
             {
-                //LMousePos.Text = "Lat:" + String.Format("{0:0.000000}", point.Lat) + " Lon:" + String.Format("{0:0.000000}", point.Lng);
-                if (GMRouteMission != null)
-                {
-                    if (GMRouteMission.Points.Count >= 1)
-                    {
-                        double dist_from_last = MainMap.MapProvider.Projection.GetDistance(GMRouteMission.Points[GMRouteMission.Points.Count - 1], point);
-                        //lDistLastWP.Text = String.Format("Dist. from last WP:{0:N1}m", dist_from_last * 1000);
-                    }
-                }
+            
             }
 
 
@@ -475,6 +486,7 @@ namespace MultiWiiNaviSim
                 }
                 else
                 {
+                    if (isConnected) timer_realtime.Stop();
                     PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
                     if (currentMarker.IsVisible)
                     {
@@ -485,6 +497,7 @@ namespace MultiWiiNaviSim
                     if (CurentRectMarker.InnerMarker != null)
                     {
                         CurentRectMarker.InnerMarker.Position = pnew;
+                        GPS_pos = pnew;
                     }
                 }
             }
@@ -525,7 +538,7 @@ namespace MultiWiiNaviSim
         // Output_NEMA - Output the position in NMEA
         // Latitude & Longtitude in degrees, Altitude in meters Speed in meters/sec
 
-        void Output_NEMA(double Lat, double Lon, double Alt, double Course, double Speed)
+        void Output_NEMA(SerialPort serialport,double Lat, double Lon, double Alt, double Course, double Speed)
         {
             int LatDeg;				// latitude - degree part
             double LatMin;				// latitude - minute part
@@ -559,13 +572,20 @@ namespace MultiWiiNaviSim
 
             strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},1,05,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
             byte crc = do_crc(strGPGGA);
-            strGPGGA += String.Format("{0:X}", crc);
+            strGPGGA += String.Format("{0:X}\r\n", crc);
 	
             string strGPRMC = "";
             strGPRMC = String.Format("$GPRMC,122445.00,A,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},{6:N2},45.4,121212,,,A*",LatDeg,LatMin,LatDir,LonDeg,LonMin,LonDir,Speed*1.943844);
             crc = do_crc(strGPRMC);
-            strGPRMC += String.Format("{0:X}", crc);
-        
+            strGPRMC += String.Format("{0:X}\r\n", crc);
+
+            serialport.Write(strGPGGA);
+            serialport.Write(strGPRMC);
+
+            label4.Text = Convert.ToString(nav_lat);
+            label5.Text = Convert.ToString(nav_lon);
+
+
        
         }
        // calculate a CRC for the line of input
@@ -589,6 +609,59 @@ namespace MultiWiiNaviSim
            }
 
            return crc;
+       }
+
+       private void bkgWorker_DoWork(object sender, DoWorkEventArgs e)
+       {
+
+           byte c;
+           
+           byte[] buffer = new byte[10];
+
+           // Do not access the form's BackgroundWorker reference directly.
+           // Instead, use the reference provided by the sender parameter.
+           BackgroundWorker bw = sender as BackgroundWorker;
+
+           try
+           {
+               bool bIsPortOpen = serialPort.IsOpen;
+           }
+           catch
+           {
+               //Hmm, if this throws an exception it should mean that we have an issue here
+               bSerialError = true;
+               return;
+           }
+
+           bSerialError = false;
+
+           while (!bw.CancellationPending)                // backgroundworker runs continously
+           {
+
+               if (serialPort.IsOpen)
+               {
+                   //Just process what is received. Get received commands and put them into 
+                   while (serialPort.BytesToRead > 0)
+                   {
+                       if (serialPort.BytesToRead >= 4)
+                       {
+                           serialPort.Read(buffer, 0, 4);
+                           nav_lat = BitConverter.ToInt16(buffer, 0);
+                           nav_lon = BitConverter.ToInt16(buffer, 2);
+                       }
+
+                   }
+               }
+               else   //port not opened, (it could happen when U disconnect the usb cable while connected
+               {
+                   //bSerialError = true; //do nothing
+                   //return;
+               }
+
+           }// while
+
+           e.Cancel = true;
+
        }
 
 
