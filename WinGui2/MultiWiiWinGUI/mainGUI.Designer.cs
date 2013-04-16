@@ -3077,7 +3077,6 @@
             // 
             this.cb_serial_port.Name = "cb_serial_port";
             this.cb_serial_port.Size = new System.Drawing.Size(75, 54);
-            this.cb_serial_port.Click += new System.EventHandler(this.cb_serial_port_Click);
             // 
             // toolStripLabel2
             // 

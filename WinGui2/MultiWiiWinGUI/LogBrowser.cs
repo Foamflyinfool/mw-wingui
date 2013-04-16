@@ -202,8 +202,10 @@ namespace MultiWiiWinGUI
 
             // Set the titles and axis labels
             myPane.Title.Text = "";
-            myPane.XAxis.Title.Text = "Logfile line";
+            myPane.XAxis.Title.Text = "Logfile time";
             myPane.YAxis.Title.Text = "Logged value";
+            myPane.XAxis.Type = AxisType.Date;
+            myPane.XAxis.Scale.Format = "HH:mm:ss.fff";
 
             LineItem myCurve;
 
@@ -215,8 +217,8 @@ namespace MultiWiiWinGUI
 
             // Show the x axis grid
             myPane.XAxis.MajorGrid.IsVisible = true;
-
-            myPane.XAxis.Scale.Min = 0;
+            
+            //myPane.XAxis.Scale.Min = 0;
             //myPane.XAxis.Scale.Max = -1;
 
             // Make the Y axis scale red
@@ -275,6 +277,7 @@ namespace MultiWiiWinGUI
 
         }
 
+        
         private void Graphit_Click(object sender, EventArgs e)
         {
             if (dataGridView1.RowCount == 0 || dataGridView1.ColumnCount == 0)
@@ -283,8 +286,11 @@ namespace MultiWiiWinGUI
                 return;
             }
 
+            GraphPane myPane = zg1.GraphPane;
+
             int col = dataGridView1.CurrentCell.ColumnIndex;
             int row = dataGridView1.CurrentCell.RowIndex;
+
             string type = dataGridView1[0, row].Value.ToString();
             double a = 0; // row counter
 
@@ -298,6 +304,22 @@ namespace MultiWiiWinGUI
 
             foreach (DataGridViewRow datarow in dataGridView1.Rows)
             {
+
+                //get the date and convert it to a double
+                DateTime dt;
+                XDate the_date;
+
+                try
+                {
+                    dt = Convert.ToDateTime(datarow.Cells[1].Value.ToString());
+                }
+                catch
+                {
+                    dt = Convert.ToDateTime("00:00:00.000");
+                }
+
+                double timestamp = dt.ToOADate();
+
                 if (datarow.Cells[0].Value.ToString() == type)
                 {
                     try
@@ -306,27 +328,27 @@ namespace MultiWiiWinGUI
                         if (graphs == 0)
                         {
                             zg1.GraphPane.CurveList[0].Label.Text = dataGridView1.Columns[col].HeaderText;
-                            list1.Add(a, value);
+                            list1.Add(timestamp, value);
                         }
                         else if (graphs == 1)
                         {
                             zg1.GraphPane.CurveList[1].Label.Text = dataGridView1.Columns[col].HeaderText;
-                            list2.Add(a, value);
+                            list2.Add(timestamp, value);
                         }
                         else if (graphs == 2)
                         {
                             zg1.GraphPane.CurveList[2].Label.Text = dataGridView1.Columns[col].HeaderText;
-                            list3.Add(a, value);
+                            list3.Add(timestamp, value);
                         }
                         else if (graphs == 3)
                         {
                             zg1.GraphPane.CurveList[3].Label.Text = dataGridView1.Columns[col].HeaderText;
-                            list4.Add(a, value);
+                            list4.Add(timestamp, value);
                         }
                         else if (graphs == 4)
                         {
                             zg1.GraphPane.CurveList[4].Label.Text = dataGridView1.Columns[col].HeaderText;
-                            list5.Add(a, value);
+                            list5.Add(timestamp, value);
                         }
                         else
                         {
@@ -336,6 +358,21 @@ namespace MultiWiiWinGUI
                     }
                     catch { error++; Console.WriteLine("Bad Data : " + type + " " + col + " " + a); if (error >= 500) { MessageBox.Show("There is to much bad data - failing"); break; } }
                 }
+
+              /*
+                if (datarow.Cells[0].Value.ToString() == "GMOD")
+                {
+                    int i = myPane.AddYAxis("");
+                    myPane.YAxisList[i].Color = Color.Orange;
+                    myPane.YAxisList[i].Scale.IsVisible = true;
+                    myPane.YAxisList[i].MajorTic.IsAllTics = true;
+                    myPane.YAxisList[i].MinorTic.IsAllTics = true;
+                    myPane.YAxisList[i].Cross = timestamp;
+                    myPane.YAxisList[i].IsVisible = true;
+                    myPane.YAxisList[i].Scale.Align = AlignP.Inside;
+
+                }
+                */
                 a++;
             }
 

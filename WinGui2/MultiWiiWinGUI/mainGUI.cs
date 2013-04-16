@@ -61,6 +61,9 @@ namespace MultiWiiWinGUI
 
         const string sRelName = "2.2";
 
+        Boolean isCLI = false;
+        string inCLIBuffer;
+
         //PID values
         static PID[] Pid;
 
@@ -136,6 +139,7 @@ namespace MultiWiiWinGUI
         StreamWriter wKMLLogStream;
         static bool bLogRunning = false;
         static bool bKMLLogRunning = false;
+        static UInt32 last_mode_flags;          //Contains the mode flags from the pervious log write tick
 
         static int GPS_lat_old, GPS_lon_old;
         static bool GPSPresent = true;
@@ -1051,7 +1055,6 @@ namespace MultiWiiWinGUI
             timer_realtime.Interval = iRefreshIntervals[cb_monitor_rate.SelectedIndex];
         }
 
-        Boolean isCLI = false;
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isConnected == true)
@@ -1622,6 +1625,7 @@ namespace MultiWiiWinGUI
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_count);
 
+            //in case of Serial error, throw an error message and disconnect gracefully
             if (bSerialError)
             {
                 //Background worker returned error, disconnect serial port
@@ -1641,33 +1645,13 @@ namespace MultiWiiWinGUI
                 return;
             }
 
-            if (bLogRunning && wLogStream.BaseStream != null)
-            {
-                //RAW Sensor (acc, gyro)
-                if (gui_settings.logGraw) { wLogStream.WriteLine("GRAW,{0},{1},{2},{3},{4},{5},{6}", DateTime.Now.ToString("HH:mm:ss.fff"),mw_gui.ax, mw_gui.ay, mw_gui.az, mw_gui.gx, mw_gui.gy, mw_gui.gz); }
-                //Attitude
-                if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1},{2}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.angx, mw_gui.angy); }
-                //Mag, head, baro
-                if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4},{5}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
-                //RC controls 
-                if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
-                //RC Aux controls
-                if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcAUX[0], mw_gui.rcAUX[1], mw_gui.rcAUX[2], mw_gui.rcAUX[3], mw_gui.rcAUX[4], mw_gui.rcAUX[5], mw_gui.rcAUX[6], mw_gui.rcAUX[7]); }
-                //Motors
-                if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]); }
-                //Servos
-                if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]); }
-                // Nav-GPS
-                if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome); }
-                // Housekeeping
-                if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.cycleTime, mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum); }
-                //Debug
-                if (gui_settings.logGdbg) { wLogStream.WriteLine("GDBG,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.debug1, mw_gui.debug2, mw_gui.debug3, mw_gui.debug4); }
-            }
 
+            //if logging is enabled then write the neccessary log entries
+            if (bLogRunning && wLogStream.BaseStream != null) updateLog();
+
+            //If GPS logging is running then add the necessary KML log record
             if (bKMLLogRunning)
             {
-
                 if (GPS_lat_old != mw_gui.GPS_latitude || GPS_lon_old != mw_gui.GPS_longitude)
                 {
                     wKMLLogStream.WriteLine("{0},{1},{2}", (decimal)mw_gui.GPS_longitude / 10000000, (decimal)mw_gui.GPS_latitude / 10000000, mw_gui.GPS_altitude);
@@ -1687,8 +1671,6 @@ namespace MultiWiiWinGUI
                     addKMLMarker("PosHold", mw_gui.GPS_poshold_lon, mw_gui.GPS_poshold_lat, mw_gui.GPS_altitude);
                     bPosholdRecorded = true;
                 }
-
-
             }
 
 
@@ -2231,104 +2213,7 @@ namespace MultiWiiWinGUI
             videoSourcePlayer.WaitForStop();
 
         }
-        // Open video source
-        private void OpenVideoSource(IVideoSource source)
-        {
-            // set busy cursor
-            this.Cursor = Cursors.WaitCursor;
-
-            // close previous video source
-            videoSourcePlayer.SignalToStop();
-            videoSourcePlayer.WaitForStop();
-
-            //add asynch layer
-            AsyncVideoSource asyncSource = new AsyncVideoSource(source, true);
-            // set NewFrame event handler
-            asyncSource.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
-            // start the video source
-            asyncSource.Start();
-
-
-            // start new video source
-            videoSourcePlayer.VideoSource = asyncSource;
-            videoSourcePlayer.Start();
-
-            this.Cursor = Cursors.Default;
-        }
-        // New frame received
-        private void videoSourcePlayer_NewFrame(object sender, NewFrameEventArgs eventArgs)
-        {
-            Bitmap image = eventArgs.Frame;
-            //Graphics g = Graphics.FromImage(image);
-
-            //g.DrawString(String.Format("{0:0}", mw_gui.angx), drawFont, drawBrush, 100,100);
-
-
-            if (bVideoRecording == true)
-            {
-                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate);
-                if (vfwWriter != null)
-                {
-                    vfwWriter.WriteVideoFrame(image, tsFrameTimeStamp);
-                }
-            }
-            //g.Dispose();
-
-        }
-
-        private void b_video_connect_Click(object sender, EventArgs e)
-        {
-
-            if (!bVideoConnected)
-            {
-                // create video source
-                videoSource = new VideoCaptureDevice(videoDevices[dropdown_devices.SelectedIndex].MonikerString);
-                videoSource.DesiredFrameRate = (int)nFrameRate.Value;
-                // open it
-                OpenVideoSource(videoSource);
-                bVideoConnected = true;
-                b_video_connect.Text = "Disconnect video device";
-            }
-            else
-            {
-                if (bVideoRecording) { vfwWriter.Close(); }
-                videoSourcePlayer.SignalToStop();
-                videoSourcePlayer.WaitForStop();
-                b_video_connect.Text = "Connect video device";
-                bVideoConnected = false;
-
-            }
-        }
-
-        private void b_Record_Click(object sender, EventArgs e)
-        {
-            if (bVideoConnected)
-            {
-                if (bVideoRecording == false)
-                {
-                    if (vfwWriter != null) { vfwWriter.Close(); }
-
-                    l_capture_file.Text = "capture" + String.Format("-{0:yymmdd-hhmm}", DateTime.Now);
-                    vfwWriter = new VideoFileWriter();
-                    //create new video file
-                    vfwWriter.Open(gui_settings.sCaptureFolder + "\\capture" + String.Format("-{0:yyMMdd-hhmm}", DateTime.Now) + ".avi", 640, 480, (int)nFrameRate.Value, (VideoCodec)cb_codec.SelectedIndex, (int)(1000000 * nBitRate.Value));
-                    b_Record.Text = "Recording";
-                    b_Record.BackColor = Color.Red;
-                    tsFrameTimeStamp = new TimeSpan(0);
-                    tsFrameRate = new TimeSpan(10000000 / (long)nFrameRate.Value);
-                    bVideoRecording = true;
-                }
-                else
-                {
-                    bVideoRecording = false;
-                    System.Threading.Thread.Sleep(50);
-                    b_Record.Text = "Start Recording";
-                    b_Record.BackColor = Color.Transparent;
-                    vfwWriter.Close();
-                    l_capture_file.Text = "";
-                }
-            }
-        }
+        
 
         private void b_select_log_folder_Click(object sender, EventArgs e)
         {
@@ -2621,7 +2506,49 @@ namespace MultiWiiWinGUI
             wKMLLogStream.Dispose();
             bKMLLogRunning = false;
         }
-        
+
+        void updateLog()                //Update log with the neccessary entries, caller must check if log is open and enabled
+        {
+
+            //Check mode changes, and add log entry with the new modes if change occured
+            if (last_mode_flags != mw_gui.mode)
+            {
+                wLogStream.Write("GMOD,{0}", DateTime.Now.ToString("HH:mm:ss.fff"));
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+                    if (isBoxActive(i)) wLogStream.Write(",{0}", mw_gui.sBoxNames[i]);
+                }
+                wLogStream.WriteLine("");
+                last_mode_flags = mw_gui.mode;
+            }
+
+            //RAW Sensor (acc, gyro)
+            if (gui_settings.logGraw) { wLogStream.WriteLine("GRAW,{0},{1},{2},{3},{4},{5},{6}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.ax, mw_gui.ay, mw_gui.az, mw_gui.gx, mw_gui.gy, mw_gui.gz); }
+            //Attitude
+            if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1},{2}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.angx, mw_gui.angy); }
+            //Mag, head, baro
+            if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4},{5}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
+            //RC controls 
+            if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
+            //RC Aux controls
+            if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcAUX[0], mw_gui.rcAUX[1], mw_gui.rcAUX[2], mw_gui.rcAUX[3], mw_gui.rcAUX[4], mw_gui.rcAUX[5], mw_gui.rcAUX[6], mw_gui.rcAUX[7]); }
+            //Motors
+            if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]); }
+            //Servos
+            if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]); }
+            // Nav-GPS
+            if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome); }
+            // Housekeeping
+            if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.cycleTime, mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum); }
+            //Debug
+            if (gui_settings.logGdbg) { wLogStream.WriteLine("GDBG,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.debug1, mw_gui.debug2, mw_gui.debug3, mw_gui.debug4); }
+
+
+
+        }
+
+
+
         void addKMLMarker(string description, double lon, double lat, double alt)
         {
             //Close open LineStringPlacemark
@@ -2739,7 +2666,6 @@ namespace MultiWiiWinGUI
 
         }
         
-        // MapZoomChanged
         void MainMap_OnMapZoomChanged()
         {
             if (MainMap.Zoom > 0)
@@ -2749,7 +2675,6 @@ namespace MultiWiiWinGUI
             }
         }
         
-        // current point changed
         void MainMap_OnCurrentPositionChanged(PointLatLng point)
         {
             if (point.Lat > 90) { point.Lat = 90; }
@@ -2859,7 +2784,6 @@ namespace MultiWiiWinGUI
             }
         }
 
-        // move current marker with left holding
         void MainMap_MouseMove(object sender, MouseEventArgs e)
         {
             PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
@@ -2978,6 +2902,55 @@ namespace MultiWiiWinGUI
         {
             GMRouteFlightPath.Points.Clear();
         }
+
+        private void tb_mapzoom_Scroll(object sender, EventArgs e)
+        {
+
+            MainMap.Zoom = (double)tb_mapzoom.Value;
+
+        }
+
+        private void b_fetch_tiles_Click(object sender, EventArgs e)
+        {
+            RectLatLng area = MainMap.SelectedArea;
+            if (area.IsEmpty)
+            {
+                DialogResult res = MessageBox.Show("No ripp area defined, ripp displayed on screen?", "Rip", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
+                {
+                    area = MainMap.CurrentViewArea;
+                }
+            }
+
+            if (!area.IsEmpty)
+            {
+                DialogResult res = MessageBox.Show("Ready ripp at Zoom = " + (int)MainMap.Zoom + " ?", "GMap.NET", MessageBoxButtons.YesNo);
+
+                for (int i = 1; i <= MainMap.MaxZoom; i++)
+                {
+                    if (res == DialogResult.Yes)
+                    {
+                        TilePrefetcher obj = new TilePrefetcher();
+                        obj.ShowCompleteMessage = false;
+                        obj.Start(area, i, MainMap.MapProvider, 100);
+                    }
+                    else if (res == DialogResult.No)
+                    {
+                        continue;
+                    }
+                    else if (res == DialogResult.Cancel)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+        }
+
         
         #region ValueChangedEvents
 
@@ -3151,70 +3124,6 @@ namespace MultiWiiWinGUI
             cb_mag_yaw.Checked = false;
         }
 
-        private void videoSourcePlayer_SizeChanged(object sender, EventArgs e)
-        {
-
-            Size currentSize = videoSourcePlayer.Size;
-            currentSize.Width = currentSize.Height / 3 * 4;
-
-            if (splitContainer6.Panel1.Size.Width < currentSize.Width)
-            {
-                currentSize.Width = splitContainer6.Panel1.Size.Width;
-                currentSize.Height = currentSize.Width / 4 * 3;
-            }
-
-            videoSourcePlayer.Size = currentSize;
-
-
-        }
-
-        private void tb_mapzoom_Scroll(object sender, EventArgs e)
-        {
-
-            MainMap.Zoom = (double)tb_mapzoom.Value;
-
-        }
-
-        private void b_fetch_tiles_Click(object sender, EventArgs e)
-        {
-            RectLatLng area = MainMap.SelectedArea;
-            if (area.IsEmpty)
-            {
-                DialogResult res = MessageBox.Show("No ripp area defined, ripp displayed on screen?", "Rip", MessageBoxButtons.YesNo);
-                if (res == DialogResult.Yes)
-                {
-                    area = MainMap.CurrentViewArea;
-                }
-            }
-
-            if (!area.IsEmpty)
-            {
-                DialogResult res = MessageBox.Show("Ready ripp at Zoom = " + (int)MainMap.Zoom + " ?", "GMap.NET", MessageBoxButtons.YesNo);
-
-                for (int i = 1; i <= MainMap.MaxZoom; i++)
-                {
-                    if (res == DialogResult.Yes)
-                    {
-                        TilePrefetcher obj = new TilePrefetcher();
-                        obj.ShowCompleteMessage = false;
-                        obj.Start(area, i, MainMap.MapProvider, 100);
-                    }
-                    else if (res == DialogResult.No)
-                    {
-                        continue;
-                    }
-                    else if (res == DialogResult.Cancel)
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Select map area holding ALT", "GMap.NET", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-
-        }
 
         private void b_reset_Click(object sender, EventArgs e)
         {
@@ -3261,7 +3170,7 @@ namespace MultiWiiWinGUI
 
         }
 
-        string inCLIBuffer;
+        #region CLI
 
         void AccessToTB()
         {
@@ -3279,8 +3188,9 @@ namespace MultiWiiWinGUI
             txtCLICommand.Text = "";
         }
 
-//Mission planner Commands
+        #endregion
 
+        #region Mission Planner
 
         private void missionDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -3672,8 +3582,10 @@ namespace MultiWiiWinGUI
                 }
             }
 
-            //Returns the status of the given box (by name or by ID)
-            private bool isBoxActive(string boxname)
+        #endregion
+
+        //Returns the status of the given box (by name or by ID)
+        private bool isBoxActive(string boxname)
             {
                 int index;
                 index = Array.IndexOf(mw_gui.sBoxNames, boxname);
@@ -3683,19 +3595,130 @@ namespace MultiWiiWinGUI
                 }
                 return false;
             }
-            private bool isBoxActive(int boxid)
+        private bool isBoxActive(int boxid)
             {
                 return ((mw_gui.mode & (1 << boxid)) > 0);
             }
 
-            private void cb_serial_port_Click(object sender, EventArgs e)
+        #region Video
+
+        private void OpenVideoSource(IVideoSource source)
+        {
+            // set busy cursor
+            this.Cursor = Cursors.WaitCursor;
+
+            // close previous video source
+            videoSourcePlayer.SignalToStop();
+            videoSourcePlayer.WaitForStop();
+
+            //add asynch layer
+            AsyncVideoSource asyncSource = new AsyncVideoSource(source, true);
+            // set NewFrame event handler
+            asyncSource.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
+            // start the video source
+            asyncSource.Start();
+
+
+            // start new video source
+            videoSourcePlayer.VideoSource = asyncSource;
+            videoSourcePlayer.Start();
+
+            this.Cursor = Cursors.Default;
+        }
+
+        private void videoSourcePlayer_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            Bitmap image = eventArgs.Frame;
+            //Graphics g = Graphics.FromImage(image);
+
+            //g.DrawString(String.Format("{0:0}", mw_gui.angx), drawFont, drawBrush, 100,100);
+
+
+            if (bVideoRecording == true)
             {
+                tsFrameTimeStamp = tsFrameTimeStamp.Add(tsFrameRate);
+                if (vfwWriter != null)
+                {
+                    vfwWriter.WriteVideoFrame(image, tsFrameTimeStamp);
+                }
+            }
+            //g.Dispose();
+
+        }
+
+        private void b_video_connect_Click(object sender, EventArgs e)
+        {
+
+            if (!bVideoConnected)
+            {
+                // create video source
+                videoSource = new VideoCaptureDevice(videoDevices[dropdown_devices.SelectedIndex].MonikerString);
+                videoSource.DesiredFrameRate = (int)nFrameRate.Value;
+                // open it
+                OpenVideoSource(videoSource);
+                bVideoConnected = true;
+                b_video_connect.Text = "Disconnect video device";
+            }
+            else
+            {
+                if (bVideoRecording) { vfwWriter.Close(); }
+                videoSourcePlayer.SignalToStop();
+                videoSourcePlayer.WaitForStop();
+                b_video_connect.Text = "Connect video device";
+                bVideoConnected = false;
 
             }
+        }
 
+        private void b_Record_Click(object sender, EventArgs e)
+        {
+            if (bVideoConnected)
+            {
+                if (bVideoRecording == false)
+                {
+                    if (vfwWriter != null) { vfwWriter.Close(); }
 
-
+                    l_capture_file.Text = "capture" + String.Format("-{0:yymmdd-hhmm}", DateTime.Now);
+                    vfwWriter = new VideoFileWriter();
+                    //create new video file
+                    vfwWriter.Open(gui_settings.sCaptureFolder + "\\capture" + String.Format("-{0:yyMMdd-hhmm}", DateTime.Now) + ".avi", 640, 480, (int)nFrameRate.Value, (VideoCodec)cb_codec.SelectedIndex, (int)(1000000 * nBitRate.Value));
+                    b_Record.Text = "Recording";
+                    b_Record.BackColor = Color.Red;
+                    tsFrameTimeStamp = new TimeSpan(0);
+                    tsFrameRate = new TimeSpan(10000000 / (long)nFrameRate.Value);
+                    bVideoRecording = true;
+                }
+                else
+                {
+                    bVideoRecording = false;
+                    System.Threading.Thread.Sleep(50);
+                    b_Record.Text = "Start Recording";
+                    b_Record.BackColor = Color.Transparent;
+                    vfwWriter.Close();
+                    l_capture_file.Text = "";
+                }
+            }
+        }
         
+        private void videoSourcePlayer_SizeChanged(object sender, EventArgs e)
+        {
+
+            Size currentSize = videoSourcePlayer.Size;
+            currentSize.Width = currentSize.Height / 3 * 4;
+
+            if (splitContainer6.Panel1.Size.Width < currentSize.Width)
+            {
+                currentSize.Width = splitContainer6.Panel1.Size.Width;
+                currentSize.Height = currentSize.Width / 4 * 3;
+            }
+
+            videoSourcePlayer.Size = currentSize;
+
+
+        }
+
+        #endregion
+
     }
 
 }
