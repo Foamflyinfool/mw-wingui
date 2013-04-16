@@ -101,7 +101,7 @@ namespace MultiWiiWinGUI
         private DataTable CreateDataTableForCSVData(String strLine)
         {
             DataTable dt = new DataTable("CSVTable");
-            String[] strVals = strLine.Split(new char[] { ',', ':' });
+            String[] strVals = strLine.Split(new char[] { ',' });
             m_iColumnCount = strVals.Length;
             int idx = 0;
             foreach (String strVal in strVals)
@@ -114,7 +114,7 @@ namespace MultiWiiWinGUI
 
         private DataRow AddDataRowToTable(String strCSVLine, DataTable dt)
         {
-            String[] strVals = strCSVLine.Split(new char[] { ',', ':' });
+            String[] strVals = strCSVLine.Split(new char[] { ','});
             Int32 iTotalNumberOfValues = strVals.Length;
             // If number of values in this line are more than the columns
             // currently in table, then we need to add more columns to table.

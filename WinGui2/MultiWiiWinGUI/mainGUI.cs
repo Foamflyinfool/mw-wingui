@@ -1644,25 +1644,25 @@ namespace MultiWiiWinGUI
             if (bLogRunning && wLogStream.BaseStream != null)
             {
                 //RAW Sensor (acc, gyro)
-                if (gui_settings.logGraw) { wLogStream.WriteLine("GRAW,{0},{1},{2},{3},{4},{5}", mw_gui.ax, mw_gui.ay, mw_gui.az, mw_gui.gx, mw_gui.gy, mw_gui.gz); }
+                if (gui_settings.logGraw) { wLogStream.WriteLine("GRAW,{0},{1},{2},{3},{4},{5},{6}", DateTime.Now.ToString("HH:mm:ss.fff"),mw_gui.ax, mw_gui.ay, mw_gui.az, mw_gui.gx, mw_gui.gy, mw_gui.gz); }
                 //Attitude
-                if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1}", mw_gui.angx, mw_gui.angy); }
+                if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1},{2}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.angx, mw_gui.angy); }
                 //Mag, head, baro
-                if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4}", mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
+                if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4},{5}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
                 //RC controls 
-                if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3}", mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
+                if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
                 //RC Aux controls
-                if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3}", mw_gui.rcAUX[0], mw_gui.rcAUX[1], mw_gui.rcAUX[2], mw_gui.rcAUX[3], mw_gui.rcAUX[4], mw_gui.rcAUX[5], mw_gui.rcAUX[6], mw_gui.rcAUX[7]); }
+                if (gui_settings.logGrcx) { wLogStream.WriteLine("GRCX,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcAUX[0], mw_gui.rcAUX[1], mw_gui.rcAUX[2], mw_gui.rcAUX[3], mw_gui.rcAUX[4], mw_gui.rcAUX[5], mw_gui.rcAUX[6], mw_gui.rcAUX[7]); }
                 //Motors
-                if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]); }
+                if (gui_settings.logGmot) { wLogStream.WriteLine("GMOT,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.motors[0], mw_gui.motors[1], mw_gui.motors[2], mw_gui.motors[3], mw_gui.motors[4], mw_gui.motors[5], mw_gui.motors[6], mw_gui.motors[7]); }
                 //Servos
-                if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7}", mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]); }
+                if (gui_settings.logGsrv) { wLogStream.WriteLine("GSRV,{0},{1},{2},{3},{4},{5},{6},{7},{8}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.servos[0], mw_gui.servos[1], mw_gui.servos[2], mw_gui.servos[3], mw_gui.servos[4], mw_gui.servos[5], mw_gui.servos[6], mw_gui.servos[7]); }
                 // Nav-GPS
-                if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3}", mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome); }
+                if (gui_settings.logGnav) { wLogStream.WriteLine("GNAV,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.GPS_fix, mw_gui.GPS_numSat, mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome); }
                 // Housekeeping
-                if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3}", mw_gui.cycleTime, mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum); }
+                if (gui_settings.logGpar) { wLogStream.WriteLine("GPAR,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.cycleTime, mw_gui.i2cErrors, mw_gui.vBat, mw_gui.pMeterSum); }
                 //Debug
-                if (gui_settings.logGdbg) { wLogStream.WriteLine("GDBG,{0},{1},{2},{3}", mw_gui.debug1, mw_gui.debug2, mw_gui.debug3, mw_gui.debug4); }
+                if (gui_settings.logGdbg) { wLogStream.WriteLine("GDBG,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.debug1, mw_gui.debug2, mw_gui.debug3, mw_gui.debug4); }
             }
 
             if (bKMLLogRunning)
@@ -2567,6 +2567,7 @@ namespace MultiWiiWinGUI
             if (wLogStream != null)
             {
                 bLogRunning = true;
+                wLogStream.WriteLine("MultiWii telemetry log. Start time:{0}", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"));
             }
 
         }
@@ -2803,7 +2804,7 @@ namespace MultiWiiWinGUI
                  //Send the WP command
                  if (cbSendGTCAlt.Checked)
                  {
-                     sendWPToMultiWii(serialPort, 16, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text)*100);
+                     sendWPToMultiWii(serialPort, 16, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text));
                  }
                  else
                  {
@@ -3628,7 +3629,7 @@ namespace MultiWiiWinGUI
             }
 
             //Temporary implementation to 
-            private void sendWPToMultiWii(SerialPort serialport, int wp_number, double lat, double lon, int alt)             //This must be changed later to reflect real WP's
+            private void sendWPToMultiWii(SerialPort serialport, int wp_number, double lat, double lon, int alt)             //This must be changed later to reflect real WP's alt in meter!!!
             {
                 byte[] buffer = new byte[250];          //this must be long enough
                 int bptr = 0;                           //buffer pointer
@@ -3655,7 +3656,7 @@ namespace MultiWiiWinGUI
                     //int32 longitude in lon * 10,000,000
                     bInt32 = BitConverter.GetBytes(Convert.ToInt32(lon * 10000000));
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-                    //int32 altitude in cm
+                    //int32 altitude in cm so convert it from meter
                     bInt32 = BitConverter.GetBytes(alt * 100);
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
                     //int16 Heading (not used)

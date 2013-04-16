@@ -5,6 +5,7 @@
 <!-- Log fields from WinGUI logging-->
     <!-- Raw Gyro and Accel data-->
     <GRAW>
+      <F0>Timestamp</F0>
       <F1>AccX</F1>
       <F2>AccY</F2>
       <F3>AccZ</F3>
@@ -16,11 +17,13 @@
     </GRAW>
 <!-- Attitude (angle Roll and Angle Pitch)-->
     <GATT>
+      <F0>Timestamp</F0>
       <F1>Pitch Angle</F1>
       <F2>Roll Angle</F2>
     </GATT>
     
     <GMAG>
+      <F0>Timestamp</F0>
       <F1>Mag X</F1>
       <F2>Mag Y</F2>
       <F3>Mag Z</F3>
@@ -28,18 +31,21 @@
       <F5>Barometer</F5>
     </GMAG>
     <GRCC>
+      <F0>Timestamp</F0>
       <F1>RC Throttle</F1>
       <F2>RC Pitch</F2>
       <F3>RC Roll</F3>
       <F4>RC Yaw</F4>
     </GRCC>
     <GRCX>
+      <F0>Timestamp</F0>
       <F1>RC AUX1</F1>
       <F2>RC AUX2</F2>
       <F3>RC AUX3</F3>
       <F4>RC AUX4</F4>
     </GRCX>
     <GMOT>
+      <F0>Timestamp</F0>
       <F1>Motor 1</F1>
       <F2>Motor 2</F2>
       <F3>Motor 3</F3>
@@ -50,6 +56,7 @@
       <F8>Motor 8</F8>
     </GMOT>
     <GSRV>
+      <F0>Timestamp</F0>
       <F1>Servo 1</F1>
       <F2>Servo 2</F2>
       <F3>Servo 3</F3>
@@ -60,18 +67,21 @@
       <F8>Servo 8</F8>
     </GSRV>
     <GNAV>
+      <F0>Timestamp</F0>
       <F1>GPS Fix</F1>
       <F2>GPS Numsat</F2>
       <F3>GPS DirToHome</F3>
       <F4>GPS DistToHome</F4>
     </GNAV>
     <GPAR>
+      <F0>Timestamp</F0>
       <F1>CycleTime</F1>
       <F2>I2C Errors</F2>
       <F3>VBatt</F3>
       <F4>Power Sum</F4>
     </GPAR>
     <GDBG>
+      <F0>Timestamp</F0>
       <F1>Debug 1</F1>
       <F2>Debug 2</F2>
       <F3>Debug 3</F3>
