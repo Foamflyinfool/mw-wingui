@@ -63,8 +63,8 @@
             this.tabPageRC = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPageRealtime = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.b_cal_acc = new System.Windows.Forms.Button();
@@ -270,6 +270,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.b_about = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.bDebugWindws = new System.Windows.Forms.ToolStripButton();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
@@ -772,8 +773,8 @@
             this.tabPageRC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tabPageRC.Controls.Add(this.label5);
             this.tabPageRC.Controls.Add(this.label4);
-            this.tabPageRC.Controls.Add(this.pictureBox1);
             this.tabPageRC.Controls.Add(this.rci_Control_settings);
+            this.tabPageRC.Controls.Add(this.pictureBox1);
             this.tabPageRC.Location = new System.Drawing.Point(4, 22);
             this.tabPageRC.Name = "tabPageRC";
             this.tabPageRC.Padding = new System.Windows.Forms.Padding(3);
@@ -803,6 +804,15 @@
             this.label4.TabIndex = 18;
             this.label4.Text = "Orange border indicates, that setting was changed but not written to FC";
             // 
+            // rci_Control_settings
+            // 
+            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
+            this.rci_Control_settings.Name = "rci_Control_settings";
+            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
+            this.rci_Control_settings.TabIndex = 15;
+            this.rci_Control_settings.Text = "rc_input_control2";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -813,15 +823,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
-            // 
-            // rci_Control_settings
-            // 
-            this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
-            this.rci_Control_settings.Name = "rci_Control_settings";
-            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
-            this.rci_Control_settings.TabIndex = 15;
-            this.rci_Control_settings.Text = "rc_input_control2";
             // 
             // tabPageRealtime
             // 
@@ -2415,6 +2416,7 @@
             this.btnUploadMission.TabIndex = 4;
             this.btnUploadMission.Text = "Upload mission";
             this.btnUploadMission.UseVisualStyleBackColor = true;
+            this.btnUploadMission.Click += new System.EventHandler(this.btnUploadMission_Click);
             // 
             // txtDefAlt
             // 
@@ -3058,7 +3060,8 @@
             this.b_log_browser,
             this.toolStripSeparator4,
             this.b_about,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.bDebugWindws});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -3220,6 +3223,17 @@
             this.toolStripButton1.Text = "LogDL";
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // bDebugWindws
+            // 
+            this.bDebugWindws.Image = ((System.Drawing.Image)(resources.GetObject("bDebugWindws.Image")));
+            this.bDebugWindws.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bDebugWindws.Name = "bDebugWindws";
+            this.bDebugWindws.Size = new System.Drawing.Size(46, 51);
+            this.bDebugWindws.Text = "Debug";
+            this.bDebugWindws.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.bDebugWindws.ToolTipText = "Debug Window";
+            this.bDebugWindws.Click += new System.EventHandler(this.bDebugWindws_Click);
             // 
             // dataGridViewImageColumn1
             // 
@@ -3598,6 +3612,7 @@
         private System.Windows.Forms.Label lDistLastWP;
         private System.Windows.Forms.CheckBox cbSendGTCAlt;
         private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.ToolStripButton bDebugWindws;
     }
 }
 
