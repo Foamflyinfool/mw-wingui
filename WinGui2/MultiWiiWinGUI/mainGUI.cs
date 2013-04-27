@@ -176,6 +176,22 @@ namespace MultiWiiWinGUI
         PointLatLng end;
         PointLatLng start;
 
+        DebugWindow frmDebug;
+        string strDebug = "";
+
+        //Navigaton constants
+
+        const int MISSION_WAYPOINT = 1;			    //Set waypoint
+        const int MISSION_HOLD_UNLIM = 2;			//Poshold unlimited
+        const int MISSION_HOLD_TIME = 3;			//Hold for a predetermined time
+        const int MISSION_RTH = 4;			        //Return to HOME
+        const int MISSION_SET_POI = 5;              //Set POINT of interest
+
+        const int MISSION_FLAG_END = 0xA5;		    //Flags that this is the last step
+            
+
+
+
 
         //Commands
         const int MSP_IDENT = 100;
@@ -198,6 +214,9 @@ namespace MultiWiiWinGUI
         const int MSP_BOXNAMES = 116;
         const int MSP_PIDNAMES = 117;
         const int MSP_WP = 118;
+        const int MSP_BOXIDS = 119;
+        const int MSP_SERVO_CONF = 120;
+        const int MSP_MISC_CONF = 121;
 
 
         const int MSP_SET_RAW_RC = 200;
@@ -210,8 +229,15 @@ namespace MultiWiiWinGUI
         const int MSP_SET_MISC = 207;
         const int MSP_RESET_CONF = 208;
         const int MSP_SET_WP = 209;
+        const int MSP_SELECT_SETTINGS = 210;
+        const int MSP_SET_HEAD = 211;
+        const int MSP_SET_SERVO_CONF = 212;
+        const int MSP_SET_MISC_CONF = 213;
+        const int MSP_SET_MOTOR = 214;
+
 
         const int MSP_EEPROM_WRITE = 250;
+        const int MSP_DEBUGMSG = 253;
         const int MSP_DEBUG = 254;
 
 
@@ -878,6 +904,9 @@ namespace MultiWiiWinGUI
                 if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP_MISC);
                 if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP_DEBUG);
 
+
+                if (frmDebug != null) MSPquery(MSP_DEBUGMSG);
+
                 if (isBoxActive("ARM"))
                 {                                                           //armed
                     if ((iRefreshDivider % 20) == 0) MSPqueryWP(0);         //get home position
@@ -912,6 +941,7 @@ namespace MultiWiiWinGUI
 
         private void b_connect_Click(object sender, EventArgs e)
         {
+
             //Check if we at GUI Settings, go to first screen when connect
             if (tabMain.SelectedIndex == 4) { tabMain.SelectedIndex = 0; }
 
@@ -1456,6 +1486,12 @@ namespace MultiWiiWinGUI
                     mw_gui.debug3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.debug4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
+                case MSP_DEBUGMSG:
+                    StringBuilder dbgmsg = new StringBuilder();
+                    ptr = 0;
+                    while (ptr < dataSize) dbgmsg.Append((char)inBuf[ptr++]);
+                    strDebug =strDebug + dbgmsg.ToString();
+                    break;
                 case MSP_WP:
                     ptr = 0;
                     byte wp_no = (byte)inBuf[ptr++];
@@ -1624,6 +1660,12 @@ namespace MultiWiiWinGUI
 
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_count);
+
+            if (frmDebug != null && strDebug != "")
+            {
+                frmDebug.AppendText(strDebug);
+                strDebug = "";
+            }
 
             //in case of Serial error, throw an error message and disconnect gracefully
             if (bSerialError)
@@ -2586,16 +2628,16 @@ namespace MultiWiiWinGUI
 
             switch (markertype)
             {
-                case 0:
+                case 1:
                     m = new GMapMarkerWP(point);
                     break;
-                case 1:
+                case 2:
                     m = new GMapMarkerPosHoldUnlimited(point);
                     break;
-                case 2:  
+                case 3:  
                     m = new GMapMarkerPosHold(point);
                     break;
-                case 3:  
+                case 4:  
                     m = new GMapMarkerGoogleRed(point);
                     break;
                 default:
@@ -2726,14 +2768,14 @@ namespace MultiWiiWinGUI
                  GMOverlayLiveData.Markers.Remove(markerGoToClick); 
                  markerGoToClick = new GMapMarkerGoogleRed(pointClickToGo); 
                  GMOverlayLiveData.Markers.Add(markerGoToClick); 
-                 //Send the WP command
-                 if (cbSendGTCAlt.Checked)
+                 //Send the WP command, set waypoint 255 (poshold)
+                 if (cbSendGTCAlt.Checked)              
                  {
-                     sendWPToMultiWii(serialPort, 16, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text));
+                     sendWPToMultiWii(serialPort, 255,MISSION_HOLD_UNLIM,end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text),0,0);
                  }
                  else
                  {
-                     sendWPToMultiWii(serialPort, 16, end.Lat, end.Lng, 0);
+                     sendWPToMultiWii(serialPort, 255,MISSION_HOLD_UNLIM, end.Lat, end.Lng, 0,0,0);
                  }
                 return;
             }
@@ -3216,7 +3258,8 @@ namespace MultiWiiWinGUI
             updateIndex();
   
         }
-            private void addWP(string action, int Par, double Lat, double Lon, int Alt)
+  
+        private void addWP(string action, int Par, double Lat, double Lon, int Alt)
             {
                 if (missionDataGrid.Rows.Count >= 50)
                     return;
@@ -3289,11 +3332,10 @@ namespace MultiWiiWinGUI
                     string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
                     string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
 
-                    if (cell1 == "WAYPOINT") command = 0;
-                    if (cell1 == "POSHOLD_UNLIM") command = 1;
-                    if (cell1 == "POSHOLD_TIME") command = 2;
-                    if (cell1 == "RTH") command = 3;
-                    if (cell1 == "DO_JUMP") command = 4;
+                    if (cell1 == "WAYPOINT") command = MISSION_WAYPOINT;
+                    if (cell1 == "POSHOLD_UNLIM") command = MISSION_HOLD_UNLIM;
+                    if (cell1 == "POSHOLD_TIME") command = MISSION_HOLD_TIME;
+                    if (cell1 == "RTH") command = MISSION_RTH;
 
 
                    
@@ -3301,7 +3343,7 @@ namespace MultiWiiWinGUI
                         continue;
                     if (cell4 == "?" || cell3 == "?")
                         continue;
-                    if (cell1 == "RTH" || cell1 == "DO_JUMP")
+                    if (cell1 == "RTH")
                         break ;
 
                     AddWPMarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), null, command);
@@ -3539,13 +3581,14 @@ namespace MultiWiiWinGUI
             }
 
             //Temporary implementation to 
-            private void sendWPToMultiWii(SerialPort serialport, int wp_number, double lat, double lon, int alt)             //This must be changed later to reflect real WP's alt in meter!!!
+            private void sendWPToMultiWii(SerialPort serialport, int wp_number, byte action, double lat, double lon, int alt, int parameter, byte flag)             //This must be changed later to reflect real WP's alt in meter and all other flasg
             {
                 byte[] buffer = new byte[250];          //this must be long enough
                 int bptr = 0;                           //buffer pointer
                 byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
                 byte[] bInt32 = new byte[4];
                 byte checksum = 0;
+                Int16 heading = 0;
 
 
                 if (serialport.IsOpen)
@@ -3560,6 +3603,8 @@ namespace MultiWiiWinGUI
 
                     //byte Waypoint number
                     buffer[bptr++] = Convert.ToByte(wp_number);
+                    //Action
+                    buffer[bptr++] = Convert.ToByte(action);
                     //int32 lattitude in lat * 10,000,000
                     bInt32 = BitConverter.GetBytes(Convert.ToInt32(lat * 10000000));
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
@@ -3569,12 +3614,14 @@ namespace MultiWiiWinGUI
                     //int32 altitude in cm so convert it from meter
                     bInt32 = BitConverter.GetBytes(alt * 100);
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-                    //int16 Heading (not used)
-                    buffer[bptr++] = 0; buffer[bptr++] = 0;
-                    //int16 time to stay (not used, this will be parameter1)
-                    buffer[bptr++] = 0; buffer[bptr++] = 0;
+                    //int16 Heading 
+                    bInt16 = BitConverter.GetBytes(heading);
+                    buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+                    //int16 Parameter 1
+                    bInt16 = BitConverter.GetBytes(parameter);
+                    buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
                     //byte nav flag (this will be the action)
-                    buffer[bptr++] = 0;
+                    buffer[bptr++] = flag;
 
                     for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                     buffer[bptr++] = checksum;
@@ -3718,6 +3765,43 @@ namespace MultiWiiWinGUI
         }
 
         #endregion
+
+        private void bDebugWindws_Click(object sender, EventArgs e)
+        {
+            frmDebug = new DebugWindow();
+            frmDebug.Show();
+            frmDebug.AppendText("Hello vilag\n");
+        }
+
+        private void btnUploadMission_Click(object sender, EventArgs e)
+        {
+
+            byte action, flag;
+            Int16 parameter,heading;
+            Int32 lat, lon;
+            Int32 altitude;
+
+            for (byte a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+            {
+
+
+                string cell = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
+                action = 0;     //default
+                if (cell == "WAYPOINT") action = MISSION_WAYPOINT;
+                if (cell == "POSHOLD_UNLIM") action = MISSION_HOLD_UNLIM;
+                if (cell == "POSHOLD_TIME") action = MISSION_HOLD_TIME;
+                if (cell == "RTH") action = MISSION_RTH;
+
+
+
+                cell = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
+                altitude = Convert.ToInt32(cell);
+                //TODO: finish it
+                string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
+                string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
+
+            }
+        }
 
     }
 

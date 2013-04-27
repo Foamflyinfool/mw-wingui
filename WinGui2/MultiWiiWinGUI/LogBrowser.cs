@@ -280,6 +280,10 @@ namespace MultiWiiWinGUI
         
         private void Graphit_Click(object sender, EventArgs e)
         {
+
+            double prvTimestamp = 0;
+
+
             if (dataGridView1.RowCount == 0 || dataGridView1.ColumnCount == 0)
             {
                 MessageBox.Show("Please load a valid file");
@@ -322,6 +326,7 @@ namespace MultiWiiWinGUI
 
                 if (datarow.Cells[0].Value.ToString() == type)
                 {
+                    prvTimestamp = timestamp;
                     try
                     {
                         double value = double.Parse(datarow.Cells[col].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
@@ -367,7 +372,7 @@ namespace MultiWiiWinGUI
                     myPane.YAxisList[i].Scale.IsVisible = true;
                     myPane.YAxisList[i].MajorTic.IsAllTics = true;
                     myPane.YAxisList[i].MinorTic.IsAllTics = true;
-                    myPane.YAxisList[i].Cross = timestamp;
+                    myPane.YAxisList[i].Cross = prvTimestamp;
                     myPane.YAxisList[i].IsVisible = true;
                     myPane.YAxisList[i].Scale.Align = AlignP.Inside;
 
