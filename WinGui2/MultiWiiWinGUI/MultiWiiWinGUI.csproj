@@ -160,6 +160,7 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="common.cs" />
+    <Compile Include="constants.cs" />
     <Compile Include="DebugWindow.cs">
       <SubType>Form</SubType>
     </Compile>

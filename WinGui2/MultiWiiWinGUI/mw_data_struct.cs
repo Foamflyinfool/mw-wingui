@@ -13,6 +13,7 @@ namespace MultiWiiWinGUI
 
     #region GUI_settings
 
+    
     public class GUI_settings
     {
         public string sLogFolder { get; set; }
@@ -279,12 +280,19 @@ namespace MultiWiiWinGUI
     public class mw_settings
     {
 
+
+
         //public fields
-        
+
+
+        public byte currentSet;             //Current settings
+
+        //PID's
         public byte[] pidP;                 //P values
         public byte[] pidI;                 //I values
         public byte[] pidD;                 //D values
 
+        //RC Tuning
         public byte rcRate; 
         public byte rcExpo;
         public byte RollPitchRate;
@@ -293,54 +301,36 @@ namespace MultiWiiWinGUI
         public byte ThrottleMID;
         public byte ThrottleEXPO;
 
+        public int[] servoMin;
+        public int[] servoMax;
+        public int[] servoMiddle;
+        public int[] servoRate;
+
+
+        //Other parameters
+
+        public Int16 PowerTrigger;
+        public Int16 minThrottle;
+        
+        public UInt16 failsafe_throttle;
+
+        public UInt16 mag_declination;
+
+        public byte vbatscale;
+        public byte vbatlevel_warn1;
+        public byte vbatlevel_warn2;
+        public byte vbatlevel_crit;
+
+        //Rc command parsing
+
         public Int16[] activation;
 
-        public int PowerTrigger;
 
         //For GUI only
-        public string comment;
-
 
         public string[] pidnames;
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
-
-        //Commands
-        const int MSP_IDENT = 100;
-
-        const int MSP_STATUS = 101;
-        const int MSP_RAW_IMU = 102;
-        const int MSP_SERVO = 103;
-        const int MSP_MOTOR = 104;
-        const int MSP_RC = 105;
-        const int MSP_RAW_GPS = 106;
-        const int MSP_COMP_GPS = 107;
-        const int MSP_ATTITUDE = 108;
-        const int MSP_ALTITUDE = 109;
-        const int MSP_BAT = 110;
-        const int MSP_RC_TUNING = 111;
-        const int MSP_PID = 112;
-        const int MSP_BOX = 113;
-        const int MSP_MISC = 114;
-        const int MSP_MOTOR_PINS = 115;
-        const int MSP_BOXNAMES = 116;
-        const int MSP_PIDNAMES = 117;
-        const int MSP_WP = 118;
-
-
-        const int MSP_SET_RAW_RC = 200;
-        const int MSP_SET_RAW_GPS = 201;
-        const int MSP_SET_PID = 202;
-        const int MSP_SET_BOX = 203;
-        const int MSP_SET_RC_TUNING = 204;
-        const int MSP_ACC_CALIBRATION = 205;
-        const int MSP_MAG_CALIBRATION = 206;
-        const int MSP_SET_MISC = 207;
-        const int MSP_RESET_CONF = 208;
-        const int MSP_SET_WP = 209;
-
-        const int MSP_EEPROM_WRITE = 250;
-        const int MSP_DEBUG = 254;
 
         //Constructor
         public mw_settings(int pidItems, int checkboxItems, int iSoftwareVersion)
@@ -349,7 +339,13 @@ namespace MultiWiiWinGUI
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
+             
             activation = new Int16[checkboxItems];
+
+            servoMin = new int[8];
+            servoMax = new int[8];
+            servoMiddle = new int[8];
+            servoRate = new int[8];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
@@ -378,7 +374,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
                 buffer[bptr++] = 7;
-                buffer[bptr++] = (byte)MSP_SET_RC_TUNING;
+                buffer[bptr++] = (byte)MSP.MSP_SET_RC_TUNING;
 
                 buffer[bptr++] = rcRate;
                 buffer[bptr++] = rcExpo;
@@ -398,7 +394,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
                 buffer[bptr++] = (byte)(3 * iPIDItems);
-                buffer[bptr++] = (byte)MSP_SET_PID;
+                buffer[bptr++] = (byte)MSP.MSP_SET_PID;
                 for (int i = 0; i < iPIDItems; i++)
                 {
                     buffer[bptr++] = pidP[i];
@@ -417,7 +413,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
                 buffer[bptr++] = (byte)(2 * iCheckBoxItems);
-                buffer[bptr++] = (byte)MSP_SET_BOX;
+                buffer[bptr++] = (byte)MSP.MSP_SET_BOX;
 
                 for (int i = 0; i < iCheckBoxItems; i++)
                 {
@@ -438,7 +434,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
                 buffer[bptr++] = (byte)(2);
-                buffer[bptr++] = (byte)MSP_SET_MISC;
+                buffer[bptr++] = (byte)MSP.MSP_SET_MISC;
 
                 buffer[bptr++] = (byte)(PowerTrigger & 0x00ff);
                 buffer[bptr++] = (byte)((PowerTrigger >> 8) & 0x00ff);
@@ -456,7 +452,7 @@ namespace MultiWiiWinGUI
                 o[1] = (byte)'M';
                 o[2] = (byte)'<';
                 o[3] = (byte)0; c ^= o[3];       //no payload 
-                o[4] = (byte)MSP_EEPROM_WRITE; c ^= o[4];
+                o[4] = (byte)MSP.MSP_EEPROM_WRITE; c ^= o[4];
                 o[5] = (byte)c;
                 serialport.Write(o, 0, 6);
 
@@ -504,7 +500,6 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("YAWRATE value=\"" + YawRate + "\""); tw.WriteEndElement();
             tw.WriteStartElement("DYNTHRPID value=\"" + DynThrPID + "\""); tw.WriteEndElement();
             tw.WriteStartElement("POWERTRIGGER value=\"" + PowerTrigger + "\""); tw.WriteEndElement();
-            tw.WriteStartElement("COMMENT value=\"" + comment + "\""); tw.WriteEndElement();
 
             tw.WriteEndElement();
             tw.WriteEndDocument();
@@ -558,7 +553,6 @@ namespace MultiWiiWinGUI
                                 if (String.Compare(reader.Name, "yawrate", true) == 0 && reader.HasAttributes) { YawRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "dynthrpid", true) == 0 && reader.HasAttributes) { DynThrPID = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "powertrigger", true) == 0 && reader.HasAttributes) { PowerTrigger = Convert.ToByte(reader.GetAttribute("value")); }
-                                if (String.Compare(reader.Name, "comment", true) == 0 && reader.HasAttributes) { comment = reader.GetAttribute("value"); }
                                 break;
                         }
                     }
@@ -610,7 +604,6 @@ namespace MultiWiiWinGUI
         public int[] motors;
         public int rcRoll, rcPitch, rcYaw, rcThrottle;
         public int[] rcAUX;
-        //public int rcAux1, rcAux2, rcAux3, rcAux4, rcAux5, rcAux6, rcAux7, rcAux8;
         public int present;            //What sensors are present?
         public UInt32 mode;               //What mode are we in ?
         public int i2cErrors;
@@ -649,14 +642,44 @@ namespace MultiWiiWinGUI
         public int GPS_poshold_lat;
         public int GPS_poshold_lon;
         public int GPS_poshold_alt;
-        public int pMeterSum;
-        public int powerTrigger;
+        
+
+        //Analog
+        public uint pMeterSum;
         public byte vBat;
+        public uint rssi;
+        
+        
+        //Misc
+        public uint powerTrigger;
+        public uint minThrottle;
+        public uint maxThrottle;
+        public uint minCommand;
+
+        public uint failsafe_throttle;
+        public uint plog_arm;
+        public uint plog_lifetime;           //what unit ???
+
+        public int mag_declination;
+        public int vbatscale;
+        public int vbatlevel_warn1;
+        public int vbatlevel_warn2;
+        public int vbatlevel_crit;
+
+        //Debug
         public int debug1, debug2, debug3, debug4;
+
+
+        //Servo_conf
+        public int[] servoMin;
+        public int[] servoMax;
+        public int[] servoMiddle;
+        public int[] servoRate;
+        public Boolean[] servoReverse;
+
 
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
-        private bool bCompatibilityMode;
 
         //Constructor
         public mw_data_gui(int pidItems, int checkboxItems, int iSoftwareVersion)
@@ -668,6 +691,13 @@ namespace MultiWiiWinGUI
             pidP = new byte[pidItems];
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
+
+            servoMin = new int[8];
+            servoMax = new int[8];
+            servoMiddle = new int[8];
+            servoRate = new int[8];
+
+
 
             activation = new Int16[checkboxItems];
 

@@ -51,7 +51,7 @@ namespace MultiWiiWinGUI
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, Octo8Coax, Octo8P, Octo8X };
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatP, OctoFlatX, Airplane, Heli_120_CCPM, Heli_90_DEG,Vtail4,Hex6H,Singlecopter,DualCopter };
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "20 Hz", "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
@@ -76,13 +76,12 @@ namespace MultiWiiWinGUI
         static int iRefreshDivider = 20;                         //This used to force slower refresh for certain parameters
 
 
-        static int iSelectedTabIndex = 0;                          //Contains the actually selected tab
         static double xTimeStamp = 0;
         static byte[] bSerialBuffer;
 
         static int iCheckBoxItems = 0;                          //number of checkboxItems (readed from optionsconfig.xml
-        static int iPidItems = 0;                                //number if Pid items (const definition)
-        static mw_data_gui mw_gui;
+        static int iPidItems = 0;                               //number if Pid items (const definition)
+        static mw_data_gui mw_gui;                              //Data structures in that contains the data in the gui
         static mw_settings mw_params;
         static GUI_settings gui_settings;
         static bool bOptions_needs_refresh = true;
@@ -142,7 +141,6 @@ namespace MultiWiiWinGUI
         static UInt32 last_mode_flags;          //Contains the mode flags from the pervious log write tick
 
         static int GPS_lat_old, GPS_lon_old;
-        static bool GPSPresent = true;
 
         //Routes on Map
         static GMapRoute GMRouteFlightPath;
@@ -188,57 +186,6 @@ namespace MultiWiiWinGUI
         const int MISSION_SET_POI = 5;              //Set POINT of interest
 
         const int MISSION_FLAG_END = 0xA5;		    //Flags that this is the last step
-            
-
-
-
-
-        //Commands
-        const int MSP_IDENT = 100;
-
-        const int MSP_STATUS = 101;
-        const int MSP_RAW_IMU = 102;
-        const int MSP_SERVO = 103;
-        const int MSP_MOTOR = 104;
-        const int MSP_RC = 105;
-        const int MSP_RAW_GPS = 106;
-        const int MSP_COMP_GPS = 107;
-        const int MSP_ATTITUDE = 108;
-        const int MSP_ALTITUDE = 109;
-        const int MSP_BAT = 110;
-        const int MSP_RC_TUNING = 111;
-        const int MSP_PID = 112;
-        const int MSP_BOX = 113;
-        const int MSP_MISC = 114;
-        const int MSP_MOTOR_PINS = 115;
-        const int MSP_BOXNAMES = 116;
-        const int MSP_PIDNAMES = 117;
-        const int MSP_WP = 118;
-        const int MSP_BOXIDS = 119;
-        const int MSP_SERVO_CONF = 120;
-        const int MSP_MISC_CONF = 121;
-
-
-        const int MSP_SET_RAW_RC = 200;
-        const int MSP_SET_RAW_GPS = 201;
-        const int MSP_SET_PID = 202;
-        const int MSP_SET_BOX = 203;
-        const int MSP_SET_RC_TUNING = 204;
-        const int MSP_ACC_CALIBRATION = 205;
-        const int MSP_MAG_CALIBRATION = 206;
-        const int MSP_SET_MISC = 207;
-        const int MSP_RESET_CONF = 208;
-        const int MSP_SET_WP = 209;
-        const int MSP_SELECT_SETTINGS = 210;
-        const int MSP_SET_HEAD = 211;
-        const int MSP_SET_SERVO_CONF = 212;
-        const int MSP_SET_MISC_CONF = 213;
-        const int MSP_SET_MOTOR = 214;
-
-
-        const int MSP_EEPROM_WRITE = 250;
-        const int MSP_DEBUGMSG = 253;
-        const int MSP_DEBUG = 254;
 
 
 
@@ -891,21 +838,20 @@ namespace MultiWiiWinGUI
             if (serialPort.BytesToRead == 0)
             {
 
-                if ((iRefreshDivider % gui_settings.MSP_STATUS_rate_divider) == 0) MSPquery(MSP_STATUS);
-                if ((iRefreshDivider % gui_settings.MSP_RAW_IMU_rate_divider) == 0) MSPquery(MSP_RAW_IMU);
-                if ((iRefreshDivider % gui_settings.MSP_SERVO_rate_divider) == 0) MSPquery(MSP_SERVO);
-                if ((iRefreshDivider % gui_settings.MSP_MOTOR_rate_divider) == 0) MSPquery(MSP_MOTOR);
-                if ((iRefreshDivider % gui_settings.MSP_RAW_GPS_rate_divider) == 0) MSPquery(MSP_RAW_GPS);
-                if ((iRefreshDivider % gui_settings.MSP_COMP_GPS_rate_divider) == 0) MSPquery(MSP_COMP_GPS);
-                if ((iRefreshDivider % gui_settings.MSP_ATTITUDE_rate_divider) == 0) MSPquery(MSP_ATTITUDE);
-                if ((iRefreshDivider % gui_settings.MSP_ALTITUDE_rate_divider) == 0) MSPquery(MSP_ALTITUDE);
-                if ((iRefreshDivider % gui_settings.MSP_BAT_rate_divider) == 0) MSPquery(MSP_BAT);
-                if ((iRefreshDivider % gui_settings.MSP_RC_rate_divider) == 0) MSPquery(MSP_RC);
-                if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP_MISC);
-                if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP_DEBUG);
+                if ((iRefreshDivider % gui_settings.MSP_STATUS_rate_divider) == 0) MSPquery(MSP.MSP_STATUS);
+                if ((iRefreshDivider % gui_settings.MSP_RAW_IMU_rate_divider) == 0) MSPquery(MSP.MSP_RAW_IMU);
+                if ((iRefreshDivider % gui_settings.MSP_SERVO_rate_divider) == 0) MSPquery(MSP.MSP_SERVO);
+                if ((iRefreshDivider % gui_settings.MSP_MOTOR_rate_divider) == 0) MSPquery(MSP.MSP_MOTOR);
+                if ((iRefreshDivider % gui_settings.MSP_RAW_GPS_rate_divider) == 0) MSPquery(MSP.MSP_RAW_GPS);
+                if ((iRefreshDivider % gui_settings.MSP_COMP_GPS_rate_divider) == 0) MSPquery(MSP.MSP_COMP_GPS);
+                if ((iRefreshDivider % gui_settings.MSP_ATTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ATTITUDE);
+                if ((iRefreshDivider % gui_settings.MSP_ALTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ALTITUDE);
+                if ((iRefreshDivider % gui_settings.MSP_RC_rate_divider) == 0) MSPquery(MSP.MSP_RC);
+                if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP.MSP_MISC);
+                if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP.MSP_DEBUG);
 
 
-                if (frmDebug != null) MSPquery(MSP_DEBUGMSG);
+                if (frmDebug != null) MSPquery(MSP.MSP_DEBUGMSG);
 
                 if (isBoxActive("ARM"))
                 {                                                           //armed
@@ -1016,12 +962,12 @@ namespace MultiWiiWinGUI
                 for (int i = 0; i < 10; i++)
                 {
 
-                    MSPquery(MSP_PID);
-                    MSPquery(MSP_RC_TUNING);
-                    MSPquery(MSP_IDENT);
-                    MSPquery(MSP_BOX);
-                    MSPquery(MSP_BOXNAMES);
-                    MSPquery(MSP_MISC);
+                    MSPquery(MSP.MSP_PID);
+                    MSPquery(MSP.MSP_RC_TUNING);
+                    MSPquery(MSP.MSP_IDENT);
+                    MSPquery(MSP.MSP_BOX);
+                    MSPquery(MSP.MSP_BOXNAMES);
+                    MSPquery(MSP.MSP_MISC);
                 }
 
 
@@ -1043,12 +989,12 @@ namespace MultiWiiWinGUI
                     x++;
                     System.Threading.Thread.Sleep(1);
 
-                    MSPquery(MSP_PID);
-                    MSPquery(MSP_RC_TUNING);
-                    MSPquery(MSP_IDENT);
-                    MSPquery(MSP_BOX);
-                    MSPquery(MSP_BOXNAMES);
-                    MSPquery(MSP_MISC);
+                    MSPquery(MSP.MSP_PID);
+                    MSPquery(MSP.MSP_RC_TUNING);
+                    MSPquery(MSP.MSP_IDENT);
+                    MSPquery(MSP.MSP_BOX);
+                    MSPquery(MSP.MSP_BOXNAMES);
+                    MSPquery(MSP.MSP_MISC);
 
                     if (x > 1000)
                     {
@@ -1087,47 +1033,40 @@ namespace MultiWiiWinGUI
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            //Some additional housekeeping if we are connected
+
             if (isConnected == true)
             {
-                if (tabMain.SelectedTab == tabPageCLI)
+
+                //Common things
+                isCLI = false;
+
+                switch (tabMain.SelectedIndex)
                 {
-                    timer_realtime.Stop();
-                    isCLI = true;
-                    serialPort.Write("#");
-                }
-                else
-                {
-                    serialPort.Write("exit\r\n");
-                    serialPort.ReadExisting();
-                    isCLI = false;
-                    if (isConnected == true)
+                    case GUIPages.CLI:
+                        timer_realtime.Stop();              //Stop refresh to free up serial channel
+                        isCLI = true;
+                        //serialPort.Write("#");            //CLI init string (could be +++ )
+                        break;
+                    case GUIPages.RC:
                         timer_realtime.Start();
+                        break;
+                    case GUIPages.FlighTune:
+                        timer_realtime.Stop();
+                        break;
+                    case GUIPages.Realtime:
+                        timer_realtime.Start();             //need to check about logging .....
+                        break;
+                    case GUIPages.Video:
+                        timer_realtime.Stop();
+                        break;
+                    case GUIPages.GUISettings:
+                        timer_realtime.Stop();
+                        break;
                 }
-            }
-            switch (tabMain.SelectedIndex)
-            {
-                case 2:
-                    iSelectedTabIndex = tabMain.SelectedIndex;
-                    break;
-                case 1:
-                    iSelectedTabIndex = tabMain.SelectedIndex;
-                    break;
-                case 3:                 //MAP
-                    iSelectedTabIndex = tabMain.SelectedIndex;
-                    break;
 
-                case 5:
-                    if (isConnected || bVideoRecording)
-                    {
-                        MessageBoxEx.Show(this, "FC is connected or Video is recording, to change GUI settings please disconnect FC and/or stop video recoding", "Unable to enter GUI settings", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                        tabMain.SelectedIndex = iSelectedTabIndex;      //go back to the pervious one
-                    }
-                    break;
-                default:
-                    iSelectedTabIndex = tabMain.SelectedIndex;
-                    break;
             }
-
 
         }
 
@@ -1340,21 +1279,21 @@ namespace MultiWiiWinGUI
 
             switch (cmd)
             {
-                case MSP_IDENT:
+                case MSP.MSP_IDENT:
                     ptr = 0;
                     mw_gui.version = (byte)inBuf[ptr++];
                     mw_gui.multiType = (byte)inBuf[ptr];
                     mw_gui.protocol_version = (byte)inBuf[ptr++];
                     mw_gui.capability = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                     break;
-                case MSP_STATUS:
+                case MSP.MSP_STATUS:
                     ptr = 0;
                     mw_gui.cycleTime = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.i2cErrors = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.present = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.mode = BitConverter.ToUInt32(inBuf, ptr); ptr += 4;
                     break;
-                case MSP_RAW_IMU:
+                case MSP.MSP_RAW_IMU:
                     ptr = 0;
                     mw_gui.ax = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.ay = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -1368,21 +1307,21 @@ namespace MultiWiiWinGUI
                     mw_gui.magy = BitConverter.ToInt16(inBuf, ptr) / 3; ptr += 2;
                     mw_gui.magz = BitConverter.ToInt16(inBuf, ptr) / 3; ptr += 2;
                     break;
-                case MSP_SERVO:
+                case MSP.MSP_SERVO:
                     ptr = 0;
                     for (int i = 0; i < 8; i++)
                     {
                         mw_gui.servos[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
                     break;
-                case MSP_MOTOR:
+                case MSP.MSP_MOTOR:
                     ptr = 0;
                     for (int i = 0; i < 8; i++)
                     {
                         mw_gui.motors[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
                     break;
-                case MSP_RC:
+                case MSP.MSP_RC:
                     ptr = 0;
                     mw_gui.rcRoll = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.rcPitch = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -1397,16 +1336,8 @@ namespace MultiWiiWinGUI
                     {
                         mw_gui.rcAUX[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
-                    //mw_gui.rcAUX[0] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[1] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[2] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[3] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[4] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[5] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[6] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                    //mw_gui.rcAUX[7] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
-                case MSP_RAW_GPS:
+                case MSP.MSP_RAW_GPS:
                     ptr = 0;
                     mw_gui.GPS_fix = (byte)inBuf[ptr++];
                     mw_gui.GPS_numSat = (byte)inBuf[ptr++];
@@ -1415,28 +1346,29 @@ namespace MultiWiiWinGUI
                     mw_gui.GPS_altitude = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.GPS_speed = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
-                case MSP_COMP_GPS:
+                case MSP.MSP_COMP_GPS:
                     ptr = 0;
                     mw_gui.GPS_distanceToHome = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.GPS_directionToHome = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.GPS_update = (byte)inBuf[ptr++];
                     break;
-                case MSP_ATTITUDE:
+                case MSP.MSP_ATTITUDE:
                     ptr = 0;
                     mw_gui.angx = BitConverter.ToInt16(inBuf, ptr) / 10; ptr += 2;
                     mw_gui.angy = BitConverter.ToInt16(inBuf, ptr) / 10; ptr += 2;
                     mw_gui.heading = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
-                case MSP_ALTITUDE:
+                case MSP.MSP_ALTITUDE:
                     ptr = 0;
                     mw_gui.baro = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                     break;
-                case MSP_BAT:
+                case MSP.MSP_ANALOG:
                     ptr = 0;
                     mw_gui.vBat = (byte)inBuf[ptr++];
-                    mw_gui.pMeterSum = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.pMeterSum = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.rssi = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     break;
-                case MSP_RC_TUNING:
+                case MSP.MSP_RC_TUNING:
                     ptr = 0;
                     mw_gui.rcRate = (byte)inBuf[ptr++];
                     mw_gui.rcExpo = (byte)inBuf[ptr++];
@@ -1446,7 +1378,7 @@ namespace MultiWiiWinGUI
                     mw_gui.ThrottleMID = (byte)inBuf[ptr++];
                     mw_gui.ThrottleEXPO = (byte)inBuf[ptr++];
                     break;
-                case MSP_PID:
+                case MSP.MSP_PID:
                     ptr = 0;
                     for (int i = 0; i < iPidItems; i++)
                     {
@@ -1456,7 +1388,7 @@ namespace MultiWiiWinGUI
                     }
                     bOptions_needs_refresh = true;
                     break;
-                case MSP_BOX:
+                case MSP.MSP_BOX:
                     ptr = 0;
                     if (mw_gui.activation.Length < dataSize / 2)
                         mw_gui.activation = new short[dataSize / 2];
@@ -1465,7 +1397,7 @@ namespace MultiWiiWinGUI
                         mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
                     break;
-                case MSP_BOXNAMES:
+                case MSP.MSP_BOXNAMES:
                     StringBuilder builder = new StringBuilder();
                     ptr = 0;
                     while (ptr < dataSize) builder.Append((char)inBuf[ptr++]);
@@ -1475,24 +1407,38 @@ namespace MultiWiiWinGUI
                     iCheckBoxItems = mw_gui.sBoxNames.Length;
                     mw_gui.bUpdateBoxNames = true;
                     break;
-                case MSP_MISC:
+                case MSP.MSP_MISC:
                     ptr = 0;
-                    mw_gui.powerTrigger = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.powerTrigger = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.minThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.maxThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.minCommand = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.failsafe_throttle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.plog_arm = BitConverter.ToUInt16(inBuf, ptr); ptr +=2;
+                    mw_gui.plog_lifetime = BitConverter.ToUInt32(inBuf, ptr); ptr +=4;
+
+                    mw_gui.mag_declination = BitConverter.ToInt16(inBuf, ptr); ptr +=2;
+
+                    mw_gui.vbatscale = BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_warn1 = BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_warn2 = BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_crit = BitConverter.ToChar(inBuf, ptr); ptr++;
                     break;
-                case MSP_DEBUG:
+
+                case MSP.MSP_DEBUG:
                     ptr = 0;
                     mw_gui.debug1 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.debug2 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.debug3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.debug4 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
-                case MSP_DEBUGMSG:
+                case MSP.MSP_DEBUGMSG:
                     StringBuilder dbgmsg = new StringBuilder();
                     ptr = 0;
                     while (ptr < dataSize) dbgmsg.Append((char)inBuf[ptr++]);
                     strDebug =strDebug + dbgmsg.ToString();
                     break;
-                case MSP_WP:
+                case MSP.MSP_WP:
                     ptr = 0;
                     byte wp_no = (byte)inBuf[ptr++];
                     if (wp_no == 0)
@@ -1509,7 +1455,6 @@ namespace MultiWiiWinGUI
                         mw_gui.GPS_poshold_alt = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
                     break;
-                 
 
             }
         }
@@ -1716,14 +1661,24 @@ namespace MultiWiiWinGUI
             }
 
 
-            if (tabMain.SelectedIndex == 0 | tabMain.SelectedIndex == 1)        //Common tasks for both panel
+            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.Config)        //Common tasks for both panel
             {
 
                 throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
+
                 if (bOptions_needs_refresh)
                 {
                     update_pid_panel();
                     update_aux_panel();
+
+                    label9.Text = Convert.ToString(mw_gui.minThrottle);
+                    label10.Text = Convert.ToString(mw_gui.maxThrottle);
+                    label48.Text = Convert.ToString(mw_gui.minCommand);
+                    label49.Text = Convert.ToString(mw_gui.mag_declination);
+
+
+
+
                     bOptions_needs_refresh = false;
 
                 }
@@ -1731,7 +1686,7 @@ namespace MultiWiiWinGUI
 
 
             //TAB MAP
-            if (tabMain.SelectedIndex == 3)
+            if (tabMain.SelectedIndex == GUIPages.Mission)
             {
 
                 if (mw_gui.GPS_latitude != 0)
@@ -1778,7 +1733,7 @@ namespace MultiWiiWinGUI
 
 
             // TAB RCControl
-            if (tabMain.SelectedIndex == 1)
+            if (tabMain.SelectedIndex == GUIPages.RC)
             {
                 //update RC control values
                 rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
@@ -1933,7 +1888,7 @@ namespace MultiWiiWinGUI
 
         private void b_reread_rc_options_Click(object sender, EventArgs e)
         {
-            MSPquery(MSP_BOX);
+            MSPquery(MSP.MSP_BOX);
             bOptions_needs_refresh = true;
         }
 
@@ -1957,7 +1912,7 @@ namespace MultiWiiWinGUI
 
             if (MessageBoxEx.Show(this, "Make sure that your copter is leveled!\r\nPress OK when ready, then keep copter steady for 5 seconds.", "Calibrating Accelerometer", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
-                MSPquery(MSP_ACC_CALIBRATION);
+                MSPquery(MSP.MSP_ACC_CALIBRATION);
             }
 
         }
@@ -1973,7 +1928,7 @@ namespace MultiWiiWinGUI
             if (MessageBoxEx.Show(this, "After pressing OK please rotate your copter around all three axes\r\n at least a full 360° turn for each axes. You will have 1 minute to finish", "Calibrating Magnetometer", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
 
-                MSPquery(MSP_MAG_CALIBRATION);
+                MSPquery(MSP.MSP_MAG_CALIBRATION);
 
             }
         }
@@ -1982,11 +1937,11 @@ namespace MultiWiiWinGUI
         {
             if (isConnected)
             {
-                MSPquery(MSP_PID);
-                MSPquery(MSP_RC_TUNING);
-                MSPquery(MSP_IDENT);
-                MSPquery(MSP_BOX);
-                MSPquery(MSP_MISC);
+                MSPquery(MSP.MSP_PID);
+                MSPquery(MSP.MSP_RC_TUNING);
+                MSPquery(MSP.MSP_IDENT);
+                MSPquery(MSP.MSP_BOX);
+                MSPquery(MSP.MSP_MISC);
                 System.Threading.Thread.Sleep(500);
                 bOptions_needs_refresh = true;
                 update_gui();
@@ -2017,7 +1972,7 @@ namespace MultiWiiWinGUI
             mw_params.ThrottleMID = (byte)(nTMID.Value * 100);
             mw_params.ThrottleEXPO = (byte)(nTEXPO.Value * 100);
 
-            mw_params.PowerTrigger = (int)nPAlarm.Value;
+            mw_params.PowerTrigger = (Int16)nPAlarm.Value;
 
             for (int b = 0; b < iCheckBoxItems; b++)
             {
@@ -2032,7 +1987,6 @@ namespace MultiWiiWinGUI
                 }
             }
 
-            mw_params.comment = tComment.Text;
         }
 
         private void write_parameters()
@@ -2048,11 +2002,11 @@ namespace MultiWiiWinGUI
             mw_params.write_settings(serialPort);
             System.Threading.Thread.Sleep(1000);
 
-            MSPquery(MSP_PID);
-            MSPquery(MSP_RC_TUNING);
-            MSPquery(MSP_IDENT);
-            MSPquery(MSP_BOX);
-            MSPquery(MSP_MISC);
+            MSPquery(MSP.MSP_PID);
+            MSPquery(MSP.MSP_RC_TUNING);
+            MSPquery(MSP.MSP_IDENT);
+            MSPquery(MSP.MSP_BOX);
+            MSPquery(MSP.MSP_MISC);
             //Invalidate gui parameters and reread those values
 
             timer_realtime.Start();
@@ -2196,9 +2150,6 @@ namespace MultiWiiWinGUI
             throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100, mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_params.PowerTrigger;
-
-            tComment.Text = mw_params.comment;
-
         }
 
         private void b_write_to_file_Click(object sender, EventArgs e)
@@ -2211,8 +2162,7 @@ namespace MultiWiiWinGUI
 
             string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
             string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
-            string fn = Regex.Replace(tComment.Text, invalidReStr, "_");
-            fn = fn + String.Format("{0:yymmdd-hhmm}", DateTime.Now);
+            string fn =  String.Format("{0:yymmdd-hhmm}", DateTime.Now);
             sfdSaveParameters.FileName = fn;
 
 
@@ -2399,7 +2349,7 @@ namespace MultiWiiWinGUI
             o[1] = (byte)'M';
             o[2] = (byte)'<';
             o[3] = (byte)1; c ^= o[3];       //one byte payload
-            o[4] = (byte)MSP_WP; c ^= o[4];
+            o[4] = (byte)MSP.MSP_WP; c ^= o[4];
             o[5] = (byte)wp; c ^= o[5];
             o[6] = (byte)c;
             serialPort.Write(o, 0, 7);
@@ -3173,14 +3123,14 @@ namespace MultiWiiWinGUI
 
             //Stop all timers
             timer_realtime.Stop();
-            MSPquery(MSP_RESET_CONF);
+            MSPquery(MSP.MSP_RESET_CONF);
             System.Threading.Thread.Sleep(1000);
 
-            MSPquery(MSP_PID);
-            MSPquery(MSP_RC_TUNING);
-            MSPquery(MSP_IDENT);
-            MSPquery(MSP_BOX);
-            MSPquery(MSP_MISC);
+            MSPquery(MSP.MSP_PID);
+            MSPquery(MSP.MSP_RC_TUNING);
+            MSPquery(MSP.MSP_IDENT);
+            MSPquery(MSP.MSP_BOX);
+            MSPquery(MSP.MSP_MISC);
             //Invalidate gui parameters and reread those values
 
             timer_realtime.Start();
@@ -3548,8 +3498,7 @@ namespace MultiWiiWinGUI
 
                 string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
                 string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
-                string fn = Regex.Replace(tComment.Text, invalidReStr, "_");
-                fn = fn + String.Format("{0:yyMMdd-hhmm}", DateTime.Now);
+                string fn = String.Format("{0:yyMMdd-hhmm}", DateTime.Now);
                 sfdSaveParameters.FileName = fn;
 
 
@@ -3599,7 +3548,7 @@ namespace MultiWiiWinGUI
                     buffer[bptr++] = (byte)'M';
                     buffer[bptr++] = (byte)'<';
                     buffer[bptr++] = 18;
-                    buffer[bptr++] = (byte)MSP_SET_WP;
+                    buffer[bptr++] = (byte)MSP.MSP_SET_WP;
 
                     //byte Waypoint number
                     buffer[bptr++] = Convert.ToByte(wp_number);
