@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePID = new System.Windows.Forms.TabPage();
@@ -54,6 +54,67 @@
             this.nRATE_yaw = new System.Windows.Forms.NumericUpDown();
             this.nRATE_rp = new System.Windows.Forms.NumericUpDown();
             this.tabPageConf = new System.Windows.Forms.TabPage();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.nMagMin = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.nMagDeg = new System.Windows.Forms.NumericUpDown();
+            this.cbMagSign = new System.Windows.Forms.ComboBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.nSrvRate4 = new System.Windows.Forms.NumericUpDown();
+            this.label56 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.nSrvMax8 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMax7 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMax6 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID1 = new System.Windows.Forms.Label();
+            this.nSrvMax5 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID2 = new System.Windows.Forms.Label();
+            this.nSrvMax4 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID3 = new System.Windows.Forms.Label();
+            this.nSrvMax3 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID4 = new System.Windows.Forms.Label();
+            this.nSrvMax2 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID5 = new System.Windows.Forms.Label();
+            this.nSrvMax1 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID6 = new System.Windows.Forms.Label();
+            this.nSrvMid8 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID7 = new System.Windows.Forms.Label();
+            this.nSrvMid7 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvID8 = new System.Windows.Forms.Label();
+            this.nSrvMid6 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName1 = new System.Windows.Forms.Label();
+            this.nSrvMid5 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName3 = new System.Windows.Forms.Label();
+            this.nSrvMid4 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName2 = new System.Windows.Forms.Label();
+            this.nSrvMid3 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName4 = new System.Windows.Forms.Label();
+            this.nSrvMid2 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName5 = new System.Windows.Forms.Label();
+            this.nSrvMid1 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName6 = new System.Windows.Forms.Label();
+            this.nSrvMin8 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName7 = new System.Windows.Forms.Label();
+            this.nSrvMin7 = new System.Windows.Forms.NumericUpDown();
+            this.lSrvName8 = new System.Windows.Forms.Label();
+            this.nSrvMin6 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate1 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMin5 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate2 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMin4 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate3 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMin3 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate5 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMin2 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate6 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvMin1 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate7 = new System.Windows.Forms.NumericUpDown();
+            this.nSrvRate8 = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.nPAlarm = new System.Windows.Forms.NumericUpDown();
             this.tabPageRC = new System.Windows.Forms.TabPage();
@@ -258,11 +319,33 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.label58 = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
+            this.label62 = new System.Windows.Forms.Label();
+            this.label63 = new System.Windows.Forms.Label();
+            this.label64 = new System.Windows.Forms.Label();
+            this.label67 = new System.Windows.Forms.Label();
+            this.label68 = new System.Windows.Forms.Label();
+            this.nVBatScale = new System.Windows.Forms.NumericUpDown();
+            this.nVBatWarn1 = new System.Windows.Forms.NumericUpDown();
+            this.nVBatWarn2 = new System.Windows.Forms.NumericUpDown();
+            this.nVBatCritical = new System.Windows.Forms.NumericUpDown();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.throttle_expo_control1 = new MultiWiiGUIControls.throttle_expo_control();
             this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
+            this.cbSrvRev1 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev2 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev3 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev4 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev5 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev6 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev7 = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbSrvRev8 = new MultiWiiGUIControls.CheckBoxEx();
             this.rci_Control_settings = new MultiWiiGUIControls.rc_input_control();
             this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
@@ -275,7 +358,6 @@
             this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
             this.indGPS = new MultiWiiGUIControls.indicator_lamp();
             this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
-            this.label49 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPagePID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
@@ -291,6 +373,41 @@
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_yaw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_rp)).BeginInit();
             this.tabPageConf.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nMagMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMagDeg)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).BeginInit();
             this.tabPageRC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -349,6 +466,12 @@
             this.tabPageCLI.SuspendLayout();
             this.gbTerminal.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatScale)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatWarn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatWarn2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatCritical)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -694,12 +817,15 @@
             // tabPageConf
             // 
             this.tabPageConf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tabPageConf.Controls.Add(this.label49);
-            this.tabPageConf.Controls.Add(this.label48);
-            this.tabPageConf.Controls.Add(this.label10);
+            this.tabPageConf.Controls.Add(this.groupBox6);
+            this.tabPageConf.Controls.Add(this.label62);
+            this.tabPageConf.Controls.Add(this.label61);
+            this.tabPageConf.Controls.Add(this.label59);
+            this.tabPageConf.Controls.Add(this.label58);
+            this.tabPageConf.Controls.Add(this.label57);
             this.tabPageConf.Controls.Add(this.label9);
-            this.tabPageConf.Controls.Add(this.label8);
-            this.tabPageConf.Controls.Add(this.nPAlarm);
+            this.tabPageConf.Controls.Add(this.groupBox5);
+            this.tabPageConf.Controls.Add(this.groupBox4);
             this.tabPageConf.Location = new System.Drawing.Point(4, 22);
             this.tabPageConf.Name = "tabPageConf";
             this.tabPageConf.Padding = new System.Windows.Forms.Padding(3);
@@ -707,12 +833,1029 @@
             this.tabPageConf.TabIndex = 7;
             this.tabPageConf.Text = "FC Config";
             // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.ForeColor = System.Drawing.Color.Coral;
+            this.label49.Location = new System.Drawing.Point(280, 21);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(38, 16);
+            this.label49.TabIndex = 97;
+            this.label49.Text = "(0.0)";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.ForeColor = System.Drawing.Color.White;
+            this.label48.Location = new System.Drawing.Point(231, 22);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(43, 13);
+            this.label48.TabIndex = 96;
+            this.label48.Text = "minutes";
+            // 
+            // nMagMin
+            // 
+            this.nMagMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nMagMin.Location = new System.Drawing.Point(186, 19);
+            this.nMagMin.Name = "nMagMin";
+            this.nMagMin.Size = new System.Drawing.Size(39, 21);
+            this.nMagMin.TabIndex = 95;
+            this.nMagMin.ValueChanged += new System.EventHandler(this.nMagMin_ValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(140, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(40, 13);
+            this.label10.TabIndex = 94;
+            this.label10.Text = "degree";
+            // 
+            // nMagDeg
+            // 
+            this.nMagDeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nMagDeg.Location = new System.Drawing.Point(95, 19);
+            this.nMagDeg.Name = "nMagDeg";
+            this.nMagDeg.Size = new System.Drawing.Size(39, 21);
+            this.nMagDeg.TabIndex = 93;
+            this.nMagDeg.ValueChanged += new System.EventHandler(this.nMagDeg_ValueChanged);
+            // 
+            // cbMagSign
+            // 
+            this.cbMagSign.FormattingEnabled = true;
+            this.cbMagSign.Items.AddRange(new object[] {
+            "EAST",
+            "WEST"});
+            this.cbMagSign.Location = new System.Drawing.Point(9, 19);
+            this.cbMagSign.Name = "cbMagSign";
+            this.cbMagSign.Size = new System.Drawing.Size(70, 21);
+            this.cbMagSign.TabIndex = 92;
+            this.cbMagSign.SelectedIndexChanged += new System.EventHandler(this.cbMagSign_SelectedIndexChanged);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.nSrvRate4);
+            this.groupBox4.Controls.Add(this.label56);
+            this.groupBox4.Controls.Add(this.cbSrvRev1);
+            this.groupBox4.Controls.Add(this.label55);
+            this.groupBox4.Controls.Add(this.cbSrvRev2);
+            this.groupBox4.Controls.Add(this.label54);
+            this.groupBox4.Controls.Add(this.cbSrvRev3);
+            this.groupBox4.Controls.Add(this.label53);
+            this.groupBox4.Controls.Add(this.cbSrvRev4);
+            this.groupBox4.Controls.Add(this.label52);
+            this.groupBox4.Controls.Add(this.cbSrvRev5);
+            this.groupBox4.Controls.Add(this.label51);
+            this.groupBox4.Controls.Add(this.cbSrvRev6);
+            this.groupBox4.Controls.Add(this.nSrvMax8);
+            this.groupBox4.Controls.Add(this.cbSrvRev7);
+            this.groupBox4.Controls.Add(this.nSrvMax7);
+            this.groupBox4.Controls.Add(this.cbSrvRev8);
+            this.groupBox4.Controls.Add(this.nSrvMax6);
+            this.groupBox4.Controls.Add(this.lSrvID1);
+            this.groupBox4.Controls.Add(this.nSrvMax5);
+            this.groupBox4.Controls.Add(this.lSrvID2);
+            this.groupBox4.Controls.Add(this.nSrvMax4);
+            this.groupBox4.Controls.Add(this.lSrvID3);
+            this.groupBox4.Controls.Add(this.nSrvMax3);
+            this.groupBox4.Controls.Add(this.lSrvID4);
+            this.groupBox4.Controls.Add(this.nSrvMax2);
+            this.groupBox4.Controls.Add(this.lSrvID5);
+            this.groupBox4.Controls.Add(this.nSrvMax1);
+            this.groupBox4.Controls.Add(this.lSrvID6);
+            this.groupBox4.Controls.Add(this.nSrvMid8);
+            this.groupBox4.Controls.Add(this.lSrvID7);
+            this.groupBox4.Controls.Add(this.nSrvMid7);
+            this.groupBox4.Controls.Add(this.lSrvID8);
+            this.groupBox4.Controls.Add(this.nSrvMid6);
+            this.groupBox4.Controls.Add(this.lSrvName1);
+            this.groupBox4.Controls.Add(this.nSrvMid5);
+            this.groupBox4.Controls.Add(this.lSrvName3);
+            this.groupBox4.Controls.Add(this.nSrvMid4);
+            this.groupBox4.Controls.Add(this.lSrvName2);
+            this.groupBox4.Controls.Add(this.nSrvMid3);
+            this.groupBox4.Controls.Add(this.lSrvName4);
+            this.groupBox4.Controls.Add(this.nSrvMid2);
+            this.groupBox4.Controls.Add(this.lSrvName5);
+            this.groupBox4.Controls.Add(this.nSrvMid1);
+            this.groupBox4.Controls.Add(this.lSrvName6);
+            this.groupBox4.Controls.Add(this.nSrvMin8);
+            this.groupBox4.Controls.Add(this.lSrvName7);
+            this.groupBox4.Controls.Add(this.nSrvMin7);
+            this.groupBox4.Controls.Add(this.lSrvName8);
+            this.groupBox4.Controls.Add(this.nSrvMin6);
+            this.groupBox4.Controls.Add(this.nSrvRate1);
+            this.groupBox4.Controls.Add(this.nSrvMin5);
+            this.groupBox4.Controls.Add(this.nSrvRate2);
+            this.groupBox4.Controls.Add(this.nSrvMin4);
+            this.groupBox4.Controls.Add(this.nSrvRate3);
+            this.groupBox4.Controls.Add(this.nSrvMin3);
+            this.groupBox4.Controls.Add(this.nSrvRate5);
+            this.groupBox4.Controls.Add(this.nSrvMin2);
+            this.groupBox4.Controls.Add(this.nSrvRate6);
+            this.groupBox4.Controls.Add(this.nSrvMin1);
+            this.groupBox4.Controls.Add(this.nSrvRate7);
+            this.groupBox4.Controls.Add(this.nSrvRate8);
+            this.groupBox4.ForeColor = System.Drawing.Color.White;
+            this.groupBox4.Location = new System.Drawing.Point(8, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(551, 274);
+            this.groupBox4.TabIndex = 90;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Servo settings";
+            // 
+            // nSrvRate4
+            // 
+            this.nSrvRate4.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate4.Location = new System.Drawing.Point(243, 126);
+            this.nSrvRate4.Name = "nSrvRate4";
+            this.nSrvRate4.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate4.TabIndex = 55;
+            this.nSrvRate4.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.ForeColor = System.Drawing.Color.White;
+            this.label56.Location = new System.Drawing.Point(492, 16);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(27, 13);
+            this.label56.TabIndex = 89;
+            this.label56.Text = "Max";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.ForeColor = System.Drawing.Color.White;
+            this.label55.Location = new System.Drawing.Point(399, 16);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(38, 13);
+            this.label55.TabIndex = 88;
+            this.label55.Text = "Middle";
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.ForeColor = System.Drawing.Color.White;
+            this.label54.Location = new System.Drawing.Point(326, 16);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(24, 13);
+            this.label54.TabIndex = 87;
+            this.label54.Text = "Min";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.ForeColor = System.Drawing.Color.White;
+            this.label53.Location = new System.Drawing.Point(251, 16);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(30, 13);
+            this.label53.TabIndex = 86;
+            this.label53.Text = "Rate";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.ForeColor = System.Drawing.Color.White;
+            this.label52.Location = new System.Drawing.Point(184, 16);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(47, 13);
+            this.label52.TabIndex = 85;
+            this.label52.Text = "Reverse";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.ForeColor = System.Drawing.Color.White;
+            this.label51.Location = new System.Drawing.Point(102, 16);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(48, 13);
+            this.label51.TabIndex = 84;
+            this.label51.Text = "Function";
+            // 
+            // nSrvMax8
+            // 
+            this.nSrvMax8.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax8.Location = new System.Drawing.Point(476, 238);
+            this.nSrvMax8.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax8.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax8.Name = "nSrvMax8";
+            this.nSrvMax8.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax8.TabIndex = 83;
+            this.nSrvMax8.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMax7
+            // 
+            this.nSrvMax7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax7.Location = new System.Drawing.Point(476, 211);
+            this.nSrvMax7.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax7.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax7.Name = "nSrvMax7";
+            this.nSrvMax7.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax7.TabIndex = 82;
+            this.nSrvMax7.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMax6
+            // 
+            this.nSrvMax6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax6.Location = new System.Drawing.Point(476, 182);
+            this.nSrvMax6.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax6.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax6.Name = "nSrvMax6";
+            this.nSrvMax6.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax6.TabIndex = 81;
+            this.nSrvMax6.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID1
+            // 
+            this.lSrvID1.AutoSize = true;
+            this.lSrvID1.ForeColor = System.Drawing.Color.White;
+            this.lSrvID1.Location = new System.Drawing.Point(6, 45);
+            this.lSrvID1.Name = "lSrvID1";
+            this.lSrvID1.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID1.TabIndex = 28;
+            this.lSrvID1.Text = "Servo1";
+            // 
+            // nSrvMax5
+            // 
+            this.nSrvMax5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax5.Location = new System.Drawing.Point(476, 154);
+            this.nSrvMax5.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax5.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax5.Name = "nSrvMax5";
+            this.nSrvMax5.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax5.TabIndex = 80;
+            this.nSrvMax5.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID2
+            // 
+            this.lSrvID2.AutoSize = true;
+            this.lSrvID2.ForeColor = System.Drawing.Color.White;
+            this.lSrvID2.Location = new System.Drawing.Point(6, 73);
+            this.lSrvID2.Name = "lSrvID2";
+            this.lSrvID2.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID2.TabIndex = 29;
+            this.lSrvID2.Text = "Servo2";
+            // 
+            // nSrvMax4
+            // 
+            this.nSrvMax4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax4.Location = new System.Drawing.Point(476, 126);
+            this.nSrvMax4.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax4.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax4.Name = "nSrvMax4";
+            this.nSrvMax4.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax4.TabIndex = 79;
+            this.nSrvMax4.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID3
+            // 
+            this.lSrvID3.AutoSize = true;
+            this.lSrvID3.ForeColor = System.Drawing.Color.White;
+            this.lSrvID3.Location = new System.Drawing.Point(6, 101);
+            this.lSrvID3.Name = "lSrvID3";
+            this.lSrvID3.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID3.TabIndex = 30;
+            this.lSrvID3.Text = "Servo3";
+            // 
+            // nSrvMax3
+            // 
+            this.nSrvMax3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax3.Location = new System.Drawing.Point(476, 98);
+            this.nSrvMax3.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax3.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax3.Name = "nSrvMax3";
+            this.nSrvMax3.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax3.TabIndex = 78;
+            this.nSrvMax3.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID4
+            // 
+            this.lSrvID4.AutoSize = true;
+            this.lSrvID4.ForeColor = System.Drawing.Color.White;
+            this.lSrvID4.Location = new System.Drawing.Point(6, 129);
+            this.lSrvID4.Name = "lSrvID4";
+            this.lSrvID4.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID4.TabIndex = 31;
+            this.lSrvID4.Text = "Servo4";
+            // 
+            // nSrvMax2
+            // 
+            this.nSrvMax2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax2.Location = new System.Drawing.Point(476, 70);
+            this.nSrvMax2.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax2.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax2.Name = "nSrvMax2";
+            this.nSrvMax2.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax2.TabIndex = 77;
+            this.nSrvMax2.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID5
+            // 
+            this.lSrvID5.AutoSize = true;
+            this.lSrvID5.ForeColor = System.Drawing.Color.White;
+            this.lSrvID5.Location = new System.Drawing.Point(6, 157);
+            this.lSrvID5.Name = "lSrvID5";
+            this.lSrvID5.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID5.TabIndex = 32;
+            this.lSrvID5.Text = "Servo5";
+            // 
+            // nSrvMax1
+            // 
+            this.nSrvMax1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMax1.Location = new System.Drawing.Point(476, 42);
+            this.nSrvMax1.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMax1.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMax1.Name = "nSrvMax1";
+            this.nSrvMax1.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMax1.TabIndex = 76;
+            this.nSrvMax1.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID6
+            // 
+            this.lSrvID6.AutoSize = true;
+            this.lSrvID6.ForeColor = System.Drawing.Color.White;
+            this.lSrvID6.Location = new System.Drawing.Point(6, 185);
+            this.lSrvID6.Name = "lSrvID6";
+            this.lSrvID6.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID6.TabIndex = 33;
+            this.lSrvID6.Text = "Servo6";
+            // 
+            // nSrvMid8
+            // 
+            this.nSrvMid8.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid8.Location = new System.Drawing.Point(392, 238);
+            this.nSrvMid8.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid8.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid8.Name = "nSrvMid8";
+            this.nSrvMid8.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid8.TabIndex = 75;
+            this.nSrvMid8.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID7
+            // 
+            this.lSrvID7.AutoSize = true;
+            this.lSrvID7.ForeColor = System.Drawing.Color.White;
+            this.lSrvID7.Location = new System.Drawing.Point(6, 213);
+            this.lSrvID7.Name = "lSrvID7";
+            this.lSrvID7.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID7.TabIndex = 34;
+            this.lSrvID7.Text = "Servo7";
+            // 
+            // nSrvMid7
+            // 
+            this.nSrvMid7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid7.Location = new System.Drawing.Point(392, 211);
+            this.nSrvMid7.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid7.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid7.Name = "nSrvMid7";
+            this.nSrvMid7.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid7.TabIndex = 74;
+            this.nSrvMid7.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvID8
+            // 
+            this.lSrvID8.AutoSize = true;
+            this.lSrvID8.ForeColor = System.Drawing.Color.White;
+            this.lSrvID8.Location = new System.Drawing.Point(6, 241);
+            this.lSrvID8.Name = "lSrvID8";
+            this.lSrvID8.Size = new System.Drawing.Size(41, 13);
+            this.lSrvID8.TabIndex = 35;
+            this.lSrvID8.Text = "Servo8";
+            // 
+            // nSrvMid6
+            // 
+            this.nSrvMid6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid6.Location = new System.Drawing.Point(392, 182);
+            this.nSrvMid6.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid6.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid6.Name = "nSrvMid6";
+            this.nSrvMid6.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid6.TabIndex = 73;
+            this.nSrvMid6.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName1
+            // 
+            this.lSrvName1.AutoSize = true;
+            this.lSrvName1.ForeColor = System.Drawing.Color.White;
+            this.lSrvName1.Location = new System.Drawing.Point(65, 45);
+            this.lSrvName1.Name = "lSrvName1";
+            this.lSrvName1.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName1.TabIndex = 36;
+            this.lSrvName1.Text = "--------------------------------------";
+            // 
+            // nSrvMid5
+            // 
+            this.nSrvMid5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid5.Location = new System.Drawing.Point(392, 154);
+            this.nSrvMid5.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid5.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid5.Name = "nSrvMid5";
+            this.nSrvMid5.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid5.TabIndex = 72;
+            this.nSrvMid5.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName3
+            // 
+            this.lSrvName3.AutoSize = true;
+            this.lSrvName3.ForeColor = System.Drawing.Color.White;
+            this.lSrvName3.Location = new System.Drawing.Point(65, 101);
+            this.lSrvName3.Name = "lSrvName3";
+            this.lSrvName3.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName3.TabIndex = 37;
+            this.lSrvName3.Text = "--------------------------------------";
+            // 
+            // nSrvMid4
+            // 
+            this.nSrvMid4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid4.Location = new System.Drawing.Point(392, 126);
+            this.nSrvMid4.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid4.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid4.Name = "nSrvMid4";
+            this.nSrvMid4.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid4.TabIndex = 71;
+            this.nSrvMid4.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName2
+            // 
+            this.lSrvName2.AutoSize = true;
+            this.lSrvName2.ForeColor = System.Drawing.Color.White;
+            this.lSrvName2.Location = new System.Drawing.Point(65, 73);
+            this.lSrvName2.Name = "lSrvName2";
+            this.lSrvName2.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName2.TabIndex = 38;
+            this.lSrvName2.Text = "--------------------------------------";
+            // 
+            // nSrvMid3
+            // 
+            this.nSrvMid3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid3.Location = new System.Drawing.Point(392, 98);
+            this.nSrvMid3.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid3.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid3.Name = "nSrvMid3";
+            this.nSrvMid3.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid3.TabIndex = 70;
+            this.nSrvMid3.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName4
+            // 
+            this.lSrvName4.AutoSize = true;
+            this.lSrvName4.ForeColor = System.Drawing.Color.White;
+            this.lSrvName4.Location = new System.Drawing.Point(65, 129);
+            this.lSrvName4.Name = "lSrvName4";
+            this.lSrvName4.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName4.TabIndex = 39;
+            this.lSrvName4.Text = "--------------------------------------";
+            // 
+            // nSrvMid2
+            // 
+            this.nSrvMid2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid2.Location = new System.Drawing.Point(392, 70);
+            this.nSrvMid2.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid2.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid2.Name = "nSrvMid2";
+            this.nSrvMid2.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid2.TabIndex = 69;
+            this.nSrvMid2.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName5
+            // 
+            this.lSrvName5.AutoSize = true;
+            this.lSrvName5.ForeColor = System.Drawing.Color.White;
+            this.lSrvName5.Location = new System.Drawing.Point(65, 157);
+            this.lSrvName5.Name = "lSrvName5";
+            this.lSrvName5.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName5.TabIndex = 40;
+            this.lSrvName5.Text = "--------------------------------------";
+            // 
+            // nSrvMid1
+            // 
+            this.nSrvMid1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMid1.Location = new System.Drawing.Point(392, 42);
+            this.nSrvMid1.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMid1.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMid1.Name = "nSrvMid1";
+            this.nSrvMid1.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMid1.TabIndex = 68;
+            this.nSrvMid1.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName6
+            // 
+            this.lSrvName6.AutoSize = true;
+            this.lSrvName6.ForeColor = System.Drawing.Color.White;
+            this.lSrvName6.Location = new System.Drawing.Point(65, 185);
+            this.lSrvName6.Name = "lSrvName6";
+            this.lSrvName6.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName6.TabIndex = 41;
+            this.lSrvName6.Text = "--------------------------------------";
+            // 
+            // nSrvMin8
+            // 
+            this.nSrvMin8.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin8.Location = new System.Drawing.Point(311, 238);
+            this.nSrvMin8.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin8.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin8.Name = "nSrvMin8";
+            this.nSrvMin8.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin8.TabIndex = 67;
+            this.nSrvMin8.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName7
+            // 
+            this.lSrvName7.AutoSize = true;
+            this.lSrvName7.ForeColor = System.Drawing.Color.White;
+            this.lSrvName7.Location = new System.Drawing.Point(65, 213);
+            this.lSrvName7.Name = "lSrvName7";
+            this.lSrvName7.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName7.TabIndex = 42;
+            this.lSrvName7.Text = "--------------------------------------";
+            // 
+            // nSrvMin7
+            // 
+            this.nSrvMin7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin7.Location = new System.Drawing.Point(311, 211);
+            this.nSrvMin7.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin7.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin7.Name = "nSrvMin7";
+            this.nSrvMin7.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin7.TabIndex = 66;
+            this.nSrvMin7.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // lSrvName8
+            // 
+            this.lSrvName8.AutoSize = true;
+            this.lSrvName8.ForeColor = System.Drawing.Color.White;
+            this.lSrvName8.Location = new System.Drawing.Point(65, 241);
+            this.lSrvName8.Name = "lSrvName8";
+            this.lSrvName8.Size = new System.Drawing.Size(121, 13);
+            this.lSrvName8.TabIndex = 43;
+            this.lSrvName8.Text = "--------------------------------------";
+            // 
+            // nSrvMin6
+            // 
+            this.nSrvMin6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin6.Location = new System.Drawing.Point(311, 182);
+            this.nSrvMin6.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin6.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin6.Name = "nSrvMin6";
+            this.nSrvMin6.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin6.TabIndex = 65;
+            this.nSrvMin6.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate1
+            // 
+            this.nSrvRate1.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate1.Location = new System.Drawing.Point(243, 42);
+            this.nSrvRate1.Name = "nSrvRate1";
+            this.nSrvRate1.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate1.TabIndex = 52;
+            this.nSrvRate1.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMin5
+            // 
+            this.nSrvMin5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin5.Location = new System.Drawing.Point(311, 154);
+            this.nSrvMin5.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin5.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin5.Name = "nSrvMin5";
+            this.nSrvMin5.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin5.TabIndex = 64;
+            this.nSrvMin5.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate2
+            // 
+            this.nSrvRate2.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate2.Location = new System.Drawing.Point(243, 70);
+            this.nSrvRate2.Name = "nSrvRate2";
+            this.nSrvRate2.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate2.TabIndex = 53;
+            this.nSrvRate2.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMin4
+            // 
+            this.nSrvMin4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin4.Location = new System.Drawing.Point(311, 126);
+            this.nSrvMin4.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin4.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin4.Name = "nSrvMin4";
+            this.nSrvMin4.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin4.TabIndex = 63;
+            this.nSrvMin4.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate3
+            // 
+            this.nSrvRate3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate3.Location = new System.Drawing.Point(243, 98);
+            this.nSrvRate3.Name = "nSrvRate3";
+            this.nSrvRate3.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate3.TabIndex = 54;
+            this.nSrvRate3.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMin3
+            // 
+            this.nSrvMin3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin3.Location = new System.Drawing.Point(311, 98);
+            this.nSrvMin3.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin3.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin3.Name = "nSrvMin3";
+            this.nSrvMin3.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin3.TabIndex = 62;
+            this.nSrvMin3.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate5
+            // 
+            this.nSrvRate5.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate5.Location = new System.Drawing.Point(243, 154);
+            this.nSrvRate5.Name = "nSrvRate5";
+            this.nSrvRate5.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate5.TabIndex = 56;
+            this.nSrvRate5.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMin2
+            // 
+            this.nSrvMin2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin2.Location = new System.Drawing.Point(311, 70);
+            this.nSrvMin2.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin2.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin2.Name = "nSrvMin2";
+            this.nSrvMin2.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin2.TabIndex = 61;
+            this.nSrvMin2.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate6
+            // 
+            this.nSrvRate6.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate6.Location = new System.Drawing.Point(243, 182);
+            this.nSrvRate6.Name = "nSrvRate6";
+            this.nSrvRate6.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate6.TabIndex = 57;
+            this.nSrvRate6.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvMin1
+            // 
+            this.nSrvMin1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvMin1.Location = new System.Drawing.Point(311, 42);
+            this.nSrvMin1.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nSrvMin1.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nSrvMin1.Name = "nSrvMin1";
+            this.nSrvMin1.Size = new System.Drawing.Size(64, 22);
+            this.nSrvMin1.TabIndex = 60;
+            this.nSrvMin1.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate7
+            // 
+            this.nSrvRate7.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate7.Location = new System.Drawing.Point(243, 210);
+            this.nSrvRate7.Name = "nSrvRate7";
+            this.nSrvRate7.Size = new System.Drawing.Size(49, 21);
+            this.nSrvRate7.TabIndex = 58;
+            this.nSrvRate7.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // nSrvRate8
+            // 
+            this.nSrvRate8.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.nSrvRate8.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSrvRate8.Location = new System.Drawing.Point(243, 238);
+            this.nSrvRate8.Name = "nSrvRate8";
+            this.nSrvRate8.Size = new System.Drawing.Size(49, 22);
+            this.nSrvRate8.TabIndex = 59;
+            this.nSrvRate8.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(750, 411);
+            this.label8.Location = new System.Drawing.Point(6, 117);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(113, 13);
             this.label8.TabIndex = 23;
@@ -724,7 +1867,7 @@
             this.nPAlarm.BackColor = System.Drawing.Color.LightGray;
             this.nPAlarm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nPAlarm.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nPAlarm.Location = new System.Drawing.Point(869, 406);
+            this.nPAlarm.Location = new System.Drawing.Point(152, 118);
             this.nPAlarm.Maximum = new decimal(new int[] {
             64000,
             0,
@@ -2122,14 +3265,14 @@
             this.missionDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             this.missionDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.missionDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.missionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.missionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.No,
@@ -2141,14 +3284,14 @@
             this.UP,
             this.Down,
             this.DEL});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle4;
             this.missionDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.missionDataGrid.EnableHeadersVisualStyles = false;
             this.missionDataGrid.Location = new System.Drawing.Point(0, 0);
@@ -3116,35 +4259,234 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.linkLabel1.Location = new System.Drawing.Point(17, 52);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(275, 13);
+            this.linkLabel1.TabIndex = 98;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Check your location at  http://magnetic-declination.com/";
+            this.linkLabel1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.cbMagSign);
+            this.groupBox5.Controls.Add(this.linkLabel1);
+            this.groupBox5.Controls.Add(this.nMagDeg);
+            this.groupBox5.Controls.Add(this.label49);
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.label48);
+            this.groupBox5.Controls.Add(this.nMagMin);
+            this.groupBox5.ForeColor = System.Drawing.Color.White;
+            this.groupBox5.Location = new System.Drawing.Point(8, 286);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(340, 80);
+            this.groupBox5.TabIndex = 99;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Magnetic Decliniation";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(47, 46);
+            this.label9.Location = new System.Drawing.Point(859, 48);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(35, 13);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 13);
+            this.label9.TabIndex = 100;
+            this.label9.Text = "MinThrottle";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label10
+            // label57
             // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(40, 76);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 25;
-            this.label10.Text = "label10";
+            this.label57.AutoSize = true;
+            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label57.ForeColor = System.Drawing.Color.White;
+            this.label57.Location = new System.Drawing.Point(859, 104);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(85, 13);
+            this.label57.TabIndex = 101;
+            this.label57.Text = "Min Command";
+            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label48
+            // label58
             // 
-            this.label48.AutoSize = true;
-            this.label48.ForeColor = System.Drawing.Color.White;
-            this.label48.Location = new System.Drawing.Point(50, 112);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(41, 13);
-            this.label48.TabIndex = 26;
-            this.label48.Text = "label48";
+            this.label58.AutoSize = true;
+            this.label58.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label58.ForeColor = System.Drawing.Color.White;
+            this.label58.Location = new System.Drawing.Point(859, 76);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(78, 13);
+            this.label58.TabIndex = 102;
+            this.label58.Text = "Max Throttle";
+            this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label59.ForeColor = System.Drawing.Color.White;
+            this.label59.Location = new System.Drawing.Point(859, 141);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(99, 13);
+            this.label59.TabIndex = 103;
+            this.label59.Text = "Failsafe Throttle";
+            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label61.ForeColor = System.Drawing.Color.White;
+            this.label61.Location = new System.Drawing.Point(859, 211);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(99, 13);
+            this.label61.TabIndex = 104;
+            this.label61.Text = "Failsafe Throttle";
+            this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label62.ForeColor = System.Drawing.Color.White;
+            this.label62.Location = new System.Drawing.Point(859, 188);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(99, 13);
+            this.label62.TabIndex = 105;
+            this.label62.Text = "Failsafe Throttle";
+            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label63.ForeColor = System.Drawing.Color.White;
+            this.label63.Location = new System.Drawing.Point(6, 93);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(108, 13);
+            this.label63.TabIndex = 106;
+            this.label63.Text = "VBat Critical level";
+            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label64.ForeColor = System.Drawing.Color.White;
+            this.label64.Location = new System.Drawing.Point(6, 69);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(124, 13);
+            this.label64.TabIndex = 107;
+            this.label64.Text = "VBat warning level 2";
+            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label67.ForeColor = System.Drawing.Color.White;
+            this.label67.Location = new System.Drawing.Point(6, 45);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(124, 13);
+            this.label67.TabIndex = 108;
+            this.label67.Text = "VBat warning level 1";
+            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label68.ForeColor = System.Drawing.Color.White;
+            this.label68.Location = new System.Drawing.Point(6, 21);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(70, 13);
+            this.label68.TabIndex = 109;
+            this.label68.Text = "VBat Scale";
+            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // nVBatScale
+            // 
+            this.nVBatScale.BackColor = System.Drawing.Color.LightGray;
+            this.nVBatScale.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nVBatScale.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nVBatScale.Location = new System.Drawing.Point(152, 22);
+            this.nVBatScale.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nVBatScale.Name = "nVBatScale";
+            this.nVBatScale.Size = new System.Drawing.Size(68, 18);
+            this.nVBatScale.TabIndex = 110;
+            // 
+            // nVBatWarn1
+            // 
+            this.nVBatWarn1.BackColor = System.Drawing.Color.LightGray;
+            this.nVBatWarn1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nVBatWarn1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nVBatWarn1.Location = new System.Drawing.Point(152, 46);
+            this.nVBatWarn1.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nVBatWarn1.Name = "nVBatWarn1";
+            this.nVBatWarn1.Size = new System.Drawing.Size(68, 18);
+            this.nVBatWarn1.TabIndex = 111;
+            // 
+            // nVBatWarn2
+            // 
+            this.nVBatWarn2.BackColor = System.Drawing.Color.LightGray;
+            this.nVBatWarn2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nVBatWarn2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nVBatWarn2.Location = new System.Drawing.Point(152, 70);
+            this.nVBatWarn2.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nVBatWarn2.Name = "nVBatWarn2";
+            this.nVBatWarn2.Size = new System.Drawing.Size(68, 18);
+            this.nVBatWarn2.TabIndex = 112;
+            // 
+            // nVBatCritical
+            // 
+            this.nVBatCritical.BackColor = System.Drawing.Color.LightGray;
+            this.nVBatCritical.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nVBatCritical.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nVBatCritical.Location = new System.Drawing.Point(152, 94);
+            this.nVBatCritical.Maximum = new decimal(new int[] {
+            64000,
+            0,
+            0,
+            0});
+            this.nVBatCritical.Name = "nVBatCritical";
+            this.nVBatCritical.Size = new System.Drawing.Size(68, 18);
+            this.nVBatCritical.TabIndex = 113;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label68);
+            this.groupBox6.Controls.Add(this.nVBatCritical);
+            this.groupBox6.Controls.Add(this.nPAlarm);
+            this.groupBox6.Controls.Add(this.nVBatWarn2);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.nVBatWarn1);
+            this.groupBox6.Controls.Add(this.label63);
+            this.groupBox6.Controls.Add(this.nVBatScale);
+            this.groupBox6.Controls.Add(this.label64);
+            this.groupBox6.Controls.Add(this.label67);
+            this.groupBox6.ForeColor = System.Drawing.Color.White;
+            this.groupBox6.Location = new System.Drawing.Point(565, 6);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(235, 144);
+            this.groupBox6.TabIndex = 114;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Battery Monitoring";
             // 
             // throttle_expo_control1
             // 
@@ -3161,6 +4503,110 @@
             this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
             this.rc_expo_control1.TabIndex = 15;
             this.rc_expo_control1.Text = "rc_expo_control1";
+            // 
+            // cbSrvRev1
+            // 
+            this.cbSrvRev1.AutoSize = true;
+            this.cbSrvRev1.aux = 0;
+            this.cbSrvRev1.IsHighlighted = false;
+            this.cbSrvRev1.item = 0;
+            this.cbSrvRev1.Location = new System.Drawing.Point(202, 45);
+            this.cbSrvRev1.Name = "cbSrvRev1";
+            this.cbSrvRev1.rclevel = 0;
+            this.cbSrvRev1.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev1.TabIndex = 44;
+            this.cbSrvRev1.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev2
+            // 
+            this.cbSrvRev2.AutoSize = true;
+            this.cbSrvRev2.aux = 0;
+            this.cbSrvRev2.IsHighlighted = false;
+            this.cbSrvRev2.item = 0;
+            this.cbSrvRev2.Location = new System.Drawing.Point(202, 73);
+            this.cbSrvRev2.Name = "cbSrvRev2";
+            this.cbSrvRev2.rclevel = 0;
+            this.cbSrvRev2.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev2.TabIndex = 45;
+            this.cbSrvRev2.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev3
+            // 
+            this.cbSrvRev3.AutoSize = true;
+            this.cbSrvRev3.aux = 0;
+            this.cbSrvRev3.IsHighlighted = false;
+            this.cbSrvRev3.item = 0;
+            this.cbSrvRev3.Location = new System.Drawing.Point(202, 101);
+            this.cbSrvRev3.Name = "cbSrvRev3";
+            this.cbSrvRev3.rclevel = 0;
+            this.cbSrvRev3.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev3.TabIndex = 46;
+            this.cbSrvRev3.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev4
+            // 
+            this.cbSrvRev4.AutoSize = true;
+            this.cbSrvRev4.aux = 0;
+            this.cbSrvRev4.IsHighlighted = false;
+            this.cbSrvRev4.item = 0;
+            this.cbSrvRev4.Location = new System.Drawing.Point(202, 129);
+            this.cbSrvRev4.Name = "cbSrvRev4";
+            this.cbSrvRev4.rclevel = 0;
+            this.cbSrvRev4.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev4.TabIndex = 47;
+            this.cbSrvRev4.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev5
+            // 
+            this.cbSrvRev5.AutoSize = true;
+            this.cbSrvRev5.aux = 0;
+            this.cbSrvRev5.IsHighlighted = false;
+            this.cbSrvRev5.item = 0;
+            this.cbSrvRev5.Location = new System.Drawing.Point(202, 157);
+            this.cbSrvRev5.Name = "cbSrvRev5";
+            this.cbSrvRev5.rclevel = 0;
+            this.cbSrvRev5.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev5.TabIndex = 48;
+            this.cbSrvRev5.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev6
+            // 
+            this.cbSrvRev6.AutoSize = true;
+            this.cbSrvRev6.aux = 0;
+            this.cbSrvRev6.IsHighlighted = false;
+            this.cbSrvRev6.item = 0;
+            this.cbSrvRev6.Location = new System.Drawing.Point(202, 185);
+            this.cbSrvRev6.Name = "cbSrvRev6";
+            this.cbSrvRev6.rclevel = 0;
+            this.cbSrvRev6.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev6.TabIndex = 49;
+            this.cbSrvRev6.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev7
+            // 
+            this.cbSrvRev7.AutoSize = true;
+            this.cbSrvRev7.aux = 0;
+            this.cbSrvRev7.IsHighlighted = false;
+            this.cbSrvRev7.item = 0;
+            this.cbSrvRev7.Location = new System.Drawing.Point(202, 214);
+            this.cbSrvRev7.Name = "cbSrvRev7";
+            this.cbSrvRev7.rclevel = 0;
+            this.cbSrvRev7.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev7.TabIndex = 50;
+            this.cbSrvRev7.UseVisualStyleBackColor = true;
+            // 
+            // cbSrvRev8
+            // 
+            this.cbSrvRev8.AutoSize = true;
+            this.cbSrvRev8.aux = 0;
+            this.cbSrvRev8.IsHighlighted = false;
+            this.cbSrvRev8.item = 0;
+            this.cbSrvRev8.Location = new System.Drawing.Point(202, 241);
+            this.cbSrvRev8.Name = "cbSrvRev8";
+            this.cbSrvRev8.rclevel = 0;
+            this.cbSrvRev8.Size = new System.Drawing.Size(15, 14);
+            this.cbSrvRev8.TabIndex = 51;
+            this.cbSrvRev8.UseVisualStyleBackColor = true;
             // 
             // rci_Control_settings
             // 
@@ -3268,16 +4714,6 @@
             this.indOPTIC.TabIndex = 103;
             this.indOPTIC.Text = "OPTIC";
             // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.ForeColor = System.Drawing.Color.White;
-            this.label49.Location = new System.Drawing.Point(53, 163);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(41, 13);
-            this.label49.TabIndex = 27;
-            this.label49.Text = "label49";
-            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3311,6 +4747,42 @@
             ((System.ComponentModel.ISupportInitialize)(this.nRATE_rp)).EndInit();
             this.tabPageConf.ResumeLayout(false);
             this.tabPageConf.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nMagMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMagDeg)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMax1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMid1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvMin1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSrvRate8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPAlarm)).EndInit();
             this.tabPageRC.ResumeLayout(false);
             this.tabPageRC.PerformLayout();
@@ -3388,6 +4860,14 @@
             this.gbTerminal.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatScale)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatWarn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatWarn2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nVBatCritical)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3633,12 +5113,94 @@
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.ToolStripButton bDebugWindws;
         private System.Windows.Forms.TabPage tabPageConf;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.NumericUpDown nMagMin;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown nMagDeg;
+        private System.Windows.Forms.ComboBox cbMagSign;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.NumericUpDown nSrvRate4;
+        private System.Windows.Forms.Label label56;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev1;
+        private System.Windows.Forms.Label label55;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev2;
+        private System.Windows.Forms.Label label54;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev3;
+        private System.Windows.Forms.Label label53;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev4;
+        private System.Windows.Forms.Label label52;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev5;
+        private System.Windows.Forms.Label label51;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev6;
+        private System.Windows.Forms.NumericUpDown nSrvMax8;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev7;
+        private System.Windows.Forms.NumericUpDown nSrvMax7;
+        private MultiWiiGUIControls.CheckBoxEx cbSrvRev8;
+        private System.Windows.Forms.NumericUpDown nSrvMax6;
+        private System.Windows.Forms.Label lSrvID1;
+        private System.Windows.Forms.NumericUpDown nSrvMax5;
+        private System.Windows.Forms.Label lSrvID2;
+        private System.Windows.Forms.NumericUpDown nSrvMax4;
+        private System.Windows.Forms.Label lSrvID3;
+        private System.Windows.Forms.NumericUpDown nSrvMax3;
+        private System.Windows.Forms.Label lSrvID4;
+        private System.Windows.Forms.NumericUpDown nSrvMax2;
+        private System.Windows.Forms.Label lSrvID5;
+        private System.Windows.Forms.NumericUpDown nSrvMax1;
+        private System.Windows.Forms.Label lSrvID6;
+        private System.Windows.Forms.NumericUpDown nSrvMid8;
+        private System.Windows.Forms.Label lSrvID7;
+        private System.Windows.Forms.NumericUpDown nSrvMid7;
+        private System.Windows.Forms.Label lSrvID8;
+        private System.Windows.Forms.NumericUpDown nSrvMid6;
+        private System.Windows.Forms.Label lSrvName1;
+        private System.Windows.Forms.NumericUpDown nSrvMid5;
+        private System.Windows.Forms.Label lSrvName3;
+        private System.Windows.Forms.NumericUpDown nSrvMid4;
+        private System.Windows.Forms.Label lSrvName2;
+        private System.Windows.Forms.NumericUpDown nSrvMid3;
+        private System.Windows.Forms.Label lSrvName4;
+        private System.Windows.Forms.NumericUpDown nSrvMid2;
+        private System.Windows.Forms.Label lSrvName5;
+        private System.Windows.Forms.NumericUpDown nSrvMid1;
+        private System.Windows.Forms.Label lSrvName6;
+        private System.Windows.Forms.NumericUpDown nSrvMin8;
+        private System.Windows.Forms.Label lSrvName7;
+        private System.Windows.Forms.NumericUpDown nSrvMin7;
+        private System.Windows.Forms.Label lSrvName8;
+        private System.Windows.Forms.NumericUpDown nSrvMin6;
+        private System.Windows.Forms.NumericUpDown nSrvRate1;
+        private System.Windows.Forms.NumericUpDown nSrvMin5;
+        private System.Windows.Forms.NumericUpDown nSrvRate2;
+        private System.Windows.Forms.NumericUpDown nSrvMin4;
+        private System.Windows.Forms.NumericUpDown nSrvRate3;
+        private System.Windows.Forms.NumericUpDown nSrvMin3;
+        private System.Windows.Forms.NumericUpDown nSrvRate5;
+        private System.Windows.Forms.NumericUpDown nSrvMin2;
+        private System.Windows.Forms.NumericUpDown nSrvRate6;
+        private System.Windows.Forms.NumericUpDown nSrvMin1;
+        private System.Windows.Forms.NumericUpDown nSrvRate7;
+        private System.Windows.Forms.NumericUpDown nSrvRate8;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown nPAlarm;
-        private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label68;
+        private System.Windows.Forms.Label label67;
+        private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.NumericUpDown nVBatCritical;
+        private System.Windows.Forms.NumericUpDown nVBatWarn2;
+        private System.Windows.Forms.NumericUpDown nVBatWarn1;
+        private System.Windows.Forms.NumericUpDown nVBatScale;
     }
 }
 

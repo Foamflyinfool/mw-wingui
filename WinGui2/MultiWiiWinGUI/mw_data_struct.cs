@@ -301,10 +301,11 @@ namespace MultiWiiWinGUI
         public byte ThrottleMID;
         public byte ThrottleEXPO;
 
+        //Servo 
         public int[] servoMin;
         public int[] servoMax;
         public int[] servoMiddle;
-        public int[] servoRate;
+        public sbyte[] servoRate;
 
 
         //Other parameters
@@ -345,7 +346,7 @@ namespace MultiWiiWinGUI
             servoMin = new int[8];
             servoMax = new int[8];
             servoMiddle = new int[8];
-            servoRate = new int[8];
+            servoRate = new sbyte[8];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
@@ -425,7 +426,30 @@ namespace MultiWiiWinGUI
                 serialport.Write(buffer, 0, bptr);
 
 
-                //
+                //Servo_conf
+
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = (byte)(56);
+                buffer[bptr++] = (byte)MSP.MSP_SET_SERVO_CONF;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    buffer[bptr++] = (byte)(servoMin[i] & 0x00ff);
+                    buffer[bptr++] = (byte)((servoMin[i] >> 8) & 0x00ff);
+                    buffer[bptr++] = (byte)(servoMax[i] & 0x00ff);
+                    buffer[bptr++] = (byte)((servoMax[i] >> 8) & 0x00ff);
+                    buffer[bptr++] = (byte)(servoMiddle[i] & 0x00ff);
+                    buffer[bptr++] = (byte)((servoMiddle[i] >> 8) & 0x00ff);
+                    buffer[bptr++] = (byte)(servoRate[i]);
+                }
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
+
 
                 //then the rest
                 bptr = 0;
@@ -442,6 +466,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
+
+
 
 
                 byte c = 0;
@@ -660,11 +686,11 @@ namespace MultiWiiWinGUI
         public uint plog_arm;
         public uint plog_lifetime;           //what unit ???
 
-        public int mag_declination;
-        public int vbatscale;
-        public int vbatlevel_warn1;
-        public int vbatlevel_warn2;
-        public int vbatlevel_crit;
+        public int mag_declination;         // *10
+        public byte vbatscale;
+        public byte vbatlevel_warn1;
+        public byte vbatlevel_warn2;
+        public byte vbatlevel_crit;
 
         //Debug
         public int debug1, debug2, debug3, debug4;
