@@ -6,8 +6,8 @@ namespace MultiWiiWinGUI
 
     public class GUIPages
     {
-        public const int FlighTune = 0;
-        public const int Config = 1;
+        public const int FlighTune = 1;
+        public const int Config = 0;
         public const int RC = 2;
         public const int Realtime = 3;
         public const int Mission = 4;

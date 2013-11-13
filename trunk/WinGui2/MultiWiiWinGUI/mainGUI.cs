@@ -51,11 +51,14 @@ namespace MultiWiiWinGUI
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatP, OctoFlatX, Airplane, Heli_120_CCPM, Heli_90_DEG,Vtail4,Hex6H,Singlecopter,DualCopter };
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG,Vtail4,Hex6H, PPM_to_Servo, Singlecopter,DualCopter };
+        
+
+
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
-        string[] sRefreshSpeeds = { "20 Hz", "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
-        int[] iRefreshIntervals = { 50, 100, 200, 500, 1000 };
+        string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
+        int[] iRefreshIntervals = { 100, 200, 500, 1000 };
         const int rcLow = 1300;
         const int rcMid = 1700;
 
@@ -215,6 +218,17 @@ namespace MultiWiiWinGUI
         static bool bGoToClikEnabled = false;
         static int iDefAlt = 25;        //Default altitude 25meters
         static int iGTCAlt = 25;
+
+
+        //Servo settings
+        System.Windows.Forms.Label[] servo_text;
+        CheckBoxEx[] servo_reverse;
+        System.Windows.Forms.NumericUpDown[] servo_rate;
+        System.Windows.Forms.NumericUpDown[] servo_min;
+        System.Windows.Forms.NumericUpDown[] servo_mid;
+        System.Windows.Forms.NumericUpDown[] servo_max;
+
+
 
 
         #endregion
@@ -499,6 +513,69 @@ namespace MultiWiiWinGUI
             splash.Refresh();
 
 
+            //Build servo control arrays
+            // It is a mess and not an elegant solution BUT WORKS
+            servo_text = new System.Windows.Forms.Label[8];
+            servo_text[0] = lSrvName1;
+            servo_text[1] = lSrvName2;
+            servo_text[2] = lSrvName3;
+            servo_text[3] = lSrvName4;
+            servo_text[4] = lSrvName5;
+            servo_text[5] = lSrvName6;
+            servo_text[6] = lSrvName7;
+            servo_text[7] = lSrvName8;
+
+            servo_reverse = new CheckBoxEx[8];
+            servo_reverse[0] = cbSrvRev1;
+            servo_reverse[1] = cbSrvRev2;
+            servo_reverse[2] = cbSrvRev3;
+            servo_reverse[3] = cbSrvRev4;
+            servo_reverse[4] = cbSrvRev5;
+            servo_reverse[5] = cbSrvRev6;
+            servo_reverse[6] = cbSrvRev7;
+            servo_reverse[7] = cbSrvRev8;
+
+            servo_rate = new System.Windows.Forms.NumericUpDown[8];
+            servo_rate[0] = nSrvRate1;
+            servo_rate[1] = nSrvRate2;
+            servo_rate[2] = nSrvRate3;
+            servo_rate[3] = nSrvRate4;
+            servo_rate[4] = nSrvRate5;
+            servo_rate[5] = nSrvRate6;
+            servo_rate[6] = nSrvRate7;
+            servo_rate[7] = nSrvRate8;
+
+            servo_min = new System.Windows.Forms.NumericUpDown[8];
+            servo_min[0] = nSrvMin1;
+            servo_min[1] = nSrvMin2;
+            servo_min[2] = nSrvMin3;
+            servo_min[3] = nSrvMin4;
+            servo_min[4] = nSrvMin5;
+            servo_min[5] = nSrvMin6;
+            servo_min[6] = nSrvMin7;
+            servo_min[7] = nSrvMin8;
+
+            servo_mid = new System.Windows.Forms.NumericUpDown[8];
+            servo_mid[0] = nSrvMid1;
+            servo_mid[1] = nSrvMid2;
+            servo_mid[2] = nSrvMid3;
+            servo_mid[3] = nSrvMid4;
+            servo_mid[4] = nSrvMid5;
+            servo_mid[5] = nSrvMid6;
+            servo_mid[6] = nSrvMid7;
+            servo_mid[7] = nSrvMid8;
+
+            servo_max = new System.Windows.Forms.NumericUpDown[8];
+            servo_max[0] = nSrvMax1;
+            servo_max[1] = nSrvMax2;
+            servo_max[2] = nSrvMax3;
+            servo_max[3] = nSrvMax4;
+            servo_max[4] = nSrvMax5;
+            servo_max[5] = nSrvMax6;
+            servo_max[6] = nSrvMax7;
+            servo_max[7] = nSrvMax8;
+
+
             //Build PID control structure based on the Pid structure.
 
             const int iLineSpace = 36;
@@ -607,6 +684,9 @@ namespace MultiWiiWinGUI
             toolTip1.SetToolTip(b_uncheck_all_ACC, "Deselect all ACC values");
             toolTip1.SetToolTip(lDefAlt, "Default waypoint altitude (in Above Ground Level where Home position Ground level is zero)");
             toolTip1.SetToolTip(txtDefAlt, "Default waypoint altitude (in Above Ground Level where Home position Ground level is zero)");
+
+
+
 
 
 
@@ -838,17 +918,32 @@ namespace MultiWiiWinGUI
             if (serialPort.BytesToRead == 0)
             {
 
-                if ((iRefreshDivider % gui_settings.MSP_STATUS_rate_divider) == 0) MSPquery(MSP.MSP_STATUS);
-                if ((iRefreshDivider % gui_settings.MSP_RAW_IMU_rate_divider) == 0) MSPquery(MSP.MSP_RAW_IMU);
-                if ((iRefreshDivider % gui_settings.MSP_SERVO_rate_divider) == 0) MSPquery(MSP.MSP_SERVO);
-                if ((iRefreshDivider % gui_settings.MSP_MOTOR_rate_divider) == 0) MSPquery(MSP.MSP_MOTOR);
-                if ((iRefreshDivider % gui_settings.MSP_RAW_GPS_rate_divider) == 0) MSPquery(MSP.MSP_RAW_GPS);
-                if ((iRefreshDivider % gui_settings.MSP_COMP_GPS_rate_divider) == 0) MSPquery(MSP.MSP_COMP_GPS);
-                if ((iRefreshDivider % gui_settings.MSP_ATTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ATTITUDE);
-                if ((iRefreshDivider % gui_settings.MSP_ALTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ALTITUDE);
-                if ((iRefreshDivider % gui_settings.MSP_RC_rate_divider) == 0) MSPquery(MSP.MSP_RC);
-                if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP.MSP_MISC);
-                if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP.MSP_DEBUG);
+                /*
+                    if ((iRefreshDivider % gui_settings.MSP_STATUS_rate_divider) == 0) MSPquery(MSP.MSP_STATUS);
+                    if ((iRefreshDivider % gui_settings.MSP_RAW_IMU_rate_divider) == 0) MSPquery(MSP.MSP_RAW_IMU);
+                    if ((iRefreshDivider % gui_settings.MSP_SERVO_rate_divider) == 0) MSPquery(MSP.MSP_SERVO);
+                    if ((iRefreshDivider % gui_settings.MSP_MOTOR_rate_divider) == 0) MSPquery(MSP.MSP_MOTOR);
+                    if ((iRefreshDivider % gui_settings.MSP_RAW_GPS_rate_divider) == 0) MSPquery(MSP.MSP_RAW_GPS);
+                    if ((iRefreshDivider % gui_settings.MSP_COMP_GPS_rate_divider) == 0) MSPquery(MSP.MSP_COMP_GPS);
+                    if ((iRefreshDivider % gui_settings.MSP_ATTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ATTITUDE);
+                    if ((iRefreshDivider % gui_settings.MSP_ALTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ALTITUDE);
+                    if ((iRefreshDivider % gui_settings.MSP_RC_rate_divider) == 0) MSPquery(MSP.MSP_RC);
+                    if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP.MSP_MISC);
+                    if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP.MSP_DEBUG);
+                */
+
+                MSPquery(MSP.MSP_STATUS);
+                MSPquery(MSP.MSP_RAW_IMU);
+                MSPquery(MSP.MSP_SERVO);
+                MSPquery(MSP.MSP_MOTOR);
+                MSPquery(MSP.MSP_RAW_GPS);
+                MSPquery(MSP.MSP_COMP_GPS);
+                MSPquery(MSP.MSP_ATTITUDE);
+                MSPquery(MSP.MSP_ALTITUDE);
+                MSPquery(MSP.MSP_RC);
+                MSPquery(MSP.MSP_MISC);
+                MSPquery(MSP.MSP_DEBUG);
+
 
 
                 if (frmDebug != null) MSPquery(MSP.MSP_DEBUGMSG);
@@ -968,6 +1063,8 @@ namespace MultiWiiWinGUI
                     MSPquery(MSP.MSP_BOX);
                     MSPquery(MSP.MSP_BOXNAMES);
                     MSPquery(MSP.MSP_MISC);
+                    MSPquery(MSP.MSP_SERVO_CONF);
+
                 }
 
 
@@ -995,6 +1092,7 @@ namespace MultiWiiWinGUI
                     MSPquery(MSP.MSP_BOX);
                     MSPquery(MSP.MSP_BOXNAMES);
                     MSPquery(MSP.MSP_MISC);
+                    MSPquery(MSP.MSP_SERVO_CONF);
 
                     if (x > 1000)
                     {
@@ -1019,7 +1117,7 @@ namespace MultiWiiWinGUI
                 create_RC_Checkboxes(mw_gui.sBoxNames);
                 update_gui();
 
-
+                //tabMain.SelectedIndex = GUIPages.Realtime;
 
 
             }
@@ -1410,20 +1508,46 @@ namespace MultiWiiWinGUI
                 case MSP.MSP_MISC:
                     ptr = 0;
                     mw_gui.powerTrigger = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    
                     mw_gui.minThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.maxThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.minCommand = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.failsafe_throttle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                   
                     mw_gui.plog_arm = BitConverter.ToUInt16(inBuf, ptr); ptr +=2;
                     mw_gui.plog_lifetime = BitConverter.ToUInt32(inBuf, ptr); ptr +=4;
 
                     mw_gui.mag_declination = BitConverter.ToInt16(inBuf, ptr); ptr +=2;
 
-                    mw_gui.vbatscale = BitConverter.ToChar(inBuf, ptr); ptr++;
-                    mw_gui.vbatlevel_warn1 = BitConverter.ToChar(inBuf, ptr); ptr++;
-                    mw_gui.vbatlevel_warn2 = BitConverter.ToChar(inBuf, ptr); ptr++;
-                    mw_gui.vbatlevel_crit = BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatscale = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_warn1 = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_warn2 = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
+                    mw_gui.vbatlevel_crit = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
+
+                 
+
+
                     break;
+
+
+                case MSP.MSP_SERVO_CONF:
+                    ptr = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        mw_gui.servoMin[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mw_gui.servoMax[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mw_gui.servoRate[i] = (SByte) inBuf[ptr]; ptr += 1;
+
+                        if (mw_gui.servoMin[i] ==0 ) mw_gui.servoMin[i] = 1000;
+                        if (mw_gui.servoMax[i] == 0) mw_gui.servoMax[i] = 2000;
+                        if (mw_gui.servoMiddle[i] == 0) mw_gui.servoMiddle[i] = 1500;
+                        if (mw_gui.servoRate[i] == 0) mw_gui.servoRate[i] = 100;
+
+
+                    }
+                    break;
+
 
                 case MSP.MSP_DEBUG:
                     ptr = 0;
@@ -1599,6 +1723,27 @@ namespace MultiWiiWinGUI
 
         }
 
+
+        private void set_servo_control( int i, bool status, string function)
+        {
+          servo_text[i].Enabled = status;
+          //servo_text[i].Visible = status;
+          servo_text[i].Text = function;
+          servo_max[i].Enabled = status;
+          servo_max[i].Visible = status;
+          servo_min[i].Enabled = status;
+          servo_min[i].Visible = status;
+          servo_mid[i].Enabled = status;
+          servo_mid[i].Visible = status;
+          servo_rate[i].Enabled = status;
+          servo_rate[i].Visible = status;
+          servo_reverse[i].Enabled = status;
+          servo_reverse[i].Visible = status;
+        }
+
+
+
+
         private void update_gui()
         {
 
@@ -1670,11 +1815,99 @@ namespace MultiWiiWinGUI
                 {
                     update_pid_panel();
                     update_aux_panel();
-
-                    label9.Text = Convert.ToString(mw_gui.minThrottle);
-                    label10.Text = Convert.ToString(mw_gui.maxThrottle);
-                    label48.Text = Convert.ToString(mw_gui.minCommand);
+                    
+                    //update magnetic declination
                     label49.Text = Convert.ToString(mw_gui.mag_declination);
+                    decimal mag_dec = (decimal)mw_gui.mag_declination / 10;
+                    if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
+                    else cbMagSign.SelectedIndex = 0;
+                    nMagDeg.Value = (int)mag_dec;
+                    nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
+            
+                    //Update Power parameters
+                    nVBatScale.Value = (int)mw_gui.vbatscale;
+                    nVBatWarn1.Value = (int)mw_gui.vbatlevel_warn1;
+                    nVBatWarn2.Value = (int)mw_gui.vbatlevel_warn2;
+                    nVBatCritical.Value = (int)mw_gui.vbatlevel_crit;
+                    nPAlarm.Value = mw_gui.powerTrigger;
+                    nPAlarm.BackColor = Color.White;
+
+                    //Update Servo settings panel
+                    //Disable all
+                    for (int i=0;i<8;i++) {
+                        set_servo_control(i,false,"Unused");
+                    }
+
+
+                    switch ((CopterType)mw_gui.multiType)
+                    {
+                        case CopterType.Tri :
+                            set_servo_control(5,true,"Yaw servo");
+                            break;
+                        case CopterType.Airplane:
+                            set_servo_control(2,true,"Flaps");
+                            set_servo_control(3,true,"Wing 1");
+                            set_servo_control(4,true,"Wing 2");
+                            set_servo_control(5,true,"Rudder");
+                            set_servo_control(6,true,"Elevator");
+                            break;
+                        case CopterType.Gimbal:
+                            set_servo_control(0, true, "Pitch");
+                            set_servo_control(1, true, "Roll");
+                            set_servo_control(2, true, "Trigger");
+                            break;
+                        case CopterType.FlyWing:
+                            set_servo_control(3,true,"Wing 1");
+                            set_servo_control(4,true,"Wing 2");
+                            break;
+                        case CopterType.BI:
+                            set_servo_control(4, true, "Left motor servo");
+                            set_servo_control(5, true, "Right motor servo");
+                            break;
+                        case CopterType.DualCopter:
+                            set_servo_control(4, true, "PITCH Servo");
+                            set_servo_control(5, true, "ROLL Servo");
+                            break;
+                        case CopterType.Singlecopter:
+                            set_servo_control(3, true, "Side Servo");
+                            set_servo_control(4, true, "Side Servo");
+                            set_servo_control(5, true, "Front Servo");
+                            set_servo_control(6, true, "Rear Servo");
+                            break;
+                        case CopterType.Heli_120_CCPM:
+                            set_servo_control(5, true, "Yaw motor");
+                            set_servo_control(3,true, "NICK Servo");
+                            set_servo_control(4,true, "Left Servo");
+                            set_servo_control(6, true, "Right Servo");
+                            break;
+                        case CopterType.Heli_90_DEG:
+                            set_servo_control(5, true, "Yaw motor");
+                            set_servo_control(3,true, "NICK Servo");
+                            set_servo_control(4,true, "Roll Servo");
+                            set_servo_control(6, true, "Collective Servo");
+                            break;
+                    }
+
+                                                  
+
+
+                    for (int i = 0; i < 8; i++)
+                    {
+
+
+                        servo_max[i].Value = mw_gui.servoMax[i];
+                        servo_min[i].Value = mw_gui.servoMin[i];
+                        servo_mid[i].Value = mw_gui.servoMiddle[i];
+                        servo_rate[i].Value = Math.Abs(mw_gui.servoRate[i]);
+                        if (mw_gui.servoRate[i] < 0)
+                        {
+                            servo_reverse[i].Checked = true;
+                        }
+                        else
+                        {
+                            servo_reverse[i].Checked = false;
+                        }
+                    }
 
 
 
@@ -1778,7 +2011,7 @@ namespace MultiWiiWinGUI
             }
 
             // TAB realtime
-            if (tabMain.SelectedIndex == 2)
+            if (tabMain.SelectedIndex == GUIPages.Realtime)
             {
 
                 if (cb_acc_roll.Checked) { list_acc_roll.Add((double)xTimeStamp, mw_gui.ax); }
@@ -1942,6 +2175,8 @@ namespace MultiWiiWinGUI
                 MSPquery(MSP.MSP_IDENT);
                 MSPquery(MSP.MSP_BOX);
                 MSPquery(MSP.MSP_MISC);
+                MSPquery(MSP.MSP_SERVO_CONF);
+
                 System.Threading.Thread.Sleep(500);
                 bOptions_needs_refresh = true;
                 update_gui();
@@ -1987,6 +2222,25 @@ namespace MultiWiiWinGUI
                 }
             }
 
+            //Update Servo settings
+            for (int i = 0; i < 8; i++)
+            {
+                mw_params.servoMax[i] = (int)servo_max[i].Value;
+                mw_params.servoMin[i] = (int)servo_min[i].Value;
+                mw_params.servoMiddle[i] = (int)servo_mid[i].Value;
+                mw_params.servoRate[i] = (sbyte)servo_rate[i].Value;
+                if (servo_reverse[i].Checked == true)
+                {
+                    mw_params.servoRate[i] *= -1;
+                }
+
+            }
+
+
+
+
+
+
         }
 
         private void write_parameters()
@@ -1996,8 +2250,16 @@ namespace MultiWiiWinGUI
 
             //Stop all timers
             timer_realtime.Stop();
-            //System.Threading.Thread.Sleep(500); //Wait for a while to flush incoming buffers
+            System.Threading.Thread.Sleep(1000); //Wait for a while to flush incoming buffers
+            while (serialPort.BytesToWrite > 0) ;
+            while (serialPort.BytesToRead > 0) ;
+
+
             update_params();                            //update parameters object from GUI controls.
+
+
+
+
 
             mw_params.write_settings(serialPort);
             System.Threading.Thread.Sleep(1000);
@@ -2007,6 +2269,8 @@ namespace MultiWiiWinGUI
             MSPquery(MSP.MSP_IDENT);
             MSPquery(MSP.MSP_BOX);
             MSPquery(MSP.MSP_MISC);
+            MSPquery(MSP.MSP_SERVO_CONF);
+
             //Invalidate gui parameters and reread those values
 
             timer_realtime.Start();
@@ -2098,9 +2362,6 @@ namespace MultiWiiWinGUI
             nTMID.BackColor = Color.White;
             trackBar_T_MID.Value = mw_gui.ThrottleMID;
             throttle_expo_control1.SetRCExpoParameters((double)mw_gui.ThrottleMID / 100, (double)mw_gui.ThrottleEXPO / 100, mw_gui.rcThrottle);
-
-            nPAlarm.Value = mw_gui.powerTrigger;
-            nPAlarm.BackColor = Color.White;
 
 
 
@@ -3131,6 +3392,8 @@ namespace MultiWiiWinGUI
             MSPquery(MSP.MSP_IDENT);
             MSPquery(MSP.MSP_BOX);
             MSPquery(MSP.MSP_MISC);
+            MSPquery(MSP.MSP_SERVO_CONF);
+
             //Invalidate gui parameters and reread those values
 
             timer_realtime.Start();
@@ -3750,6 +4013,39 @@ namespace MultiWiiWinGUI
                 string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
 
             }
+        }
+
+
+
+        private void cbMagSign_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            decimal mag_dec = 0;
+            mag_dec = nMagDeg.Value;
+            mag_dec += (decimal)nMagMin.Value * (decimal)(1.0 / 60.0);
+            if (cbMagSign.SelectedIndex == 1) mag_dec *= -1;
+            mw_gui.mag_declination = (int)(mag_dec * 10);
+            label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
+
+        }
+
+        private void nMagDeg_ValueChanged(object sender, EventArgs e)
+        {
+            decimal mag_dec = 0;
+            mag_dec = nMagDeg.Value;
+            mag_dec += (decimal)nMagMin.Value * (decimal)(1.0 / 60.0);
+            if (cbMagSign.SelectedIndex == 1) mag_dec *= -1;
+            mw_gui.mag_declination = (int)(mag_dec * 10);
+            label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination/10) + ")";
+        }
+
+        private void nMagMin_ValueChanged(object sender, EventArgs e)
+        {
+            decimal mag_dec = 0;
+            mag_dec = nMagDeg.Value;
+            mag_dec += (decimal)nMagMin.Value * (decimal)(1.0 / 60.0);
+            if (cbMagSign.SelectedIndex == 1) mag_dec *= -1;
+            mw_gui.mag_declination = (int)(mag_dec * 10);
+            label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
         }
 
     }
