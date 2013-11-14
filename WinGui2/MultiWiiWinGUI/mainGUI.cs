@@ -228,7 +228,7 @@ namespace MultiWiiWinGUI
         System.Windows.Forms.NumericUpDown[] servo_mid;
         System.Windows.Forms.NumericUpDown[] servo_max;
 
-
+        static int response_counter = 0;
 
 
         #endregion
@@ -941,7 +941,7 @@ namespace MultiWiiWinGUI
                 MSPquery(MSP.MSP_ATTITUDE);
                 MSPquery(MSP.MSP_ALTITUDE);
                 MSPquery(MSP.MSP_RC);
-                MSPquery(MSP.MSP_MISC);
+               // MSPquery(MSP.MSP_MISC);
                 MSPquery(MSP.MSP_DEBUG);
 
 
@@ -979,150 +979,7 @@ namespace MultiWiiWinGUI
             if (iRefreshDivider == 0) iRefreshDivider = 20;      //reset
 
         }
-
-        private void b_connect_Click(object sender, EventArgs e)
-        {
-
-            //Check if we at GUI Settings, go to first screen when connect
-            if (tabMain.SelectedIndex == 4) { tabMain.SelectedIndex = 0; }
-
-            if (serialPort.IsOpen)              //Disconnect
-            {
-                delete_RC_Checkboxes();
-                b_connect.Text = "Connect";
-                b_connect.Image = Properties.Resources.connect;
-                isConnected = false;
-                timer_realtime.Stop();                       //Stop timer(s), whatever it takes
-                //timer_rc.Stop();
-                bkgWorker.CancelAsync();
-                System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
-                serialPort.Close();
-                if (bLogRunning)
-                {
-                    closeLog();
-                }
-
-                //Disable buttons that are not working here
-                b_reset.Enabled = false;
-                b_cal_acc.Enabled = false;
-                b_cal_mag.Enabled = false;
-                b_read_settings.Enabled = false;
-                b_write_settings.Enabled = false;
-
-
-
-            }
-            else                               //Connect
-            {
-
-                if (cb_serial_port.Text == "") { return; }  //if no port selected then do nothin' at connect
-                //Assume that the selection in the combobox for port is still valid
-                serialPort.PortName = cb_serial_port.Text;
-                serialPort.BaudRate = int.Parse(cb_serial_speed.Text);
-                try
-                {
-                    serialPort.Open();
-                }
-                catch
-                {
-                    //WRONG, it seems that the combobox selection pointed to a port which is no longer available
-                    MessageBoxEx.Show(this, "Please check that your USB cable is still connected.\r\nAfter you press OK, Serial ports will be re-enumerated", "Error opening COM port", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    serial_ports_enumerate();
-                    return; //Exit without connecting;
-                }
-                //Set button text and status
-                b_connect.Text = "Disconnect";
-                b_connect.Image = Properties.Resources.disconnect;
-                isConnected = true;
-
-                //Open Log file if it is enabled
-                if (gui_settings.bEnableLogging)
-                {
-                    openLog();
-                }
-
-                serial_packet_count = 0;
-                serial_error_count = 0;
-
-                //Enable buttons that are not working here
-                b_reset.Enabled = true;
-                b_cal_acc.Enabled = true;
-                b_cal_mag.Enabled = true;
-                b_read_settings.Enabled = true;
-                b_write_settings.Enabled = true;
-
-
-
-                //We have to do it for a couple of times to ensure that we will have parameters loaded 
-                for (int i = 0; i < 10; i++)
-                {
-
-                    MSPquery(MSP.MSP_PID);
-                    MSPquery(MSP.MSP_RC_TUNING);
-                    MSPquery(MSP.MSP_IDENT);
-                    MSPquery(MSP.MSP_BOX);
-                    MSPquery(MSP.MSP_BOXNAMES);
-                    MSPquery(MSP.MSP_MISC);
-                    MSPquery(MSP.MSP_SERVO_CONF);
-
-                }
-
-
-
-                //Run BackgroundWorker
-                if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
-
-
-
-                //if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
-                //if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
-                //if (tabMain.SelectedIndex == 3 && !isPausedGPS) timer_GPS.Start();
-                System.Threading.Thread.Sleep(1000);
-
-
-                int x = 0;
-                while (mw_gui.bUpdateBoxNames == false)
-                {
-                    x++;
-                    System.Threading.Thread.Sleep(1);
-
-                    MSPquery(MSP.MSP_PID);
-                    MSPquery(MSP.MSP_RC_TUNING);
-                    MSPquery(MSP.MSP_IDENT);
-                    MSPquery(MSP.MSP_BOX);
-                    MSPquery(MSP.MSP_BOXNAMES);
-                    MSPquery(MSP.MSP_MISC);
-                    MSPquery(MSP.MSP_SERVO_CONF);
-
-                    if (x > 1000)
-                    {
-                        MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        b_connect.Text = "Connect";
-                        b_connect.Image = Properties.Resources.connect;
-                        isConnected = false;
-                        timer_realtime.Stop();                       //Stop timer(s), whatever it takes
-                        //timer_rc.Stop();
-                        bkgWorker.CancelAsync();
-                        System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
-                        serialPort.Close();
-                        if (bLogRunning)
-                        {
-                            closeLog();
-                        }
-                        return;
-                    }
-                }
-                timer_realtime.Start();
-                bOptions_needs_refresh = true;
-                create_RC_Checkboxes(mw_gui.sBoxNames);
-                update_gui();
-
-                //tabMain.SelectedIndex = GUIPages.Realtime;
-
-
-            }
-        }
-
+        
         private void cb_monitor_rate_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Change refresh rate
@@ -1350,7 +1207,7 @@ namespace MultiWiiWinGUI
             }
 
         }
-
+        /*
         private byte read8(SerialPort s)
         {
 
@@ -1369,7 +1226,7 @@ namespace MultiWiiWinGUI
 
             return (retval);
         }
-
+        */
         private void evaluate_command(byte cmd)
         {
 
@@ -1383,6 +1240,7 @@ namespace MultiWiiWinGUI
                     mw_gui.multiType = (byte)inBuf[ptr];
                     mw_gui.protocol_version = (byte)inBuf[ptr++];
                     mw_gui.capability = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    response_counter++;
                     break;
                 case MSP.MSP_STATUS:
                     ptr = 0;
@@ -1475,6 +1333,7 @@ namespace MultiWiiWinGUI
                     mw_gui.DynThrPID = (byte)inBuf[ptr++];
                     mw_gui.ThrottleMID = (byte)inBuf[ptr++];
                     mw_gui.ThrottleEXPO = (byte)inBuf[ptr++];
+                    response_counter++;
                     break;
                 case MSP.MSP_PID:
                     ptr = 0;
@@ -1484,6 +1343,7 @@ namespace MultiWiiWinGUI
                         mw_gui.pidI[i] = (byte)inBuf[ptr++];
                         mw_gui.pidD[i] = (byte)inBuf[ptr++];
                     }
+                    response_counter++;
                     bOptions_needs_refresh = true;
                     break;
                 case MSP.MSP_BOX:
@@ -1494,6 +1354,7 @@ namespace MultiWiiWinGUI
                     {
                         mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     }
+                    response_counter++;
                     break;
                 case MSP.MSP_BOXNAMES:
                     StringBuilder builder = new StringBuilder();
@@ -1523,10 +1384,7 @@ namespace MultiWiiWinGUI
                     mw_gui.vbatlevel_warn1 = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
                     mw_gui.vbatlevel_warn2 = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
                     mw_gui.vbatlevel_crit = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
-
-                 
-
-
+                    response_counter++;
                     break;
 
 
@@ -1543,11 +1401,9 @@ namespace MultiWiiWinGUI
                         if (mw_gui.servoMax[i] == 0) mw_gui.servoMax[i] = 2000;
                         if (mw_gui.servoMiddle[i] == 0) mw_gui.servoMiddle[i] = 1500;
                         if (mw_gui.servoRate[i] == 0) mw_gui.servoRate[i] = 100;
-
-
                     }
+                    response_counter++;
                     break;
-
 
                 case MSP.MSP_DEBUG:
                     ptr = 0;
@@ -1658,7 +1514,6 @@ namespace MultiWiiWinGUI
                                     checksum ^= c;
                                     c_state = HEADER_SIZE;
                                     if (dataSize > 150) { c_state = IDLE; }
-
                                     break;
                                 case HEADER_SIZE:
                                     cmd = c;
@@ -1679,7 +1534,7 @@ namespace MultiWiiWinGUI
                                         {
                                             if (err_rcvd)
                                             {
-                                                // Console.WriteLine("Copter did not understand request type " + err_rcvd);
+                                                serial_error_count++;
                                             }
                                             else
                                             {
@@ -1690,19 +1545,7 @@ namespace MultiWiiWinGUI
                                         }
                                         else
                                         {
-                                            /*
-                                            Console.WriteLine("invalid checksum for command " + cmd + ": " + checksum + " expected, got " + c);
-                                            Console.Write("<" + cmd + " " + dataSize + "> {");
-                                            for (int i = 0; i < dataSize; i++)
-                                            {
-                                                if (i != 0) { Console.Write(' '); }
-                                                Console.Write(inBuf[i]);
-                                            }
-                                            Console.WriteLine("} [" + c + "]");
-                                             */
-
                                             serial_error_count++;
-
                                         }
                                         c_state = IDLE;
                                     }
@@ -1722,12 +1565,10 @@ namespace MultiWiiWinGUI
             e.Cancel = true;
 
         }
-
-
+        
         private void set_servo_control( int i, bool status, string function)
         {
           servo_text[i].Enabled = status;
-          //servo_text[i].Visible = status;
           servo_text[i].Text = function;
           servo_max[i].Enabled = status;
           servo_max[i].Visible = status;
@@ -1740,13 +1581,9 @@ namespace MultiWiiWinGUI
           servo_reverse[i].Enabled = status;
           servo_reverse[i].Visible = status;
         }
-
-
-
-
+        
         private void update_gui()
         {
-
 
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_count);
@@ -1777,7 +1614,6 @@ namespace MultiWiiWinGUI
                 return;
             }
 
-
             //if logging is enabled then write the neccessary log entries
             if (bLogRunning && wLogStream.BaseStream != null) updateLog();
 
@@ -1806,7 +1642,7 @@ namespace MultiWiiWinGUI
             }
 
 
-            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.Config)        //Common tasks for both panel
+            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.Config)        //Common tasks for all panels
             {
 
                 throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
@@ -1817,10 +1653,12 @@ namespace MultiWiiWinGUI
                     update_aux_panel();
                     
                     //update magnetic declination
-                    label49.Text = Convert.ToString(mw_gui.mag_declination);
+                   
+                    label49.Text = "("+Convert.ToString((decimal)mw_gui.mag_declination/10)+")";
                     decimal mag_dec = (decimal)mw_gui.mag_declination / 10;
                     if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
                     else cbMagSign.SelectedIndex = 0;
+                    mag_dec = Math.Abs(mag_dec);
                     nMagDeg.Value = (int)mag_dec;
                     nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
             
@@ -2180,6 +2018,13 @@ namespace MultiWiiWinGUI
         {
             if (isConnected)
             {
+                timer_realtime.Stop();
+
+                while (serialPort.BytesToWrite > 0) ;
+                while (serialPort.BytesToRead > 0) ;
+
+                response_counter = 0;
+
                 MSPquery(MSP.MSP_PID);
                 MSPquery(MSP.MSP_RC_TUNING);
                 MSPquery(MSP.MSP_IDENT);
@@ -2187,9 +2032,26 @@ namespace MultiWiiWinGUI
                 MSPquery(MSP.MSP_MISC);
                 MSPquery(MSP.MSP_SERVO_CONF);
 
-                System.Threading.Thread.Sleep(500);
+               
+                DateTime startTime = DateTime.Now;
+                bool missing_packets = false;
+
+                //Wait for all the responses from the setting reload. Add 2sec timeout for remote situtations
+                while (response_counter < 5)
+                {
+                    if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 2000) { response_counter = 8; missing_packets = true; }
+
+                }
+
+                if (missing_packets) MessageBoxEx.Show("Not all response packets were arrived,\rplease reread parameters to make sure that you see valid parameters.", "Response Packets Lost", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                while (serialPort.BytesToRead == 0) ;
+                while (serialPort.BytesToWrite > 0) ;
+                while (serialPort.BytesToRead > 0) ;
+
                 bOptions_needs_refresh = true;
                 update_gui();
+                timer_realtime.Start();
             }
         }
 
@@ -2217,7 +2079,7 @@ namespace MultiWiiWinGUI
             mw_params.ThrottleMID = (byte)(nTMID.Value * 100);
             mw_params.ThrottleEXPO = (byte)(nTEXPO.Value * 100);
 
-            mw_params.PowerTrigger = (Int16)nPAlarm.Value;
+         
 
             for (int b = 0; b < iCheckBoxItems; b++)
             {
@@ -2231,6 +2093,21 @@ namespace MultiWiiWinGUI
 
                 }
             }
+
+            decimal mag_dec = 0;
+            mag_dec = nMagDeg.Value;
+            mag_dec += (decimal)nMagMin.Value * (decimal)(1.0 / 60.0);
+            if (cbMagSign.SelectedIndex == 1) mag_dec *= -1;
+            mw_params.mag_declination = (Int16)(mag_dec * 10);
+
+            mw_params.vbatscale = (byte)nVBatScale.Value;
+            mw_params.vbatlevel_warn1 = (byte)nVBatWarn1.Value;
+            mw_params.vbatlevel_warn2 = (byte)nVBatWarn2.Value;
+            mw_params.vbatlevel_crit = (byte)nVBatCritical.Value;
+            mw_params.PowerTrigger = (Int16)nPAlarm.Value;
+
+            mw_params.minThrottle = (UInt16)nMinThr.Value;
+            mw_params.failsafe_throttle = (UInt16)nFSThr.Value;
 
             //Update Servo settings
             for (int i = 0; i < 8; i++)
@@ -2249,44 +2126,6 @@ namespace MultiWiiWinGUI
 
 
 
-
-
-        }
-
-        private void write_parameters()
-        {
-
-            //bool timer_rt_state = timer_realtime.Enabled;
-
-            //Stop all timers
-            timer_realtime.Stop();
-            System.Threading.Thread.Sleep(1000); //Wait for a while to flush incoming buffers
-            while (serialPort.BytesToWrite > 0) ;
-            while (serialPort.BytesToRead > 0) ;
-
-
-            update_params();                            //update parameters object from GUI controls.
-
-
-
-
-
-            mw_params.write_settings(serialPort);
-            System.Threading.Thread.Sleep(1000);
-
-            MSPquery(MSP.MSP_PID);
-            MSPquery(MSP.MSP_RC_TUNING);
-            MSPquery(MSP.MSP_IDENT);
-            MSPquery(MSP.MSP_BOX);
-            MSPquery(MSP.MSP_MISC);
-            MSPquery(MSP.MSP_SERVO_CONF);
-
-            //Invalidate gui parameters and reread those values
-
-            timer_realtime.Start();
-            System.Threading.Thread.Sleep(500);
-            bOptions_needs_refresh = true;
-            update_gui();
 
 
         }
@@ -2477,7 +2316,6 @@ namespace MultiWiiWinGUI
 
         }
         
-
         private void b_select_log_folder_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.SelectedPath = gui_settings.sLogFolder;
@@ -2591,39 +2429,6 @@ namespace MultiWiiWinGUI
 
             attitudeIndicatorInstrumentControl1.ToggleArtificalHorizonType();
 
-        }
-                
-        private void MSPquery(int command)
-        {
-            byte c = 0;
-            byte[] o;
-            o = new byte[10];
-            // with checksum 
-            o[0] = (byte)'$';
-            o[1] = (byte)'M';
-            o[2] = (byte)'<';
-            o[3] = (byte)0; c ^= o[3];       //no payload 
-            o[4] = (byte)command; c ^= o[4];
-            o[5] = (byte)c;
-            serialPort.Write(o, 0, 6);
-
-
-        }
-
-        private void MSPqueryWP(int wp)
-        {
-            byte c = 0;
-            byte[] o;
-            o = new byte[10];
-            // with checksum 
-            o[0] = (byte)'$';
-            o[1] = (byte)'M';
-            o[2] = (byte)'<';
-            o[3] = (byte)1; c ^= o[3];       //one byte payload
-            o[4] = (byte)MSP.MSP_WP; c ^= o[4];
-            o[5] = (byte)wp; c ^= o[5];
-            o[6] = (byte)c;
-            serialPort.Write(o, 0, 7);
         }
         
         private int decimals(int prec)
