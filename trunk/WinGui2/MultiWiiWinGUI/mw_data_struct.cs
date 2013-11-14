@@ -311,11 +311,11 @@ namespace MultiWiiWinGUI
         //Other parameters
 
         public Int16 PowerTrigger;
-        public Int16 minThrottle;
+        public UInt16 minThrottle;
         
         public UInt16 failsafe_throttle;
 
-        public UInt16 mag_declination;
+        public Int16 mag_declination;
 
         public byte vbatscale;
         public byte vbatlevel_warn1;
@@ -388,6 +388,8 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
+                while (serialport.BytesToWrite > 0) ;
+
                 //Write PID's 
                 bptr = 0;
                 checksum = 0;
@@ -405,6 +407,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
+                while (serialport.BytesToWrite > 0) ;
+                while (serialport.BytesToRead > 0) ;
 
                 //Then write checkboxitems
 
@@ -424,6 +428,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
+                while (serialport.BytesToWrite > 0) ;
+                while (serialport.BytesToRead > 0) ;
 
 
                 //Servo_conf
@@ -449,6 +455,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
+                while (serialport.BytesToWrite > 0) ;
+                while (serialport.BytesToRead > 0) ;
 
 
                 //then the rest
@@ -457,15 +465,38 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'$';
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = (byte)(2);
+                buffer[bptr++] = (byte)(22);
                 buffer[bptr++] = (byte)MSP.MSP_SET_MISC;
 
                 buffer[bptr++] = (byte)(PowerTrigger & 0x00ff);
                 buffer[bptr++] = (byte)((PowerTrigger >> 8) & 0x00ff);
 
+                buffer[bptr++] = (byte)(minThrottle & 0x00ff);
+                buffer[bptr++] = (byte)((minThrottle >> 8) & 0x00ff);
+
+                bptr++; bptr++;     //not used MAXThrottle
+                bptr++; bptr++;     //not used MinCommand
+
+                buffer[bptr++] = (byte)(failsafe_throttle & 0x00ff);
+                buffer[bptr++] = (byte)((failsafe_throttle >> 8) & 0x00ff);
+
+                bptr++; bptr++;                 //not used arm
+                bptr++; bptr++; bptr++; bptr++; // not used lifetime
+
+                buffer[bptr++] = (byte)(mag_declination & 0x00ff);
+                buffer[bptr++] = (byte)((mag_declination >> 8) & 0x00ff);
+
+                buffer[bptr++] = vbatscale;
+                buffer[bptr++] = vbatlevel_warn1;
+                buffer[bptr++] = vbatlevel_warn2;
+                buffer[bptr++] = vbatlevel_crit;
+
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
+
+                while (serialport.BytesToWrite > 0) ;
+                while (serialport.BytesToRead > 0) ;
 
 
 
@@ -481,6 +512,10 @@ namespace MultiWiiWinGUI
                 o[4] = (byte)MSP.MSP_EEPROM_WRITE; c ^= o[4];
                 o[5] = (byte)c;
                 serialport.Write(o, 0, 6);
+                while (serialport.BytesToRead == 0) ;
+
+                while (serialport.BytesToWrite > 0) ;
+                while (serialport.BytesToRead > 0) ;
 
 
             }
