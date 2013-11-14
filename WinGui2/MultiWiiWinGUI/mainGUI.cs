@@ -1832,6 +1832,16 @@ namespace MultiWiiWinGUI
                     nPAlarm.Value = mw_gui.powerTrigger;
                     nPAlarm.BackColor = Color.White;
 
+                    //Update throttle params
+                    nMinThr.Value = mw_gui.minThrottle;
+                    lMaxThr.Text = Convert.ToString(mw_gui.maxThrottle);
+                    lMinCommand.Text = Convert.ToString(mw_gui.minCommand);
+                    nFSThr.Value = mw_gui.failsafe_throttle;
+
+                    lArms.Text = Convert.ToString(mw_gui.plog_arm);
+                    lLife.Text = Convert.ToString(mw_gui.plog_lifetime);
+
+
                     //Update Servo settings panel
                     //Disable all
                     for (int i=0;i<8;i++) {
