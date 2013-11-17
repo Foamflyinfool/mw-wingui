@@ -95,8 +95,13 @@ namespace MultiWiiWinGUI
                     openLog();
                 }
 
-                serial_packet_count = 0;
+                serial_packet_rx_count = 0;
+                serial_packet_tx_count = 0;
                 serial_error_count = 0;
+
+                telemetry_status_received = 0;
+                telemetry_status_sent = 0;
+
 
                 //Enable buttons that are not working here
                 b_reset.Enabled = true;
@@ -166,6 +171,10 @@ namespace MultiWiiWinGUI
                         return;
                     }
                 }
+
+                serial_packet_rx_count = 0;
+                serial_packet_tx_count = 0;
+                
                 timer_realtime.Start();
                 bOptions_needs_refresh = true;
                 create_RC_Checkboxes(mw_gui.sBoxNames);
@@ -193,6 +202,7 @@ namespace MultiWiiWinGUI
             serialPort.Write(o, 0, 6);
 
             while (serialPort.BytesToWrite > 0) ;
+            if (telemetry_start==1) serial_packet_tx_count++;
 
         }
 
@@ -209,7 +219,8 @@ namespace MultiWiiWinGUI
             o[4] = (byte)MSP.MSP_WP; c ^= o[4];
             o[5] = (byte)wp; c ^= o[5];
             o[6] = (byte)c;
-            serialPort.Write(o, 0, 7);
+            serialPort.Write(o, 0, 7) ;
+            if (telemetry_start == 1)serial_packet_tx_count++;
         }
 
         private void write_parameters()

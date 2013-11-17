@@ -534,7 +534,7 @@ namespace MultiWiiWinGUI
             Version ver = assemName.Version;
             tw.WriteComment(String.Format("{0}, Version {1}", assemName.Name, ver.ToString()));
             tw.WriteComment("MultiWii FC Parameters file");
-            tw.WriteComment("MultiWii FC software revision 2.1dev"); 
+            tw.WriteComment("MultiWii FC software revision 2.3"); 
             
             tw.WriteStartElement("PARAMETERS");
 
@@ -561,6 +561,21 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("YAWRATE value=\"" + YawRate + "\""); tw.WriteEndElement();
             tw.WriteStartElement("DYNTHRPID value=\"" + DynThrPID + "\""); tw.WriteEndElement();
             tw.WriteStartElement("POWERTRIGGER value=\"" + PowerTrigger + "\""); tw.WriteEndElement();
+
+            tw.WriteStartElement("VBATSCALE value=\"" + vbatscale + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("VBATWARN1 value=\"" + vbatlevel_warn1 + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("VBATWARN2 value=\"" + vbatlevel_warn2 + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("VBATCRITICAL value=\"" + vbatlevel_crit + "\""); tw.WriteEndElement();
+
+            tw.WriteStartElement("MINTHROTTLE value=\"" + minThrottle + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("FAILSAFETHROTTLE value=\"" + failsafe_throttle + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("MAGDEC value=\"" + mag_declination + "\""); tw.WriteEndElement();
+
+            for (int i = 0; i < 8; i++)
+            {
+                tw.WriteStartElement("SERVO id=\"" + i + "\" min=\"" + servoMin[i] + "\" max=\"" + servoMax[i] + "\" middle=\"" + servoMiddle[i] + "\" rate=\"" + servoRate[i] + "\"");
+                tw.WriteEndElement();
+            }
 
             tw.WriteEndElement();
             tw.WriteEndDocument();
@@ -614,6 +629,29 @@ namespace MultiWiiWinGUI
                                 if (String.Compare(reader.Name, "yawrate", true) == 0 && reader.HasAttributes) { YawRate = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "dynthrpid", true) == 0 && reader.HasAttributes) { DynThrPID = Convert.ToByte(reader.GetAttribute("value")); }
                                 if (String.Compare(reader.Name, "powertrigger", true) == 0 && reader.HasAttributes) { PowerTrigger = Convert.ToByte(reader.GetAttribute("value")); }
+
+                                if (String.Compare(reader.Name, "vabtscale", true) == 0 && reader.HasAttributes) { vbatscale = Convert.ToByte(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "vbatwarn1", true) == 0 && reader.HasAttributes) { vbatlevel_warn1 = Convert.ToByte(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "vbatwarn2", true) == 0 && reader.HasAttributes) { vbatlevel_warn2 = Convert.ToByte(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "vbatcritical", true) == 0 && reader.HasAttributes) { vbatlevel_crit = Convert.ToByte(reader.GetAttribute("value")); }
+        
+                                if (String.Compare(reader.Name, "minthrottle", true) == 0 && reader.HasAttributes) { minThrottle = Convert.ToUInt16(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "failsafethrottle", true) == 0 && reader.HasAttributes) { failsafe_throttle = Convert.ToUInt16(reader.GetAttribute("value")); }
+                                if (String.Compare(reader.Name, "magdec", true) == 0 && reader.HasAttributes) { mag_declination = Convert.ToInt16(reader.GetAttribute("value")); }
+
+                                if (String.Compare(reader.Name, "servo", true) == 0 && reader.HasAttributes)
+                                {
+                                    int servoID = 0;
+                                    short rate; ushort min, max, middle;
+                                    servoID = Convert.ToInt16(reader.GetAttribute("id"));
+                                    servoMin[servoID] = Convert.ToUInt16(reader.GetAttribute("min"));
+                                    servoMax[servoID] = Convert.ToUInt16(reader.GetAttribute("max"));
+                                    servoMiddle[servoID] = Convert.ToUInt16(reader.GetAttribute("middle"));
+                                    servoRate[servoID] = (sbyte) Convert.ToInt16(reader.GetAttribute("rate"));
+                                }
+                                
+
+
                                 break;
                         }
                     }
@@ -659,7 +697,10 @@ namespace MultiWiiWinGUI
         public int magx;    //Magnetometer 
         public int magy;    //Magnetometer 
         public int magz;   //Magnetometer 
-        public int baro;
+
+        public int EstAlt;
+        public int vario;
+
         public int heading;
         public int[] servos;
         public int[] motors;
