@@ -176,8 +176,20 @@
     <Compile Include="log_downloader.Designer.cs">
       <DependentUpon>log_downloader.cs</DependentUpon>
     </Compile>
+    <Compile Include="MWGUIControls\altitude_meter.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MWGUIControls\throttle_expo_control.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MWGUIControls\vertical_speed_meter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SensorGraph.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SensorGraph.Designer.cs">
+      <DependentUpon>SensorGraph.cs</DependentUpon>
     </Compile>
     <Compile Include="setup_wizard.cs">
       <SubType>Form</SubType>
@@ -248,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="log_downloader.resx">
       <DependentUpon>log_downloader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SensorGraph.resx">
+      <DependentUpon>SensorGraph.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="setup_wizard.resx">
       <DependentUpon>setup_wizard.cs</DependentUpon>
@@ -345,15 +360,20 @@
     <None Include="Resources\heli_90.bmp" />
     <None Include="Resources\heli_120.bmp" />
     <None Include="Resources\vtail.bmp" />
+    <Content Include="Resources\Altimeter_Background.bmp" />
     <Content Include="Resources\del_btn.png" />
     <Content Include="Resources\down_btn.png" />
     <Content Include="Resources\i_green_off.bmp" />
     <Content Include="Resources\i_green_on.bmp" />
     <Content Include="Resources\i_red_off.bmp" />
     <Content Include="Resources\i_red_on.bmp" />
+    <Content Include="Resources\LongNeedleAltimeter.bmp" />
+    <Content Include="Resources\numbers.bmp" />
     <Content Include="Resources\poshold.png" />
     <Content Include="Resources\poshold_unlim.png" />
+    <Content Include="Resources\SmallNeedleAltimeter.bmp" />
     <Content Include="Resources\up_btn.png" />
+    <Content Include="Resources\VerticalSpeedIndicator_Background.bmp" />
     <Content Include="Resources\wpicon.png" />
     <Content Include="Settings\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -6,14 +6,16 @@ namespace MultiWiiWinGUI
 
     public class GUIPages
     {
-        public const int FlighTune = 1;
-        public const int Config = 0;
-        public const int RC = 2;
-        public const int Realtime = 3;
-        public const int Mission = 4;
-        public const int Video = 5;
-        public const int GUISettings = 6;
-        public const int CLI = 7;
+
+        public const int FlightDeck = 0;
+        public const int Mission = 1; 
+        public const int PID = 2;
+        public const int FlighTune = 3;
+        public const int RC = 4;
+        public const int SensorGraph = 5;
+        public const int Video = 6;
+        public const int GUISettings = 7;
+        public const int CLI = 8;
     }
 
     public class MSP

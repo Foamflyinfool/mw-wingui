@@ -62,10 +62,13 @@ namespace MultiWiiWinGUI
         const int rcLow = 1300;
         const int rcMid = 1700;
 
-        const string sRelName = "2.2";
+        const string sRelName = "2.3";
 
         Boolean isCLI = false;
         string inCLIBuffer;
+
+
+        Boolean isTelemetry = false;        //Telemetry mode
 
         //PID values
         static PID[] Pid;
@@ -211,7 +214,14 @@ namespace MultiWiiWinGUI
         static byte checksum = 0;
         static byte cmd;
         static int serial_error_count = 0;
-        static int serial_packet_count = 0;
+        static int serial_packet_rx_count = 0;
+        static int serial_packet_tx_count = 0;
+        static int telemetry_link_quality = 0;
+        static int telemetry_start = 0;
+
+
+        static int telemetry_status_sent = 0;
+        static int telemetry_status_received = 0;
 
 
         static int selectedrow;
@@ -313,7 +323,7 @@ namespace MultiWiiWinGUI
             //Build indicator lamps array
             indicators = new indicator_lamp[iCheckBoxItems];
             int row = 0; int col = 0;
-            int startx = 780; int starty = 3;
+            int startx = 330; int starty = 162;
             for (int i = 0; i < iCheckBoxItems; i++)
             {
                 indicators[i] = new indicator_lamp();
@@ -321,12 +331,13 @@ namespace MultiWiiWinGUI
                 indicators[i].Visible = true;
                 indicators[i].Text = names[i];
                 indicators[i].indicator_color = 1;
-                indicators[i].Anchor = AnchorStyles.Right;
-                this.splitContainer2.Panel2.Controls.Add(indicators[i]);
+                //indicators[i].Anchor = AnchorStyles.Right;
+                this.splitContainer3.Panel1.Controls.Add(indicators[i]);
                 col++;
-                if (col == 3) { col = 0; row++; }
+                if (col == 2) { col = 0; row++; }
             }
 
+            
             //Build the RC control checkboxes structure
 
 
@@ -902,6 +913,12 @@ namespace MultiWiiWinGUI
             b_write_settings.Enabled = false;
 
 
+
+            //init instrument panels
+            altitude_meter1.SetAlimeterParameters(0);
+            vertical_speed_indicator1.SetVerticalSpeedIndicatorParameters(0);
+
+
             //System.Threading.Thread.Sleep(2000);
             splash.Close();
 
@@ -913,36 +930,25 @@ namespace MultiWiiWinGUI
 
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
-
+            telemetry_start = 1;
 
             if (serialPort.BytesToRead == 0)
             {
 
-                /*
-                    if ((iRefreshDivider % gui_settings.MSP_STATUS_rate_divider) == 0) MSPquery(MSP.MSP_STATUS);
-                    if ((iRefreshDivider % gui_settings.MSP_RAW_IMU_rate_divider) == 0) MSPquery(MSP.MSP_RAW_IMU);
-                    if ((iRefreshDivider % gui_settings.MSP_SERVO_rate_divider) == 0) MSPquery(MSP.MSP_SERVO);
-                    if ((iRefreshDivider % gui_settings.MSP_MOTOR_rate_divider) == 0) MSPquery(MSP.MSP_MOTOR);
-                    if ((iRefreshDivider % gui_settings.MSP_RAW_GPS_rate_divider) == 0) MSPquery(MSP.MSP_RAW_GPS);
-                    if ((iRefreshDivider % gui_settings.MSP_COMP_GPS_rate_divider) == 0) MSPquery(MSP.MSP_COMP_GPS);
-                    if ((iRefreshDivider % gui_settings.MSP_ATTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ATTITUDE);
-                    if ((iRefreshDivider % gui_settings.MSP_ALTITUDE_rate_divider) == 0) MSPquery(MSP.MSP_ALTITUDE);
-                    if ((iRefreshDivider % gui_settings.MSP_RC_rate_divider) == 0) MSPquery(MSP.MSP_RC);
-                    if ((iRefreshDivider % gui_settings.MSP_MISC_rate_divider) == 0) MSPquery(MSP.MSP_MISC);
-                    if ((iRefreshDivider % gui_settings.MSP_DEBUG_rate_divider) == 0) MSPquery(MSP.MSP_DEBUG);
-                */
-
-                MSPquery(MSP.MSP_STATUS);
-                MSPquery(MSP.MSP_RAW_IMU);
+                if (tabMain.SelectedIndex == GUIPages.SensorGraph)
+                {
+                    MSPquery(MSP.MSP_DEBUG);
+                    MSPquery(MSP.MSP_RAW_IMU);
+                }
+                MSPquery(MSP.MSP_STATUS); telemetry_status_sent++;
                 MSPquery(MSP.MSP_SERVO);
                 MSPquery(MSP.MSP_MOTOR);
                 MSPquery(MSP.MSP_RAW_GPS);
                 MSPquery(MSP.MSP_COMP_GPS);
+                MSPquery(MSP.MSP_ANALOG);
                 MSPquery(MSP.MSP_ATTITUDE);
                 MSPquery(MSP.MSP_ALTITUDE);
                 MSPquery(MSP.MSP_RC);
-               // MSPquery(MSP.MSP_MISC);
-                MSPquery(MSP.MSP_DEBUG);
 
 
 
@@ -975,8 +981,6 @@ namespace MultiWiiWinGUI
 
             }
             update_gui();
-            iRefreshDivider--;
-            if (iRefreshDivider == 0) iRefreshDivider = 20;      //reset
 
         }
         
@@ -999,6 +1003,13 @@ namespace MultiWiiWinGUI
 
                 switch (tabMain.SelectedIndex)
                 {
+
+                    case GUIPages.PID:
+                        timer_realtime.Stop();
+                        break;
+                    case GUIPages.SensorGraph:
+                        timer_realtime.Start();
+                        break;
                     case GUIPages.CLI:
                         timer_realtime.Stop();              //Stop refresh to free up serial channel
                         isCLI = true;
@@ -1010,7 +1021,7 @@ namespace MultiWiiWinGUI
                     case GUIPages.FlighTune:
                         timer_realtime.Stop();
                         break;
-                    case GUIPages.Realtime:
+                    case GUIPages.FlightDeck:
                         timer_realtime.Start();             //need to check about logging .....
                         break;
                     case GUIPages.Video:
@@ -1248,6 +1259,7 @@ namespace MultiWiiWinGUI
                     mw_gui.i2cErrors = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.present = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     mw_gui.mode = BitConverter.ToUInt32(inBuf, ptr); ptr += 4;
+                    telemetry_status_received++;
                     break;
                 case MSP.MSP_RAW_IMU:
                     ptr = 0;
@@ -1316,7 +1328,8 @@ namespace MultiWiiWinGUI
                     break;
                 case MSP.MSP_ALTITUDE:
                     ptr = 0;
-                    mw_gui.baro = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    mw_gui.EstAlt = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    mw_gui.vario = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
                 case MSP.MSP_ANALOG:
                     ptr = 0;
@@ -1534,17 +1547,19 @@ namespace MultiWiiWinGUI
                                         {
                                             if (err_rcvd)
                                             {
-                                                serial_error_count++;
+                                                //Invalid command received... (CRC was OK btw)
+                                                if (telemetry_start == 1) serial_packet_rx_count++;
                                             }
                                             else
                                             {
                                                 /* we got a valid response packet, evaluate it */
-                                                serial_packet_count++;
+                                                if (telemetry_start == 1)  serial_packet_rx_count++;
                                                 evaluate_command(cmd);
                                             }
                                         }
                                         else
                                         {
+                                            //Checksum error
                                             serial_error_count++;
                                         }
                                         c_state = IDLE;
@@ -1586,7 +1601,35 @@ namespace MultiWiiWinGUI
         {
 
             label41.Text = Convert.ToString(serial_error_count);
-            label42.Text = Convert.ToString(serial_packet_count);
+            label42.Text = Convert.ToString(serial_packet_rx_count);
+            lTxPackets.Text = Convert.ToString(serial_packet_tx_count);
+
+
+            int q = telemetry_status_sent - telemetry_status_received;
+            if (q <= 3) telemetry_link_quality = 100;
+            else telemetry_link_quality = 100 - q*5;
+            if (telemetry_link_quality <= 0) telemetry_link_quality = 0;
+            label70.Text = Convert.ToString(telemetry_link_quality);
+
+            if (telemetry_link_quality > 80)
+            {
+                lTelemLinkStatus.Text = "Telemetry Link OK";
+                lTelemLinkStatus.ForeColor = Color.Green;
+            }
+            else if (telemetry_link_quality > 30)
+            {
+                lTelemLinkStatus.Text = "Telemetry Link FAILING";
+                lTelemLinkStatus.ForeColor = Color.Orange;
+            }
+            else
+            {
+                lTelemLinkStatus.Text = "Telemetry Link DOWN";
+                lTelemLinkStatus.ForeColor = Color.Red;
+            }
+
+
+
+
 
             if (frmDebug != null && strDebug != "")
             {
@@ -1642,7 +1685,7 @@ namespace MultiWiiWinGUI
             }
 
 
-            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.Config)        //Common tasks for all panels
+            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.PID)        //Common tasks for all panels
             {
 
                 throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
@@ -1858,10 +1901,9 @@ namespace MultiWiiWinGUI
                 }
             }
 
-            // TAB realtime
-            if (tabMain.SelectedIndex == GUIPages.Realtime)
-            {
 
+            if (tabMain.SelectedIndex == GUIPages.SensorGraph)
+            {
                 if (cb_acc_roll.Checked) { list_acc_roll.Add((double)xTimeStamp, mw_gui.ax); }
                 l_acc_roll.Text = "" + mw_gui.ax;
 
@@ -1889,8 +1931,8 @@ namespace MultiWiiWinGUI
                 if (cb_mag_yaw.Checked) { list_mag_yaw.Add((double)xTimeStamp, mw_gui.magz); }
                 l_mag_yaw.Text = "" + mw_gui.magz;
 
-                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, (double)mw_gui.baro / 100.0f); }
-                l_alt.Text = "" + (double)mw_gui.baro / 100;
+                if (cb_alt.Checked) { list_alt.Add((double)xTimeStamp, (double)mw_gui.EstAlt / 100.0f); }
+                l_alt.Text = "" + (double)mw_gui.EstAlt / 100;
 
                 if (cb_head.Checked) { list_head.Add((double)xTimeStamp, mw_gui.heading); }
                 l_head.Text = "" + mw_gui.heading;
@@ -1919,6 +1961,18 @@ namespace MultiWiiWinGUI
                 zgMonitor.AxisChange();
                 zgMonitor.Invalidate();
 
+
+
+
+            }
+
+
+
+            // TAB FlightDeck
+            if (tabMain.SelectedIndex == GUIPages.FlightDeck)
+            {
+
+
                 rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
 
                 curve_acc_roll.IsVisible = cb_acc_roll.Checked;
@@ -1940,9 +1994,11 @@ namespace MultiWiiWinGUI
 
                 motorsIndicator1.SetMotorsIndicatorParameters(mw_gui.motors, mw_gui.servos, mw_gui.multiType);
 
+                altitude_meter1.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
+                vertical_speed_indicator1.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
+
                 //update indicator lamps
 
-                //indNUNCHUK.SetStatus((mw_gui.present & 1) != 0);
                 indACC.SetStatus((mw_gui.present & 1) != 0);
                 indBARO.SetStatus((mw_gui.present & 2) != 0);
                 indMAG.SetStatus((mw_gui.present & 4) != 0);
@@ -2260,6 +2316,46 @@ namespace MultiWiiWinGUI
             throttle_expo_control1.SetRCExpoParameters((double)mw_params.ThrottleMID / 100, (double)mw_params.ThrottleEXPO / 100, mw_gui.rcThrottle);
 
             nPAlarm.Value = mw_params.PowerTrigger;
+
+            label49.Text = "(" + Convert.ToString((decimal)mw_params.mag_declination / 10) + ")";
+            decimal mag_dec = (decimal)mw_params.mag_declination / 10;
+            if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
+            else cbMagSign.SelectedIndex = 0;
+            mag_dec = Math.Abs(mag_dec);
+            nMagDeg.Value = (int)mag_dec;
+            nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
+
+            //Update Power parameters
+            nVBatScale.Value = (int)mw_params.vbatscale;
+            nVBatWarn1.Value = (int)mw_params.vbatlevel_warn1;
+            nVBatWarn2.Value = (int)mw_params.vbatlevel_warn2;
+            nVBatCritical.Value = (int)mw_params.vbatlevel_crit;
+
+            //Update throttle params
+            nMinThr.Value = mw_params.minThrottle;
+            nFSThr.Value = mw_params.failsafe_throttle;
+
+            for (int i = 0; i < 8; i++)
+            {
+
+
+                servo_max[i].Value = mw_params.servoMax[i];
+                servo_min[i].Value = mw_params.servoMin[i];
+                servo_mid[i].Value = mw_params.servoMiddle[i];
+                servo_rate[i].Value = Math.Abs(mw_params.servoRate[i]);
+                if (mw_params.servoRate[i] < 0)
+                {
+                    servo_reverse[i].Checked = true;
+                }
+                else
+                {
+                    servo_reverse[i].Checked = false;
+                }
+            }
+
+
+
+
         }
 
         private void b_write_to_file_Click(object sender, EventArgs e)
@@ -2595,7 +2691,7 @@ namespace MultiWiiWinGUI
             //Attitude
             if (gui_settings.logGatt) { wLogStream.WriteLine("GATT,{0},{1},{2}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.angx, mw_gui.angy); }
             //Mag, head, baro
-            if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4},{5}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.baro); }
+            if (gui_settings.logGmag) { wLogStream.WriteLine("GMAG,{0},{1},{2},{3},{4},{5}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.magx, mw_gui.magy, mw_gui.magz, mw_gui.heading, mw_gui.EstAlt); }
             //RC controls 
             if (gui_settings.logGrcc) { wLogStream.WriteLine("GRCC,{0},{1},{2},{3},{4}", DateTime.Now.ToString("HH:mm:ss.fff"), mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw); }
             //RC Aux controls
@@ -3862,6 +3958,24 @@ namespace MultiWiiWinGUI
             mw_gui.mag_declination = (int)(mag_dec * 10);
             label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
         }
+
+        private void bBind_Click(object sender, EventArgs e)
+        {
+            if (!isConnected)
+            {
+                MessageBoxEx.Show(this, "You have to connect to the FC first!", "Not connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (MessageBoxEx.Show(this, "After pressing OK your Spektrum receiver will be in bind mode, power cycle when bind is finished", "Bind Spektrum receiver", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+            {
+
+                MSPquery(MSP.MSP_BIND);
+
+            }
+        }
+
+        
 
     }
 
