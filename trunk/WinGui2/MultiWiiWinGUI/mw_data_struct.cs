@@ -60,7 +60,7 @@ namespace MultiWiiWinGUI
             sLogFolder = Directory.GetCurrentDirectory();
             sCaptureFolder = Directory.GetCurrentDirectory();
             sSettingsFolder = Directory.GetCurrentDirectory();
-            iSoftwareVersion = 21;
+            iSoftwareVersion = 23;
             bEnableLogging = false;
 
             //Refreh rate dividers (based on 20Hz refresh rate)

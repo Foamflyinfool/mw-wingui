@@ -39,7 +39,7 @@
 	  
 	<PID id="7" name="Level" desc="Autolevel control" />
 	  <P id="7" shown="true" min="0" max="20.0" prec="10" />
-	  <I id="7" shown="true" min="0" max="2.54" prec="100" />
+	  <I id="7" shown="true" min="0" max="0.254" prec="1000" />
 	  <D id="7" shown="true" min="0" max="100" prec="1" />
 	  
 	<PID id="8" name="Mag" desc="Heading hold control" />

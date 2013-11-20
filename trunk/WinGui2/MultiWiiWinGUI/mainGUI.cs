@@ -591,8 +591,8 @@ namespace MultiWiiWinGUI
 
             const int iLineSpace = 36;
             const int iRow1 = 30;
-            const int iRow2 = 125;
-            const int iRow3 = 220;
+            const int iRow2 = 130;
+            const int iRow3 = 230;
             const int iTopY = 25;
             Font fontField = new Font("Tahoma", 9, FontStyle.Bold);
             Size fieldSize = new Size(70, 25);
@@ -1405,6 +1405,9 @@ namespace MultiWiiWinGUI
                     ptr = 0;
                     for (int i = 0; i < 8; i++)
                     {
+
+                        int temp;
+
                         mw_gui.servoMin[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMax[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -1414,6 +1417,8 @@ namespace MultiWiiWinGUI
                         if (mw_gui.servoMax[i] == 0) mw_gui.servoMax[i] = 2000;
                         if (mw_gui.servoMiddle[i] == 0) mw_gui.servoMiddle[i] = 1500;
                         if (mw_gui.servoRate[i] == 0) mw_gui.servoRate[i] = 100;
+                        //Check the boundaries...
+                        if (Math.Abs(mw_gui.servoRate[i]) > 100) mw_gui.servoRate[i] = 100;
                     }
                     response_counter++;
                     break;

@@ -335,7 +335,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mwwingui.ico" />
-    <Content Include="optionsconfig21.xml">
+    <Content Include="optionsconfig23.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>

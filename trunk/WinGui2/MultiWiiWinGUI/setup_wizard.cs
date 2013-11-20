@@ -44,7 +44,7 @@ namespace MultiWiiWinGUI
 
             //Set default values and fill out gui controls
             Settings.bEnableLogging = false;
-            Settings.iSoftwareVersion = 21;
+            Settings.iSoftwareVersion = 23;
             Settings.sCaptureFolder = Directory.GetCurrentDirectory() + "\\Captures";
             Settings.sLogFolder = Directory.GetCurrentDirectory() + "\\Logs";
             Settings.sSettingsFolder = Directory.GetCurrentDirectory() + "\\Settings";
@@ -95,7 +95,7 @@ namespace MultiWiiWinGUI
                     Settings.sCaptureFolder = l_Captures_folder.Text;
                     Settings.sPreferedSerialSpeed = cb_SerialSpeed.SelectedItem.ToString();
                     Settings.sPreferedComPort = cb_SerialPort.Text;
-                    Settings.iSoftwareVersion = 21; 
+                    Settings.iSoftwareVersion = 23; 
                     Settings.bEnableLogging = cb_LogEnabled.Checked;
                     Settings.logGraw = cb_Log1.Checked;
                     Settings.logGatt = cb_Log2.Checked;
