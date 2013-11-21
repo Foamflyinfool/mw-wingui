@@ -1413,11 +1413,10 @@ namespace MultiWiiWinGUI
                         mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoRate[i] = (SByte) inBuf[ptr]; ptr += 1;
 
-                        if (mw_gui.servoMin[i] ==0 ) mw_gui.servoMin[i] = 1000;
-                        if (mw_gui.servoMax[i] == 0) mw_gui.servoMax[i] = 2000;
-                        if (mw_gui.servoMiddle[i] == 0) mw_gui.servoMiddle[i] = 1500;
-                        if (mw_gui.servoRate[i] == 0) mw_gui.servoRate[i] = 100;
-                        //Check the boundaries...
+                        //Check the boundaries, if no servos are defined in config.h then the servo variables remain uninitailised in EEPROM so expect gibberis
+                        if ( (mw_gui.servoMin[i] < 900) || (mw_gui.servoMin[i] > 2100) ) mw_gui.servoMin[i] = 1000;
+                        if ( (mw_gui.servoMax[i] < 900) || (mw_gui.servoMax[i] > 2100) ) mw_gui.servoMax[i] = 2000;
+                        if ( (mw_gui.servoMiddle[i] < 1000) || (mw_gui.servoMiddle[i] > 2000) ) mw_gui.servoMiddle[i] = 1500;
                         if (Math.Abs(mw_gui.servoRate[i]) > 100) mw_gui.servoRate[i] = 100;
                     }
                     response_counter++;
