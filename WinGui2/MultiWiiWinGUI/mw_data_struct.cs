@@ -388,7 +388,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
 
-                while (serialport.BytesToWrite > 0) ;
+            //    while (serialport.BytesToWrite > 0) ;
 
                 //Write PID's 
                 bptr = 0;
@@ -407,8 +407,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-                while (serialport.BytesToWrite > 0) ;
-                while (serialport.BytesToRead > 0) ;
+//                while (serialport.BytesToWrite > 0) ;
+            //while (serialport.BytesToRead > 0) ;
 
                 //Then write checkboxitems
 
@@ -428,8 +428,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-                while (serialport.BytesToWrite > 0) ;
-                while (serialport.BytesToRead > 0) ;
+//                while (serialport.BytesToWrite > 0) ;
+//                while (serialport.BytesToRead > 0) ;
 
 
                 //Servo_conf
@@ -455,8 +455,8 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-                while (serialport.BytesToWrite > 0) ;
-                while (serialport.BytesToRead > 0) ;
+//                while (serialport.BytesToWrite > 0) ;
+//                while (serialport.BytesToRead > 0) ;
 
 
                 //then the rest
@@ -512,10 +512,12 @@ namespace MultiWiiWinGUI
                 o[4] = (byte)MSP.MSP_EEPROM_WRITE; c ^= o[4];
                 o[5] = (byte)c;
                 serialport.Write(o, 0, 6);
-                while (serialport.BytesToRead == 0) ;
 
-                while (serialport.BytesToWrite > 0) ;
-                while (serialport.BytesToRead > 0) ;
+       //         DateTime startTime = DateTime.Now;
+//                while ((serialport.BytesToRead == 0) && (DateTime.Now.Subtract(startTime).TotalMilliseconds < 2000)) ;
+//
+                //while (serialport.BytesToWrite > 0) ;
+                //while (serialport.BytesToRead > 0) ;
 
 
             }
@@ -780,8 +782,24 @@ namespace MultiWiiWinGUI
         public Boolean[] servoReverse;
 
 
+        //Navigation status
+        public byte gps_mode;
+        public byte nav_state;
+        public byte next_step;
+        public byte wp_number;
+        public int wp_lat;
+        public int wp_lon;
+        public Int16 nav_hold_time;
+        
+
+
+
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
+
+
+
+
 
         //Constructor
         public mw_data_gui(int pidItems, int checkboxItems, int iSoftwareVersion)
@@ -813,5 +831,28 @@ namespace MultiWiiWinGUI
 
 
     }
+
+    public class mission_step_structure
+    {
+        public byte wp_number;
+        public byte action;
+        public int lat;
+        public int lon;
+        public int altitude;
+        public Int16 parameter;
+        public byte flag;
+        public bool wp_updated;
+
+        public mission_step_structure()
+        {
+        }
+
+    }
+
+
+
+
+
+
 }
     #endregion

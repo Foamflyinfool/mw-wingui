@@ -185,15 +185,9 @@ namespace MultiWiiWinGUI
 
         //Navigaton constants
 
-        const int MISSION_WAYPOINT = 1;			    //Set waypoint
-        const int MISSION_HOLD_UNLIM = 2;			//Poshold unlimited
-        const int MISSION_HOLD_TIME = 3;			//Hold for a predetermined time
-        const int MISSION_RTH = 4;			        //Return to HOME
-        const int MISSION_SET_POI = 5;              //Set POINT of interest
+        static mission_step_structure mission_step;
 
         const int MISSION_FLAG_END = 0xA5;		    //Flags that this is the last step
-
-
 
         const byte IDLE = 0;
         const byte HEADER_START = 1;
@@ -252,15 +246,13 @@ namespace MultiWiiWinGUI
             MainMap.MaxZoom = 20;
             MainMap.CacheLocation = Path.GetDirectoryName(Application.ExecutablePath) + "/mapcache/";
 
-            mapProviders = new GMapProvider[6];
+            mapProviders = new GMapProvider[4];
             mapProviders[0] = GMapProviders.BingHybridMap;
             mapProviders[1] = GMapProviders.BingSatelliteMap;
-            mapProviders[2] = GMapProviders.GoogleHybridMap;
-            mapProviders[3] = GMapProviders.GoogleSatelliteMap;
-            mapProviders[4] = GMapProviders.OviHybridMap;
-            mapProviders[5] = GMapProviders.OviSatelliteMap;
+            mapProviders[2] = GMapProviders.OviHybridMap;
+            mapProviders[3] = GMapProviders.OviSatelliteMap;
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 cbMapProviders.Items.Add(mapProviders[i]);
             }
@@ -338,6 +330,8 @@ namespace MultiWiiWinGUI
             }
 
             
+
+
             //Build the RC control checkboxes structure
 
 
@@ -431,8 +425,12 @@ namespace MultiWiiWinGUI
                 for (int i = 0; i < iCheckBoxItems; i++)
                 {
                     this.tabPageRC.Controls.Remove(cb_labels[i]);
-                    this.splitContainer2.Panel2.Controls.Remove(indicators[i]);
+                    this.splitContainer3.Panel1.Controls.Remove(indicators[i]);
                 }
+
+                
+
+
             }
         }
 
@@ -468,6 +466,7 @@ namespace MultiWiiWinGUI
 
             mw_gui = new mw_data_gui(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
             mw_params = new mw_settings(iPidItems, iCheckBoxItems, gui_settings.iSoftwareVersion);
+            mission_step = new mission_step_structure();
 
             //Quick hack to get pid names to mw_params untill redo the structures
             for (int i = 0; i < iPidItems; i++)
@@ -732,6 +731,9 @@ namespace MultiWiiWinGUI
             serialPort.ReadBufferSize = 4096;            //4K byte of read buffer
             serialPort.ReadTimeout = 500;               // 500msec timeout;
 
+
+
+
             //Init Realtime Monitor panel controls
             foreach (string rate in sRefreshSpeeds)
             {
@@ -932,54 +934,65 @@ namespace MultiWiiWinGUI
         {
             telemetry_start = 1;
 
-            if (serialPort.BytesToRead == 0)
+            try
             {
 
-                if (tabMain.SelectedIndex == GUIPages.SensorGraph)
+
+                if (serialPort.BytesToRead == 0)
                 {
-                    MSPquery(MSP.MSP_DEBUG);
-                    MSPquery(MSP.MSP_RAW_IMU);
+
+                    if (tabMain.SelectedIndex == GUIPages.SensorGraph)
+                    {
+                        MSPquery(MSP.MSP_DEBUG);
+                        MSPquery(MSP.MSP_RAW_IMU);
+                    }
+                    MSPquery(MSP.MSP_STATUS); telemetry_status_sent++;
+                    MSPquery(MSP.MSP_SERVO);
+                    MSPquery(MSP.MSP_MOTOR);
+                    MSPquery(MSP.MSP_RAW_GPS);
+                    MSPquery(MSP.MSP_COMP_GPS);
+                    MSPquery(MSP.MSP_ANALOG);
+                    MSPquery(MSP.MSP_ATTITUDE);
+                    MSPquery(MSP.MSP_ALTITUDE);
+                    MSPquery(MSP.MSP_RC);
+                    MSPquery(MSP.MSP_NAV_STATUS);
+
+
+
+                    if (frmDebug != null) MSPquery(MSP.MSP_DEBUGMSG);
+
+                    if (isBoxActive("ARM"))
+                    {                                                           //armed
+                         MSPqueryWP(0);         //get home position
+                    }
+                    else
+                    {
+                        mw_gui.GPS_home_lon = 0;
+                        mw_gui.GPS_home_lat = 0;
+                        bHomeRecorded = false;
+                    }
+
+                    if (isBoxActive("GPS HOLD"))
+                    {                                                            //poshold
+                        MSPqueryWP(255);         //get hold position
+                    }
+                    else
+                    {
+                        mw_gui.GPS_poshold_lon = 0;
+                        mw_gui.GPS_poshold_lat = 0;
+                        bPosholdRecorded = false;
+                    }
+
+
+
+
                 }
-                MSPquery(MSP.MSP_STATUS); telemetry_status_sent++;
-                MSPquery(MSP.MSP_SERVO);
-                MSPquery(MSP.MSP_MOTOR);
-                MSPquery(MSP.MSP_RAW_GPS);
-                MSPquery(MSP.MSP_COMP_GPS);
-                MSPquery(MSP.MSP_ANALOG);
-                MSPquery(MSP.MSP_ATTITUDE);
-                MSPquery(MSP.MSP_ALTITUDE);
-                MSPquery(MSP.MSP_RC);
-
-
-
-                if (frmDebug != null) MSPquery(MSP.MSP_DEBUGMSG);
-
-                if (isBoxActive("ARM"))
-                {                                                           //armed
-                    if ((iRefreshDivider % 20) == 0) MSPqueryWP(0);         //get home position
-                }
-                else
-                {
-                    mw_gui.GPS_home_lon = 0;
-                    mw_gui.GPS_home_lat = 0;
-                    bHomeRecorded = false;
-                }
-
-                if (isBoxActive("GPS HOLD"))
-                {                                                            //poshold
-                    if ((iRefreshDivider % 20) == 0) MSPqueryWP(16);         //get hold position
-                }
-                else
-                {
-                    mw_gui.GPS_poshold_lon = 0;
-                    mw_gui.GPS_poshold_lat = 0;
-                    bPosholdRecorded = false;
-                }
-
-
-
-
             }
+            catch
+            {
+                bSerialError = true; 
+            }
+
             update_gui();
 
         }
@@ -1218,26 +1231,7 @@ namespace MultiWiiWinGUI
             }
 
         }
-        /*
-        private byte read8(SerialPort s)
-        {
 
-            return ((byte)s.ReadByte());
-        }
-
-        private int read16(SerialPort s)
-        {
-            byte[] buffer = { 0, 0 };
-            int retval;
-
-            buffer[0] = (byte)s.ReadByte();
-            buffer[1] = (byte)s.ReadByte();
-
-            retval = BitConverter.ToInt16(buffer, 0);
-
-            return (retval);
-        }
-        */
         private void evaluate_command(byte cmd)
         {
 
@@ -1405,9 +1399,6 @@ namespace MultiWiiWinGUI
                     ptr = 0;
                     for (int i = 0; i < 8; i++)
                     {
-
-                        int temp;
-
                         mw_gui.servoMin[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMax[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -1436,22 +1427,53 @@ namespace MultiWiiWinGUI
                     strDebug =strDebug + dbgmsg.ToString();
                     break;
                 case MSP.MSP_WP:
+
                     ptr = 0;
                     byte wp_no = (byte)inBuf[ptr++];
+
                     if (wp_no == 0)
                     {
+                        ptr++;  //Action is ignored
                         mw_gui.GPS_home_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_home_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
-                        mw_gui.GPS_home_alt = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mw_gui.GPS_home_alt = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         //flag comes here but not care
                     }
-                    if (wp_no == 16)
+                    if (wp_no == 255)
                     {
+                        ptr++; //action is ignored
                         mw_gui.GPS_poshold_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_poshold_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
-                        mw_gui.GPS_poshold_alt = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mw_gui.GPS_poshold_alt = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    }
+                    if ((wp_no > 0) && (wp_no < 255))     //It is a valid WP response
+                    {
+                        mission_step.wp_number = wp_no;
+                        mission_step.action = inBuf[ptr++];
+                        mission_step.lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mission_step.lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mission_step.altitude = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        mission_step.parameter = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mission_step.flag = inBuf[ptr++];
+
+                        mission_step.wp_updated = true;
                     }
                     break;
+                case MSP.MSP_NAV_STATUS:
+                    ptr = 0;
+                    mw_gui.gps_mode = inBuf[ptr++];
+                    mw_gui.nav_state = inBuf[ptr++];
+                    mw_gui.next_step = inBuf[ptr++];
+                    mw_gui.wp_number = inBuf[ptr++];
+                    mw_gui.wp_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    mw_gui.wp_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    mw_gui.nav_hold_time = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                    break;
+
+
+
+
+
 
             }
         }
@@ -1478,108 +1500,118 @@ namespace MultiWiiWinGUI
 
             bSerialError = false;
 
-            while (!bw.CancellationPending)                // backgroundworker runs continously
+            try
             {
 
-                if (serialPort.IsOpen)
+                while (!bw.CancellationPending)                // backgroundworker runs continously
                 {
-                    //Just process what is received. Get received commands and put them into 
-                    while (serialPort.BytesToRead > 0)
+
+                    if (serialPort.IsOpen)
                     {
-                        if (isCLI == true)
+                        //Just process what is received. Get received commands and put them into 
+                        while (serialPort.BytesToRead > 0)
                         {
-                            inCLIBuffer = serialPort.ReadExisting();
-                            AccessToTB();
-                        }
-                        else
-                        {
-                            c = (byte)serialPort.ReadByte();
-
-
-                            switch (c_state)
+                            if (isCLI == true)
                             {
-                                case IDLE:
-                                    c_state = (c == '$') ? HEADER_START : IDLE;
-                                    break;
-                                case HEADER_START:
-                                    c_state = (c == 'M') ? HEADER_M : IDLE;
-                                    break;
+                                inCLIBuffer = serialPort.ReadExisting();
+                                AccessToTB();
+                            }
+                            else
+                            {
+                                c = (byte)serialPort.ReadByte();
 
-                                case HEADER_M:
-                                    if (c == '>')
-                                    {
-                                        c_state = HEADER_ARROW;
-                                    }
-                                    else if (c == '!')
-                                    {
-                                        c_state = HEADER_ERR;
-                                    }
-                                    else
-                                    {
-                                        c_state = IDLE;
-                                    }
-                                    break;
 
-                                case HEADER_ARROW:
-                                case HEADER_ERR:
-                                    /* is this an error message? */
-                                    err_rcvd = (c_state == HEADER_ERR);        /* now we are expecting the payload size */
-                                    dataSize = c;
-                                    /* reset index variables */
-                                    offset = 0;
-                                    checksum = 0;
-                                    checksum ^= c;
-                                    c_state = HEADER_SIZE;
-                                    if (dataSize > 150) { c_state = IDLE; }
-                                    break;
-                                case HEADER_SIZE:
-                                    cmd = c;
-                                    checksum ^= c;
-                                    c_state = HEADER_CMD;
-                                    break;
-                                case HEADER_CMD:
-                                    if (offset < dataSize)
-                                    {
-                                        checksum ^= c;
-                                        inBuf[offset++] = c;
-                                    }
-                                    else
-                                    {
+                                switch (c_state)
+                                {
+                                    case IDLE:
+                                        c_state = (c == '$') ? HEADER_START : IDLE;
+                                        break;
+                                    case HEADER_START:
+                                        c_state = (c == 'M') ? HEADER_M : IDLE;
+                                        break;
 
-                                        /* compare calculated and transferred checksum */
-                                        if (checksum == c)
+                                    case HEADER_M:
+                                        if (c == '>')
                                         {
-                                            if (err_rcvd)
-                                            {
-                                                //Invalid command received... (CRC was OK btw)
-                                                if (telemetry_start == 1) serial_packet_rx_count++;
-                                            }
-                                            else
-                                            {
-                                                /* we got a valid response packet, evaluate it */
-                                                if (telemetry_start == 1)  serial_packet_rx_count++;
-                                                evaluate_command(cmd);
-                                            }
+                                            c_state = HEADER_ARROW;
+                                        }
+                                        else if (c == '!')
+                                        {
+                                            c_state = HEADER_ERR;
                                         }
                                         else
                                         {
-                                            //Checksum error
-                                            serial_error_count++;
+                                            c_state = IDLE;
                                         }
-                                        c_state = IDLE;
-                                    }
-                                    break;
+                                        break;
+
+                                    case HEADER_ARROW:
+                                    case HEADER_ERR:
+                                        /* is this an error message? */
+                                        err_rcvd = (c_state == HEADER_ERR);        /* now we are expecting the payload size */
+                                        dataSize = c;
+                                        /* reset index variables */
+                                        offset = 0;
+                                        checksum = 0;
+                                        checksum ^= c;
+                                        c_state = HEADER_SIZE;
+                                        if (dataSize > 150) { c_state = IDLE; }
+                                        break;
+                                    case HEADER_SIZE:
+                                        cmd = c;
+                                        checksum ^= c;
+                                        c_state = HEADER_CMD;
+                                        break;
+                                    case HEADER_CMD:
+                                        if (offset < dataSize)
+                                        {
+                                            checksum ^= c;
+                                            inBuf[offset++] = c;
+                                        }
+                                        else
+                                        {
+
+                                            /* compare calculated and transferred checksum */
+                                            if (checksum == c)
+                                            {
+                                                if (err_rcvd)
+                                                {
+                                                    //Invalid command received... (CRC was OK btw)
+                                                    if (telemetry_start == 1) serial_packet_rx_count++;
+                                                }
+                                                else
+                                                {
+                                                    /* we got a valid response packet, evaluate it */
+                                                    if (telemetry_start == 1) serial_packet_rx_count++;
+                                                    evaluate_command(cmd);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //Checksum error
+                                                serial_error_count++;
+                                            }
+                                            c_state = IDLE;
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
-                }
-                else   //port not opened, (it could happen when U disconnect the usb cable while connected
-                {
-                    //bSerialError = true; //do nothing
-                    //return;
-                }
+                    else   //port not opened, (it could happen when U disconnect the usb cable while connected
+                    {
+                        //bSerialError = true; //do nothing
+                        //return;
+                    }
 
-            }// while
+                }// while
+            }
+
+            catch
+            {
+                bSerialError = true;
+                return;
+            }
 
             e.Cancel = true;
 
@@ -1655,8 +1687,8 @@ namespace MultiWiiWinGUI
                 }
                 catch
                 {
-                    MessageBoxEx.Show(this, "An error condition detected on the Serial port, check that your USB cable is connected", "Comm Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                MessageBoxEx.Show(this, "An error condition detected on the Serial port, check that your USB cable is connected", "Comm Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 bSerialError = false;
                 return;
             }
@@ -1812,6 +1844,16 @@ namespace MultiWiiWinGUI
                 }
             }
 
+
+            //All
+            lGpsMode.Text = Convert.ToString(mw_gui.gps_mode);
+            lNavState.Text = Convert.ToString(mw_gui.nav_state);
+            lNextWp.Text = Convert.ToString(mw_gui.next_step); //action
+            lAction.Text = Convert.ToString(mw_gui.wp_number);
+            lParameter.Text = Convert.ToString(mw_gui.nav_hold_time);
+
+            label78.Text = Convert.ToString(mw_gui.wp_lat);
+            label77.Text = Convert.ToString(mw_gui.wp_lon);
 
             //TAB MAP
             if (tabMain.SelectedIndex == GUIPages.Mission)
@@ -2104,10 +2146,6 @@ namespace MultiWiiWinGUI
                 }
 
                 if (missing_packets) MessageBoxEx.Show("Not all response packets were arrived,\rplease reread parameters to make sure that you see valid parameters.", "Response Packets Lost", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                while (serialPort.BytesToRead == 0) ;
-                while (serialPort.BytesToWrite > 0) ;
-                while (serialPort.BytesToRead > 0) ;
 
                 bOptions_needs_refresh = true;
                 update_gui();
@@ -2897,11 +2935,11 @@ namespace MultiWiiWinGUI
                  //Send the WP command, set waypoint 255 (poshold)
                  if (cbSendGTCAlt.Checked)              
                  {
-                     sendWPToMultiWii(serialPort, 255,MISSION_HOLD_UNLIM,end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text),0,0);
+                     sendWPToMultiWii(serialPort, 255,WP_ACTION.HOLD_UNLIM,end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text),0,0);
                  }
                  else
                  {
-                     sendWPToMultiWii(serialPort, 255,MISSION_HOLD_UNLIM, end.Lat, end.Lng, 0,0,0);
+                     sendWPToMultiWii(serialPort, 255,WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, 0,0,0);
                  }
                 return;
             }
@@ -3460,10 +3498,10 @@ namespace MultiWiiWinGUI
                     string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
                     string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
 
-                    if (cell1 == "WAYPOINT") command = MISSION_WAYPOINT;
-                    if (cell1 == "POSHOLD_UNLIM") command = MISSION_HOLD_UNLIM;
-                    if (cell1 == "POSHOLD_TIME") command = MISSION_HOLD_TIME;
-                    if (cell1 == "RTH") command = MISSION_RTH;
+                    if (cell1 == "WAYPOINT") command = WP_ACTION.WAYPOINT;
+                    if (cell1 == "POSHOLD_UNLIM") command = WP_ACTION.HOLD_UNLIM;
+                    if (cell1 == "POSHOLD_TIME") command = WP_ACTION.HOLD_TIME;
+                    if (cell1 == "RTH") command = WP_ACTION.RTH;
 
 
                    
@@ -3725,28 +3763,31 @@ namespace MultiWiiWinGUI
                     buffer[bptr++] = (byte)'$';
                     buffer[bptr++] = (byte)'M';
                     buffer[bptr++] = (byte)'<';
-                    buffer[bptr++] = 18;
+                    buffer[bptr++] = 17;
                     buffer[bptr++] = (byte)MSP.MSP_SET_WP;
 
                     //byte Waypoint number
                     buffer[bptr++] = Convert.ToByte(wp_number);
+
                     //Action
                     buffer[bptr++] = Convert.ToByte(action);
+
                     //int32 lattitude in lat * 10,000,000
                     bInt32 = BitConverter.GetBytes(Convert.ToInt32(lat * 10000000));
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
+
                     //int32 longitude in lon * 10,000,000
                     bInt32 = BitConverter.GetBytes(Convert.ToInt32(lon * 10000000));
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
+                    
                     //int32 altitude in cm so convert it from meter
                     bInt32 = BitConverter.GetBytes(alt * 100);
                     buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-                    //int16 Heading 
-                    bInt16 = BitConverter.GetBytes(heading);
-                    buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+                    
                     //int16 Parameter 1
                     bInt16 = BitConverter.GetBytes(parameter);
                     buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+                    
                     //byte nav flag (this will be the action)
                     buffer[bptr++] = flag;
 
@@ -3905,7 +3946,7 @@ namespace MultiWiiWinGUI
 
             byte action, flag;
             Int16 parameter,heading;
-            Int32 lat, lon;
+            double lat, lon;
             Int32 altitude;
 
             for (byte a = 0; a < missionDataGrid.Rows.Count - 0; a++)
@@ -3914,18 +3955,30 @@ namespace MultiWiiWinGUI
 
                 string cell = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
                 action = 0;     //default
-                if (cell == "WAYPOINT") action = MISSION_WAYPOINT;
-                if (cell == "POSHOLD_UNLIM") action = MISSION_HOLD_UNLIM;
-                if (cell == "POSHOLD_TIME") action = MISSION_HOLD_TIME;
-                if (cell == "RTH") action = MISSION_RTH;
-
-
-
+                if (cell == "WAYPOINT") action = WP_ACTION.WAYPOINT;
+                if (cell == "POSHOLD_UNLIM") action = WP_ACTION.HOLD_UNLIM;
+                if (cell == "POSHOLD_TIME") action = WP_ACTION.HOLD_TIME;
+                if (cell == "RTH") action = WP_ACTION.RTH;
+                
                 cell = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
                 altitude = Convert.ToInt32(cell);
+
+                cell = missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString(); // alt
+                parameter = Convert.ToInt16(cell);
+              
+
+
                 //TODO: finish it
                 string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
                 string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
+
+                lat = Convert.ToDouble(cell3);
+                lon = Convert.ToDouble(cell4);
+
+                flag = 0;
+                if (a == (missionDataGrid.Rows.Count - 1)) flag = 0xa5;
+
+                sendWPToMultiWii(serialPort, a + 1, action, lat, lon, altitude,parameter,flag);
 
             }
         }
@@ -3979,8 +4032,59 @@ namespace MultiWiiWinGUI
             }
         }
 
-        
+        private void btnDownLoadMission_Click(object sender, EventArgs e)
+        {
+            //Clean up current mission   
+            missionDataGrid.Rows.Clear();
+            updateMap();
 
+
+            byte i = 1;         //start from wp1
+            bool not_finished = true;
+            bool no_answer = false;
+            string strAction = "";
+
+            while (not_finished)
+            {
+                mission_step.wp_updated = false;
+                MSPqueryWP(i);
+
+
+                DateTime startTime = DateTime.Now;
+
+                while (!mission_step.wp_updated && !no_answer)
+                {
+                    if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 2000) { no_answer = true;  }
+                }
+
+                if (!no_answer)
+                {
+
+                    switch (mission_step.action)
+                    {
+                        case WP_ACTION.WAYPOINT: strAction = "WAYPOINT";
+                            break;
+                        case WP_ACTION.HOLD_UNLIM: strAction = "POSHOLD_UNLIM";
+                            break;
+                        case WP_ACTION.HOLD_TIME: strAction = "POSHOLD_TIME";
+                            break;
+                        case WP_ACTION.RTH: strAction = "RTH";
+                            break;
+                    }
+
+                    addWP(strAction, mission_step.parameter, (double)mission_step.lat / 10000000.0, (double)mission_step.lon / 10000000.0, mission_step.altitude / 100);
+                    mission_step.wp_updated = false;
+                    i++;
+                    if (mission_step.flag == MISSION_FLAG_END) not_finished = false;
+                }
+                else
+                {
+                    not_finished = false;
+                    MessageBox.Show("No answer from FC, mission list may be uncompleted. Try reading mission again.", "Answer timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
     }
 
 }
