@@ -201,7 +201,7 @@ namespace MultiWiiWinGUI
             o[5] = (byte)c;
             serialPort.Write(o, 0, 6);
 
-            while (serialPort.BytesToWrite > 0) ;
+            //while (serialPort.BytesToWrite > 0) ;
             if (telemetry_start==1) serial_packet_tx_count++;
 
         }
@@ -229,16 +229,16 @@ namespace MultiWiiWinGUI
             //Stop all timers
             timer_realtime.Stop();
 
-            while (serialPort.BytesToWrite > 0) ;
-            while (serialPort.BytesToRead > 0) ;
+           // while (serialPort.BytesToWrite > 0) ;
+           // while (serialPort.BytesToRead > 0) ;
             
             update_params();                            //update parameters object from GUI controls.
-
             mw_params.write_settings(serialPort);
 
-            while (serialPort.BytesToRead > 0) ;
-            while (serialPort.BytesToWrite > 0) ;
-            while (serialPort.BytesToRead > 0) ;
+//            while (serialPort.BytesToRead > 0) ;
+//            while (serialPort.BytesToWrite > 0) ;
+//            while (serialPort.BytesToRead > 0) ;
+
             response_counter = 0;
             MSPquery(MSP.MSP_PID);
             MSPquery(MSP.MSP_RC_TUNING);
@@ -260,8 +260,8 @@ namespace MultiWiiWinGUI
 
             //Invalidate gui parameters and reread those values
 
-            while (serialPort.BytesToWrite > 0) ;
-            while (serialPort.BytesToRead > 0) ;
+//            while (serialPort.BytesToWrite > 0) ;
+//            while (serialPort.BytesToRead > 0) ;
 
             bOptions_needs_refresh = true;
             update_gui();

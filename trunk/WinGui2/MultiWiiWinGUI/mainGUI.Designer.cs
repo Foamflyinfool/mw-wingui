@@ -57,6 +57,8 @@
             this.indMAG = new MultiWiiGUIControls.indicator_lamp();
             this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
             this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
+            this.label75 = new System.Windows.Forms.Label();
+            this.label73 = new System.Windows.Forms.Label();
             this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
             this.lTelemLinkStatus = new System.Windows.Forms.Label();
@@ -90,6 +92,17 @@
             this.label45 = new System.Windows.Forms.Label();
             this.tb_mapzoom = new System.Windows.Forms.TrackBar();
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
+            this.lParameter = new System.Windows.Forms.Label();
+            this.lAction = new System.Windows.Forms.Label();
+            this.label76 = new System.Windows.Forms.Label();
+            this.lNavState = new System.Windows.Forms.Label();
+            this.lNextWp = new System.Windows.Forms.Label();
+            this.lGpsMode = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
+            this.l11 = new System.Windows.Forms.Label();
+            this.label72 = new System.Windows.Forms.Label();
             this.cbSendGTCAlt = new System.Windows.Forms.CheckBox();
             this.txtGTCAlt = new System.Windows.Forms.TextBox();
             this.label46 = new System.Windows.Forms.Label();
@@ -701,6 +714,8 @@
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.label75);
+            this.splitContainer3.Panel2.Controls.Add(this.label73);
             this.splitContainer3.Panel2.Controls.Add(this.rc_input_control1);
             this.splitContainer3.Panel2.Controls.Add(this.motorsIndicator1);
             this.splitContainer3.Size = new System.Drawing.Size(982, 323);
@@ -810,6 +825,24 @@
             this.indSONAR.Size = new System.Drawing.Size(65, 17);
             this.indSONAR.TabIndex = 85;
             this.indSONAR.Text = "SONAR";
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(69, 264);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(41, 13);
+            this.label75.TabIndex = 78;
+            this.label75.Text = "label75";
+            // 
+            // label73
+            // 
+            this.label73.AutoSize = true;
+            this.label73.Location = new System.Drawing.Point(66, 247);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(41, 13);
+            this.label73.TabIndex = 77;
+            this.label73.Text = "label73";
             // 
             // rc_input_control1
             // 
@@ -1147,6 +1180,17 @@
             // splitContainer9.Panel2
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.splitContainer9.Panel2.Controls.Add(this.label78);
+            this.splitContainer9.Panel2.Controls.Add(this.label77);
+            this.splitContainer9.Panel2.Controls.Add(this.lParameter);
+            this.splitContainer9.Panel2.Controls.Add(this.lAction);
+            this.splitContainer9.Panel2.Controls.Add(this.label76);
+            this.splitContainer9.Panel2.Controls.Add(this.lNavState);
+            this.splitContainer9.Panel2.Controls.Add(this.lNextWp);
+            this.splitContainer9.Panel2.Controls.Add(this.lGpsMode);
+            this.splitContainer9.Panel2.Controls.Add(this.label74);
+            this.splitContainer9.Panel2.Controls.Add(this.l11);
+            this.splitContainer9.Panel2.Controls.Add(this.label72);
             this.splitContainer9.Panel2.Controls.Add(this.cbSendGTCAlt);
             this.splitContainer9.Panel2.Controls.Add(this.txtGTCAlt);
             this.splitContainer9.Panel2.Controls.Add(this.label46);
@@ -1222,6 +1266,116 @@
             this.MainMap.Size = new System.Drawing.Size(577, 342);
             this.MainMap.TabIndex = 33;
             this.MainMap.Zoom = 0D;
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.ForeColor = System.Drawing.Color.White;
+            this.label78.Location = new System.Drawing.Point(529, 29);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(13, 13);
+            this.label78.TabIndex = 49;
+            this.label78.Text = "0";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.ForeColor = System.Drawing.Color.White;
+            this.label77.Location = new System.Drawing.Point(529, 50);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(13, 13);
+            this.label77.TabIndex = 48;
+            this.label77.Text = "0";
+            // 
+            // lParameter
+            // 
+            this.lParameter.AutoSize = true;
+            this.lParameter.ForeColor = System.Drawing.Color.White;
+            this.lParameter.Location = new System.Drawing.Point(529, 9);
+            this.lParameter.Name = "lParameter";
+            this.lParameter.Size = new System.Drawing.Size(13, 13);
+            this.lParameter.TabIndex = 47;
+            this.lParameter.Text = "0";
+            // 
+            // lAction
+            // 
+            this.lAction.AutoSize = true;
+            this.lAction.ForeColor = System.Drawing.Color.White;
+            this.lAction.Location = new System.Drawing.Point(466, 47);
+            this.lAction.Name = "lAction";
+            this.lAction.Size = new System.Drawing.Size(13, 13);
+            this.lAction.TabIndex = 46;
+            this.lAction.Text = "0";
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.ForeColor = System.Drawing.Color.White;
+            this.label76.Location = new System.Drawing.Point(390, 48);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(70, 13);
+            this.label76.TabIndex = 45;
+            this.label76.Text = "Step_number";
+            // 
+            // lNavState
+            // 
+            this.lNavState.AutoSize = true;
+            this.lNavState.ForeColor = System.Drawing.Color.White;
+            this.lNavState.Location = new System.Drawing.Point(466, 22);
+            this.lNavState.Name = "lNavState";
+            this.lNavState.Size = new System.Drawing.Size(13, 13);
+            this.lNavState.TabIndex = 44;
+            this.lNavState.Text = "0";
+            // 
+            // lNextWp
+            // 
+            this.lNextWp.AutoSize = true;
+            this.lNextWp.ForeColor = System.Drawing.Color.White;
+            this.lNextWp.Location = new System.Drawing.Point(466, 35);
+            this.lNextWp.Name = "lNextWp";
+            this.lNextWp.Size = new System.Drawing.Size(13, 13);
+            this.lNextWp.TabIndex = 43;
+            this.lNextWp.Text = "0";
+            // 
+            // lGpsMode
+            // 
+            this.lGpsMode.AutoSize = true;
+            this.lGpsMode.ForeColor = System.Drawing.Color.White;
+            this.lGpsMode.Location = new System.Drawing.Point(466, 9);
+            this.lGpsMode.Name = "lGpsMode";
+            this.lGpsMode.Size = new System.Drawing.Size(13, 13);
+            this.lGpsMode.TabIndex = 42;
+            this.lGpsMode.Text = "0";
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.ForeColor = System.Drawing.Color.White;
+            this.label74.Location = new System.Drawing.Point(390, 35);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(37, 13);
+            this.label74.TabIndex = 41;
+            this.label74.Text = "Action";
+            // 
+            // l11
+            // 
+            this.l11.AutoSize = true;
+            this.l11.ForeColor = System.Drawing.Color.White;
+            this.l11.Location = new System.Drawing.Point(390, 22);
+            this.l11.Name = "l11";
+            this.l11.Size = new System.Drawing.Size(70, 13);
+            this.l11.TabIndex = 40;
+            this.l11.Text = "NAV_STATE";
+            // 
+            // label72
+            // 
+            this.label72.AutoSize = true;
+            this.label72.ForeColor = System.Drawing.Color.White;
+            this.label72.Location = new System.Drawing.Point(390, 9);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(61, 13);
+            this.label72.TabIndex = 39;
+            this.label72.Text = "GPSMODE";
             // 
             // cbSendGTCAlt
             // 
@@ -1531,6 +1685,7 @@
             this.btnDownLoadMission.TabIndex = 5;
             this.btnDownLoadMission.Text = "Download mission";
             this.btnDownLoadMission.UseVisualStyleBackColor = true;
+            this.btnDownLoadMission.Click += new System.EventHandler(this.btnDownLoadMission_Click);
             // 
             // btnUploadMission
             // 
@@ -4976,6 +5131,7 @@
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.tabPageMisson.ResumeLayout(false);
@@ -5460,6 +5616,19 @@
         private System.Windows.Forms.Label label70;
         private System.Windows.Forms.Label lTelemLinkStatus;
         private System.Windows.Forms.Label label71;
+        private System.Windows.Forms.Label lNavState;
+        private System.Windows.Forms.Label lNextWp;
+        private System.Windows.Forms.Label lGpsMode;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.Label l11;
+        private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.Label label73;
+        private System.Windows.Forms.Label lAction;
+        private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.Label lParameter;
+        private System.Windows.Forms.Label label78;
+        private System.Windows.Forms.Label label77;
     }
 }
 

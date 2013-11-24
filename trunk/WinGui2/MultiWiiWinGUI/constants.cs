@@ -18,6 +18,17 @@ namespace MultiWiiWinGUI
         public const int CLI = 8;
     }
 
+    public class WP_ACTION
+    {
+
+        public const int WAYPOINT = 1;			    //Set waypoint
+        public const int HOLD_UNLIM = 2;			//Poshold unlimited
+        public const int HOLD_TIME = 3;			//Hold for a predetermined time
+        public const int RTH = 4;			        //Return to HOME
+        public const int SET_POI = 5;              //Set POINT of interest
+    }
+
+
     public class MSP
     {
         public const byte MSP_IDENT = 100;   //out message         multitype + multiwii version + protocol version + capability variable
@@ -41,6 +52,7 @@ namespace MultiWiiWinGUI
         public const byte MSP_WP = 118;   //out message         get a WP, WP# is in the payload, returns (WP#, lat, lon, alt, flags) WP#0-home, WP#16-poshold
         public const byte MSP_BOXIDS = 119;   //out message         get the permanent IDs associated to BOXes
         public const byte MSP_SERVO_CONF = 120;   //out message         Servo settings
+        public const byte MSP_NAV_STATUS = 121;   //out message         Navigation
 
         public const byte MSP_SET_RAW_RC = 200;   //in message          8 rc chan
         public const byte MSP_SET_RAW_GPS = 201;   //in message          fix, numsat, lat, lon, alt, speed
