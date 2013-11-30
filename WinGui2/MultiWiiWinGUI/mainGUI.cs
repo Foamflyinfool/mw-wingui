@@ -51,9 +51,11 @@ namespace MultiWiiWinGUI
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG,Vtail4,Hex6H, PPM_to_Servo, Singlecopter,DualCopter };
-        
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG, Vtail4, Hex6H, PPM_to_Servo, Singlecopter, DualCopter };
 
+
+        string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
+        string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next" };
 
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
@@ -273,7 +275,7 @@ namespace MultiWiiWinGUI
             //MainMap.MapScaleInfoEnabled = true;
 
             MainMap.ForceDoubleBuffer = true;
-            MainMap.Manager.Mode = AccessMode.ServerAndCache; 
+            MainMap.Manager.Mode = AccessMode.ServerAndCache;
 
             MainMap.Position = copterPos;
 
@@ -329,7 +331,7 @@ namespace MultiWiiWinGUI
                 if (col == 2) { col = 0; row++; }
             }
 
-            
+
 
 
             //Build the RC control checkboxes structure
@@ -428,7 +430,7 @@ namespace MultiWiiWinGUI
                     this.splitContainer3.Panel1.Controls.Remove(indicators[i]);
                 }
 
-                
+
 
 
             }
@@ -629,8 +631,6 @@ namespace MultiWiiWinGUI
                     Pid[i].Plabel.Location = new Point(iRow1 - 20, iTopY + i * iLineSpace);
                     this.tabPagePID.Controls.Add(Pid[i].Plabel);
 
-
-
                 }
                 if (Pid[i].Ishown)
                 {
@@ -739,7 +739,7 @@ namespace MultiWiiWinGUI
             {
                 cb_monitor_rate.Items.Add(rate);
             }
-            cb_monitor_rate.SelectedIndex = 0;              //20Hz is the default
+            cb_monitor_rate.SelectedIndex = 1;              //10Hz is the default
 
             splash.sStatus = "Setup Timers...";
             splash.Refresh();
@@ -840,7 +840,7 @@ namespace MultiWiiWinGUI
             myPane.Border.Color = Color.FromArgb(64, 64, 64);
 
             myPane.Chart.Fill = new Fill(Color.Black, Color.Black, 45.0f);
-            myPane.Fill = new Fill(Color.FromArgb(64, 64, 64), Color.FromArgb(64, 64, 64), 45.0f); 
+            myPane.Fill = new Fill(Color.FromArgb(64, 64, 64), Color.FromArgb(64, 64, 64), 45.0f);
             myPane.Legend.IsVisible = false;
             myPane.XAxis.Scale.IsVisible = false;
             myPane.YAxis.Scale.IsVisible = true;
@@ -963,7 +963,7 @@ namespace MultiWiiWinGUI
 
                     if (isBoxActive("ARM"))
                     {                                                           //armed
-                         MSPqueryWP(0);         //get home position
+                        if (!bHomeRecorded) MSPqueryWP(0);         //get home position
                     }
                     else
                     {
@@ -972,17 +972,19 @@ namespace MultiWiiWinGUI
                         bHomeRecorded = false;
                     }
 
-                    if (isBoxActive("GPS HOLD"))
-                    {                                                            //poshold
-                        MSPqueryWP(255);         //get hold position
-                    }
-                    else
-                    {
-                        mw_gui.GPS_poshold_lon = 0;
-                        mw_gui.GPS_poshold_lat = 0;
-                        bPosholdRecorded = false;
-                    }
+                    /*
 
+                                        if (isBoxActive("GPS HOLD"))
+                                        {                                                            //poshold
+                                            MSPqueryWP(255);         //get hold position
+                                        }
+                                        else
+                                        {
+                                            mw_gui.GPS_poshold_lon = 0;
+                                            mw_gui.GPS_poshold_lat = 0;
+                                            bPosholdRecorded = false;
+                                        }
+                     */
 
 
 
@@ -990,13 +992,13 @@ namespace MultiWiiWinGUI
             }
             catch
             {
-                bSerialError = true; 
+                bSerialError = true;
             }
 
             update_gui();
 
         }
-        
+
         private void cb_monitor_rate_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Change refresh rate
@@ -1017,6 +1019,9 @@ namespace MultiWiiWinGUI
                 switch (tabMain.SelectedIndex)
                 {
 
+                    case GUIPages.Mission:
+                        timer_realtime.Start();
+                        break;
                     case GUIPages.PID:
                         timer_realtime.Stop();
                         break;
@@ -1056,7 +1061,7 @@ namespace MultiWiiWinGUI
             logbrowser.ShowDialog();
             logbrowser.Dispose();
         }
-        
+
         private void l_ports_label_DoubleClick(object sender, EventArgs e)
         {
             serial_ports_enumerate();
@@ -1213,7 +1218,7 @@ namespace MultiWiiWinGUI
                     reader.Close();
             }
         }
-        
+
         private void b_pause_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
@@ -1376,16 +1381,16 @@ namespace MultiWiiWinGUI
                 case MSP.MSP_MISC:
                     ptr = 0;
                     mw_gui.powerTrigger = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
-                    
+
                     mw_gui.minThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.maxThrottle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.minCommand = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.failsafe_throttle = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
-                   
-                    mw_gui.plog_arm = BitConverter.ToUInt16(inBuf, ptr); ptr +=2;
-                    mw_gui.plog_lifetime = BitConverter.ToUInt32(inBuf, ptr); ptr +=4;
 
-                    mw_gui.mag_declination = BitConverter.ToInt16(inBuf, ptr); ptr +=2;
+                    mw_gui.plog_arm = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.plog_lifetime = BitConverter.ToUInt32(inBuf, ptr); ptr += 4;
+
+                    mw_gui.mag_declination = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
 
                     mw_gui.vbatscale = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
                     mw_gui.vbatlevel_warn1 = (byte)BitConverter.ToChar(inBuf, ptr); ptr++;
@@ -1402,12 +1407,12 @@ namespace MultiWiiWinGUI
                         mw_gui.servoMin[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMax[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-                        mw_gui.servoRate[i] = (SByte) inBuf[ptr]; ptr += 1;
+                        mw_gui.servoRate[i] = (SByte)inBuf[ptr]; ptr += 1;
 
                         //Check the boundaries, if no servos are defined in config.h then the servo variables remain uninitailised in EEPROM so expect gibberis
-                        if ( (mw_gui.servoMin[i] < 900) || (mw_gui.servoMin[i] > 2100) ) mw_gui.servoMin[i] = 1000;
-                        if ( (mw_gui.servoMax[i] < 900) || (mw_gui.servoMax[i] > 2100) ) mw_gui.servoMax[i] = 2000;
-                        if ( (mw_gui.servoMiddle[i] < 1000) || (mw_gui.servoMiddle[i] > 2000) ) mw_gui.servoMiddle[i] = 1500;
+                        if ((mw_gui.servoMin[i] < 900) || (mw_gui.servoMin[i] > 2100)) mw_gui.servoMin[i] = 1000;
+                        if ((mw_gui.servoMax[i] < 900) || (mw_gui.servoMax[i] > 2100)) mw_gui.servoMax[i] = 2000;
+                        if ((mw_gui.servoMiddle[i] < 1000) || (mw_gui.servoMiddle[i] > 2000)) mw_gui.servoMiddle[i] = 1500;
                         if (Math.Abs(mw_gui.servoRate[i]) > 100) mw_gui.servoRate[i] = 100;
                     }
                     response_counter++;
@@ -1424,7 +1429,7 @@ namespace MultiWiiWinGUI
                     StringBuilder dbgmsg = new StringBuilder();
                     ptr = 0;
                     while (ptr < dataSize) dbgmsg.Append((char)inBuf[ptr++]);
-                    strDebug =strDebug + dbgmsg.ToString();
+                    strDebug = strDebug + dbgmsg.ToString();
                     break;
                 case MSP.MSP_WP:
 
@@ -1437,6 +1442,7 @@ namespace MultiWiiWinGUI
                         mw_gui.GPS_home_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_home_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_home_alt = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        bHomeRecorded = true;
                         //flag comes here but not care
                     }
                     if (wp_no == 255)
@@ -1445,6 +1451,8 @@ namespace MultiWiiWinGUI
                         mw_gui.GPS_poshold_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_poshold_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mw_gui.GPS_poshold_alt = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                        bPosholdRecorded = true;
+
                     }
                     if ((wp_no > 0) && (wp_no < 255))     //It is a valid WP response
                     {
@@ -1463,11 +1471,8 @@ namespace MultiWiiWinGUI
                     ptr = 0;
                     mw_gui.gps_mode = inBuf[ptr++];
                     mw_gui.nav_state = inBuf[ptr++];
-                    mw_gui.next_step = inBuf[ptr++];
+                    mw_gui.action = inBuf[ptr++];
                     mw_gui.wp_number = inBuf[ptr++];
-                    mw_gui.wp_lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
-                    mw_gui.wp_lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
-                    mw_gui.nav_hold_time = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                     break;
 
 
@@ -1616,23 +1621,23 @@ namespace MultiWiiWinGUI
             e.Cancel = true;
 
         }
-        
-        private void set_servo_control( int i, bool status, string function)
+
+        private void set_servo_control(int i, bool status, string function)
         {
-          servo_text[i].Enabled = status;
-          servo_text[i].Text = function;
-          servo_max[i].Enabled = status;
-          servo_max[i].Visible = status;
-          servo_min[i].Enabled = status;
-          servo_min[i].Visible = status;
-          servo_mid[i].Enabled = status;
-          servo_mid[i].Visible = status;
-          servo_rate[i].Enabled = status;
-          servo_rate[i].Visible = status;
-          servo_reverse[i].Enabled = status;
-          servo_reverse[i].Visible = status;
+            servo_text[i].Enabled = status;
+            servo_text[i].Text = function;
+            servo_max[i].Enabled = status;
+            servo_max[i].Visible = status;
+            servo_min[i].Enabled = status;
+            servo_min[i].Visible = status;
+            servo_mid[i].Enabled = status;
+            servo_mid[i].Visible = status;
+            servo_rate[i].Enabled = status;
+            servo_rate[i].Visible = status;
+            servo_reverse[i].Enabled = status;
+            servo_reverse[i].Visible = status;
         }
-        
+
         private void update_gui()
         {
 
@@ -1643,7 +1648,7 @@ namespace MultiWiiWinGUI
 
             int q = telemetry_status_sent - telemetry_status_received;
             if (q <= 3) telemetry_link_quality = 100;
-            else telemetry_link_quality = 100 - q*5;
+            else telemetry_link_quality = 100 - q * 5;
             if (telemetry_link_quality <= 0) telemetry_link_quality = 0;
             label70.Text = Convert.ToString(telemetry_link_quality);
 
@@ -1730,17 +1735,17 @@ namespace MultiWiiWinGUI
                 {
                     update_pid_panel();
                     update_aux_panel();
-                    
+
                     //update magnetic declination
-                   
-                    label49.Text = "("+Convert.ToString((decimal)mw_gui.mag_declination/10)+")";
+
+                    label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
                     decimal mag_dec = (decimal)mw_gui.mag_declination / 10;
                     if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
                     else cbMagSign.SelectedIndex = 0;
                     mag_dec = Math.Abs(mag_dec);
                     nMagDeg.Value = (int)mag_dec;
                     nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
-            
+
                     //Update Power parameters
                     nVBatScale.Value = (int)mw_gui.vbatscale;
                     nVBatWarn1.Value = (int)mw_gui.vbatlevel_warn1;
@@ -1761,22 +1766,23 @@ namespace MultiWiiWinGUI
 
                     //Update Servo settings panel
                     //Disable all
-                    for (int i=0;i<8;i++) {
-                        set_servo_control(i,false,"Unused");
+                    for (int i = 0; i < 8; i++)
+                    {
+                        set_servo_control(i, false, "Unused");
                     }
 
 
                     switch ((CopterType)mw_gui.multiType)
                     {
-                        case CopterType.Tri :
-                            set_servo_control(5,true,"Yaw servo");
+                        case CopterType.Tri:
+                            set_servo_control(5, true, "Yaw servo");
                             break;
                         case CopterType.Airplane:
-                            set_servo_control(2,true,"Flaps");
-                            set_servo_control(3,true,"Wing 1");
-                            set_servo_control(4,true,"Wing 2");
-                            set_servo_control(5,true,"Rudder");
-                            set_servo_control(6,true,"Elevator");
+                            set_servo_control(2, true, "Flaps");
+                            set_servo_control(3, true, "Wing 1");
+                            set_servo_control(4, true, "Wing 2");
+                            set_servo_control(5, true, "Rudder");
+                            set_servo_control(6, true, "Elevator");
                             break;
                         case CopterType.Gimbal:
                             set_servo_control(0, true, "Pitch");
@@ -1784,8 +1790,8 @@ namespace MultiWiiWinGUI
                             set_servo_control(2, true, "Trigger");
                             break;
                         case CopterType.FlyWing:
-                            set_servo_control(3,true,"Wing 1");
-                            set_servo_control(4,true,"Wing 2");
+                            set_servo_control(3, true, "Wing 1");
+                            set_servo_control(4, true, "Wing 2");
                             break;
                         case CopterType.BI:
                             set_servo_control(4, true, "Left motor servo");
@@ -1803,19 +1809,19 @@ namespace MultiWiiWinGUI
                             break;
                         case CopterType.Heli_120_CCPM:
                             set_servo_control(5, true, "Yaw motor");
-                            set_servo_control(3,true, "NICK Servo");
-                            set_servo_control(4,true, "Left Servo");
+                            set_servo_control(3, true, "NICK Servo");
+                            set_servo_control(4, true, "Left Servo");
                             set_servo_control(6, true, "Right Servo");
                             break;
                         case CopterType.Heli_90_DEG:
                             set_servo_control(5, true, "Yaw motor");
-                            set_servo_control(3,true, "NICK Servo");
-                            set_servo_control(4,true, "Roll Servo");
+                            set_servo_control(3, true, "NICK Servo");
+                            set_servo_control(4, true, "Roll Servo");
                             set_servo_control(6, true, "Collective Servo");
                             break;
                     }
 
-                                                  
+
 
 
                     for (int i = 0; i < 8; i++)
@@ -1846,14 +1852,16 @@ namespace MultiWiiWinGUI
 
 
             //All
-            lGpsMode.Text = Convert.ToString(mw_gui.gps_mode);
-            lNavState.Text = Convert.ToString(mw_gui.nav_state);
-            lNextWp.Text = Convert.ToString(mw_gui.next_step); //action
-            lAction.Text = Convert.ToString(mw_gui.wp_number);
-            lParameter.Text = Convert.ToString(mw_gui.nav_hold_time);
+            lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
+            lNavState.Text = sNavState[mw_gui.nav_state];
 
-            label78.Text = Convert.ToString(mw_gui.wp_lat);
-            label77.Text = Convert.ToString(mw_gui.wp_lon);
+            for (int i = 0; i < missionDataGrid.RowCount; i++) missionDataGrid.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(255, 64, 64, 64);
+
+            if (mw_gui.gps_mode == 3)
+            {
+                if (missionDataGrid.RowCount >= mw_gui.wp_number) missionDataGrid.Rows[mw_gui.wp_number - 1].DefaultCellStyle.BackColor = Color.Tomato;
+            }
+
 
             //TAB MAP
             if (tabMain.SelectedIndex == GUIPages.Mission)
@@ -1862,27 +1870,20 @@ namespace MultiWiiWinGUI
                 if (mw_gui.GPS_latitude != 0)
                 {
 
+                    GMOverlayLiveData.Markers.Clear();
+
                     lGPS_lat.Text = Convert.ToString((decimal)mw_gui.GPS_latitude / 10000000);
                     lGPS_lon.Text = Convert.ToString((decimal)mw_gui.GPS_longitude / 10000000);
                     GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
                     GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
 
-                    GMOverlayLiveData.Markers.Clear();
-
+                    if (markerGoToClick != null) GMOverlayLiveData.Markers.Add(markerGoToClick);
 
                     if (isBoxActive("ARM") && (mw_gui.GPS_home_lon != 0))       //ARMED
                     {
                         PointLatLng GPS_home = new PointLatLng((double)mw_gui.GPS_home_lat / 10000000, (double)mw_gui.GPS_home_lon / 10000000);
                         GMOverlayLiveData.Markers.Add(new GMapMarkerHome(GPS_home));
                     }
-
-
-                    if (isBoxActive("GPS HOLD") && (mw_gui.GPS_poshold_lon != 0))       //poshold
-                    {
-                        PointLatLng GPS_poshold = new PointLatLng((double)mw_gui.GPS_poshold_lat / 10000000, (double)mw_gui.GPS_poshold_lon / 10000000);
-                        GMOverlayLiveData.Markers.Add(new GMapMarkerGoogleRed(GPS_poshold));
-                    }
-
 
                     GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
 
@@ -1891,7 +1892,7 @@ namespace MultiWiiWinGUI
                     MainMap.Invalidate();
 
 
-                    l_GPS_alt.Text = Convert.ToString(mw_gui.GPS_altitude) + " meter";
+                    l_GPS_alt.Text = Convert.ToString(mw_gui.GPS_altitude) + "m";
                     l_GPS_numsat.Text = Convert.ToString(mw_gui.GPS_numSat);
 
 
@@ -1906,7 +1907,7 @@ namespace MultiWiiWinGUI
             if (tabMain.SelectedIndex == GUIPages.RC)
             {
                 //update RC control values
-                rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
+                rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX, AUX_CHANNELS + 4);
                 //Show LMH postions above switches
                 lmh_labels[0, 0].BackColor = (mw_gui.rcAUX[0] < rcLow) ? Color.Green : Color.Transparent;
                 lmh_labels[0, 1].BackColor = (mw_gui.rcAUX[0] > rcLow && mw_gui.rcAUX[0] < rcMid) ? Color.Green : Color.Transparent;
@@ -2019,7 +2020,7 @@ namespace MultiWiiWinGUI
             {
 
 
-                rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX,AUX_CHANNELS+4);
+                rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX, AUX_CHANNELS + 4);
 
                 curve_acc_roll.IsVisible = cb_acc_roll.Checked;
                 curve_acc_pitch.IsVisible = cb_acc_pitch.Checked;
@@ -2134,7 +2135,7 @@ namespace MultiWiiWinGUI
                 MSPquery(MSP.MSP_MISC);
                 MSPquery(MSP.MSP_SERVO_CONF);
 
-               
+
                 DateTime startTime = DateTime.Now;
                 bool missing_packets = false;
 
@@ -2177,7 +2178,7 @@ namespace MultiWiiWinGUI
             mw_params.ThrottleMID = (byte)(nTMID.Value * 100);
             mw_params.ThrottleEXPO = (byte)(nTEXPO.Value * 100);
 
-         
+
 
             for (int b = 0; b < iCheckBoxItems; b++)
             {
@@ -2410,7 +2411,7 @@ namespace MultiWiiWinGUI
 
             string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
             string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
-            string fn =  String.Format("{0:yymmdd-hhmm}", DateTime.Now);
+            string fn = String.Format("{0:yymmdd-hhmm}", DateTime.Now);
             sfdSaveParameters.FileName = fn;
 
 
@@ -2453,7 +2454,7 @@ namespace MultiWiiWinGUI
             videoSourcePlayer.WaitForStop();
 
         }
-        
+
         private void b_select_log_folder_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.SelectedPath = gui_settings.sLogFolder;
@@ -2568,7 +2569,7 @@ namespace MultiWiiWinGUI
             attitudeIndicatorInstrumentControl1.ToggleArtificalHorizonType();
 
         }
-        
+
         private int decimals(int prec)
         {
             if (prec == 1) return (0);
@@ -2620,7 +2621,7 @@ namespace MultiWiiWinGUI
             }
 
         }
-        
+
         private void b_log_Click(object sender, EventArgs e)
         {
             if (bLogRunning)        //Close
@@ -2643,7 +2644,7 @@ namespace MultiWiiWinGUI
                 }
             }
         }
-        
+
         void openLog()
         {
             try
@@ -2698,7 +2699,7 @@ namespace MultiWiiWinGUI
                 bKMLLogRunning = true;
             }
         }
-     
+
         void closeKMLLog()
         {
 
@@ -2783,7 +2784,7 @@ namespace MultiWiiWinGUI
 
 
         }
-        
+
         private void AddWPMarker(string tag, double lng, double lat, int alt, Color? color, int markertype)
         {
             PointLatLng point = new PointLatLng(lat, lng);
@@ -2798,10 +2799,10 @@ namespace MultiWiiWinGUI
                 case 2:
                     m = new GMapMarkerPosHoldUnlimited(point);
                     break;
-                case 3:  
+                case 3:
                     m = new GMapMarkerPosHold(point);
                     break;
-                case 4:  
+                case 4:
                     m = new GMapMarkerGoogleRed(point);
                     break;
                 default:
@@ -2848,7 +2849,7 @@ namespace MultiWiiWinGUI
             {
                 GMRouteMission = new GMapRoute(polygonPoints, "wp route");
                 GMRouteMission.Stroke = new Pen(Color.Aquamarine, 3);
-                
+
                 GMOverlayMission.Routes.Add(GMRouteMission);
             }
             else
@@ -2871,7 +2872,7 @@ namespace MultiWiiWinGUI
             MainMap.Invalidate();
 
         }
-        
+
         void MainMap_OnMapZoomChanged()
         {
             if (MainMap.Zoom > 0)
@@ -2880,7 +2881,7 @@ namespace MultiWiiWinGUI
                 center.Position = MainMap.Position;
             }
         }
-        
+
         void MainMap_OnCurrentPositionChanged(PointLatLng point)
         {
             if (point.Lat > 90) { point.Lat = 90; }
@@ -2921,26 +2922,27 @@ namespace MultiWiiWinGUI
                 }
             }
         }
-        
+
         void MainMap_MouseUp(object sender, MouseEventArgs e)
         {
             end = MainMap.FromLocalToLatLng(e.X, e.Y);
 
             if (e.Button == MouseButtons.Right && bGoToClikEnabled) // Right Click is the click to go IF it is enabled
             {
-                 PointLatLng pointClickToGo = new PointLatLng(end.Lat, end.Lng); 
-                 GMOverlayLiveData.Markers.Remove(markerGoToClick); 
-                 markerGoToClick = new GMapMarkerGoogleRed(pointClickToGo); 
-                 GMOverlayLiveData.Markers.Add(markerGoToClick); 
-                 //Send the WP command, set waypoint 255 (poshold)
-                 if (cbSendGTCAlt.Checked)              
-                 {
-                     sendWPToMultiWii(serialPort, 255,WP_ACTION.HOLD_UNLIM,end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text),0,0);
-                 }
-                 else
-                 {
-                     sendWPToMultiWii(serialPort, 255,WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, 0,0,0);
-                 }
+                PointLatLng pointClickToGo = new PointLatLng(end.Lat, end.Lng);
+                GMOverlayLiveData.Markers.Remove(markerGoToClick);
+                markerGoToClick = new GMapMarkerGoogleRed(pointClickToGo);
+                GMOverlayLiveData.Markers.Add(markerGoToClick);
+
+                //Send the WP command, set waypoint 255 (poshold)
+                if (cbSendGTCAlt.Checked)
+                {
+                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text), 0, 0);
+                }
+                else
+                {
+                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, 0, 0, 0);
+                }
                 return;
             }
 
@@ -2958,15 +2960,15 @@ namespace MultiWiiWinGUI
                     }
                     else
                     {
-                        addWP("WAYPOINT",0,currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
+                        addWP("WAYPOINT", 0, currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
                     }
                 }
                 else
                 {
                     if (CurentRectMarker != null)
                     {
-                             dragMarkerCallback(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
-                            //update existing point in datagrid
+                        dragMarkerCallback(CurentRectMarker.InnerMarker.Tag.ToString(), currentMarker.Position.Lat, currentMarker.Position.Lng, -1);
+                        //update existing point in datagrid
                     }
                 }
             }
@@ -3004,7 +3006,7 @@ namespace MultiWiiWinGUI
                     if (GMRouteMission.Points.Count >= 1)
                     {
                         double dist_from_last = MainMap.MapProvider.Projection.GetDistance(GMRouteMission.Points[GMRouteMission.Points.Count - 1], point);
-                        lDistLastWP.Text = String.Format("Dist. from last WP:{0:N1}m", dist_from_last*1000);
+                        lDistLastWP.Text = String.Format("Dist. from last WP:{0:N1}m", dist_from_last * 1000);
                     }
                 }
             }
@@ -3020,7 +3022,7 @@ namespace MultiWiiWinGUI
                     double lngdif = start.Lng - point.Lng;
                     MainMap.Position = new PointLatLng(center.Position.Lat + latdif, center.Position.Lng + lngdif);
                 }
-                else 
+                else
                 {
 
                     PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
@@ -3044,7 +3046,7 @@ namespace MultiWiiWinGUI
                             }
                             else                        //Drag some other marker
                             {
-                                double dist_from_last = MainMap.MapProvider.Projection.GetDistance(GMRouteMission.Points[Convert.ToInt32(pIndex-1)], point);
+                                double dist_from_last = MainMap.MapProvider.Projection.GetDistance(GMRouteMission.Points[Convert.ToInt32(pIndex - 1)], point);
                                 lDistLastWP.Text = String.Format("Dist. from prev. WP:{0:N1}m", dist_from_last * 1000);
                             }
 
@@ -3067,7 +3069,7 @@ namespace MultiWiiWinGUI
             }
 
         }
-        
+
         private void cbMapProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -3082,7 +3084,7 @@ namespace MultiWiiWinGUI
             this.Cursor = Cursors.Default;
 
         }
-        
+
         private void b_start_KML_log_Click(object sender, EventArgs e)
         {
             if (bKMLLogRunning)
@@ -3157,7 +3159,7 @@ namespace MultiWiiWinGUI
 
         }
 
-        
+
         #region ValueChangedEvents
 
         private void pfield_valuechange(object sender, EventArgs e)
@@ -3422,157 +3424,173 @@ namespace MultiWiiWinGUI
 
             updateMap();
             updateIndex();
-  
+
         }
-  
+
         private void addWP(string action, int Par, double Lat, double Lon, int Alt)
+        {
+            if (missionDataGrid.Rows.Count >= 50)
+                return;
+
+
+            selectedrow = missionDataGrid.Rows.Add();
+
+            missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow + 1;
+            missionDataGrid.Rows[selectedrow].Cells[Action.Index].Value = action;
+            missionDataGrid.Rows[selectedrow].Cells[Par1.Index].Value = Par;
+            missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = Lat.ToString("0.0000000");
+            missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = Lon.ToString("0.0000000");
+            missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = Alt;
+
+            missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
+
+            updateMap();
+
+        }
+
+        public void dragMarkerCallback(string pointno, double lat, double lng, int alt)
+        {
+            if (pointno == "")
             {
-                if (missionDataGrid.Rows.Count >= 50)
-                    return;
-
-
-                selectedrow = missionDataGrid.Rows.Add();
-
-                missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow+1;
-                missionDataGrid.Rows[selectedrow].Cells[Action.Index].Value = action;
-                missionDataGrid.Rows[selectedrow].Cells[Par1.Index].Value = Par;
-                missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = Lat.ToString("0.0000000");
-                missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = Lon.ToString("0.0000000");
-                missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = Alt;
-
-                missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
-
-                updateMap();
-
+                return;
             }
 
-            public void dragMarkerCallback(string pointno, double lat, double lng, int alt)
+            selectedrow = int.Parse(pointno) - 1;
+            missionDataGrid.CurrentCell = missionDataGrid[1, selectedrow];
+            missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = lat.ToString("0.0000000");
+            missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = lng.ToString("0.0000000");
+            missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
+
+        }
+
+        private void updateIndex()
+        {
+
+            for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
             {
-                if (pointno == "")
+                missionDataGrid.Rows[a].Cells[No.Index].Value = a + 1;
+                if (missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString() == "RTH")
                 {
-                    return;
-                }
-
-                selectedrow = int.Parse(pointno) - 1;
-                missionDataGrid.CurrentCell = missionDataGrid[1, selectedrow];
-                missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = lat.ToString("0.0000000");
-                missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = lng.ToString("0.0000000");
-                missionDataGrid.Rows[selectedrow].DataGridView.EndEdit();
-
-            }
-
-            private void updateIndex()
-            {
-
-                for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
-                {
-                    missionDataGrid.Rows[a].Cells[No.Index].Value = a + 1;
-                    if (missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString() == "RTH")
-                    {
-                        missionDataGrid.Rows[a].Cells[LATCOL.Index].Value = 0;
-                        missionDataGrid.Rows[a].Cells[LONCOL.Index].Value = 0;
-                    }
-                }
-                missionDataGrid.EndEdit();
-            }
-    
-            private void updateMap()
-            {
-                int command = 0 ;
-                
-                if (GMOverlayWaypoints != null) // hasnt been created yet
-                {
-                    GMOverlayWaypoints.Markers.Clear();
-                }
-
-                if (GMRouteMission != null)
-                {
-                    GMRouteMission.Points.Clear();
-
-                }
-
-                for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
-                {
-                    string cell1 = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
-                    string cell2 = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
-                    string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
-                    string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
-
-                    if (cell1 == "WAYPOINT") command = WP_ACTION.WAYPOINT;
-                    if (cell1 == "POSHOLD_UNLIM") command = WP_ACTION.HOLD_UNLIM;
-                    if (cell1 == "POSHOLD_TIME") command = WP_ACTION.HOLD_TIME;
-                    if (cell1 == "RTH") command = WP_ACTION.RTH;
-
-
-                   
-                    if (cell4 == "0" || cell3 == "0")
-                        continue;
-                    if (cell4 == "?" || cell3 == "?")
-                        continue;
-                    if (cell1 == "RTH")
-                        break ;
-
-                    AddWPMarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), null, command);
-
-                    if (cell1 == "POSHOLD_UNLIM")
-                        break;
-
-                }
-
-                    RegenerateMissionRoute();
-                    lDistance.Text = String.Format("Mission total dist.:{0:N1} m", GMRouteMission.Distance * 1000);
-            }
-
-            private void missionDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-            {
-                updateMap();
-                updateIndex();
-            }
-
-           private void cbShowMission_CheckedChanged(object sender, EventArgs e)
-            {
-                GMOverlayMission.IsVisibile = cbShowMission.Checked;
-                MainMap.Invalidate();
-            }
-
-            private void cbShowWP_CheckedChanged(object sender, EventArgs e)
-            {
-                GMOverlayWaypoints.IsVisibile = cbShowWP.Checked;
-                MainMap.Invalidate();
-            }
-
-            private void cbShowPos_CheckedChanged(object sender, EventArgs e)
-            {
-                GMOverlayLiveData.IsVisibile = cbShowPos.Checked;
-                MainMap.Invalidate();
-
-            }
-
-            private void cbShowFlightPath_CheckedChanged(object sender, EventArgs e)
-            {
-                GMOverlayFlightPath.IsVisibile = cbShowFlightPath.Checked;
-            }
-
-            private void bClickToGo_Click(object sender, EventArgs e)
-            {
-                if (bGoToClikEnabled)
-                {
-                    bClickToGo.BackColor = Color.LightGray;
-                    bClickToGo.ForeColor = Color.Black;
-                    bClickToGo.Text = "Go to Click disabled";
-                    bGoToClikEnabled = false;
-                    GMOverlayLiveData.Markers.Remove(markerGoToClick);
-                }
-                else
-                {
-                    bClickToGo.BackColor = Color.Red;
-                    bClickToGo.ForeColor = Color.White;
-                    bClickToGo.Text = "Go to Click enabled";
-                    bGoToClikEnabled = true;
+                    missionDataGrid.Rows[a].Cells[LATCOL.Index].Value = 0;
+                    missionDataGrid.Rows[a].Cells[LONCOL.Index].Value = 0;
                 }
             }
+            missionDataGrid.EndEdit();
+        }
 
-            private void txtDefAlt_TextChanged(object sender, EventArgs e)
+        private void updateMap()
+        {
+            int command = 0;
+
+            if (GMOverlayWaypoints != null) // hasnt been created yet
+            {
+                GMOverlayWaypoints.Markers.Clear();
+            }
+
+            if (GMRouteMission != null)
+            {
+                GMRouteMission.Points.Clear();
+
+            }
+
+            for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+            {
+                string cell1 = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
+                string cell2 = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
+                string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
+                string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
+
+                if (cell1 == "WAYPOINT") command = WP_ACTION.WAYPOINT;
+                if (cell1 == "POSHOLD_UNLIM") command = WP_ACTION.HOLD_UNLIM;
+                if (cell1 == "POSHOLD_TIME") command = WP_ACTION.HOLD_TIME;
+                if (cell1 == "RTH") command = WP_ACTION.RTH;
+
+
+
+                if (cell4 == "0" || cell3 == "0")
+                    continue;
+                if (cell4 == "?" || cell3 == "?")
+                    continue;
+                if (cell1 == "RTH")
+                    break;
+
+                AddWPMarker((a + 1).ToString(), double.Parse(cell4), double.Parse(cell3), (int)double.Parse(cell2), null, command);
+
+                if (cell1 == "POSHOLD_UNLIM")
+                    break;
+
+            }
+
+            RegenerateMissionRoute();
+            lDistance.Text = String.Format("Mission total dist.:{0:N1} m", GMRouteMission.Distance * 1000);
+        }
+
+        private void missionDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            updateMap();
+            updateIndex();
+        }
+
+        private void cbShowMission_CheckedChanged(object sender, EventArgs e)
+        {
+            GMOverlayMission.IsVisibile = cbShowMission.Checked;
+            MainMap.Invalidate();
+        }
+
+        private void cbShowWP_CheckedChanged(object sender, EventArgs e)
+        {
+            GMOverlayWaypoints.IsVisibile = cbShowWP.Checked;
+            MainMap.Invalidate();
+        }
+
+        private void cbShowPos_CheckedChanged(object sender, EventArgs e)
+        {
+            GMOverlayLiveData.IsVisibile = cbShowPos.Checked;
+            MainMap.Invalidate();
+
+        }
+
+        private void cbShowFlightPath_CheckedChanged(object sender, EventArgs e)
+        {
+            GMOverlayFlightPath.IsVisibile = cbShowFlightPath.Checked;
+        }
+
+        private void bClickToGo_Click(object sender, EventArgs e)
+        {
+            if (bGoToClikEnabled)
+            {
+                bClickToGo.BackColor = Color.LightGray;
+                bClickToGo.ForeColor = Color.Black;
+                bClickToGo.Text = "Go to Click disabled";
+                bGoToClikEnabled = false;
+                GMOverlayLiveData.Markers.Remove(markerGoToClick);
+                markerGoToClick = null;
+            }
+            else
+            {
+                bClickToGo.BackColor = Color.Red;
+                bClickToGo.ForeColor = Color.White;
+                bClickToGo.Text = "Go to Click enabled";
+                bGoToClikEnabled = true;
+            }
+        }
+
+        private void txtDefAlt_TextChanged(object sender, EventArgs e)
+        {
+            int i = Convert.ToInt16(txtDefAlt.Text);
+            if (i < 2 || i > 400)
+            {
+                MessageBoxEx.Show(this, "Default altitude must be between 2m and 400m", "Altitude error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                txtDefAlt.Text = iDefAlt.ToString();
+                return;
+
+            }
+            iDefAlt = i;
+        }
+
+        private void txtDefAlt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
             {
                 int i = Convert.ToInt16(txtDefAlt.Text);
                 if (i < 2 || i > 400)
@@ -3585,235 +3603,220 @@ namespace MultiWiiWinGUI
                 iDefAlt = i;
             }
 
-            private void txtDefAlt_KeyDown(object sender, KeyEventArgs e)
+        }
+
+        private void panelMissionList_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        public void save_mission(string filename)
+        {
+            XmlTextWriter tw = new XmlTextWriter(filename, null);
+            tw.Formatting = Formatting.Indented;
+            tw.Indentation = 4;
+            tw.WriteStartDocument();
+
+            // Get the name and version of the current assembly.
+            Assembly assem = Assembly.GetExecutingAssembly();
+            AssemblyName assemName = assem.GetName();
+            Version ver = assemName.Version;
+            tw.WriteComment(String.Format("{0}, Version {1}", assemName.Name, ver.ToString()));
+            tw.WriteComment("MultiWii mission");
+            tw.WriteComment("MultiWii FC software revision 2.3dev");
+            tw.WriteStartElement("MISSION");
+            tw.WriteStartElement("VERSION value=\"" + sVersion + "\""); tw.WriteEndElement();
+
+
+            for (int i = 0; i < missionDataGrid.Rows.Count; i++)
             {
-                if (e.KeyCode == Keys.Enter) 
-                {
-                    int i = Convert.ToInt16(txtDefAlt.Text);
-                    if (i < 2 || i > 400)
-                    {
-                        MessageBoxEx.Show(this, "Default altitude must be between 2m and 400m", "Altitude error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        txtDefAlt.Text = iDefAlt.ToString();
-                        return;
-
-                    }
-                    iDefAlt = i;
-                }
-
-            }
-
-            private void panelMissionList_Paint(object sender, PaintEventArgs e)
-            {
-
-            }
-
-            public void save_mission(string filename)
-            {
-                XmlTextWriter tw = new XmlTextWriter(filename, null);
-                tw.Formatting = Formatting.Indented;
-                tw.Indentation = 4;
-                tw.WriteStartDocument();
-
-                // Get the name and version of the current assembly.
-                Assembly assem = Assembly.GetExecutingAssembly();
-                AssemblyName assemName = assem.GetName();
-                Version ver = assemName.Version;
-                tw.WriteComment(String.Format("{0}, Version {1}", assemName.Name, ver.ToString()));
-                tw.WriteComment("MultiWii mission");
-                tw.WriteComment("MultiWii FC software revision 2.3dev");
-                tw.WriteStartElement("MISSION");
-                tw.WriteStartElement("VERSION value=\"" + sVersion + "\""); tw.WriteEndElement();
-
-
-                for (int i = 0; i < missionDataGrid.Rows.Count; i++)
-                {
-                    tw.WriteStartElement("MISSIONITEM no=\"" + (i+1) + "\" "+
-                                         "action=\"" + missionDataGrid.Rows[i].Cells[Action.Index].Value + "\" "+
-                                         "parameter=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par1.Index].Value) + "\" "+
-                                         "lat=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LATCOL.Index].Value) + "\" " +
-                                         "lon=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LONCOL.Index].Value) + "\" " +
-                                         "alt=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[ALTCOL.Index].Value) + "\"");
-                    tw.WriteEndElement();
-                }
+                tw.WriteStartElement("MISSIONITEM no=\"" + (i + 1) + "\" " +
+                                     "action=\"" + missionDataGrid.Rows[i].Cells[Action.Index].Value + "\" " +
+                                     "parameter=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par1.Index].Value) + "\" " +
+                                     "lat=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LATCOL.Index].Value) + "\" " +
+                                     "lon=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LONCOL.Index].Value) + "\" " +
+                                     "alt=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[ALTCOL.Index].Value) + "\"");
                 tw.WriteEndElement();
-                tw.WriteEndDocument();
-                tw.Close();
             }
+            tw.WriteEndElement();
+            tw.WriteEndDocument();
+            tw.Close();
+        }
 
-            private bool loadMission(string filename)
+        private bool loadMission(string filename)
+        {
+
+            XmlTextReader reader = new XmlTextReader(filename);
+
+            //Clean up current mission   
+            missionDataGrid.Rows.Clear();
+            updateMap();
+
+            try
             {
-
-                XmlTextReader reader = new XmlTextReader(filename);
-
-                //Clean up current mission   
-                missionDataGrid.Rows.Clear();
-                updateMap();
-
-                try
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    switch (reader.NodeType)
                     {
-                        switch (reader.NodeType)
-                        {
-                            case XmlNodeType.Element:
+                        case XmlNodeType.Element:
 
-                                if (String.Compare(reader.Name, "version", true) == 0 && reader.HasAttributes)
+                            if (String.Compare(reader.Name, "version", true) == 0 && reader.HasAttributes)
+                            {
+                                if (reader.GetAttribute("value") != sVersion)
                                 {
-                                    if (reader.GetAttribute("value") != sVersion)
-                                    {
-                                        throw new System.InvalidOperationException("Version of mission is not made for this version of WinGUI");
-                                    }
+                                    throw new System.InvalidOperationException("Version of mission is not made for this version of WinGUI");
                                 }
-                                if (String.Compare(reader.Name, "MISSIONITEM", true) == 0 && reader.HasAttributes)
-                                {
+                            }
+                            if (String.Compare(reader.Name, "MISSIONITEM", true) == 0 && reader.HasAttributes)
+                            {
 
-                                    string action = "";
-                                    int parameter = 0;
-                                    double lat = 0;
-                                    double lon = 0;
-                                    int alt = 0;
+                                string action = "";
+                                int parameter = 0;
+                                double lat = 0;
+                                double lon = 0;
+                                int alt = 0;
 
 
-                                    action = reader.GetAttribute("action");
-                                    parameter = Convert.ToInt16(reader.GetAttribute("parameter"));
-                                    lat = Convert.ToDouble(reader.GetAttribute("lat"));
-                                    lon = Convert.ToDouble(reader.GetAttribute("lon"));
-                                    alt = Convert.ToInt16(reader.GetAttribute("alt"));
-                                    addWP(action, parameter, lat, lon, alt);
+                                action = reader.GetAttribute("action");
+                                parameter = Convert.ToInt16(reader.GetAttribute("parameter"));
+                                lat = Convert.ToDouble(reader.GetAttribute("lat"));
+                                lon = Convert.ToDouble(reader.GetAttribute("lon"));
+                                alt = Convert.ToInt16(reader.GetAttribute("alt"));
+                                addWP(action, parameter, lat, lon, alt);
 
-                                }
-                                break;
-                        }
+                            }
+                            break;
                     }
                 }
-                catch (System.InvalidOperationException e)
-                {
-                    MessageBoxEx.Show(e.Message, "Version mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return (false);
-                }
-                catch
-                {
-                    MessageBoxEx.Show("Options file contains invalid data around Line : " + reader.LineNumber, "Invalid Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return (false);
-                }
-
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-                return (true);
             }
-
-            private void btnSaveMission_Click(object sender, EventArgs e)
+            catch (System.InvalidOperationException e)
             {
-                SaveFileDialog sfdSaveParameters = new SaveFileDialog();
-                sfdSaveParameters.Filter = "MultiWii Mission File|*.mission";
-                sfdSaveParameters.Title = "Save Mission to file";
-                sfdSaveParameters.InitialDirectory = gui_settings.sSettingsFolder;
-
-                string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-                string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
-                string fn = String.Format("{0:yyMMdd-hhmm}", DateTime.Now);
-                sfdSaveParameters.FileName = fn;
-
-
-                sfdSaveParameters.ShowDialog();
-
-                if (sfdSaveParameters.FileName != "")
-                {
-                    save_mission(sfdSaveParameters.FileName);
-                }
+                MessageBoxEx.Show(e.Message, "Version mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return (false);
             }
-
-            private void btnLoadMission_Click(object sender, EventArgs e)
+            catch
             {
-                OpenFileDialog ofdLoadParameters = new OpenFileDialog();
-                ofdLoadParameters.Filter = "MultiWii Mission File|*.mission";
-                ofdLoadParameters.Title = "Load mission from file";
-                ofdLoadParameters.InitialDirectory = gui_settings.sSettingsFolder;
-                if (ofdLoadParameters.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    loadMission(ofdLoadParameters.FileName);
+                MessageBoxEx.Show("Options file contains invalid data around Line : " + reader.LineNumber, "Invalid Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return (false);
             }
 
-            private void cbSendGTCAlt_CheckedChanged(object sender, EventArgs e)
+            finally
             {
-
-                txtGTCAlt.Enabled = cbSendGTCAlt.Checked;
-                if (txtGTCAlt.Enabled) { txtGTCAlt.BackColor = Color.White; } else { txtGTCAlt.BackColor = Color.Gray; }
-
-
+                if (reader != null)
+                    reader.Close();
             }
+            return (true);
+        }
 
-            //Temporary implementation to 
-            private void sendWPToMultiWii(SerialPort serialport, int wp_number, byte action, double lat, double lon, int alt, int parameter, byte flag)             //This must be changed later to reflect real WP's alt in meter and all other flasg
+        private void btnSaveMission_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfdSaveParameters = new SaveFileDialog();
+            sfdSaveParameters.Filter = "MultiWii Mission File|*.mission";
+            sfdSaveParameters.Title = "Save Mission to file";
+            sfdSaveParameters.InitialDirectory = gui_settings.sSettingsFolder;
+
+            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            string invalidReStr = string.Format(@"[{0} ]+", invalidChars);
+            string fn = String.Format("{0:yyMMdd-hhmm}", DateTime.Now);
+            sfdSaveParameters.FileName = fn;
+
+
+            sfdSaveParameters.ShowDialog();
+
+            if (sfdSaveParameters.FileName != "")
             {
-                byte[] buffer = new byte[250];          //this must be long enough
-                int bptr = 0;                           //buffer pointer
-                byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
-                byte[] bInt32 = new byte[4];
-                byte checksum = 0;
-                Int16 heading = 0;
-
-
-                if (serialport.IsOpen)
-                {
-                    bptr = 0;
-                    checksum = 0;
-                    buffer[bptr++] = (byte)'$';
-                    buffer[bptr++] = (byte)'M';
-                    buffer[bptr++] = (byte)'<';
-                    buffer[bptr++] = 17;
-                    buffer[bptr++] = (byte)MSP.MSP_SET_WP;
-
-                    //byte Waypoint number
-                    buffer[bptr++] = Convert.ToByte(wp_number);
-
-                    //Action
-                    buffer[bptr++] = Convert.ToByte(action);
-
-                    //int32 lattitude in lat * 10,000,000
-                    bInt32 = BitConverter.GetBytes(Convert.ToInt32(lat * 10000000));
-                    buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-
-                    //int32 longitude in lon * 10,000,000
-                    bInt32 = BitConverter.GetBytes(Convert.ToInt32(lon * 10000000));
-                    buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-                    
-                    //int32 altitude in cm so convert it from meter
-                    bInt32 = BitConverter.GetBytes(alt * 100);
-                    buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
-                    
-                    //int16 Parameter 1
-                    bInt16 = BitConverter.GetBytes(parameter);
-                    buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
-                    
-                    //byte nav flag (this will be the action)
-                    buffer[bptr++] = flag;
-
-                    for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
-                    buffer[bptr++] = checksum;
-                    serialport.Write(buffer, 0, bptr);
-                }
+                save_mission(sfdSaveParameters.FileName);
             }
+        }
+
+        private void btnLoadMission_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofdLoadParameters = new OpenFileDialog();
+            ofdLoadParameters.Filter = "MultiWii Mission File|*.mission";
+            ofdLoadParameters.Title = "Load mission from file";
+            ofdLoadParameters.InitialDirectory = gui_settings.sSettingsFolder;
+            if (ofdLoadParameters.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                loadMission(ofdLoadParameters.FileName);
+        }
+
+        private void cbSendGTCAlt_CheckedChanged(object sender, EventArgs e)
+        {
+
+            txtGTCAlt.Enabled = cbSendGTCAlt.Checked;
+            if (txtGTCAlt.Enabled) { txtGTCAlt.BackColor = Color.White; } else { txtGTCAlt.BackColor = Color.Gray; }
+
+
+        }
+
+        //Temporary implementation to 
+        private void sendWPToMultiWii(SerialPort serialport, int wp_number, byte action, double lat, double lon, int alt, int parameter, byte flag)             //This must be changed later to reflect real WP's alt in meter and all other flasg
+        {
+            byte[] buffer = new byte[250];          //this must be long enough
+            int bptr = 0;                           //buffer pointer
+            byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
+            byte[] bInt32 = new byte[4];
+            byte checksum = 0;
+            Int16 heading = 0;
+
+
+            if (serialport.IsOpen)
+            {
+                bptr = 0;
+                checksum = 0;
+                buffer[bptr++] = (byte)'$';
+                buffer[bptr++] = (byte)'M';
+                buffer[bptr++] = (byte)'<';
+                buffer[bptr++] = 17;
+                buffer[bptr++] = (byte)MSP.MSP_SET_WP;
+
+                //byte Waypoint number
+                buffer[bptr++] = Convert.ToByte(wp_number);
+
+                //Action
+                buffer[bptr++] = Convert.ToByte(action);
+
+                //int32 lattitude in lat * 10,000,000
+                bInt32 = BitConverter.GetBytes(Convert.ToInt32(lat * 10000000));
+                buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
+
+                //int32 longitude in lon * 10,000,000
+                bInt32 = BitConverter.GetBytes(Convert.ToInt32(lon * 10000000));
+                buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
+
+                //int32 altitude in cm so convert it from meter
+                bInt32 = BitConverter.GetBytes(alt * 100);
+                buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
+
+                //int16 Parameter 1
+                bInt16 = BitConverter.GetBytes(parameter);
+                buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+
+                //byte nav flag (this will be the action)
+                buffer[bptr++] = flag;
+
+                for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
+                buffer[bptr++] = checksum;
+                serialport.Write(buffer, 0, bptr);
+            }
+        }
 
         #endregion
 
         //Returns the status of the given box (by name or by ID)
         private bool isBoxActive(string boxname)
+        {
+            int index;
+            index = Array.IndexOf(mw_gui.sBoxNames, boxname);
+            if (index >= 0)
             {
-                int index;
-                index = Array.IndexOf(mw_gui.sBoxNames, boxname);
-                if (index >= 0)
-                {
-                    return isBoxActive(index);
-                }
-                return false;
+                return isBoxActive(index);
             }
+            return false;
+        }
         private bool isBoxActive(int boxid)
-            {
-                return ((mw_gui.mode & (1 << boxid)) > 0);
-            }
+        {
+            return ((mw_gui.mode & (1 << boxid)) > 0);
+        }
 
         #region Video
 
@@ -3914,7 +3917,7 @@ namespace MultiWiiWinGUI
                 }
             }
         }
-        
+
         private void videoSourcePlayer_SizeChanged(object sender, EventArgs e)
         {
 
@@ -3941,47 +3944,6 @@ namespace MultiWiiWinGUI
             frmDebug.AppendText("Hello vilag\n");
         }
 
-        private void btnUploadMission_Click(object sender, EventArgs e)
-        {
-
-            byte action, flag;
-            Int16 parameter,heading;
-            double lat, lon;
-            Int32 altitude;
-
-            for (byte a = 0; a < missionDataGrid.Rows.Count - 0; a++)
-            {
-
-
-                string cell = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
-                action = 0;     //default
-                if (cell == "WAYPOINT") action = WP_ACTION.WAYPOINT;
-                if (cell == "POSHOLD_UNLIM") action = WP_ACTION.HOLD_UNLIM;
-                if (cell == "POSHOLD_TIME") action = WP_ACTION.HOLD_TIME;
-                if (cell == "RTH") action = WP_ACTION.RTH;
-                
-                cell = missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString(); // alt
-                altitude = Convert.ToInt32(cell);
-
-                cell = missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString(); // alt
-                parameter = Convert.ToInt16(cell);
-              
-
-
-                //TODO: finish it
-                string cell3 = missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString(); // lat
-                string cell4 = missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString(); // lng
-
-                lat = Convert.ToDouble(cell3);
-                lon = Convert.ToDouble(cell4);
-
-                flag = 0;
-                if (a == (missionDataGrid.Rows.Count - 1)) flag = 0xa5;
-
-                sendWPToMultiWii(serialPort, a + 1, action, lat, lon, altitude,parameter,flag);
-
-            }
-        }
 
 
 
@@ -4003,7 +3965,7 @@ namespace MultiWiiWinGUI
             mag_dec += (decimal)nMagMin.Value * (decimal)(1.0 / 60.0);
             if (cbMagSign.SelectedIndex == 1) mag_dec *= -1;
             mw_gui.mag_declination = (int)(mag_dec * 10);
-            label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination/10) + ")";
+            label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
         }
 
         private void nMagMin_ValueChanged(object sender, EventArgs e)
@@ -4032,32 +3994,111 @@ namespace MultiWiiWinGUI
             }
         }
 
+
+        int Query_WP(byte wp_to_query)
+        {
+            bool no_answer;
+
+            //first check for boundary
+            // TODO: Check for boundary
+
+            mission_step.wp_updated = false;                // prepare for query
+            MSPqueryWP(wp_to_query);
+
+            DateTime startTime = DateTime.Now;
+            no_answer = false;
+
+            while (!mission_step.wp_updated && !no_answer)
+            {
+                if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 2000) { no_answer = true; }
+            }
+
+            if (no_answer) return (WP_Query.Timeout);
+
+            if (mission_step.flag == 0xff) return (WP_Query.Error);
+
+            return (WP_Query.OK);
+        }
+
+
+        private void btnUploadMission_Click(object sender, EventArgs e)
+        {
+            int qStatus = WP_Query.OK;
+            byte action, flag, a;
+            Int16 parameter, heading;
+            double lat, lon;
+            Int32 altitude;
+
+            for (a = 0; a < missionDataGrid.Rows.Count - 0; a++)
+            {
+                //Put together a waypoint info based on the grid.
+                string sAction = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
+                action = 0;     //default
+                if (sAction == "WAYPOINT") action = WP_ACTION.WAYPOINT;
+                if (sAction == "POSHOLD_UNLIM") action = WP_ACTION.HOLD_UNLIM;
+                if (sAction == "POSHOLD_TIME") action = WP_ACTION.HOLD_TIME;
+                if (sAction == "RTH") action = WP_ACTION.RTH;
+
+                altitude = Convert.ToInt32(missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString()); // alt
+                parameter = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString()); // alt
+
+                lat = Convert.ToDouble(missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString()); // lat
+                lon = Convert.ToDouble(missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString()); // lng
+
+                flag = 0;
+                if (a == (missionDataGrid.Rows.Count - 1)) flag = 0xa5;
+
+                sendWPToMultiWii(serialPort, a + 1, action, lat, lon, altitude, parameter, flag);
+
+                qStatus = Query_WP(Convert.ToByte(a + 1));
+
+                if (qStatus == WP_Query.Timeout)
+                {
+                    MessageBox.Show("No answer from FC, mission upload aborted. Try reading mission again.", "Answer timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                }
+
+                if (qStatus == WP_Query.Error)
+                {
+                    MessageBox.Show("Error condition occured, most likely Navigatgion is in progress, land, disarm and try again.", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                }
+
+                //It is possible that we already have a mission in EEPROM and the write command did not go through
+                //In this case the waypoint reload will be successfull, but data comes from pervious mission
+
+                //Check wp_action and lat/lon to make it sure
+
+                if ((mission_step.action != action) || (mission_step.lat != (int)(lat * 10000000)) || (mission_step.lon != (int)(lon * 10000000)))
+                {
+                    MessageBox.Show("Upload failed - most likely a communication error\r\nCheck copter, comms and try again.", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    qStatus = WP_Query.Error;
+                    break;
+                }
+            }
+            if (qStatus == WP_Query.OK)
+            {
+                MessageBox.Show("Mission successfully uploaded.\r\nIt is recommended to re-download your mission for double checking.", "Upload completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+
         private void btnDownLoadMission_Click(object sender, EventArgs e)
         {
             //Clean up current mission   
             missionDataGrid.Rows.Clear();
             updateMap();
 
-
             byte i = 1;         //start from wp1
-            bool not_finished = true;
-            bool no_answer = false;
+            int qStatus;
+            bool finished = false;
             string strAction = "";
 
-            while (not_finished)
+            while (!finished)
             {
-                mission_step.wp_updated = false;
-                MSPqueryWP(i);
 
-
-                DateTime startTime = DateTime.Now;
-
-                while (!mission_step.wp_updated && !no_answer)
-                {
-                    if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 2000) { no_answer = true;  }
-                }
-
-                if (!no_answer)
+                qStatus = Query_WP(i);
+                if (qStatus == WP_Query.OK)
                 {
 
                     switch (mission_step.action)
@@ -4073,18 +4114,38 @@ namespace MultiWiiWinGUI
                     }
 
                     addWP(strAction, mission_step.parameter, (double)mission_step.lat / 10000000.0, (double)mission_step.lon / 10000000.0, mission_step.altitude / 100);
+                    //Clear update flag
                     mission_step.wp_updated = false;
                     i++;
-                    if (mission_step.flag == MISSION_FLAG_END) not_finished = false;
+                    if (mission_step.flag == MISSION_FLAG_END) finished = true;
+
                 }
-                else
+
+                if (qStatus == WP_Query.Timeout)
                 {
-                    not_finished = false;
+                    finished = true;
                     MessageBox.Show("No answer from FC, mission list may be uncompleted. Try reading mission again.", "Answer timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
+                if (qStatus == WP_Query.Error)
+                {
+                    finished = true;
+                    MessageBox.Show("Error condition occured, most likely Navigatgion is in progress, land, disarm and try again.", "Download error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                if (i == 255)
+                {
+                    finished = true;
+                    missionDataGrid.Rows.Clear();
+                    updateMap();
+                    MessageBox.Show("Download overrun, invalid responses are received, check communication", "Download error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+
             }
         }
+
+
     }
 
 }

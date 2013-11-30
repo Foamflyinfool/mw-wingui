@@ -785,11 +785,8 @@ namespace MultiWiiWinGUI
         //Navigation status
         public byte gps_mode;
         public byte nav_state;
-        public byte next_step;
+        public byte action;
         public byte wp_number;
-        public int wp_lat;
-        public int wp_lon;
-        public Int16 nav_hold_time;
         
 
 
