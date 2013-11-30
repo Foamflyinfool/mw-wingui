@@ -429,9 +429,9 @@
             this.label20.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label20.Location = new System.Drawing.Point(176, 122);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(157, 16);
+            this.label20.Size = new System.Drawing.Size(262, 16);
             this.label20.TabIndex = 19;
-            this.label20.Text = "Parameter settings folder\r\n";
+            this.label20.Text = "Parameter settings  and Mission files folder\r\n";
             // 
             // b_select_captures_folder
             // 
@@ -511,8 +511,8 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(343, 32);
             this.label10.TabIndex = 10;
-            this.label10.Text = "Please choose where WinGUI save captured video files,\r\nLog files and Parameter se" +
-    "ttings.";
+            this.label10.Text = "Please choose where WinGUI save captured video files,\r\nLog files, Parameter setti" +
+    "ngs and Missions.";
             // 
             // label4
             // 
@@ -648,7 +648,7 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label7.Location = new System.Drawing.Point(155, 48);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(403, 96);
+            this.label7.Size = new System.Drawing.Size(403, 176);
             this.label7.TabIndex = 3;
             this.label7.Text = resources.GetString("label7.Text");
             // 

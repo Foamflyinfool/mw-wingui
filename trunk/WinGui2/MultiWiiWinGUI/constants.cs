@@ -18,6 +18,16 @@ namespace MultiWiiWinGUI
         public const int CLI = 8;
     }
 
+    public class WP_Query
+    {
+        public const int OK = 0;        //ok WP returned
+        public const int Timeout = 1;   //No answer
+        public const int Error = 2;     //Error condition (NAV is active)
+        public const int Boundary = 3;  //Invalid WP number
+    }
+
+
+
     public class WP_ACTION
     {
 

@@ -143,9 +143,14 @@ will be selected by the GUI.</value>
   <data name="label7.Text" xml:space="preserve">
     <value>Thank You, for trying out WinGUI!
 This wizard will guide you through the initial settings of the GUI, such
-as MultiWii software version or target folders.
+as target folders or serial port settings.
 You can cancel this wizard any time, to get the default values.
 However it’s highly recommended to go through all steps to get
-familiar with the settings.</value>
+familiar with the settings.
+
+Please Note !
+There has been a change in the license terms of WinGUI. 
+Now it is licensed under the a Creative Commons 
+Attribution-NonCommercial-ShareAlike 4.0 International License.</value>
   </data>
 </root>
