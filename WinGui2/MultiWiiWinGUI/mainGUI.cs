@@ -57,6 +57,15 @@ namespace MultiWiiWinGUI
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
         string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next" };
 
+        string[] sNavError = { "Navigation system OK",
+                               "Next waypoint distance is more than the safety limit set in config.h",
+                               "GPS reception is compromised - Navigation stoped",
+                               "CRC error while reading next WP from EEPROM - Navigation stopped",
+                               "End flag detected - Navigation finished" ,
+                               "Waiting for poshold timer"};
+
+
+
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
@@ -235,6 +244,7 @@ namespace MultiWiiWinGUI
         System.Windows.Forms.NumericUpDown[] servo_max;
 
         static int response_counter = 0;
+        static byte last_response = 0;
 
 
         #endregion
@@ -1473,6 +1483,7 @@ namespace MultiWiiWinGUI
                     mw_gui.nav_state = inBuf[ptr++];
                     mw_gui.action = inBuf[ptr++];
                     mw_gui.wp_number = inBuf[ptr++];
+                    mw_gui.nav_error = inBuf[ptr++];
                     break;
 
 
@@ -1588,6 +1599,7 @@ namespace MultiWiiWinGUI
                                                 {
                                                     /* we got a valid response packet, evaluate it */
                                                     if (telemetry_start == 1) serial_packet_rx_count++;
+                                                    last_response = cmd;
                                                     evaluate_command(cmd);
                                                 }
                                             }
@@ -1852,20 +1864,26 @@ namespace MultiWiiWinGUI
 
 
             //All
-            lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
-            lNavState.Text = sNavState[mw_gui.nav_state];
-
-            for (int i = 0; i < missionDataGrid.RowCount; i++) missionDataGrid.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(255, 64, 64, 64);
-
-            if (mw_gui.gps_mode == 3)
-            {
-                if (missionDataGrid.RowCount >= mw_gui.wp_number) missionDataGrid.Rows[mw_gui.wp_number - 1].DefaultCellStyle.BackColor = Color.Tomato;
-            }
 
 
             //TAB MAP
             if (tabMain.SelectedIndex == GUIPages.Mission)
             {
+
+
+
+                lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
+                lNavState.Text = sNavState[mw_gui.nav_state];
+
+                for (int i = 0; i < missionDataGrid.RowCount; i++) missionDataGrid.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(255, 64, 64, 64);
+
+                if (mw_gui.gps_mode == 3)
+                {
+                    if (missionDataGrid.RowCount >= mw_gui.wp_number) missionDataGrid.Rows[mw_gui.wp_number - 1].DefaultCellStyle.BackColor = Color.Tomato;
+                }
+
+                lNavError.Text = sNavError[mw_gui.nav_error];
+
 
                 if (mw_gui.GPS_latitude != 0)
                 {

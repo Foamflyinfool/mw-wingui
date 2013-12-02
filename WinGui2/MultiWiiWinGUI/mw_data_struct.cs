@@ -787,8 +787,7 @@ namespace MultiWiiWinGUI
         public byte nav_state;
         public byte action;
         public byte wp_number;
-        
-
+        public byte nav_error;
 
 
         private int iPIDItems, iCheckBoxItems;

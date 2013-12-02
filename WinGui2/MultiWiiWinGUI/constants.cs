@@ -41,6 +41,9 @@ namespace MultiWiiWinGUI
 
     public class MSP
     {
+
+        public const byte MSP_NONE = 0;       //This is a flag for error situations
+
         public const byte MSP_IDENT = 100;   //out message         multitype + multiwii version + protocol version + capability variable
         public const byte MSP_STATUS = 101;   //out message         cycletime & errors_count & sensor present & box activation & current setting number
         public const byte MSP_RAW_IMU = 102;   //out message         9 DOF

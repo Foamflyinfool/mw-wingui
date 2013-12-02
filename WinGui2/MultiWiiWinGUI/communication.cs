@@ -33,6 +33,43 @@ namespace MultiWiiWinGUI
     {
 
 
+        //Do a syncronous msp_query - return false is no answer received within timeout (timeout is in millisec)
+        private bool MSPquery_sync(int command, int timeout)
+        {
+
+            DateTime startTime = DateTime.Now;
+            bool no_answer = false;
+
+            last_response = 0;
+            MSPquery(command);
+
+            while (last_response != command && !no_answer)
+            {
+                if (DateTime.Now.Subtract(startTime).TotalMilliseconds > timeout) { no_answer = true; }
+            }
+
+            if (no_answer) return (false);
+            return (true);
+        }
+
+
+        private void failed_connect_cleanup()
+        {
+            MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            b_connect.Text = "Connect";
+            b_connect.Image = Properties.Resources.connect;
+            isConnected = false;
+            timer_realtime.Stop();                       //Stop timer(s), whatever it takes
+            //timer_rc.Stop();
+            bkgWorker.CancelAsync();
+            System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
+            serialPort.Close();
+            if (bLogRunning)
+            {
+                closeLog();
+            }
+        }
+
 
         private void b_connect_Click(object sender, EventArgs e)
         {
@@ -95,6 +132,11 @@ namespace MultiWiiWinGUI
                     openLog();
                 }
 
+
+                //Run BackgroundWorker
+                if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
+
+
                 serial_packet_rx_count = 0;
                 serial_packet_tx_count = 0;
                 serial_error_count = 0;
@@ -111,66 +153,35 @@ namespace MultiWiiWinGUI
                 b_write_settings.Enabled = true;
 
 
+                //first send MSP_IDENT messaages and wait at least one successfull packet to arrive
+                byte tries = 0;
+                while (!MSPquery_sync(MSP.MSP_IDENT, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
-                //We have to do it for a couple of times to ensure that we will have parameters loaded 
-                for (int i = 0; i < 10; i++)
-                {
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_PID, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
-                    MSPquery(MSP.MSP_PID);
-                    MSPquery(MSP.MSP_RC_TUNING);
-                    MSPquery(MSP.MSP_IDENT);
-                    MSPquery(MSP.MSP_BOX);
-                    MSPquery(MSP.MSP_BOXNAMES);
-                    MSPquery(MSP.MSP_MISC);
-                    MSPquery(MSP.MSP_SERVO_CONF);
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_RC_TUNING, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
-                }
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_BOX, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_BOXNAMES, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_MISC, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
-                //Run BackgroundWorker
-                if (!bkgWorker.IsBusy) { bkgWorker.RunWorkerAsync(); }
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_SERVO_CONF, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(); return; }
 
-
-
-                //if (tabMain.SelectedIndex == 2 && !isPaused) timer_realtime.Start();                             //If we are standing at the monitor page, start timer
-                //if (tabMain.SelectedIndex == 1 && !isPausedRC) timer_rc.Start();                                //And start it if we stays on rc settings page
-                //if (tabMain.SelectedIndex == 3 && !isPausedGPS) timer_GPS.Start();
-                System.Threading.Thread.Sleep(1000);
-
-
-                int x = 0;
-                while (mw_gui.bUpdateBoxNames == false)
-                {
-                    x++;
-                    System.Threading.Thread.Sleep(1);
-
-                    MSPquery(MSP.MSP_PID);
-                    MSPquery(MSP.MSP_RC_TUNING);
-                    MSPquery(MSP.MSP_IDENT);
-                    MSPquery(MSP.MSP_BOX);
-                    MSPquery(MSP.MSP_BOXNAMES);
-                    MSPquery(MSP.MSP_MISC);
-                    MSPquery(MSP.MSP_SERVO_CONF);
-
-                    if (x > 1000)
-                    {
-                        MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        b_connect.Text = "Connect";
-                        b_connect.Image = Properties.Resources.connect;
-                        isConnected = false;
-                        timer_realtime.Stop();                       //Stop timer(s), whatever it takes
-                        //timer_rc.Stop();
-                        bkgWorker.CancelAsync();
-                        System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
-                        serialPort.Close();
-                        if (bLogRunning)
-                        {
-                            closeLog();
-                        }
-                        return;
-                    }
-                }
 
                 serial_packet_rx_count = 0;
                 serial_packet_tx_count = 0;
@@ -179,10 +190,6 @@ namespace MultiWiiWinGUI
                 bOptions_needs_refresh = true;
                 create_RC_Checkboxes(mw_gui.sBoxNames);
                 update_gui();
-
-                //tabMain.SelectedIndex = GUIPages.Realtime;
-
-
             }
         }
 
