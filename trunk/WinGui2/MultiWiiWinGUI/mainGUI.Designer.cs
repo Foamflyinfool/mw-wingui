@@ -379,6 +379,7 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.lNavError = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -1151,6 +1152,7 @@
             // splitContainer9.Panel2
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.splitContainer9.Panel2.Controls.Add(this.lNavError);
             this.splitContainer9.Panel2.Controls.Add(this.lNavState);
             this.splitContainer9.Panel2.Controls.Add(this.lGpsMode);
             this.splitContainer9.Panel2.Controls.Add(this.l11);
@@ -1235,7 +1237,7 @@
             // 
             this.lNavState.AutoSize = true;
             this.lNavState.ForeColor = System.Drawing.Color.White;
-            this.lNavState.Location = new System.Drawing.Point(479, 42);
+            this.lNavState.Location = new System.Drawing.Point(479, 27);
             this.lNavState.Name = "lNavState";
             this.lNavState.Size = new System.Drawing.Size(13, 13);
             this.lNavState.TabIndex = 44;
@@ -1255,7 +1257,7 @@
             // 
             this.l11.AutoSize = true;
             this.l11.ForeColor = System.Drawing.Color.White;
-            this.l11.Location = new System.Drawing.Point(403, 42);
+            this.l11.Location = new System.Drawing.Point(403, 27);
             this.l11.Name = "l11";
             this.l11.Size = new System.Drawing.Size(70, 13);
             this.l11.TabIndex = 40;
@@ -4995,6 +4997,17 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
+            // lNavError
+            // 
+            this.lNavError.AutoSize = true;
+            this.lNavError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lNavError.ForeColor = System.Drawing.Color.White;
+            this.lNavError.Location = new System.Drawing.Point(320, 49);
+            this.lNavError.Name = "lNavError";
+            this.lNavError.Size = new System.Drawing.Size(43, 13);
+            this.lNavError.TabIndex = 45;
+            this.lNavError.Text = ".........";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5513,6 +5526,7 @@
         private System.Windows.Forms.Label lGpsMode;
         private System.Windows.Forms.Label l11;
         private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Label lNavError;
     }
 }
 
