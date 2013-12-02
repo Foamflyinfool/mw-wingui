@@ -24,6 +24,7 @@ namespace MultiWiiWinGUI
         public const int Timeout = 1;   //No answer
         public const int Error = 2;     //Error condition (NAV is active)
         public const int Boundary = 3;  //Invalid WP number
+        public const int CRC = 3;
     }
 
 
@@ -66,6 +67,7 @@ namespace MultiWiiWinGUI
         public const byte MSP_BOXIDS = 119;   //out message         get the permanent IDs associated to BOXes
         public const byte MSP_SERVO_CONF = 120;   //out message         Servo settings
         public const byte MSP_NAV_STATUS = 121;   //out message         Navigation
+        public const byte MSP_NAV_CONFIG = 122;     //out message       
 
         public const byte MSP_SET_RAW_RC = 200;   //in message          8 rc chan
         public const byte MSP_SET_RAW_GPS = 201;   //in message          fix, numsat, lat, lon, alt, speed

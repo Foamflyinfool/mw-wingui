@@ -190,7 +190,11 @@ namespace MultiWiiWinGUI
                 while (!MSPquery_sync(MSP.MSP_SERVO_CONF, 200) && tries < 10) { tries++; }
                 if (tries == 10) { failed_connect_cleanup(1); return; }
 
+                tries = 0;
+                while (!MSPquery_sync(MSP.MSP_NAV_CONFIG, 200) && tries < 10) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
+                
                 serial_packet_rx_count = 0;
                 serial_packet_tx_count = 0;
 

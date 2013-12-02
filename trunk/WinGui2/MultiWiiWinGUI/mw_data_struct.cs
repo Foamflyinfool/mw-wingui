@@ -789,6 +789,16 @@ namespace MultiWiiWinGUI
         public byte wp_number;
         public byte nav_error;
 
+        public byte max_wp_number;
+
+        //temp
+        public Int32 original_altitude;
+        public Int32 target_altitude;
+        public Int32 alt_to_hold;
+        public byte alt_change_flag;
+
+
+
 
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
@@ -822,6 +832,7 @@ namespace MultiWiiWinGUI
             iSwVer = iSoftwareVersion;
             bUpdateBoxNames = false;
 
+            max_wp_number = 16;         //Will be updated when connected to the controller
 
         }
 
