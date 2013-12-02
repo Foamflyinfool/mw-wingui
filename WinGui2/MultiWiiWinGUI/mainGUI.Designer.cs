@@ -90,6 +90,7 @@
             this.label45 = new System.Windows.Forms.Label();
             this.tb_mapzoom = new System.Windows.Forms.TrackBar();
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
+            this.lNavError = new System.Windows.Forms.Label();
             this.lNavState = new System.Windows.Forms.Label();
             this.lGpsMode = new System.Windows.Forms.Label();
             this.l11 = new System.Windows.Forms.Label();
@@ -379,7 +380,10 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.lNavError = new System.Windows.Forms.Label();
+            this.label73 = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
+            this.label75 = new System.Windows.Forms.Label();
+            this.label76 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -1233,6 +1237,17 @@
             this.MainMap.TabIndex = 33;
             this.MainMap.Zoom = 0D;
             // 
+            // lNavError
+            // 
+            this.lNavError.AutoSize = true;
+            this.lNavError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lNavError.ForeColor = System.Drawing.Color.White;
+            this.lNavError.Location = new System.Drawing.Point(320, 49);
+            this.lNavError.Name = "lNavError";
+            this.lNavError.Size = new System.Drawing.Size(43, 13);
+            this.lNavError.TabIndex = 45;
+            this.lNavError.Text = ".........";
+            // 
             // lNavState
             // 
             this.lNavState.AutoSize = true;
@@ -1416,6 +1431,10 @@
             // 
             // splitContainer8.Panel2
             // 
+            this.splitContainer8.Panel2.Controls.Add(this.label76);
+            this.splitContainer8.Panel2.Controls.Add(this.label75);
+            this.splitContainer8.Panel2.Controls.Add(this.label74);
+            this.splitContainer8.Panel2.Controls.Add(this.label73);
             this.splitContainer8.Panel2.Controls.Add(this.lDistLastWP);
             this.splitContainer8.Panel2.Controls.Add(this.btnLoadMission);
             this.splitContainer8.Panel2.Controls.Add(this.btnSaveMission);
@@ -4997,16 +5016,45 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
-            // lNavError
+            // label73
             // 
-            this.lNavError.AutoSize = true;
-            this.lNavError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lNavError.ForeColor = System.Drawing.Color.White;
-            this.lNavError.Location = new System.Drawing.Point(320, 49);
-            this.lNavError.Name = "lNavError";
-            this.lNavError.Size = new System.Drawing.Size(43, 13);
-            this.lNavError.TabIndex = 45;
-            this.lNavError.Text = ".........";
+            this.label73.AutoSize = true;
+            this.label73.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label73.Location = new System.Drawing.Point(202, 34);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(41, 13);
+            this.label73.TabIndex = 9;
+            this.label73.Text = "label73";
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label74.Location = new System.Drawing.Point(202, 47);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(41, 13);
+            this.label74.TabIndex = 10;
+            this.label74.Text = "label74";
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label75.Location = new System.Drawing.Point(202, 60);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(41, 13);
+            this.label75.TabIndex = 11;
+            this.label75.Text = "label75";
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label76.Location = new System.Drawing.Point(202, 73);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(41, 13);
+            this.label76.TabIndex = 12;
+            this.label76.Text = "label76";
             // 
             // mainGUI
             // 
@@ -5527,6 +5575,10 @@
         private System.Windows.Forms.Label l11;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label lNavError;
+        private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.Label label73;
     }
 }
 

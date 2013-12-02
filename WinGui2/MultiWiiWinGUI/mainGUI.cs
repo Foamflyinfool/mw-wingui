@@ -1518,13 +1518,18 @@ namespace MultiWiiWinGUI
                     mw_gui.action = inBuf[ptr++];
                     mw_gui.wp_number = inBuf[ptr++];
                     mw_gui.nav_error = inBuf[ptr++];
+
+                    mw_gui.original_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
+                    mw_gui.target_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
+                    mw_gui.alt_to_hold = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
+                    mw_gui.alt_change_flag = inBuf[ptr++];
+
                     break;
 
-
-
-
-
-
+                case MSP.MSP_NAV_CONFIG:
+                    ptr = 0;
+                    mw_gui.max_wp_number = inBuf[ptr++];
+                    break;
             }
         }
 
@@ -1628,6 +1633,8 @@ namespace MultiWiiWinGUI
                                                 {
                                                     //Invalid command received... (CRC was OK btw)
                                                     if (telemetry_started == 1) serial_packet_rx_count++;
+                                                    last_response = cmd;                        
+
                                                 }
                                                 else
                                                 {
@@ -1691,6 +1698,14 @@ namespace MultiWiiWinGUI
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_rx_count);
             lTxPackets.Text = Convert.ToString(serial_packet_tx_count);
+
+            //TODO: remove this when alt hold test is OK
+            label73.Text = Convert.ToString(mw_gui.original_altitude);
+            label74.Text = Convert.ToString(mw_gui.target_altitude);
+            label75.Text = Convert.ToString(mw_gui.alt_to_hold);
+            label76.Text = Convert.ToString(mw_gui.alt_change_flag);
+
+
 
 
             int q = telemetry_status_sent - telemetry_status_received;
@@ -2972,7 +2987,7 @@ namespace MultiWiiWinGUI
         {
             end = MainMap.FromLocalToLatLng(e.X, e.Y);
 
-            if (e.Button == MouseButtons.Right && bGoToClikEnabled) // Right Click is the click to go IF it is enabled
+            if (e.Button == MouseButtons.Right && bGoToClikEnabled) // Right Click is the click to is enabled
             {
                 PointLatLng pointClickToGo = new PointLatLng(end.Lat, end.Lng);
                 GMOverlayLiveData.Markers.Remove(markerGoToClick);
@@ -3005,7 +3020,8 @@ namespace MultiWiiWinGUI
                     }
                     else
                     {
-                        addWP("WAYPOINT", 0, currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
+                        if (Control.ModifierKeys == Keys.Shift)
+                            addWP("WAYPOINT", 0, currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
                     }
                 }
                 else
@@ -3058,7 +3074,7 @@ namespace MultiWiiWinGUI
 
 
             //dragging
-            if (e.Button == MouseButtons.Left && isMouseDown)
+            if (e.Button == MouseButtons.Left && isMouseDown && Control.ModifierKeys == Keys.None)
             {
                 isMouseDraging = true;
                 if (CurentRectMarker == null) // left click pan
@@ -3474,8 +3490,11 @@ namespace MultiWiiWinGUI
 
         private void addWP(string action, int Par, double Lat, double Lon, int Alt)
         {
-            if (missionDataGrid.Rows.Count >= 50)
+            if (missionDataGrid.Rows.Count >= mw_gui.max_wp_number)
+            {
+                MessageBox.Show("Cannot add mission step. Maximum number of mission steps (" + Convert.ToString(mw_gui.max_wp_number) + ") reached", "Max steps reached", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
 
             selectedrow = missionDataGrid.Rows.Add();
@@ -4061,6 +4080,7 @@ namespace MultiWiiWinGUI
             if (no_answer) return (WP_Query.Timeout);
 
             if (mission_step.flag == 0xff) return (WP_Query.Error);
+            if (mission_step.flag == 0xfe) return (WP_Query.CRC);
 
             return (WP_Query.OK);
         }
@@ -4176,6 +4196,12 @@ namespace MultiWiiWinGUI
                 {
                     finished = true;
                     MessageBox.Show("Error condition occured, most likely Navigatgion is in progress, land, disarm and try again.", "Download error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                if (qStatus == WP_Query.CRC)
+                {
+                    finished = true;
+                    MessageBox.Show("CRC error during EEPROM read, mission description is corrupted, upload again.", "CRC error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 if (i == 255)
