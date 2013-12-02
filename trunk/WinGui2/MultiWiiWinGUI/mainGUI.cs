@@ -45,6 +45,7 @@ namespace MultiWiiWinGUI
         #region Common variables (properties)
 
         const string sVersion = "2.3";
+        const byte byteVersion = 230;
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -64,12 +65,9 @@ namespace MultiWiiWinGUI
                                "End flag detected - Navigation finished" ,
                                "Waiting for poshold timer"};
 
-
-
-
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
-        int[] iRefreshIntervals = { 100, 200, 500, 1000 };
+        int[] iRefreshIntervals = { 10, 20, 50, 100 };
         const int rcLow = 1300;
         const int rcMid = 1700;
 
@@ -222,7 +220,7 @@ namespace MultiWiiWinGUI
         static int serial_packet_rx_count = 0;
         static int serial_packet_tx_count = 0;
         static int telemetry_link_quality = 0;
-        static int telemetry_start = 0;
+        static int telemetry_started = 0;
 
 
         static int telemetry_status_sent = 0;
@@ -245,6 +243,7 @@ namespace MultiWiiWinGUI
 
         static int response_counter = 0;
         static byte last_response = 0;
+        static byte update_cycle_count = 0;             //Counts the update cycles (10 cycles all)
 
 
         #endregion
@@ -942,34 +941,69 @@ namespace MultiWiiWinGUI
 
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
-            telemetry_start = 1;
+            telemetry_started = 1;
+
+            update_cycle_count++;
+            if (update_cycle_count == 11) update_cycle_count = 1;
 
             try
             {
-
+                //timer intervall is set update rate/10. 
+                //It means that one cycle has the following time
+                //10Hz - 10ms
+                //5hz  - 20ms
+                //2hz  - 50ms
+                //1hz  - 100ms
+                // At 57600bps 1byte is transfered at .15ms
 
                 if (serialPort.BytesToRead == 0)
                 {
 
-                    if (tabMain.SelectedIndex == GUIPages.SensorGraph)
+                    switch (update_cycle_count)
+                    {
+
+                        case 1:
+                            MSPquery(MSP.MSP_STATUS); telemetry_status_sent++;
+                            break;
+                        case 2:
+                            MSPquery(MSP.MSP_SERVO);
+                            break;
+                        case 3:
+                            MSPquery(MSP.MSP_RAW_GPS);
+                            break;
+                        case 4:
+                            MSPquery(MSP.MSP_COMP_GPS);
+                            break;
+                        case 5:
+                            MSPquery(MSP.MSP_ANALOG);
+                            break;
+                        case 6:
+                            MSPquery(MSP.MSP_ATTITUDE);
+                            break;
+                        case 7:
+                            MSPquery(MSP.MSP_ALTITUDE);
+                            break;
+                        case 8:
+                            MSPquery(MSP.MSP_RC);
+                            break;
+                        case 9:
+                            MSPquery(MSP.MSP_NAV_STATUS);
+                            break;
+                        case 10:
+                            MSPquery(MSP.MSP_MOTOR);
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                    if (tabMain.SelectedIndex == GUIPages.SensorGraph && update_cycle_count == 6)
                     {
                         MSPquery(MSP.MSP_DEBUG);
                         MSPquery(MSP.MSP_RAW_IMU);
                     }
-                    MSPquery(MSP.MSP_STATUS); telemetry_status_sent++;
-                    MSPquery(MSP.MSP_SERVO);
-                    MSPquery(MSP.MSP_MOTOR);
-                    MSPquery(MSP.MSP_RAW_GPS);
-                    MSPquery(MSP.MSP_COMP_GPS);
-                    MSPquery(MSP.MSP_ANALOG);
-                    MSPquery(MSP.MSP_ATTITUDE);
-                    MSPquery(MSP.MSP_ALTITUDE);
-                    MSPquery(MSP.MSP_RC);
-                    MSPquery(MSP.MSP_NAV_STATUS);
 
-
-
-                    if (frmDebug != null) MSPquery(MSP.MSP_DEBUGMSG);
+                    if (frmDebug != null && update_cycle_count == 1) MSPquery(MSP.MSP_DEBUGMSG);
 
                     if (isBoxActive("ARM"))
                     {                                                           //armed
@@ -1005,7 +1039,7 @@ namespace MultiWiiWinGUI
                 bSerialError = true;
             }
 
-            update_gui();
+            if (update_cycle_count == 1) update_gui();
 
         }
 
@@ -1593,12 +1627,12 @@ namespace MultiWiiWinGUI
                                                 if (err_rcvd)
                                                 {
                                                     //Invalid command received... (CRC was OK btw)
-                                                    if (telemetry_start == 1) serial_packet_rx_count++;
+                                                    if (telemetry_started == 1) serial_packet_rx_count++;
                                                 }
                                                 else
                                                 {
                                                     /* we got a valid response packet, evaluate it */
-                                                    if (telemetry_start == 1) serial_packet_rx_count++;
+                                                    if (telemetry_started == 1) serial_packet_rx_count++;
                                                     last_response = cmd;
                                                     evaluate_command(cmd);
                                                 }
@@ -1652,6 +1686,7 @@ namespace MultiWiiWinGUI
 
         private void update_gui()
         {
+
 
             label41.Text = Convert.ToString(serial_error_count);
             label42.Text = Convert.ToString(serial_packet_rx_count);
@@ -1737,16 +1772,14 @@ namespace MultiWiiWinGUI
                 }
             }
 
+            #region options_need_refresh_if
 
-            if (tabMain.SelectedIndex == GUIPages.FlighTune | tabMain.SelectedIndex == GUIPages.RC | tabMain.SelectedIndex == GUIPages.PID)        //Common tasks for all panels
-            {
-
-                throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
-
-                if (bOptions_needs_refresh)
+            if (bOptions_needs_refresh)
                 {
                     update_pid_panel();
                     update_aux_panel();
+
+                    throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
 
                     //update magnetic declination
 
@@ -1854,24 +1887,14 @@ namespace MultiWiiWinGUI
                         }
                     }
 
-
-
-
                     bOptions_needs_refresh = false;
-
                 }
-            }
+#endregion
 
+            #region GUIPages.mission
 
-            //All
-
-
-            //TAB MAP
             if (tabMain.SelectedIndex == GUIPages.Mission)
             {
-
-
-
                 lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
                 lNavState.Text = sNavState[mw_gui.nav_state];
 
@@ -1912,14 +1935,11 @@ namespace MultiWiiWinGUI
 
                     l_GPS_alt.Text = Convert.ToString(mw_gui.GPS_altitude) + "m";
                     l_GPS_numsat.Text = Convert.ToString(mw_gui.GPS_numSat);
-
-
-
                 }
             }
+            #endregion
 
-
-
+            #region GUIOPages.RC
 
             // TAB RCControl
             if (tabMain.SelectedIndex == GUIPages.RC)
@@ -1966,7 +1986,9 @@ namespace MultiWiiWinGUI
                 }
             }
 
+            #endregion
 
+            #region GUIPages.Sensorgraph
             if (tabMain.SelectedIndex == GUIPages.SensorGraph)
             {
                 if (cb_acc_roll.Checked) { list_acc_roll.Add((double)xTimeStamp, mw_gui.ax); }
@@ -2031,7 +2053,9 @@ namespace MultiWiiWinGUI
 
             }
 
+            #endregion
 
+            #region GUIPages.FlightDeck
 
             // TAB FlightDeck
             if (tabMain.SelectedIndex == GUIPages.FlightDeck)
@@ -2085,7 +2109,10 @@ namespace MultiWiiWinGUI
                 l_powersum.Text = String.Format("{0:0}", mw_gui.pMeterSum);
                 l_i2cerrors.Text = String.Format("{0:0}", mw_gui.i2cErrors);
 
-            } //end if tab=realtime;
+            }
+
+            #endregion
+
         }
 
         private void b_reread_rc_options_Click(object sender, EventArgs e)
@@ -3030,7 +3057,7 @@ namespace MultiWiiWinGUI
             }
 
 
-            //draging
+            //dragging
             if (e.Button == MouseButtons.Left && isMouseDown)
             {
                 isMouseDraging = true;
