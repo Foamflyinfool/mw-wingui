@@ -53,14 +53,23 @@ namespace MultiWiiWinGUI
         }
 
 
-        private void failed_connect_cleanup()
+        private void failed_connect_cleanup(byte reason)
         {
-            MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+            switch(reason) {
+                case 1:
+                    MessageBoxEx.Show(this, "Please check if you have selected the right com port", "Error device not responding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBoxEx.Show(this, "Flight control sw version missmatch. Expected:"+Convert.ToString(byteVersion)+" Got:"+Convert.ToString(mw_gui.version), "Invalid FC version number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                default:
+                    break;
+            }
             b_connect.Text = "Connect";
             b_connect.Image = Properties.Resources.connect;
             isConnected = false;
             timer_realtime.Stop();                       //Stop timer(s), whatever it takes
-            //timer_rc.Stop();
             bkgWorker.CancelAsync();
             System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
             serialPort.Close();
@@ -84,7 +93,6 @@ namespace MultiWiiWinGUI
                 b_connect.Image = Properties.Resources.connect;
                 isConnected = false;
                 timer_realtime.Stop();                       //Stop timer(s), whatever it takes
-                //timer_rc.Stop();
                 bkgWorker.CancelAsync();
                 System.Threading.Thread.Sleep(500);         //Wait bkworker to finish
                 serialPort.Close();
@@ -155,44 +163,51 @@ namespace MultiWiiWinGUI
 
                 //first send MSP_IDENT messaages and wait at least one successfull packet to arrive
                 byte tries = 0;
-                while (!MSPquery_sync(MSP.MSP_IDENT, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                while (!MSPquery_sync(MSP.MSP_IDENT, 5000) && tries < 5) { tries++; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_PID, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_RC_TUNING, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_BOX, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_BOXNAMES, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_MISC, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
                 tries = 0;
                 while (!MSPquery_sync(MSP.MSP_SERVO_CONF, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(); return; }
+                if (tries == 10) { failed_connect_cleanup(1); return; }
 
 
                 serial_packet_rx_count = 0;
                 serial_packet_tx_count = 0;
-                
+
+                if (mw_gui.version != byteVersion)
+                {
+                    failed_connect_cleanup(2);
+                    return;
+                }
+
+                //All set we are ready to go.
+
                 timer_realtime.Start();
                 bOptions_needs_refresh = true;
                 create_RC_Checkboxes(mw_gui.sBoxNames);
                 update_gui();
             }
         }
-
 
         private void MSPquery(int command)
         {
@@ -208,9 +223,7 @@ namespace MultiWiiWinGUI
             o[5] = (byte)c;
             serialPort.Write(o, 0, 6);
 
-            //while (serialPort.BytesToWrite > 0) ;
-            if (telemetry_start==1) serial_packet_tx_count++;
-
+            if (telemetry_started==1) serial_packet_tx_count++;
         }
 
         private void MSPqueryWP(int wp)
@@ -227,7 +240,7 @@ namespace MultiWiiWinGUI
             o[5] = (byte)wp; c ^= o[5];
             o[6] = (byte)c;
             serialPort.Write(o, 0, 7) ;
-            if (telemetry_start == 1)serial_packet_tx_count++;
+            if (telemetry_started == 1)serial_packet_tx_count++;
         }
 
         private void write_parameters()
@@ -236,17 +249,12 @@ namespace MultiWiiWinGUI
             //Stop all timers
             timer_realtime.Stop();
 
-           // while (serialPort.BytesToWrite > 0) ;
-           // while (serialPort.BytesToRead > 0) ;
-            
             update_params();                            //update parameters object from GUI controls.
             mw_params.write_settings(serialPort);
 
-//            while (serialPort.BytesToRead > 0) ;
-//            while (serialPort.BytesToWrite > 0) ;
-//            while (serialPort.BytesToRead > 0) ;
-
+            //TODO: rewrite to msp_query_sync if it is neccessary.... 
             response_counter = 0;
+
             MSPquery(MSP.MSP_PID);
             MSPquery(MSP.MSP_RC_TUNING);
             MSPquery(MSP.MSP_IDENT);
@@ -264,11 +272,6 @@ namespace MultiWiiWinGUI
             }
 
             if (missing_packets) MessageBoxEx.Show("Not all response packets were arrived,\rplease reread parameters and check that save really happened.","Response Packets Lost",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-
-            //Invalidate gui parameters and reread those values
-
-//            while (serialPort.BytesToWrite > 0) ;
-//            while (serialPort.BytesToRead > 0) ;
 
             bOptions_needs_refresh = true;
             update_gui();
