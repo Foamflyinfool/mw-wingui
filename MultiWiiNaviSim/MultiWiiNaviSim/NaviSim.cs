@@ -174,7 +174,7 @@ namespace MultiWiiNaviSim
             {
                 cb_serial_speed.Items.Add(speed);
             }
-            cb_serial_speed.SelectedItem = "115200";
+            cb_serial_speed.SelectedItem = "57600";
 
             if (cb_serial_port.Items.Count == 0)
             {
@@ -569,8 +569,8 @@ namespace MultiWiiNaviSim
 
 
             string strGPGGA = "";
-
-            strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},1,05,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+        
+            strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},1,08,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
             byte crc = do_crc(strGPGGA);
             strGPGGA += String.Format("{0:X}\r\n", crc);
 	
@@ -617,7 +617,7 @@ namespace MultiWiiNaviSim
            byte c;
            
            byte[] buffer = new byte[10];
-
+           short check;
            // Do not access the form's BackgroundWorker reference directly.
            // Instead, use the reference provided by the sender parameter.
            BackgroundWorker bw = sender as BackgroundWorker;
@@ -643,11 +643,19 @@ namespace MultiWiiNaviSim
                    //Just process what is received. Get received commands and put them into 
                    while (serialPort.BytesToRead > 0)
                    {
-                       if (serialPort.BytesToRead >= 4)
+                       if (serialPort.BytesToRead >= 6)
                        {
-                           serialPort.Read(buffer, 0, 4);
+                           serialPort.Read(buffer, 0, 6);
                            nav_lat = BitConverter.ToInt16(buffer, 0);
                            nav_lon = BitConverter.ToInt16(buffer, 2);
+                           check = BitConverter.ToInt16(buffer, 4);
+
+                           if ((nav_lat - nav_lon) != check)        //error
+                           {
+                               nav_lat = 0;
+                               nav_lon = 0;
+                           }
+
                        }
 
                    }
@@ -662,6 +670,12 @@ namespace MultiWiiNaviSim
 
            e.Cancel = true;
 
+       }
+
+       private void button1_Click(object sender, EventArgs e)
+       {
+           SpeedLat = 0;
+           SpeedLon = 0;
        }
 
 

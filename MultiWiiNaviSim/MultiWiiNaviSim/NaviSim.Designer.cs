@@ -42,6 +42,8 @@
             this.cbMapProviders = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.lSpeedLat = new System.Windows.Forms.Label();
             this.lSpeedLon = new System.Windows.Forms.Label();
             this.lAngleLat = new System.Windows.Forms.Label();
@@ -53,8 +55,7 @@
             this.trackBarLatWind = new System.Windows.Forms.TrackBar();
             this.lDist = new System.Windows.Forms.Label();
             this.lLonWind = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
             this.splitContainerLeft.Panel1.SuspendLayout();
             this.splitContainerLeft.Panel2.SuspendLayout();
@@ -145,6 +146,7 @@
             // 
             // splitContainerLeft.Panel1
             // 
+            this.splitContainerLeft.Panel1.Controls.Add(this.button1);
             this.splitContainerLeft.Panel1.Controls.Add(this.cb_serial_port);
             this.splitContainerLeft.Panel1.Controls.Add(this.b_connect);
             this.splitContainerLeft.Panel1.Controls.Add(this.cbMapProviders);
@@ -222,6 +224,24 @@
             this.MainMap.Size = new System.Drawing.Size(561, 385);
             this.MainMap.TabIndex = 0;
             this.MainMap.Zoom = 18D;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(140, 343);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "label5";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 343);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "label4";
             // 
             // lSpeedLat
             // 
@@ -328,23 +348,15 @@
             this.lLonWind.TabIndex = 5;
             this.lLonWind.Text = "Wind Speed (LON) 0 m/s";
             // 
-            // label4
+            // button1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 343);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "label4";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(140, 343);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "label5";
+            this.button1.Location = new System.Drawing.Point(607, 34);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "HALT";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // mainForm
             // 
@@ -402,6 +414,7 @@
         private System.Windows.Forms.TrackBar trackBarAngleLon;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button1;
     }
 }
 
