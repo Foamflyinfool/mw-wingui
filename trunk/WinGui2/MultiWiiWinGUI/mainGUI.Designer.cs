@@ -118,6 +118,10 @@
             this.UP = new System.Windows.Forms.DataGridViewImageColumn();
             this.Down = new System.Windows.Forms.DataGridViewImageColumn();
             this.DEL = new System.Windows.Forms.DataGridViewImageColumn();
+            this.label76 = new System.Windows.Forms.Label();
+            this.label75 = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
+            this.label73 = new System.Windows.Forms.Label();
             this.lDistLastWP = new System.Windows.Forms.Label();
             this.btnLoadMission = new System.Windows.Forms.Button();
             this.btnSaveMission = new System.Windows.Forms.Button();
@@ -380,10 +384,6 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.label73 = new System.Windows.Forms.Label();
-            this.label74 = new System.Windows.Forms.Label();
-            this.label75 = new System.Windows.Forms.Label();
-            this.label76 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -1494,6 +1494,11 @@
             this.missionDataGrid.TabIndex = 0;
             this.missionDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellContentClick);
             this.missionDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellEndEdit);
+            this.missionDataGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellEnter);
+            this.missionDataGrid.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_CellValidated);
+            this.missionDataGrid.CurrentCellDirtyStateChanged += new System.EventHandler(this.missionDataGrid_CurrentCellDirtyStateChanged);
+            this.missionDataGrid.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.missionDataGrid_RowEnter);
+            this.missionDataGrid.SelectionChanged += new System.EventHandler(this.missionDataGrid_SelectionChanged);
             // 
             // No
             // 
@@ -1511,6 +1516,7 @@
             "WAYPOINT",
             "POSHOLD_UNLIM",
             "POSHOLD_TIME",
+            "JUMP",
             "RTH"});
             this.Action.Name = "Action";
             this.Action.Width = 90;
@@ -1561,6 +1567,46 @@
             this.DEL.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
             this.DEL.Name = "DEL";
             this.DEL.Width = 18;
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label76.Location = new System.Drawing.Point(202, 73);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(41, 13);
+            this.label76.TabIndex = 12;
+            this.label76.Text = "label76";
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label75.Location = new System.Drawing.Point(202, 60);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(41, 13);
+            this.label75.TabIndex = 11;
+            this.label75.Text = "label75";
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label74.Location = new System.Drawing.Point(202, 47);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(41, 13);
+            this.label74.TabIndex = 10;
+            this.label74.Text = "label74";
+            // 
+            // label73
+            // 
+            this.label73.AutoSize = true;
+            this.label73.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label73.Location = new System.Drawing.Point(202, 34);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(41, 13);
+            this.label73.TabIndex = 9;
+            this.label73.Text = "label73";
             // 
             // lDistLastWP
             // 
@@ -5016,46 +5062,6 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
-            // label73
-            // 
-            this.label73.AutoSize = true;
-            this.label73.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label73.Location = new System.Drawing.Point(202, 34);
-            this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(41, 13);
-            this.label73.TabIndex = 9;
-            this.label73.Text = "label73";
-            // 
-            // label74
-            // 
-            this.label74.AutoSize = true;
-            this.label74.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label74.Location = new System.Drawing.Point(202, 47);
-            this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(41, 13);
-            this.label74.TabIndex = 10;
-            this.label74.Text = "label74";
-            // 
-            // label75
-            // 
-            this.label75.AutoSize = true;
-            this.label75.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label75.Location = new System.Drawing.Point(202, 60);
-            this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(41, 13);
-            this.label75.TabIndex = 11;
-            this.label75.Text = "label75";
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label76.Location = new System.Drawing.Point(202, 73);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(41, 13);
-            this.label76.TabIndex = 12;
-            this.label76.Text = "label76";
-            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5386,15 +5392,6 @@
         private System.Windows.Forms.Button bClickToGo;
         private System.Windows.Forms.Label lDefAlt;
         private System.Windows.Forms.TextBox txtDefAlt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn No;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Action;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LATCOL;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LONCOL;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ALTCOL;
-        private System.Windows.Forms.DataGridViewImageColumn UP;
-        private System.Windows.Forms.DataGridViewImageColumn Down;
-        private System.Windows.Forms.DataGridViewImageColumn DEL;
         private System.Windows.Forms.SplitContainer splitContainer8;
         private System.Windows.Forms.Button btnLoadMission;
         private System.Windows.Forms.Button btnSaveMission;
@@ -5579,6 +5576,15 @@
         private System.Windows.Forms.Label label75;
         private System.Windows.Forms.Label label74;
         private System.Windows.Forms.Label label73;
+        private System.Windows.Forms.DataGridViewTextBoxColumn No;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Action;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LATCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LONCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ALTCOL;
+        private System.Windows.Forms.DataGridViewImageColumn UP;
+        private System.Windows.Forms.DataGridViewImageColumn Down;
+        private System.Windows.Forms.DataGridViewImageColumn DEL;
     }
 }
 

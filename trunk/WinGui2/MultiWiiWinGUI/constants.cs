@@ -36,7 +36,8 @@ namespace MultiWiiWinGUI
         public const int HOLD_UNLIM = 2;			//Poshold unlimited
         public const int HOLD_TIME = 3;			//Hold for a predetermined time
         public const int RTH = 4;			        //Return to HOME
-        public const int SET_POI = 5;              //Set POINT of interest
+        public const int SET_POI = 5;              //Set POINT of interest (not implemented jet)
+        public const int JUMP = 6;                 //jump to the given WP and (number of times)
     }
 
 
