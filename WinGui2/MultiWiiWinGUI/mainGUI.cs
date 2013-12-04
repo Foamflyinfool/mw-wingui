@@ -3649,8 +3649,6 @@ namespace MultiWiiWinGUI
             change_datagrid_header(sAction);
         }
 
-
-
         private void missionDataGrid_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
             selectedrow = e.RowIndex;
@@ -3663,7 +3661,6 @@ namespace MultiWiiWinGUI
             catch { }
 
         }
-
 
         private void missionDataGrid_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -3692,8 +3689,6 @@ namespace MultiWiiWinGUI
             catch { }
 
         }
-
-
 
         private void missionDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -4199,6 +4194,41 @@ namespace MultiWiiWinGUI
             Int16 parameter, heading;
             double lat, lon;
             Int32 altitude;
+
+
+            //if mission list is empty then upload a single RTH
+            //This is for safety reasons
+            if (missionDataGrid.Rows.Count == 0)
+            {
+                action = WP_ACTION.RTH;
+                altitude = 25;        //25meter
+                parameter = 0;
+                lat = 0;
+                lon = 0;
+                flag = 0xa5;
+                sendWPToMultiWii(serialPort, 1, action, lat, lon, altitude, parameter, flag);
+                qStatus = Query_WP(Convert.ToByte(1));
+
+                if (qStatus == WP_Query.Timeout)
+                {
+                    MessageBox.Show("No answer from FC, mission upload aborted. Try reading mission again.", "Answer timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                if (qStatus == WP_Query.Error)
+                {
+                    MessageBox.Show("Error condition occured, most likely Navigatgion is in progress, land, disarm and try again.", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                //It is possible that we already have a mission in EEPROM and the write command did not go through
+                //In this case the waypoint reload will be successfull, but data comes from pervious mission
+
+                //Check wp_action and lat/lon to make it sure
+                if ((mission_step.action != action) || (mission_step.lat != (int)(Math.Round(lat * 10000000))) || (mission_step.lon != (int)(Math.Round(lon * 10000000))))
+                {
+                    MessageBox.Show("Upload failed - most likely a communication error\r\nCheck copter, comms and try again.", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    qStatus = WP_Query.Error;
+                }
+            }
 
             for (a = 0; a < missionDataGrid.Rows.Count - 0; a++)
             {

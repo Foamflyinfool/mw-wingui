@@ -1577,6 +1577,7 @@
             this.label76.Size = new System.Drawing.Size(41, 13);
             this.label76.TabIndex = 12;
             this.label76.Text = "label76";
+            this.label76.Visible = false;
             // 
             // label75
             // 
@@ -1587,6 +1588,7 @@
             this.label75.Size = new System.Drawing.Size(41, 13);
             this.label75.TabIndex = 11;
             this.label75.Text = "label75";
+            this.label75.Visible = false;
             // 
             // label74
             // 
@@ -1597,6 +1599,7 @@
             this.label74.Size = new System.Drawing.Size(41, 13);
             this.label74.TabIndex = 10;
             this.label74.Text = "label74";
+            this.label74.Visible = false;
             // 
             // label73
             // 
@@ -1607,6 +1610,7 @@
             this.label73.Size = new System.Drawing.Size(41, 13);
             this.label73.TabIndex = 9;
             this.label73.Text = "label73";
+            this.label73.Visible = false;
             // 
             // lDistLastWP
             // 
