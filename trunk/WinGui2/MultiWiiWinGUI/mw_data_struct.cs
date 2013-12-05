@@ -797,6 +797,15 @@ namespace MultiWiiWinGUI
         public Int32 alt_to_hold;
         public byte alt_change_flag;
 
+        //Radio 
+        public UInt16 rxerrors;
+        public UInt16 fixed_errors;
+        public byte localrssi;
+        public byte remrssi;
+        public byte txbuf;
+        public byte noise;
+        public byte remnoise;
+
 
 
 

@@ -44,7 +44,7 @@
             this.l_version.Name = "l_version";
             this.l_version.Size = new System.Drawing.Size(132, 18);
             this.l_version.TabIndex = 0;
-            this.l_version.Text = "Version 1.0 Beta";
+            this.l_version.Text = "Version 2.3 Beta";
             this.l_version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // l_full_version

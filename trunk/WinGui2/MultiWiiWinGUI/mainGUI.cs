@@ -44,7 +44,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3";
+        const string sVersion = "2.3 pre4";
         const byte byteVersion = 230;
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
@@ -930,7 +930,7 @@ namespace MultiWiiWinGUI
             vertical_speed_indicator1.SetVerticalSpeedIndicatorParameters(0);
 
 
-            //System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(2000);
             splash.Close();
 
 
@@ -1530,6 +1530,19 @@ namespace MultiWiiWinGUI
                     ptr = 0;
                     mw_gui.max_wp_number = inBuf[ptr++];
                     break;
+
+                case MSP.MSP_RADIO:         //Special command inserted by the 3dr radio for multiwii
+                    ptr = 0;
+                    mw_gui.rxerrors = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.fixed_errors = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.localrssi = inBuf[ptr++];
+                    mw_gui.remrssi = inBuf[ptr++];
+                    mw_gui.txbuf = inBuf[ptr++];
+                    mw_gui.noise = inBuf[ptr++];
+                    mw_gui.remnoise = inBuf[ptr++];
+                    break;
+
+
             }
         }
 
@@ -1706,6 +1719,13 @@ namespace MultiWiiWinGUI
             label76.Text = Convert.ToString(mw_gui.alt_change_flag);
 
 
+            barRSSI.Value = mw_gui.remrssi;
+            double dbm = Math.Round(((double)(mw_gui.rssi) / 1.9) - 127);
+            label77.Text = Convert.ToString(dbm) +" dBm";
+
+            barNoise.Value = mw_gui.remnoise;
+            dbm = Math.Round(((double)(mw_gui.remnoise) / 1.9) - 127);
+            label78.Text = Convert.ToString(dbm) +"dBm";
 
 
             int q = telemetry_status_sent - telemetry_status_received;
@@ -4353,6 +4373,12 @@ namespace MultiWiiWinGUI
 
 
             }
+        }
+
+        private void l_i2cerrors_Click(object sender, EventArgs e)
+        {
+
+
         }
 
   

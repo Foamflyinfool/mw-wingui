@@ -54,7 +54,7 @@
             this.l_version.Name = "l_version";
             this.l_version.Size = new System.Drawing.Size(132, 18);
             this.l_version.TabIndex = 1;
-            this.l_version.Text = "Version 1.0 Beta";
+            this.l_version.Text = "Version 2.3 Beta";
             this.l_version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
@@ -95,7 +95,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::MultiWiiWinGUI.Properties.Resources.splash;
-            this.ClientSize = new System.Drawing.Size(590, 281);
+            this.ClientSize = new System.Drawing.Size(593, 277);
             this.ControlBox = false;
             this.Controls.Add(this.l_mwver);
             this.Controls.Add(this.label3);
