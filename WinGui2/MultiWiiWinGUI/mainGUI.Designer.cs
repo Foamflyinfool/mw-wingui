@@ -57,6 +57,12 @@
             this.indMAG = new MultiWiiGUIControls.indicator_lamp();
             this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
             this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
+            this.label80 = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
+            this.barNoise = new MultiWiiGUIControls.ColorProgressBar();
+            this.barRSSI = new MultiWiiGUIControls.ColorProgressBar();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
             this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
             this.lTelemLinkStatus = new System.Windows.Forms.Label();
@@ -384,6 +390,7 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.label81 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -667,10 +674,17 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.label81);
+            this.splitContainer2.Panel2.Controls.Add(this.label80);
             this.splitContainer2.Panel2.Controls.Add(this.lTelemLinkStatus);
+            this.splitContainer2.Panel2.Controls.Add(this.label79);
             this.splitContainer2.Panel2.Controls.Add(this.label71);
+            this.splitContainer2.Panel2.Controls.Add(this.barNoise);
             this.splitContainer2.Panel2.Controls.Add(this.label70);
+            this.splitContainer2.Panel2.Controls.Add(this.barRSSI);
+            this.splitContainer2.Panel2.Controls.Add(this.label78);
             this.splitContainer2.Panel2.Controls.Add(this.label69);
+            this.splitContainer2.Panel2.Controls.Add(this.label77);
             this.splitContainer2.Panel2.Controls.Add(this.lTxPackets);
             this.splitContainer2.Panel2.Controls.Add(this.l_i2cerrors);
             this.splitContainer2.Panel2.Controls.Add(this.label44);
@@ -820,6 +834,78 @@
             this.indSONAR.TabIndex = 85;
             this.indSONAR.Text = "SONAR";
             // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label80.Location = new System.Drawing.Point(345, 26);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(39, 15);
+            this.label80.TabIndex = 118;
+            this.label80.Text = "Noise";
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label79.Location = new System.Drawing.Point(349, 47);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(35, 15);
+            this.label79.TabIndex = 117;
+            this.label79.Text = "RSSI";
+            // 
+            // barNoise
+            // 
+            this.barNoise.BarColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.barNoise.BkgColor = System.Drawing.Color.Transparent;
+            this.barNoise.BorderColor = System.Drawing.Color.Black;
+            this.barNoise.FillStyle = MultiWiiGUIControls.ColorProgressBar.FillStyles.Solid;
+            this.barNoise.Location = new System.Drawing.Point(390, 47);
+            this.barNoise.Maximum = 255;
+            this.barNoise.Minimum = 0;
+            this.barNoise.Name = "barNoise";
+            this.barNoise.Size = new System.Drawing.Size(187, 15);
+            this.barNoise.Step = 1;
+            this.barNoise.TabIndex = 116;
+            this.barNoise.Text = "barNoise";
+            this.barNoise.Value = 0;
+            // 
+            // barRSSI
+            // 
+            this.barRSSI.BarColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.barRSSI.BkgColor = System.Drawing.Color.Transparent;
+            this.barRSSI.BorderColor = System.Drawing.Color.Black;
+            this.barRSSI.FillStyle = MultiWiiGUIControls.ColorProgressBar.FillStyles.Solid;
+            this.barRSSI.Location = new System.Drawing.Point(390, 26);
+            this.barRSSI.Maximum = 255;
+            this.barRSSI.Minimum = 0;
+            this.barRSSI.Name = "barRSSI";
+            this.barRSSI.Size = new System.Drawing.Size(187, 15);
+            this.barRSSI.Step = 1;
+            this.barRSSI.TabIndex = 115;
+            this.barRSSI.Text = "colorProgressBar1";
+            this.barRSSI.Value = 0;
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label78.Location = new System.Drawing.Point(583, 47);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(48, 15);
+            this.label78.TabIndex = 114;
+            this.label78.Text = "no data";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label77.Location = new System.Drawing.Point(584, 26);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(48, 15);
+            this.label77.TabIndex = 113;
+            this.label77.Text = "no data";
+            // 
             // rc_input_control1
             // 
             this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -843,7 +929,7 @@
             this.lTelemLinkStatus.AutoSize = true;
             this.lTelemLinkStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lTelemLinkStatus.ForeColor = System.Drawing.Color.Red;
-            this.lTelemLinkStatus.Location = new System.Drawing.Point(160, 41);
+            this.lTelemLinkStatus.Location = new System.Drawing.Point(153, 48);
             this.lTelemLinkStatus.Name = "lTelemLinkStatus";
             this.lTelemLinkStatus.Size = new System.Drawing.Size(161, 16);
             this.lTelemLinkStatus.TabIndex = 112;
@@ -889,11 +975,12 @@
             // 
             this.l_i2cerrors.AutoSize = true;
             this.l_i2cerrors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l_i2cerrors.Location = new System.Drawing.Point(895, 13);
+            this.l_i2cerrors.Location = new System.Drawing.Point(897, 26);
             this.l_i2cerrors.Name = "l_i2cerrors";
             this.l_i2cerrors.Size = new System.Drawing.Size(35, 15);
             this.l_i2cerrors.TabIndex = 102;
             this.l_i2cerrors.Text = "0000";
+            this.l_i2cerrors.Click += new System.EventHandler(this.l_i2cerrors_Click);
             // 
             // label44
             // 
@@ -908,7 +995,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(808, 13);
+            this.label21.Location = new System.Drawing.Point(810, 26);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(88, 15);
             this.label21.TabIndex = 101;
@@ -927,7 +1014,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(805, 28);
+            this.label6.Location = new System.Drawing.Point(807, 41);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 15);
             this.label6.TabIndex = 94;
@@ -946,7 +1033,7 @@
             // 
             this.l_vbatt.AutoSize = true;
             this.l_vbatt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l_vbatt.Location = new System.Drawing.Point(895, 26);
+            this.l_vbatt.Location = new System.Drawing.Point(897, 39);
             this.l_vbatt.Name = "l_vbatt";
             this.l_vbatt.Size = new System.Drawing.Size(51, 15);
             this.l_vbatt.TabIndex = 97;
@@ -965,7 +1052,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(822, 41);
+            this.label7.Location = new System.Drawing.Point(824, 54);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(74, 15);
             this.label7.TabIndex = 95;
@@ -975,7 +1062,7 @@
             // 
             this.l_powersum.AutoSize = true;
             this.l_powersum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l_powersum.Location = new System.Drawing.Point(895, 41);
+            this.l_powersum.Location = new System.Drawing.Point(897, 54);
             this.l_powersum.Name = "l_powersum";
             this.l_powersum.Size = new System.Drawing.Size(35, 15);
             this.l_powersum.TabIndex = 96;
@@ -5066,6 +5153,16 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label81.Location = new System.Drawing.Point(426, 7);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(106, 15);
+            this.label81.TabIndex = 119;
+            this.label81.Text = "Telemetry link info";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5589,6 +5686,13 @@
         private System.Windows.Forms.DataGridViewImageColumn UP;
         private System.Windows.Forms.DataGridViewImageColumn Down;
         private System.Windows.Forms.DataGridViewImageColumn DEL;
+        private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.Label label78;
+        private MultiWiiGUIControls.ColorProgressBar barRSSI;
+        private MultiWiiGUIControls.ColorProgressBar barNoise;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.Label label81;
     }
 }
 

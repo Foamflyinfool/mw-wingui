@@ -179,6 +179,9 @@
     <Compile Include="MWGUIControls\altitude_meter.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MWGUIControls\ColorProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MWGUIControls\throttle_expo_control.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -16,7 +16,7 @@ namespace MultiWiiWinGUI
         public string sVersionLabel
         {
             get { return this.l_version.Text; }
-            set { this.l_version.Text = value; }
+            set { this.l_version.Text = "Version " + value; }
         }
 
         public string sFcVersionLabel
