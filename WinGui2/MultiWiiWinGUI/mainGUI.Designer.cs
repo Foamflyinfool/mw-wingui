@@ -57,18 +57,19 @@
             this.indMAG = new MultiWiiGUIControls.indicator_lamp();
             this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
             this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
-            this.label80 = new System.Windows.Forms.Label();
-            this.label79 = new System.Windows.Forms.Label();
-            this.barNoise = new MultiWiiGUIControls.ColorProgressBar();
-            this.barRSSI = new MultiWiiGUIControls.ColorProgressBar();
-            this.label78 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
             this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
+            this.label81 = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
             this.lTelemLinkStatus = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
             this.label71 = new System.Windows.Forms.Label();
+            this.barNoise = new MultiWiiGUIControls.ColorProgressBar();
             this.label70 = new System.Windows.Forms.Label();
+            this.barRSSI = new MultiWiiGUIControls.ColorProgressBar();
+            this.label78 = new System.Windows.Forms.Label();
             this.label69 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
             this.lTxPackets = new System.Windows.Forms.Label();
             this.l_i2cerrors = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
@@ -92,6 +93,10 @@
             this.b_Clear_Route = new System.Windows.Forms.Button();
             this.spcontMapMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.cbShowGauges = new MultiWiiGUIControls.CheckBoxEx();
+            this.altitude_meter2 = new MultiWiiGUIControls.altitude_meter();
+            this.vertical_speed_indicator2 = new MultiWiiGUIControls.vertical_speed_indicator();
+            this.gpsIndicator2 = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.LMousePos = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
             this.tb_mapzoom = new System.Windows.Forms.TrackBar();
@@ -124,10 +129,6 @@
             this.UP = new System.Windows.Forms.DataGridViewImageColumn();
             this.Down = new System.Windows.Forms.DataGridViewImageColumn();
             this.DEL = new System.Windows.Forms.DataGridViewImageColumn();
-            this.label76 = new System.Windows.Forms.Label();
-            this.label75 = new System.Windows.Forms.Label();
-            this.label74 = new System.Windows.Forms.Label();
-            this.label73 = new System.Windows.Forms.Label();
             this.lDistLastWP = new System.Windows.Forms.Label();
             this.btnLoadMission = new System.Windows.Forms.Button();
             this.btnSaveMission = new System.Windows.Forms.Button();
@@ -390,7 +391,6 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.label81 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -834,6 +834,34 @@
             this.indSONAR.TabIndex = 85;
             this.indSONAR.Text = "SONAR";
             // 
+            // rc_input_control1
+            // 
+            this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
+            this.rc_input_control1.Name = "rc_input_control1";
+            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
+            this.rc_input_control1.TabIndex = 76;
+            this.rc_input_control1.Text = "rc_input_control1";
+            // 
+            // motorsIndicator1
+            // 
+            this.motorsIndicator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.motorsIndicator1.Location = new System.Drawing.Point(6, 6);
+            this.motorsIndicator1.Name = "motorsIndicator1";
+            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
+            this.motorsIndicator1.TabIndex = 75;
+            this.motorsIndicator1.Text = "motorsIndicator1";
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label81.Location = new System.Drawing.Point(426, 7);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(106, 15);
+            this.label81.TabIndex = 119;
+            this.label81.Text = "Telemetry link info";
+            // 
             // label80
             // 
             this.label80.AutoSize = true;
@@ -844,6 +872,17 @@
             this.label80.TabIndex = 118;
             this.label80.Text = "Noise";
             // 
+            // lTelemLinkStatus
+            // 
+            this.lTelemLinkStatus.AutoSize = true;
+            this.lTelemLinkStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lTelemLinkStatus.ForeColor = System.Drawing.Color.Red;
+            this.lTelemLinkStatus.Location = new System.Drawing.Point(153, 48);
+            this.lTelemLinkStatus.Name = "lTelemLinkStatus";
+            this.lTelemLinkStatus.Size = new System.Drawing.Size(161, 16);
+            this.lTelemLinkStatus.TabIndex = 112;
+            this.lTelemLinkStatus.Text = "Telemetry Link DOWN";
+            // 
             // label79
             // 
             this.label79.AutoSize = true;
@@ -853,6 +892,15 @@
             this.label79.Size = new System.Drawing.Size(35, 15);
             this.label79.TabIndex = 117;
             this.label79.Text = "RSSI";
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(161, 9);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(109, 13);
+            this.label71.TabIndex = 111;
+            this.label71.Text = "Telemetry Link quality";
             // 
             // barNoise
             // 
@@ -869,6 +917,15 @@
             this.barNoise.TabIndex = 116;
             this.barNoise.Text = "barNoise";
             this.barNoise.Value = 0;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(276, 9);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(24, 13);
+            this.label70.TabIndex = 110;
+            this.label70.Text = "0 %";
             // 
             // barRSSI
             // 
@@ -896,6 +953,15 @@
             this.label78.TabIndex = 114;
             this.label78.Text = "no data";
             // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(8, 9);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(71, 13);
+            this.label69.TabIndex = 109;
+            this.label69.Text = "Packet\'s sent";
+            // 
             // label77
             // 
             this.label77.AutoSize = true;
@@ -905,62 +971,6 @@
             this.label77.Size = new System.Drawing.Size(48, 15);
             this.label77.TabIndex = 113;
             this.label77.Text = "no data";
-            // 
-            // rc_input_control1
-            // 
-            this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
-            this.rc_input_control1.Name = "rc_input_control1";
-            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
-            this.rc_input_control1.TabIndex = 76;
-            this.rc_input_control1.Text = "rc_input_control1";
-            // 
-            // motorsIndicator1
-            // 
-            this.motorsIndicator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.motorsIndicator1.Location = new System.Drawing.Point(6, 6);
-            this.motorsIndicator1.Name = "motorsIndicator1";
-            this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
-            this.motorsIndicator1.TabIndex = 75;
-            this.motorsIndicator1.Text = "motorsIndicator1";
-            // 
-            // lTelemLinkStatus
-            // 
-            this.lTelemLinkStatus.AutoSize = true;
-            this.lTelemLinkStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lTelemLinkStatus.ForeColor = System.Drawing.Color.Red;
-            this.lTelemLinkStatus.Location = new System.Drawing.Point(153, 48);
-            this.lTelemLinkStatus.Name = "lTelemLinkStatus";
-            this.lTelemLinkStatus.Size = new System.Drawing.Size(161, 16);
-            this.lTelemLinkStatus.TabIndex = 112;
-            this.lTelemLinkStatus.Text = "Telemetry Link DOWN";
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(161, 9);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(109, 13);
-            this.label71.TabIndex = 111;
-            this.label71.Text = "Telemetry Link quality";
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(276, 9);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(24, 13);
-            this.label70.TabIndex = 110;
-            this.label70.Text = "0 %";
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(8, 9);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(71, 13);
-            this.label69.TabIndex = 109;
-            this.label69.Text = "Packet\'s sent";
             // 
             // lTxPackets
             // 
@@ -980,7 +990,6 @@
             this.l_i2cerrors.Size = new System.Drawing.Size(35, 15);
             this.l_i2cerrors.TabIndex = 102;
             this.l_i2cerrors.Text = "0000";
-            this.l_i2cerrors.Click += new System.EventHandler(this.l_i2cerrors_Click);
             // 
             // label44
             // 
@@ -1235,6 +1244,10 @@
             // 
             // splitContainer9.Panel1
             // 
+            this.splitContainer9.Panel1.Controls.Add(this.cbShowGauges);
+            this.splitContainer9.Panel1.Controls.Add(this.altitude_meter2);
+            this.splitContainer9.Panel1.Controls.Add(this.vertical_speed_indicator2);
+            this.splitContainer9.Panel1.Controls.Add(this.gpsIndicator2);
             this.splitContainer9.Panel1.Controls.Add(this.LMousePos);
             this.splitContainer9.Panel1.Controls.Add(this.label45);
             this.splitContainer9.Panel1.Controls.Add(this.tb_mapzoom);
@@ -1263,6 +1276,54 @@
             this.splitContainer9.Size = new System.Drawing.Size(577, 417);
             this.splitContainer9.SplitterDistance = 342;
             this.splitContainer9.TabIndex = 0;
+            // 
+            // cbShowGauges
+            // 
+            this.cbShowGauges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbShowGauges.AutoSize = true;
+            this.cbShowGauges.aux = 0;
+            this.cbShowGauges.BackColor = System.Drawing.Color.Transparent;
+            this.cbShowGauges.ForeColor = System.Drawing.Color.White;
+            this.cbShowGauges.IsHighlighted = false;
+            this.cbShowGauges.item = 0;
+            this.cbShowGauges.Location = new System.Drawing.Point(436, 2);
+            this.cbShowGauges.Name = "cbShowGauges";
+            this.cbShowGauges.rclevel = 0;
+            this.cbShowGauges.Size = new System.Drawing.Size(93, 17);
+            this.cbShowGauges.TabIndex = 112;
+            this.cbShowGauges.Text = "Show Gauges";
+            this.cbShowGauges.UseVisualStyleBackColor = false;
+            this.cbShowGauges.CheckedChanged += new System.EventHandler(this.cbShowGauges_CheckedChanged);
+            // 
+            // altitude_meter2
+            // 
+            this.altitude_meter2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.altitude_meter2.Location = new System.Drawing.Point(286, 192);
+            this.altitude_meter2.Name = "altitude_meter2";
+            this.altitude_meter2.Size = new System.Drawing.Size(150, 150);
+            this.altitude_meter2.TabIndex = 111;
+            this.altitude_meter2.Text = "altitude_meter2";
+            this.altitude_meter2.Visible = false;
+            // 
+            // vertical_speed_indicator2
+            // 
+            this.vertical_speed_indicator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.vertical_speed_indicator2.Location = new System.Drawing.Point(139, 192);
+            this.vertical_speed_indicator2.Name = "vertical_speed_indicator2";
+            this.vertical_speed_indicator2.Size = new System.Drawing.Size(150, 150);
+            this.vertical_speed_indicator2.TabIndex = 110;
+            this.vertical_speed_indicator2.Text = "vertical_speed_indicator2";
+            this.vertical_speed_indicator2.Visible = false;
+            // 
+            // gpsIndicator2
+            // 
+            this.gpsIndicator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpsIndicator2.Location = new System.Drawing.Point(-4, 192);
+            this.gpsIndicator2.Name = "gpsIndicator2";
+            this.gpsIndicator2.Size = new System.Drawing.Size(150, 150);
+            this.gpsIndicator2.TabIndex = 75;
+            this.gpsIndicator2.Text = "gpsIndicatorInstrumentControl1";
+            this.gpsIndicator2.Visible = false;
             // 
             // LMousePos
             // 
@@ -1518,10 +1579,6 @@
             // 
             // splitContainer8.Panel2
             // 
-            this.splitContainer8.Panel2.Controls.Add(this.label76);
-            this.splitContainer8.Panel2.Controls.Add(this.label75);
-            this.splitContainer8.Panel2.Controls.Add(this.label74);
-            this.splitContainer8.Panel2.Controls.Add(this.label73);
             this.splitContainer8.Panel2.Controls.Add(this.lDistLastWP);
             this.splitContainer8.Panel2.Controls.Add(this.btnLoadMission);
             this.splitContainer8.Panel2.Controls.Add(this.btnSaveMission);
@@ -1654,50 +1711,6 @@
             this.DEL.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
             this.DEL.Name = "DEL";
             this.DEL.Width = 18;
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label76.Location = new System.Drawing.Point(202, 73);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(41, 13);
-            this.label76.TabIndex = 12;
-            this.label76.Text = "label76";
-            this.label76.Visible = false;
-            // 
-            // label75
-            // 
-            this.label75.AutoSize = true;
-            this.label75.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label75.Location = new System.Drawing.Point(202, 60);
-            this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(41, 13);
-            this.label75.TabIndex = 11;
-            this.label75.Text = "label75";
-            this.label75.Visible = false;
-            // 
-            // label74
-            // 
-            this.label74.AutoSize = true;
-            this.label74.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label74.Location = new System.Drawing.Point(202, 47);
-            this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(41, 13);
-            this.label74.TabIndex = 10;
-            this.label74.Text = "label74";
-            this.label74.Visible = false;
-            // 
-            // label73
-            // 
-            this.label73.AutoSize = true;
-            this.label73.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label73.Location = new System.Drawing.Point(202, 34);
-            this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(41, 13);
-            this.label73.TabIndex = 9;
-            this.label73.Text = "label73";
-            this.label73.Visible = false;
             // 
             // lDistLastWP
             // 
@@ -5153,16 +5166,6 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
-            // label81
-            // 
-            this.label81.AutoSize = true;
-            this.label81.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label81.Location = new System.Drawing.Point(426, 7);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(106, 15);
-            this.label81.TabIndex = 119;
-            this.label81.Text = "Telemetry link info";
-            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5673,10 +5676,6 @@
         private System.Windows.Forms.Label l11;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label lNavError;
-        private System.Windows.Forms.Label label76;
-        private System.Windows.Forms.Label label75;
-        private System.Windows.Forms.Label label74;
-        private System.Windows.Forms.Label label73;
         private System.Windows.Forms.DataGridViewTextBoxColumn No;
         private System.Windows.Forms.DataGridViewComboBoxColumn Action;
         private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
@@ -5693,6 +5692,10 @@
         private System.Windows.Forms.Label label80;
         private System.Windows.Forms.Label label79;
         private System.Windows.Forms.Label label81;
+        private MultiWiiGUIControls.GpsIndicatorInstrumentControl gpsIndicator2;
+        private MultiWiiGUIControls.altitude_meter altitude_meter2;
+        private MultiWiiGUIControls.vertical_speed_indicator vertical_speed_indicator2;
+        private MultiWiiGUIControls.CheckBoxEx cbShowGauges;
     }
 }
 
