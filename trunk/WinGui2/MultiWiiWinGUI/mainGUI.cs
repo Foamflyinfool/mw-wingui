@@ -52,7 +52,7 @@ namespace MultiWiiWinGUI
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG, Vtail4, Hex6H, PPM_to_Servo, Singlecopter, DualCopter };
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG, Vtail4, Hex6H, PPM_to_Servo, DualCopter, Singlecopter };
 
 
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
@@ -1854,6 +1854,8 @@ namespace MultiWiiWinGUI
                     {
                         case CopterType.Tri:
                             set_servo_control(5, true, "Yaw servo");
+                            servo_rate[5].Enabled = false;
+                            servo_rate[5].Visible = false;
                             break;
                         case CopterType.Airplane:
                             set_servo_control(2, true, "Flaps");
@@ -1910,6 +1912,7 @@ namespace MultiWiiWinGUI
                         servo_min[i].Value = mw_gui.servoMin[i];
                         servo_mid[i].Value = mw_gui.servoMiddle[i];
                         servo_rate[i].Value = Math.Abs(mw_gui.servoRate[i]);
+
                         if (mw_gui.servoRate[i] < 0)
                         {
                             servo_reverse[i].Checked = true;
@@ -1918,6 +1921,20 @@ namespace MultiWiiWinGUI
                         {
                             servo_reverse[i].Checked = false;
                         }
+
+                        //Servo handler madness 
+                        if ((CopterType)mw_gui.multiType == CopterType.Tri)
+                        {
+                            if (mw_gui.servoRate[i] == 1)
+                            {
+                                servo_reverse[i].Checked = true;
+                            }
+                            else
+                            {
+                                servo_reverse[i].Checked = false;
+                            }
+                        }
+
                     }
 
                     bOptions_needs_refresh = false;
@@ -2317,9 +2334,21 @@ namespace MultiWiiWinGUI
                 mw_params.servoMin[i] = (int)servo_min[i].Value;
                 mw_params.servoMiddle[i] = (int)servo_mid[i].Value;
                 mw_params.servoRate[i] = (sbyte)servo_rate[i].Value;
-                if (servo_reverse[i].Checked == true)
+
+                //So fix for braindead servoconf stuff :(
+                if ((CopterType)mw_gui.multiType == CopterType.Tri)
+                { // if we have tricopter then the bit0 will decide the direction :(
+                    if (servo_reverse[i].Checked == true)
+                        mw_params.servoRate[i] = 1;
+                    else
+                        mw_params.servoRate[i] = 0;
+                }
+                else
                 {
-                    mw_params.servoRate[i] *= -1;
+                    if (servo_reverse[i].Checked == true)
+                    {
+                        mw_params.servoRate[i] *= -1;
+                    }
                 }
 
             }
