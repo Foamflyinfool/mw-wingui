@@ -107,6 +107,8 @@ namespace MultiWiiWinGUI
                 b_cal_mag.Enabled = false;
                 b_read_settings.Enabled = false;
                 b_write_settings.Enabled = false;
+                b_write_to_file.Enabled = false;
+                b_load_from_file.Enabled = false;
 
 
 
@@ -159,6 +161,8 @@ namespace MultiWiiWinGUI
                 b_cal_mag.Enabled = true;
                 b_read_settings.Enabled = true;
                 b_write_settings.Enabled = true;
+                b_write_to_file.Enabled = true;
+                b_load_from_file.Enabled = true;
 
 
                 //first send MSP_IDENT messaages and wait at least one successfull packet to arrive

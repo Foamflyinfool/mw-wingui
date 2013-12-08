@@ -246,6 +246,9 @@ namespace MultiWiiWinGUI
         static byte update_cycle_count = 0;             //Counts the update cycles (10 cycles all)
 
 
+        static bool bShowGauges = false;
+
+
         #endregion
 
         public mainGUI()
@@ -922,6 +925,8 @@ namespace MultiWiiWinGUI
             b_cal_mag.Enabled = false;
             b_read_settings.Enabled = false;
             b_write_settings.Enabled = false;
+            b_write_to_file.Enabled = false;
+            b_load_from_file.Enabled = false;
 
 
 
@@ -1712,13 +1717,6 @@ namespace MultiWiiWinGUI
             label42.Text = Convert.ToString(serial_packet_rx_count);
             lTxPackets.Text = Convert.ToString(serial_packet_tx_count);
 
-            //TODO: remove this when alt hold test is OK
-            label73.Text = Convert.ToString(mw_gui.original_altitude);
-            label74.Text = Convert.ToString(mw_gui.target_altitude);
-            label75.Text = Convert.ToString(mw_gui.alt_to_hold);
-            label76.Text = Convert.ToString(mw_gui.alt_change_flag);
-
-
             barRSSI.Value = mw_gui.remrssi;
             double dbm = Math.Round(((double)(mw_gui.rssi) / 1.9) - 127);
             label77.Text = Convert.ToString(dbm) +" dBm";
@@ -1928,6 +1926,17 @@ namespace MultiWiiWinGUI
 
             #region GUIPages.mission
 
+            //Map update should be continous
+
+            if (mw_gui.GPS_latitude != 0)
+            {
+                GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
+                GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
+
+                GMRouteFlightPath.Points.Add(GPS_pos);
+            }
+
+
             if (tabMain.SelectedIndex == GUIPages.Mission)
             {
                 lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
@@ -1947,6 +1956,15 @@ namespace MultiWiiWinGUI
                 lNavError.Text = sNavError[mw_gui.nav_error];
 
 
+                if (bShowGauges)
+                {
+                    altitude_meter2.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
+                    vertical_speed_indicator2.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
+                    gpsIndicator2.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
+                }
+
+
+
                 if (mw_gui.GPS_latitude != 0)
                 {
 
@@ -1954,8 +1972,6 @@ namespace MultiWiiWinGUI
 
                     lGPS_lat.Text = Convert.ToString((decimal)mw_gui.GPS_latitude / 10000000);
                     lGPS_lon.Text = Convert.ToString((decimal)mw_gui.GPS_longitude / 10000000);
-                    GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
-                    GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
 
                     if (markerGoToClick != null) GMOverlayLiveData.Markers.Add(markerGoToClick);
 
@@ -1967,7 +1983,7 @@ namespace MultiWiiWinGUI
 
                     GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
 
-                    GMRouteFlightPath.Points.Add(GPS_pos);
+                    //GMRouteFlightPath.Points.Add(GPS_pos);
                     MainMap.Position = GPS_pos;
                     MainMap.Invalidate();
 
@@ -2030,6 +2046,21 @@ namespace MultiWiiWinGUI
             #region GUIPages.Sensorgraph
             if (tabMain.SelectedIndex == GUIPages.SensorGraph)
             {
+
+
+                curve_acc_roll.IsVisible = cb_acc_roll.Checked;
+                curve_acc_pitch.IsVisible = cb_acc_pitch.Checked;
+                curve_acc_z.IsVisible = cb_acc_z.Checked;
+                curve_gyro_roll.IsVisible = cb_gyro_roll.Checked;
+                curve_gyro_pitch.IsVisible = cb_gyro_pitch.Checked;
+                curve_gyro_yaw.IsVisible = cb_gyro_yaw.Checked;
+                curve_mag_roll.IsVisible = cb_mag_roll.Checked;
+                curve_mag_pitch.IsVisible = cb_mag_pitch.Checked;
+                curve_mag_yaw.IsVisible = cb_mag_yaw.Checked;
+                curve_alt.IsVisible = cb_alt.Checked;
+                curve_head.IsVisible = cb_head.Checked;
+
+
                 if (cb_acc_roll.Checked) { list_acc_roll.Add((double)xTimeStamp, mw_gui.ax); }
                 l_acc_roll.Text = "" + mw_gui.ax;
 
@@ -2103,27 +2134,14 @@ namespace MultiWiiWinGUI
 
                 rc_input_control1.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX, AUX_CHANNELS + 4);
 
-                curve_acc_roll.IsVisible = cb_acc_roll.Checked;
-                curve_acc_pitch.IsVisible = cb_acc_pitch.Checked;
-                curve_acc_z.IsVisible = cb_acc_z.Checked;
-                curve_gyro_roll.IsVisible = cb_gyro_roll.Checked;
-                curve_gyro_pitch.IsVisible = cb_gyro_pitch.Checked;
-                curve_gyro_yaw.IsVisible = cb_gyro_yaw.Checked;
-                curve_mag_roll.IsVisible = cb_mag_roll.Checked;
-                curve_mag_pitch.IsVisible = cb_mag_pitch.Checked;
-                curve_mag_yaw.IsVisible = cb_mag_yaw.Checked;
-                curve_alt.IsVisible = cb_alt.Checked;
-                curve_head.IsVisible = cb_head.Checked;
-
-
                 headingIndicatorInstrumentControl1.SetHeadingIndicatorParameters(mw_gui.heading);
                 attitudeIndicatorInstrumentControl1.SetArtificalHorizon(-mw_gui.angy, -mw_gui.angx);
-                gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
 
                 motorsIndicator1.SetMotorsIndicatorParameters(mw_gui.motors, mw_gui.servos, mw_gui.multiType);
 
                 altitude_meter1.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
                 vertical_speed_indicator1.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
+                gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
 
                 //update indicator lamps
 
@@ -4375,16 +4393,28 @@ namespace MultiWiiWinGUI
             }
         }
 
-        private void l_i2cerrors_Click(object sender, EventArgs e)
+        private void cbShowGauges_CheckedChanged(object sender, EventArgs e)
         {
+            if (bShowGauges)
+            {
+                bShowGauges = false;
+                gpsIndicator2.Visible = false;
+                vertical_speed_indicator2.Visible = false;
+                altitude_meter2.Visible = false;
+            }
+            else
+            {
+                bShowGauges = true;
+                gpsIndicator2.Visible = true;
+                vertical_speed_indicator2.Visible = true;
+                altitude_meter2.Visible = true;
+            }
+
+
+
 
 
         }
-
-  
-
-
-
 
     }
 
