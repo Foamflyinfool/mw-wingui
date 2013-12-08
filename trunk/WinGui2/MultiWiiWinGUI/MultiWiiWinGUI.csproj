@@ -371,6 +371,9 @@
     <Content Include="Resources\i_red_off.bmp" />
     <Content Include="Resources\i_red_on.bmp" />
     <Content Include="Resources\LongNeedleAltimeter.bmp" />
+    <Content Include="Resources\navi-warning.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\numbers.bmp" />
     <Content Include="Resources\poshold.png" />
     <Content Include="Resources\poshold_unlim.png" />
