@@ -35,6 +35,7 @@ using GMap.NET.WindowsForms.Markers;
 using GMap.NET.MapProviders;
 using System.Globalization;
 using System.Reflection;
+using System.Media;
 
 namespace MultiWiiWinGUI
 {
@@ -59,11 +60,16 @@ namespace MultiWiiWinGUI
         string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump" };
 
         string[] sNavError = { "Navigation system OK",
-                               "Next waypoint distance is more than the safety limit set in config.h",
-                               "GPS reception is compromised - Navigation stoped",
-                               "CRC error while reading next WP from EEPROM - Navigation stopped",
-                               "End flag detected - Navigation finished" ,
-                               "Waiting for poshold timer"};
+                               "Next waypoint distance is more than the safety limit set in config.h, aborting mission",
+                               "GPS reception is compromised - pausing mission, COPTER IS ADRIFT!",
+                               "CRC error while reading next WP from EEPROM - aborting mission",
+                               "End flag detected - Mission Finished" ,
+                               "Waiting for poshold timer",
+                               "Invalid Jump target detected, aborting mission",
+                               "Invalid Mission Step Action code detected, aborting mission",
+                               "Waiting to reach RTH altitude",
+                               "GPS fix lost, mission aborted - COPTER IS ADRIFT!",
+                               "Copter is disarmed, nav engine disabled"};
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
@@ -219,7 +225,7 @@ namespace MultiWiiWinGUI
 
         static int telemetry_status_sent = 0;
         static int telemetry_status_received = 0;
-
+        static byte previous_nav_error;
 
         static int selectedrow;
         static bool bGoToClikEnabled = false;
@@ -1962,6 +1968,16 @@ namespace MultiWiiWinGUI
                         if (missionDataGrid.RowCount >= mw_gui.wp_number) missionDataGrid.Rows[mw_gui.wp_number - 1].DefaultCellStyle.BackColor = Color.Tomato;
                     }
                     catch { }
+                }
+
+
+                if (mw_gui.nav_error != previous_nav_error)
+                {
+                    previous_nav_error = mw_gui.nav_error;
+                    if (mw_gui.nav_error > 0 && mw_gui.nav_error < 10)
+                    {
+                        (new SoundPlayer(@"resources/navi-warning.wav")).Play();
+                    }
                 }
 
                 lNavError.Text = sNavError[mw_gui.nav_error];
