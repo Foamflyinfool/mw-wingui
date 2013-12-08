@@ -644,7 +644,6 @@ namespace MultiWiiWinGUI
                                 if (String.Compare(reader.Name, "servo", true) == 0 && reader.HasAttributes)
                                 {
                                     int servoID = 0;
-                                    short rate; ushort min, max, middle;
                                     servoID = Convert.ToInt16(reader.GetAttribute("id"));
                                     servoMin[servoID] = Convert.ToUInt16(reader.GetAttribute("min"));
                                     servoMax[servoID] = Convert.ToUInt16(reader.GetAttribute("max"));

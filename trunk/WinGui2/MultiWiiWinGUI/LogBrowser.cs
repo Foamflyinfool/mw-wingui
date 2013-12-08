@@ -311,8 +311,6 @@ namespace MultiWiiWinGUI
 
                 //get the date and convert it to a double
                 DateTime dt;
-                XDate the_date;
-
                 try
                 {
                     dt = Convert.ToDateTime(datarow.Cells[1].Value.ToString());
