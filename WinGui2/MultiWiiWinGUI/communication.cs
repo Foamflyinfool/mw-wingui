@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -13,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using System.Collections.Generic;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Video.FFMPEG;

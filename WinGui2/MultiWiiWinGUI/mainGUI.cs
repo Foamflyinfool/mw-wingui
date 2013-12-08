@@ -76,9 +76,6 @@ namespace MultiWiiWinGUI
         Boolean isCLI = false;
         string inCLIBuffer;
 
-
-        Boolean isTelemetry = false;        //Telemetry mode
-
         //PID values
         static PID[] Pid;
 
@@ -87,9 +84,6 @@ namespace MultiWiiWinGUI
         static bool isConnected = false;                        //is port connected or not ?
         static bool bSerialError = false;
         static bool isPaused = false;
-
-        static int iRefreshDivider = 20;                         //This used to force slower refresh for certain parameters
-
 
         static double xTimeStamp = 0;
         static byte[] bSerialBuffer;
@@ -3988,7 +3982,6 @@ namespace MultiWiiWinGUI
             byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
             byte[] bInt32 = new byte[4];
             byte checksum = 0;
-            Int16 heading = 0;
 
 
             if (serialport.IsOpen)
@@ -4258,7 +4251,7 @@ namespace MultiWiiWinGUI
         {
             int qStatus = WP_Query.OK;
             byte action, flag, a;
-            Int16 parameter, heading;
+            Int16 parameter;
             double lat, lon;
             Int32 altitude;
 
