@@ -39,6 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
+            this.cbSats = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.cbMapProviders = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainMap = new GMap.NET.WindowsForms.GMapControl();
@@ -55,7 +57,7 @@
             this.trackBarLatWind = new System.Windows.Forms.TrackBar();
             this.lDist = new System.Windows.Forms.Label();
             this.lLonWind = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.cbLostFix = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
             this.splitContainerLeft.Panel1.SuspendLayout();
             this.splitContainerLeft.Panel2.SuspendLayout();
@@ -146,6 +148,8 @@
             // 
             // splitContainerLeft.Panel1
             // 
+            this.splitContainerLeft.Panel1.Controls.Add(this.cbLostFix);
+            this.splitContainerLeft.Panel1.Controls.Add(this.cbSats);
             this.splitContainerLeft.Panel1.Controls.Add(this.button1);
             this.splitContainerLeft.Panel1.Controls.Add(this.cb_serial_port);
             this.splitContainerLeft.Panel1.Controls.Add(this.b_connect);
@@ -163,6 +167,26 @@
             this.splitContainerLeft.SplitterDistance = 76;
             this.splitContainerLeft.SplitterWidth = 1;
             this.splitContainerLeft.TabIndex = 7;
+            // 
+            // cbSats
+            // 
+            this.cbSats.AutoSize = true;
+            this.cbSats.Location = new System.Drawing.Point(532, 13);
+            this.cbSats.Name = "cbSats";
+            this.cbSats.Size = new System.Drawing.Size(87, 17);
+            this.cbSats.TabIndex = 8;
+            this.cbSats.Text = "Sats below 5";
+            this.cbSats.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(607, 34);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "HALT";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // cbMapProviders
             // 
@@ -348,15 +372,15 @@
             this.lLonWind.TabIndex = 5;
             this.lLonWind.Text = "Wind Speed (LON) 0 m/s";
             // 
-            // button1
+            // cbLostFix
             // 
-            this.button1.Location = new System.Drawing.Point(607, 34);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "HALT";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.cbLostFix.AutoSize = true;
+            this.cbLostFix.Location = new System.Drawing.Point(642, 13);
+            this.cbLostFix.Name = "cbLostFix";
+            this.cbLostFix.Size = new System.Drawing.Size(62, 17);
+            this.cbLostFix.TabIndex = 9;
+            this.cbLostFix.Text = "Lost Fix";
+            this.cbLostFix.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
@@ -415,6 +439,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox cbSats;
+        private System.Windows.Forms.CheckBox cbLostFix;
     }
 }
 

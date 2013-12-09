@@ -569,8 +569,22 @@ namespace MultiWiiNaviSim
 
 
             string strGPGGA = "";
-        
-            strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},1,08,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+
+            if (cbLostFix.Checked)
+            {
+                if (cbSats.Checked)
+                    strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},0,04,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+                else
+                    strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},0,08,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+            }
+            else
+            {
+                if (cbSats.Checked)
+                    strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},2,04,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+                else
+                    strGPGGA = String.Format("$GPGGA,122435.00,{0:N0}{1:00.00000},{2},{3:N0}{4:00.00000},{5},2,08,02.4,{6:N},M,45.0,M,,*", LatDeg, LatMin, LatDir, LonDeg, LonMin, LonDir, Alt);
+            }
+
             byte crc = do_crc(strGPGGA);
             strGPGGA += String.Format("{0:X}\r\n", crc);
 	
