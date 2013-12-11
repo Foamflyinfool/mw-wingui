@@ -787,14 +787,20 @@ namespace MultiWiiWinGUI
         public byte action;
         public byte wp_number;
         public byte nav_error;
+        public Int16 target_bearing;
+
 
         public byte max_wp_number;
 
         //temp
+        /*
         public Int32 original_altitude;
         public Int32 target_altitude;
         public Int32 alt_to_hold;
         public byte alt_change_flag;
+        */
+
+
 
         //Radio 
         public UInt16 rxerrors;

@@ -371,6 +371,22 @@
     <Content Include="Resources\i_red_off.bmp" />
     <Content Include="Resources\i_red_on.bmp" />
     <Content Include="Resources\LongNeedleAltimeter.bmp" />
+    <Content Include="Resources\marker_airplane.png" />
+    <Content Include="Resources\marker_bi.png" />
+    <Content Include="Resources\marker_fwing.png" />
+    <Content Include="Resources\marker_heli.png" />
+    <Content Include="Resources\marker_hex6p.png" />
+    <Content Include="Resources\marker_hex6x.png" />
+    <Content Include="Resources\marker_octoflatx.png" />
+    <Content Include="Resources\marker_octop8.png" />
+    <Content Include="Resources\marker_octox8.png" />
+    <Content Include="Resources\marker_oktoflatp.png" />
+    <Content Include="Resources\marker_quadp.png" />
+    <Content Include="Resources\marker_quadx.png" />
+    <Content Include="Resources\marker_tri.png" />
+    <Content Include="Resources\marker_vtail4.png" />
+    <Content Include="Resources\marker_y4.png" />
+    <Content Include="Resources\marker_y6.png" />
     <Content Include="Resources\navi-warning.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
