@@ -102,13 +102,15 @@ namespace MultiWiiWinGUI
         float heading = 0;
         float cog = -1;
         float target = -1;
+        byte coptertype;
 
-        public GMapMarkerQuad(PointLatLng p, float heading, float cog, float target)
+        public GMapMarkerQuad(PointLatLng p, float heading, float cog, float target, byte coptertype)
             : base(p)
         {
             this.heading = heading;
             this.cog = cog;
             this.target = target;
+            this.coptertype = coptertype;
             Size = SizeSt;
         }
 
@@ -116,16 +118,77 @@ namespace MultiWiiWinGUI
         {
             Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            Image pic = global::MultiWiiWinGUI.Properties.Resources.quadicon;
+
+            Image pic = global::MultiWiiWinGUI.Properties.Resources.marker_tri;
+
+
+            switch (coptertype)
+            {
+                case 1:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_tri;
+                    break;
+                case 2:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_quadp;
+                    break;
+                case 3:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_quadx;
+                    break;
+                case 4:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_bi;
+                    break;
+                case 5:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_tri;
+                    break;
+                case 6:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_y6;
+                    break;
+                case 7:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_hex6p;
+                    break;
+                case 8:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_fwing;
+                    break;
+                case 9:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_y4;
+                    break;
+                case 10:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_hex6x;
+                    break;
+                case 11:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_octox8;
+                    break;
+                case 12:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_octoflatx;
+                    break;
+                case 13:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_oktoflatp;
+                    break;
+                case 14:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_airplane;
+                    break;
+                case 15:
+                case 16:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_heli;
+                    break;
+                case 17:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_vtail4;
+                    break;
+                case 18:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_hex6x;
+                    break;
+                default:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_tri;
+                    break;
+            }
 
             int length = 100;
             // anti NaN
             g.DrawLine(new Pen(Color.Red, 2), 0.0f, 0.0f, (float)Math.Cos((heading - 90) * deg2rad) * length, (float)Math.Sin((heading - 90) * deg2rad) * length);
             //g.DrawLine(new Pen(Color.Black, 2), 0.0f, 0.0f, (float)Math.Cos((cog - 90) * deg2rad) * length, (float)Math.Sin((cog - 90) * deg2rad) * length);
-            //g.DrawLine(new Pen(Color.Orange, 2), 0.0f, 0.0f, (float)Math.Cos((target - 90) * deg2rad) * length, (float)Math.Sin((target - 90) * deg2rad) * length);
+            g.DrawLine(new Pen(Color.Orange, 2), 0.0f, 0.0f, (float)Math.Cos((target - 90) * deg2rad) * length, (float)Math.Sin((target - 90) * deg2rad) * length);
             // anti NaN
             g.RotateTransform(heading);
-            g.DrawImageUnscaled(pic,pic.Width / -2 -5 , pic.Height / -2 );
+            g.DrawImageUnscaled(pic,pic.Width /-2, pic.Height/-2);
             g.Transform = temp;
         }
     }

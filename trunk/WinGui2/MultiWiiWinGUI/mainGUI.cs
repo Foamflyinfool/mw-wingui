@@ -45,7 +45,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre5(b2)";
+        const string sVersion = "2.3 pre5";
         const byte byteVersion = 230;
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
@@ -53,8 +53,10 @@ namespace MultiWiiWinGUI
 
         static string sOptionsConfigFilename = "optionsconfig";
         const string sGuiSettingsFilename = "gui_settings.xml";
-        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4, Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG, Vtail4, Hex6H, PPM_to_Servo, DualCopter, Singlecopter };
-
+        enum CopterType { Tri = 1, QuadP, QuadX, BI, Gimbal, Y6, Hex6, FlyWing, Y4,
+            Hex6X, OctoX8, OctoFlatX, OctoFlatP, Airplane, Heli_120_CCPM, Heli_90_DEG, Vtail4, 
+            Hex6H, PPM_to_Servo, DualCopter, Singlecopter };
+        
 
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
         string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump" };
@@ -309,7 +311,7 @@ namespace MultiWiiWinGUI
             MainMap.Overlays.Add(GMOverlayLiveData);
 
             GMOverlayLiveData.Markers.Clear();
-            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0));
+            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0, 14));
 
             GMRouteFlightPath = new GMapRoute(points, "flightpath");
             GMRouteFlightPath.Stroke = penRoute;
@@ -1524,10 +1526,14 @@ namespace MultiWiiWinGUI
                     mw_gui.wp_number = inBuf[ptr++];
                     mw_gui.nav_error = inBuf[ptr++];
 
+                    mw_gui.target_bearing = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+
+                    /*
                     mw_gui.original_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
                     mw_gui.target_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
                     mw_gui.alt_to_hold = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
                     mw_gui.alt_change_flag = inBuf[ptr++];
+                    */
 
                     break;
 
@@ -2008,7 +2014,7 @@ namespace MultiWiiWinGUI
                         GMOverlayLiveData.Markers.Add(new GMapMarkerHome(GPS_home));
                     }
 
-                    GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, 0));
+                    GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, mw_gui.target_bearing, mw_gui.multiType));
 
                     //GMRouteFlightPath.Points.Add(GPS_pos);
                     MainMap.Position = GPS_pos;

@@ -151,6 +151,54 @@
   <data name="logbrowser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logbrowser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="marker_airplane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_airplane.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_bi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_bi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_fwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_fwing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_heli" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_heli.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_hex6p" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_hex6p.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_hex6x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_hex6x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_octoflatx" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_octoflatx.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_octop8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_octop8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_octox8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_octox8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_oktoflatp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_oktoflatp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_quadp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_quadp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_quadx" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_quadx.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_tri" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_tri.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_vtail4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_vtail4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_y4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_y4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="marker_y6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\marker_y6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="phicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\poshold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
