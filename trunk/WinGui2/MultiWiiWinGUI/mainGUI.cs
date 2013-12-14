@@ -179,11 +179,10 @@ namespace MultiWiiWinGUI
         static bool bHomeRecorded = false;
 
         // markers
-        GMapMarker currentMarker;
+        GMarkerGoogle currentMarker;
         GMapMarkerRect CurentRectMarker = null;
-        GMapMarker center = new GMapMarkerCross(new PointLatLng(0.0, 0.0));
-        GMapMarkerGoogleRed markerGoToClick;
-
+        GMapMarker center; 
+        GMarkerGoogle markerGoToClick = new GMarkerGoogle(new PointLatLng(0.0, 0.0),GMarkerGoogleType.lightblue);
 
         List<PointLatLng> points = new List<PointLatLng>();
 
@@ -262,17 +261,18 @@ namespace MultiWiiWinGUI
             MainMap.MaxZoom = 20;
             MainMap.CacheLocation = Path.GetDirectoryName(Application.ExecutablePath) + "/mapcache/";
 
-            mapProviders = new GMapProvider[4];
+            mapProviders = new GMapProvider[7];
             mapProviders[0] = GMapProviders.BingHybridMap;
             mapProviders[1] = GMapProviders.BingSatelliteMap;
-            mapProviders[2] = GMapProviders.OviHybridMap;
-            mapProviders[3] = GMapProviders.OviSatelliteMap;
+            mapProviders[2] = GMapProviders.GoogleSatelliteMap;
+            mapProviders[3] = GMapProviders.GoogleHybridMap;
+            mapProviders[4] = GMapProviders.OviSatelliteMap;
+            mapProviders[5] = GMapProviders.OviHybridMap;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 cbMapProviders.Items.Add(mapProviders[i]);
             }
-
 
             // map events
 
@@ -285,7 +285,7 @@ namespace MultiWiiWinGUI
             MainMap.OnMarkerEnter += new MarkerEnter(MainMap_OnMarkerEnter);
             MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
 
-            currentMarker = new GMapMarkerGoogleRed(MainMap.Position);
+            currentMarker = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.red);
             //MainMap.MapScaleInfoEnabled = true;
 
             MainMap.ForceDoubleBuffer = true;
@@ -298,157 +298,34 @@ namespace MultiWiiWinGUI
 
             MainMap.ScalePen = penScale;
 
-            GMOverlayFlightPath = new GMapOverlay(MainMap, "flightpath");
+            GMOverlayFlightPath = new GMapOverlay("flightpath");
             MainMap.Overlays.Add(GMOverlayFlightPath);
 
-            GMOverlayWaypoints = new GMapOverlay(MainMap, "waypoints");
+            GMOverlayWaypoints = new GMapOverlay("waypoints");
             MainMap.Overlays.Add(GMOverlayWaypoints);
 
-            GMOverlayMission = new GMapOverlay(MainMap, "missionroute");
+            GMOverlayMission = new GMapOverlay("missionroute");
             MainMap.Overlays.Add(GMOverlayMission);
 
-            GMOverlayLiveData = new GMapOverlay(MainMap, "livedata");
+            GMOverlayLiveData = new GMapOverlay("livedata");
             MainMap.Overlays.Add(GMOverlayLiveData);
 
             GMOverlayLiveData.Markers.Clear();
-            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0, 14));
+            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0, 3));
 
             GMRouteFlightPath = new GMapRoute(points, "flightpath");
             GMRouteFlightPath.Stroke = penRoute;
             GMOverlayFlightPath.Routes.Add(GMRouteFlightPath);
 
-            center = new GMapMarkerCross(MainMap.Position);
+            center = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.blue_dot);
+            //center = new GMapMarkerCross(MainMap.Position);
 
-
-
+            MainMap.Invalidate(false);
+            //MainMap.Refresh();
             #endregion
 
         }
 
-        private void create_RC_Checkboxes(string[] names)
-        {
-
-            //Build indicator lamps array
-            indicators = new indicator_lamp[iCheckBoxItems];
-            int row = 0; int col = 0;
-            int startx = 330; int starty = 162;
-            for (int i = 0; i < iCheckBoxItems; i++)
-            {
-                indicators[i] = new indicator_lamp();
-                indicators[i].Location = new Point(startx + col * 67, starty + row * 19);
-                indicators[i].Visible = true;
-                indicators[i].Text = names[i];
-                indicators[i].indicator_color = 1;
-                //indicators[i].Anchor = AnchorStyles.Right;
-                this.splitContainer3.Panel1.Controls.Add(indicators[i]);
-                col++;
-                if (col == 2) { col = 0; row++; }
-            }
-
-
-
-
-            //Build the RC control checkboxes structure
-
-
-            aux = new CheckBoxEx[4, 4, iCheckBoxItems];
-
-            startx = 200;
-            starty = 60;
-
-            int a, b, c;
-            for (c = 0; c < 4; c++)
-            {
-                for (a = 0; a < 3; a++)
-                {
-                    for (b = 0; b < iCheckBoxItems; b++)
-                    {
-                        aux[c, a, b] = new CheckBoxEx();
-                        aux[c, a, b].Location = new Point(startx + a * 18 + c * 70, starty + b * 25);
-                        aux[c, a, b].Visible = true;
-                        aux[c, a, b].Text = "";
-                        aux[c, a, b].AutoSize = true;
-                        aux[c, a, b].Size = new Size(16, 16);
-                        aux[c, a, b].UseVisualStyleBackColor = true;
-                        aux[c, a, b].CheckedChanged += new System.EventHandler(this.aux_checked_changed_event);
-                        //Set info on the given checkbox position
-                        aux[c, a, b].aux = c;           //Which aux channel
-                        aux[c, a, b].rclevel = a;       //which rc level
-                        aux[c, a, b].item = b;          //Which item
-                        this.tabPageRC.Controls.Add(aux[c, a, b]);
-
-                    }
-                }
-            }
-
-            aux_labels = new System.Windows.Forms.Label[4];
-            lmh_labels = new System.Windows.Forms.Label[4, 3];          // aux1-4, L,M,H
-            string strlmh = "LMH";
-            for (a = 0; a < 4; a++)
-            {
-                aux_labels[a] = new System.Windows.Forms.Label();
-                aux_labels[a].Text = "AUX" + String.Format("{0:0}", a + 1);
-                aux_labels[a].Location = new Point(startx + a * 70 + 8, starty - 35);
-                aux_labels[a].AutoSize = true;
-                aux_labels[a].ForeColor = Color.White;
-                this.tabPageRC.Controls.Add(aux_labels[a]);
-                for (b = 0; b < 3; b++)
-                {
-                    lmh_labels[a, b] = new System.Windows.Forms.Label();
-                    lmh_labels[a, b].Text = strlmh.Substring(b, 1); ;
-                    lmh_labels[a, b].Location = new Point(startx + a * 70 + b * 18, starty - 20);
-                    lmh_labels[a, b].AutoSize = true;
-                    lmh_labels[a, b].ForeColor = Color.White;
-                    this.tabPageRC.Controls.Add(lmh_labels[a, b]);
-                }
-
-            }
-
-            cb_labels = new System.Windows.Forms.Label[20];
-
-            for (z = 0; z < iCheckBoxItems; z++)
-            {
-                cb_labels[z] = new System.Windows.Forms.Label();
-                cb_labels[z].Text = names[z];
-                cb_labels[z].Location = new Point(10, starty + z * 25);
-                cb_labels[z].Visible = true;
-                cb_labels[z].AutoSize = true;
-                cb_labels[z].ForeColor = Color.White;
-                cb_labels[z].TextAlign = ContentAlignment.MiddleRight;
-                this.tabPageRC.Controls.Add(cb_labels[z]);
-
-
-            }
-        }
-
-        private void delete_RC_Checkboxes()
-        {
-            int a, b, c;
-            if (aux != null)
-            {
-                for (c = 0; c < 4; c++)
-                {
-                    for (a = 0; a < 3; a++)
-                    {
-                        for (b = 0; b < iCheckBoxItems; b++)
-                        {
-                            this.tabPageRC.Controls.Remove(aux[c, a, b]);
-                            aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
-                        }
-                    }
-                }
-
-                for (int i = 0; i < iCheckBoxItems; i++)
-                {
-                    this.tabPageRC.Controls.Remove(cb_labels[i]);
-                    this.splitContainer3.Panel1.Controls.Remove(indicators[i]);
-                }
-
-
-
-
-            }
-        }
 
         private void mainGUI_Load(object sender, EventArgs e)
         {
@@ -494,11 +371,18 @@ namespace MultiWiiWinGUI
             splash.sStatus = "Connecting to MAP server...";
             splash.Refresh();
 
+            MainMap.Manager.Mode = AccessMode.ServerAndCache;
+            if (!Stuff.PingNetwork("pingtest.com"))
+            {
+                MainMap.Manager.Mode = AccessMode.CacheOnly;
+                MessageBox.Show("No internet connection available, going to CacheOnly mode.", "GMap.NET - Demo.WindowsForms", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+
 
             cbMapProviders.SelectedIndex = gui_settings.iMapProviderSelectedIndex;
             MainMap.MapProvider = mapProviders[gui_settings.iMapProviderSelectedIndex];
-            tb_mapzoom.Value = MainMap.MaxZoom;
-            MainMap.Zoom = MainMap.MaxZoom;
+            MainMap.Zoom = 18;
 
             splash.sStatus = "Building up GUI elements...";
             splash.Refresh();
@@ -939,12 +823,145 @@ namespace MultiWiiWinGUI
 
             System.Threading.Thread.Sleep(2000);
             splash.Close();
+            MainMap.Invalidate(false);
+
+            int w = MainMap.Size.Width;
+            MainMap.Width = w +1 ;
+            MainMap.Width = w;
+            MainMap.ShowCenter = false;
 
 
 
 
 
         }
+        
+        private void create_RC_Checkboxes(string[] names)
+        {
+
+            //Build indicator lamps array
+            indicators = new indicator_lamp[iCheckBoxItems];
+            int row = 0; int col = 0;
+            int startx = 330; int starty = 162;
+            for (int i = 0; i < iCheckBoxItems; i++)
+            {
+                indicators[i] = new indicator_lamp();
+                indicators[i].Location = new Point(startx + col * 67, starty + row * 19);
+                indicators[i].Visible = true;
+                indicators[i].Text = names[i];
+                indicators[i].indicator_color = 1;
+                //indicators[i].Anchor = AnchorStyles.Right;
+                this.splitContainer3.Panel1.Controls.Add(indicators[i]);
+                col++;
+                if (col == 2) { col = 0; row++; }
+            }
+
+
+
+
+            //Build the RC control checkboxes structure
+
+
+            aux = new CheckBoxEx[4, 4, iCheckBoxItems];
+
+            startx = 200;
+            starty = 60;
+
+            int a, b, c;
+            for (c = 0; c < 4; c++)
+            {
+                for (a = 0; a < 3; a++)
+                {
+                    for (b = 0; b < iCheckBoxItems; b++)
+                    {
+                        aux[c, a, b] = new CheckBoxEx();
+                        aux[c, a, b].Location = new Point(startx + a * 18 + c * 70, starty + b * 25);
+                        aux[c, a, b].Visible = true;
+                        aux[c, a, b].Text = "";
+                        aux[c, a, b].AutoSize = true;
+                        aux[c, a, b].Size = new Size(16, 16);
+                        aux[c, a, b].UseVisualStyleBackColor = true;
+                        aux[c, a, b].CheckedChanged += new System.EventHandler(this.aux_checked_changed_event);
+                        //Set info on the given checkbox position
+                        aux[c, a, b].aux = c;           //Which aux channel
+                        aux[c, a, b].rclevel = a;       //which rc level
+                        aux[c, a, b].item = b;          //Which item
+                        this.tabPageRC.Controls.Add(aux[c, a, b]);
+
+                    }
+                }
+            }
+
+            aux_labels = new System.Windows.Forms.Label[4];
+            lmh_labels = new System.Windows.Forms.Label[4, 3];          // aux1-4, L,M,H
+            string strlmh = "LMH";
+            for (a = 0; a < 4; a++)
+            {
+                aux_labels[a] = new System.Windows.Forms.Label();
+                aux_labels[a].Text = "AUX" + String.Format("{0:0}", a + 1);
+                aux_labels[a].Location = new Point(startx + a * 70 + 8, starty - 35);
+                aux_labels[a].AutoSize = true;
+                aux_labels[a].ForeColor = Color.White;
+                this.tabPageRC.Controls.Add(aux_labels[a]);
+                for (b = 0; b < 3; b++)
+                {
+                    lmh_labels[a, b] = new System.Windows.Forms.Label();
+                    lmh_labels[a, b].Text = strlmh.Substring(b, 1); ;
+                    lmh_labels[a, b].Location = new Point(startx + a * 70 + b * 18, starty - 20);
+                    lmh_labels[a, b].AutoSize = true;
+                    lmh_labels[a, b].ForeColor = Color.White;
+                    this.tabPageRC.Controls.Add(lmh_labels[a, b]);
+                }
+
+            }
+
+            cb_labels = new System.Windows.Forms.Label[20];
+
+            for (z = 0; z < iCheckBoxItems; z++)
+            {
+                cb_labels[z] = new System.Windows.Forms.Label();
+                cb_labels[z].Text = names[z];
+                cb_labels[z].Location = new Point(10, starty + z * 25);
+                cb_labels[z].Visible = true;
+                cb_labels[z].AutoSize = true;
+                cb_labels[z].ForeColor = Color.White;
+                cb_labels[z].TextAlign = ContentAlignment.MiddleRight;
+                this.tabPageRC.Controls.Add(cb_labels[z]);
+
+
+            }
+        }
+
+        private void delete_RC_Checkboxes()
+        {
+            int a, b, c;
+            if (aux != null)
+            {
+                for (c = 0; c < 4; c++)
+                {
+                    for (a = 0; a < 3; a++)
+                    {
+                        for (b = 0; b < iCheckBoxItems; b++)
+                        {
+                            this.tabPageRC.Controls.Remove(aux[c, a, b]);
+                            aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+                    this.tabPageRC.Controls.Remove(cb_labels[i]);
+                    this.splitContainer3.Panel1.Controls.Remove(indicators[i]);
+                }
+
+
+
+
+            }
+        }
+
+
 
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
@@ -1512,7 +1529,9 @@ namespace MultiWiiWinGUI
                         mission_step.lat = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mission_step.lon = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
                         mission_step.altitude = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
-                        mission_step.parameter = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mission_step.p1 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mission_step.p2 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        mission_step.p3 = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mission_step.flag = inBuf[ptr++];
 
                         mission_step.wp_updated = true;
@@ -1525,16 +1544,7 @@ namespace MultiWiiWinGUI
                     mw_gui.action = inBuf[ptr++];
                     mw_gui.wp_number = inBuf[ptr++];
                     mw_gui.nav_error = inBuf[ptr++];
-
                     mw_gui.target_bearing = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
-
-                    /*
-                    mw_gui.original_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
-                    mw_gui.target_altitude = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
-                    mw_gui.alt_to_hold = BitConverter.ToInt32(inBuf, ptr); ptr +=4;
-                    mw_gui.alt_change_flag = inBuf[ptr++];
-                    */
-
                     break;
 
                 case MSP.MSP_NAV_CONFIG:
@@ -1724,12 +1734,10 @@ namespace MultiWiiWinGUI
             lTxPackets.Text = Convert.ToString(serial_packet_tx_count);
 
             barRSSI.Value = mw_gui.remrssi;
-            double dbm = Math.Round(((double)(mw_gui.rssi) / 1.9) - 127);
-            label77.Text = Convert.ToString(dbm) +" dBm";
+            label77.Text = Convert.ToString(barRSSI.Value);
 
             barNoise.Value = mw_gui.remnoise;
-            dbm = Math.Round(((double)(mw_gui.remnoise) / 1.9) - 127);
-            label78.Text = Convert.ToString(dbm) +"dBm";
+            label78.Text = Convert.ToString(barNoise.Value);
 
 
             int q = telemetry_status_sent - telemetry_status_received;
@@ -2016,9 +2024,9 @@ namespace MultiWiiWinGUI
 
                     GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, mw_gui.target_bearing, mw_gui.multiType));
 
-                    //GMRouteFlightPath.Points.Add(GPS_pos);
-                    MainMap.Position = GPS_pos;
-                    MainMap.Invalidate();
+                    // Center Map to copter position if AutoPan is checked in
+                    if (cbAutoPan.Checked) MainMap.Position = GPS_pos;
+                    MainMap.Invalidate(false);
 
 
                     l_GPS_alt.Text = Convert.ToString(mw_gui.GPS_altitude) + "m";
@@ -2936,7 +2944,8 @@ namespace MultiWiiWinGUI
         {
             PointLatLng point = new PointLatLng(lat, lng);
 
-            GMapMarker m = new GMapMarkerGoogleGreen(point);
+            //GMarkerGoogle m = new GMarkerGoogle(point,GMarkerGoogleType.green);
+            GMapMarker m;
 
             switch (markertype)
             {
@@ -2950,10 +2959,10 @@ namespace MultiWiiWinGUI
                     m = new GMapMarkerPosHold(point);
                     break;
                 case 4:
-                    m = new GMapMarkerGoogleRed(point);
+                    m = new GMarkerGoogle(point, GMarkerGoogleType.red_small);
                     break;
                 default:
-                    m = new GMapMarkerGoogleGreen(point);
+                    m = new GMarkerGoogle(point, GMarkerGoogleType.green_small);
                     break;
 
             }
@@ -3014,9 +3023,9 @@ namespace MultiWiiWinGUI
                 }
             }
             GMOverlayMission.IsVisibile = false;
-            MainMap.Invalidate();
+            MainMap.Invalidate(false);
             GMOverlayMission.IsVisibile = true;
-            MainMap.Invalidate();
+            MainMap.Invalidate(false);
 
         }
 
@@ -3024,7 +3033,6 @@ namespace MultiWiiWinGUI
         {
             if (MainMap.Zoom > 0)
             {
-                tb_mapzoom.Value = (int)(MainMap.Zoom);
                 center.Position = MainMap.Position;
             }
         }
@@ -3078,17 +3086,17 @@ namespace MultiWiiWinGUI
             {
                 PointLatLng pointClickToGo = new PointLatLng(end.Lat, end.Lng);
                 GMOverlayLiveData.Markers.Remove(markerGoToClick);
-                markerGoToClick = new GMapMarkerGoogleRed(pointClickToGo);
+                markerGoToClick = new GMarkerGoogle(pointClickToGo, GMarkerGoogleType.yellow_big_pause);
                 GMOverlayLiveData.Markers.Add(markerGoToClick);
 
                 //Send the WP command, set waypoint 255 (poshold)
                 if (cbSendGTCAlt.Checked)
                 {
-                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text), 0, 0);
+                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, Convert.ToInt32(txtGTCAlt.Text), 0, 0, 0, 0);
                 }
                 else
                 {
-                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, 0, 0, 0);
+                    sendWPToMultiWii(serialPort, 255, WP_ACTION.HOLD_UNLIM, end.Lat, end.Lng, 0, 0, 0, 0, 0);
                 }
                 return;
             }
@@ -3107,8 +3115,8 @@ namespace MultiWiiWinGUI
                     }
                     else
                     {
-                        if (Control.ModifierKeys == Keys.Shift)
-                            addWP("WAYPOINT", 0, currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
+                        if (Control.ModifierKeys == Keys.Control)
+                            addWP("WAYPOINT", 0,0,0, currentMarker.Position.Lat, currentMarker.Position.Lng, iDefAlt);
                     }
                 }
                 else
@@ -3159,7 +3167,12 @@ namespace MultiWiiWinGUI
                 }
             }
 
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                return;
+            }
 
+            
             //dragging
             if (e.Button == MouseButtons.Left && isMouseDown && Control.ModifierKeys == Keys.None)
             {
@@ -3222,9 +3235,12 @@ namespace MultiWiiWinGUI
         {
 
             this.Cursor = Cursors.WaitCursor;
+            //MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;
             MainMap.MapProvider = (GMapProvider)cbMapProviders.SelectedItem;
-            MainMap.MaxZoom = 19;
-            MainMap.Invalidate();
+            MainMap.MinZoom = 3;
+            MainMap.MaxZoom = 24;
+            MainMap.Zoom = 18;
+            MainMap.Invalidate(false);
             gui_settings.iMapProviderSelectedIndex = cbMapProviders.SelectedIndex;
             gui_settings.save_to_xml(sGuiSettingsFilename);
 
@@ -3259,12 +3275,6 @@ namespace MultiWiiWinGUI
             GMRouteFlightPath.Points.Clear();
         }
 
-        private void tb_mapzoom_Scroll(object sender, EventArgs e)
-        {
-
-            MainMap.Zoom = (double)tb_mapzoom.Value;
-
-        }
 
         private void b_fetch_tiles_Click(object sender, EventArgs e)
         {
@@ -3274,7 +3284,7 @@ namespace MultiWiiWinGUI
                 DialogResult res = MessageBox.Show("No ripp area defined, ripp displayed on screen?", "Rip", MessageBoxButtons.YesNo);
                 if (res == DialogResult.Yes)
                 {
-                    area = MainMap.CurrentViewArea;
+                    area = MainMap.ViewArea;
                 }
             }
 
@@ -3288,7 +3298,8 @@ namespace MultiWiiWinGUI
                     {
                         TilePrefetcher obj = new TilePrefetcher();
                         obj.ShowCompleteMessage = false;
-                        obj.Start(area, i, MainMap.MapProvider, 100);
+                        obj.Start(area, i, MainMap.MapProvider, 100,0);
+                       
                     }
                     else if (res == DialogResult.No)
                     {
@@ -3575,7 +3586,7 @@ namespace MultiWiiWinGUI
 
         }
 
-        private void addWP(string action, int Par, double Lat, double Lon, int Alt)
+        private void addWP(string action, int P1, int P2, int P3, double Lat, double Lon, int Alt)
         {
             if (missionDataGrid.Rows.Count >= mw_gui.max_wp_number)
             {
@@ -3588,7 +3599,9 @@ namespace MultiWiiWinGUI
 
             missionDataGrid.Rows[selectedrow].Cells[No.Index].Value = selectedrow + 1;
             missionDataGrid.Rows[selectedrow].Cells[Action.Index].Value = action;
-            missionDataGrid.Rows[selectedrow].Cells[Par1.Index].Value = Par;
+            missionDataGrid.Rows[selectedrow].Cells[Par1.Index].Value = P1;
+            missionDataGrid.Rows[selectedrow].Cells[Par2.Index].Value = P2;
+            missionDataGrid.Rows[selectedrow].Cells[Par3.Index].Value = P3;
             missionDataGrid.Rows[selectedrow].Cells[LATCOL.Index].Value = Lat.ToString("0.0000000");
             missionDataGrid.Rows[selectedrow].Cells[LONCOL.Index].Value = Lon.ToString("0.0000000");
             missionDataGrid.Rows[selectedrow].Cells[ALTCOL.Index].Value = Alt;
@@ -3691,31 +3704,40 @@ namespace MultiWiiWinGUI
             if (sAction == "WAYPOINT" || sAction == "POSHOLD_UNLIM")
             {
                 missionDataGrid.Columns[2].HeaderText = "";
-                missionDataGrid.Columns[3].HeaderText = "Lat";
-                missionDataGrid.Columns[4].HeaderText = "Lon";
-                missionDataGrid.Columns[5].HeaderText = "Alt";
+                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[4].HeaderText = "";
+
+                missionDataGrid.Columns[5].HeaderText = "Lat";
+                missionDataGrid.Columns[6].HeaderText = "Lon";
+                missionDataGrid.Columns[7].HeaderText = "Alt";
             }
             if (sAction == "POSHOLD_TIME")
             {
                 missionDataGrid.Columns[2].HeaderText = "Sec";
-                missionDataGrid.Columns[3].HeaderText = "Lat";
-                missionDataGrid.Columns[4].HeaderText = "Lon";
-                missionDataGrid.Columns[5].HeaderText = "Alt";
+                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[4].HeaderText = "";
+                missionDataGrid.Columns[5].HeaderText = "Lat";
+                missionDataGrid.Columns[6].HeaderText = "Lon";
+                missionDataGrid.Columns[7].HeaderText = "Alt";
             }
             if (sAction == "RTH")
             {
                 missionDataGrid.Columns[2].HeaderText = "";
                 missionDataGrid.Columns[3].HeaderText = "";
                 missionDataGrid.Columns[4].HeaderText = "";
-                missionDataGrid.Columns[5].HeaderText = "Alt";
+                missionDataGrid.Columns[5].HeaderText = "";
+                missionDataGrid.Columns[6].HeaderText = "";
+                missionDataGrid.Columns[7].HeaderText = "Alt";
             }
 
             if (sAction == "JUMP")
             {
                 missionDataGrid.Columns[2].HeaderText = "WP#";
-                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[3].HeaderText = "Rep";
                 missionDataGrid.Columns[4].HeaderText = "";
-                missionDataGrid.Columns[5].HeaderText = "Rep";
+                missionDataGrid.Columns[5].HeaderText = "";
+                missionDataGrid.Columns[6].HeaderText = "";
+                missionDataGrid.Columns[7].HeaderText = "";
             }
 
         }
@@ -3782,19 +3804,19 @@ namespace MultiWiiWinGUI
         private void cbShowMission_CheckedChanged(object sender, EventArgs e)
         {
             GMOverlayMission.IsVisibile = cbShowMission.Checked;
-            MainMap.Invalidate();
+            MainMap.Invalidate(false);
         }
 
         private void cbShowWP_CheckedChanged(object sender, EventArgs e)
         {
             GMOverlayWaypoints.IsVisibile = cbShowWP.Checked;
-            MainMap.Invalidate();
+            MainMap.Invalidate(false);
         }
 
         private void cbShowPos_CheckedChanged(object sender, EventArgs e)
         {
             GMOverlayLiveData.IsVisibile = cbShowPos.Checked;
-            MainMap.Invalidate();
+            MainMap.Invalidate(false);
 
         }
 
@@ -3880,7 +3902,9 @@ namespace MultiWiiWinGUI
             {
                 tw.WriteStartElement("MISSIONITEM no=\"" + (i + 1) + "\" " +
                                      "action=\"" + missionDataGrid.Rows[i].Cells[Action.Index].Value + "\" " +
-                                     "parameter=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par1.Index].Value) + "\" " +
+                                     "parameter1=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par1.Index].Value) + "\" " +
+                                     "parameter2=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par2.Index].Value) + "\" " +
+                                     "parameter3=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[Par3.Index].Value) + "\" " +
                                      "lat=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LATCOL.Index].Value) + "\" " +
                                      "lon=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[LONCOL.Index].Value) + "\" " +
                                      "alt=\"" + Convert.ToString(missionDataGrid.Rows[i].Cells[ALTCOL.Index].Value) + "\"");
@@ -3919,18 +3943,23 @@ namespace MultiWiiWinGUI
                             {
 
                                 string action = "";
-                                int parameter = 0;
+                                int parameter1,parameter2,parameter3 = 0;
                                 double lat = 0;
                                 double lon = 0;
                                 int alt = 0;
 
 
                                 action = reader.GetAttribute("action");
-                                parameter = Convert.ToInt16(reader.GetAttribute("parameter"));
-                                lat = Convert.ToDouble(reader.GetAttribute("lat"));
-                                lon = Convert.ToDouble(reader.GetAttribute("lon"));
+                                parameter1 = Convert.ToInt16(reader.GetAttribute("parameter1"));
+                                parameter2 = Convert.ToInt16(reader.GetAttribute("parameter2"));
+                                parameter3 = Convert.ToInt16(reader.GetAttribute("parameter3"));
+
+                                double.TryParse(reader.GetAttribute("lat").Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
+                                double.TryParse(reader.GetAttribute("lon").Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
+                                //lat = Convert.ToDouble(reader.GetAttribute("lat"));
+                                //lon = Convert.ToDouble(reader.GetAttribute("lon"));
                                 alt = Convert.ToInt16(reader.GetAttribute("alt"));
-                                addWP(action, parameter, lat, lon, alt);
+                                addWP(action, parameter1,parameter2, parameter3, lat, lon, alt);
 
                             }
                             break;
@@ -3997,7 +4026,7 @@ namespace MultiWiiWinGUI
         }
 
         //Temporary implementation to 
-        private void sendWPToMultiWii(SerialPort serialport, int wp_number, byte action, double lat, double lon, int alt, int parameter, byte flag)             //This must be changed later to reflect real WP's alt in meter and all other flasg
+        private void sendWPToMultiWii(SerialPort serialport, int wp_number, byte action, double lat, double lon, int alt, int p1,int p2, int p3, byte flag)  
         {
             byte[] buffer = new byte[250];          //this must be long enough
             int bptr = 0;                           //buffer pointer
@@ -4013,7 +4042,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'$';
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = 17;
+                buffer[bptr++] = 21;
                 buffer[bptr++] = (byte)MSP.MSP_SET_WP;
 
                 //byte Waypoint number
@@ -4035,7 +4064,13 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = bInt32[0]; buffer[bptr++] = bInt32[1]; buffer[bptr++] = bInt32[2]; buffer[bptr++] = bInt32[3];
 
                 //int16 Parameter 1
-                bInt16 = BitConverter.GetBytes(parameter);
+                bInt16 = BitConverter.GetBytes(p1);
+                buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+                //int16 Parameter 2
+                bInt16 = BitConverter.GetBytes(p2);
+                buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
+                //int16 Parameter 3
+                bInt16 = BitConverter.GetBytes(p3);
                 buffer[bptr++] = bInt16[0]; buffer[bptr++] = bInt16[1];
 
                 //byte nav flag (this will be the marker of the end)
@@ -4273,7 +4308,7 @@ namespace MultiWiiWinGUI
         {
             int qStatus = WP_Query.OK;
             byte action, flag, a;
-            Int16 parameter;
+            Int16 p1, p2, p3;
             double lat, lon;
             Int32 altitude;
 
@@ -4284,11 +4319,13 @@ namespace MultiWiiWinGUI
             {
                 action = WP_ACTION.RTH;
                 altitude = 25;        //25meter
-                parameter = 0;
+                p1 = 0;
+                p2 = 0;
+                p3 = 0;
                 lat = 0;
                 lon = 0;
                 flag = 0xa5;
-                sendWPToMultiWii(serialPort, 1, action, lat, lon, altitude, parameter, flag);
+                sendWPToMultiWii(serialPort, 1, action, lat, lon, altitude, p1,p2,p3, flag);
                 qStatus = Query_WP(Convert.ToByte(1));
 
                 if (qStatus == WP_Query.Timeout)
@@ -4325,7 +4362,9 @@ namespace MultiWiiWinGUI
                 if (sAction == "JUMP") action = WP_ACTION.JUMP;
 
                 altitude = Convert.ToInt32(missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString()); // alt
-                parameter = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString()); // parameter
+                p1 = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString()); // parameter
+                p2 = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par2.Index].Value.ToString()); // parameter
+                p3 = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par3.Index].Value.ToString()); // parameter
 
                 lat = Convert.ToDouble(missionDataGrid.Rows[a].Cells[LATCOL.Index].Value.ToString()); // lat
                 lon = Convert.ToDouble(missionDataGrid.Rows[a].Cells[LONCOL.Index].Value.ToString()); // lng
@@ -4333,7 +4372,7 @@ namespace MultiWiiWinGUI
                 flag = 0;
                 if (a == (missionDataGrid.Rows.Count - 1)) flag = 0xa5;
 
-                sendWPToMultiWii(serialPort, a + 1, action, lat, lon, altitude, parameter, flag);
+                sendWPToMultiWii(serialPort, a + 1, action, lat, lon, altitude, p1,p2,p3, flag);
 
                 qStatus = Query_WP(Convert.ToByte(a + 1));
 
@@ -4399,7 +4438,7 @@ namespace MultiWiiWinGUI
                             break;
                     }
 
-                    addWP(strAction, mission_step.parameter, (double)mission_step.lat / 10000000.0, (double)mission_step.lon / 10000000.0, mission_step.altitude / 100);
+                    addWP(strAction, mission_step.p1,mission_step.p2,mission_step.p3, (double)mission_step.lat / 10000000.0, (double)mission_step.lon / 10000000.0, mission_step.altitude / 100);
                     //Clear update flag
                     mission_step.wp_updated = false;
                     i++;

@@ -19,7 +19,7 @@ using ZedGraph;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using GMap.NET.MapProviders;
+//using GMap.NET.MapProviders;
 using System.Globalization;
 using System.Reflection;
 

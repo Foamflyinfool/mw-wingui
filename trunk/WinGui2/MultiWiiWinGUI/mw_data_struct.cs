@@ -846,7 +846,9 @@ namespace MultiWiiWinGUI
             iSwVer = iSoftwareVersion;
             bUpdateBoxNames = false;
 
-            max_wp_number = 16;         //Will be updated when connected to the controller
+            max_wp_number = 72;         //Will be updated when connected to the controller
+            multiType = 1;
+
 
         }
 
@@ -860,7 +862,9 @@ namespace MultiWiiWinGUI
         public int lat;
         public int lon;
         public int altitude;
-        public Int16 parameter;
+        public Int16 p1;
+        public Int16 p2;
+        public Int16 p3;
         public byte flag;
         public bool wp_updated;
 
