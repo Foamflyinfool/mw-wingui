@@ -43,6 +43,7 @@
             this.tsMenuSetHead = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.clearMissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageFlightDeck = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.bBind = new System.Windows.Forms.Button();
@@ -405,7 +406,6 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.createCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabMain.SuspendLayout();
             this.contextMenuStripMap.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
@@ -565,6 +565,7 @@
             this.createCircleToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStripMap";
             this.contextMenuStripMap.Size = new System.Drawing.Size(175, 230);
+            this.contextMenuStripMap.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripMap_Opening);
             // 
             // tsMenuAddWP
             // 
@@ -638,6 +639,13 @@
             this.clearMissionToolStripMenuItem.Text = "Clear Mission";
             this.clearMissionToolStripMenuItem.ToolTipText = "Clears the mission (only in the WinGUI!)";
             this.clearMissionToolStripMenuItem.Click += new System.EventHandler(this.clearMissionToolStripMenuItem_Click);
+            // 
+            // createCircleToolStripMenuItem
+            // 
+            this.createCircleToolStripMenuItem.Name = "createCircleToolStripMenuItem";
+            this.createCircleToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.createCircleToolStripMenuItem.Text = "Create Circle";
+            this.createCircleToolStripMenuItem.Click += new System.EventHandler(this.createCircleToolStripMenuItem_Click);
             // 
             // tabPageFlightDeck
             // 
@@ -5316,13 +5324,6 @@
             this.dataGridViewImageColumn3.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
-            // 
-            // createCircleToolStripMenuItem
-            // 
-            this.createCircleToolStripMenuItem.Name = "createCircleToolStripMenuItem";
-            this.createCircleToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.createCircleToolStripMenuItem.Text = "Create Circle";
-            this.createCircleToolStripMenuItem.Click += new System.EventHandler(this.createCircleToolStripMenuItem_Click);
             // 
             // mainGUI
             // 

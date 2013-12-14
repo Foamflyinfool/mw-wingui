@@ -4706,6 +4706,12 @@ namespace MultiWiiWinGUI
 
         }
 
+        private void contextMenuStripMap_Opening(object sender, CancelEventArgs e)
+        {
+            if (bGoToClikEnabled) e.Cancel = true;
+            return;
+        }
+
     }
 
 }
