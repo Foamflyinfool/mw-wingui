@@ -190,6 +190,7 @@ namespace MultiWiiWinGUI
         PointLatLng GPS_pos;
         PointLatLng end;
         PointLatLng start;
+        PointLatLng MouseDownStart;
 
         DebugWindow frmDebug;
         string strDebug = "";
@@ -3780,6 +3781,28 @@ namespace MultiWiiWinGUI
                 missionDataGrid.Columns[7].HeaderText = "";
             }
 
+            if (sAction == "SET_POI")
+            {
+                missionDataGrid.Columns[2].HeaderText = "";
+                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[4].HeaderText = "";
+                missionDataGrid.Columns[5].HeaderText = "Lat";
+                missionDataGrid.Columns[6].HeaderText = "Lon";
+                missionDataGrid.Columns[7].HeaderText = "";
+            }
+
+            if (sAction == "SET_HEAD")
+            {
+                missionDataGrid.Columns[2].HeaderText = "head";
+                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[4].HeaderText = "";
+                missionDataGrid.Columns[5].HeaderText = "";
+                missionDataGrid.Columns[6].HeaderText = "";
+                missionDataGrid.Columns[7].HeaderText = "";
+            }
+
+
+
         }
 
 
@@ -4544,6 +4567,69 @@ namespace MultiWiiWinGUI
 
 
 
+
+        }
+
+        private void tsMenuAddWP_Click(object sender, EventArgs e)
+        {
+            addWP("WAYPOINT", 0, 0, 0, start.Lat, start.Lng, iDefAlt);
+        }
+
+        private void tsMenuAddPosholdTimed_Click(object sender, EventArgs e)
+        {
+
+            string time = "20";
+            int iTime = 20;
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Poshold Time", "Poshold Time in seconds", ref time))
+                return;
+
+            int.TryParse(time, out iTime);
+            addWP("POSHOLD_TIME", iTime, 0, 0, start.Lat, start.Lng, iDefAlt);
+        }
+
+        private void tsMenuAddPosholdUnlim_Click(object sender, EventArgs e)
+        {
+            addWP("POSHOLD_UNLIM", 0, 0, 0, start.Lat, start.Lng, iDefAlt);
+        }
+
+        private void tsMenuAddRTH_Click(object sender, EventArgs e)
+        {
+            addWP("RTH", 0, 0, 0, 0, 0, 0);
+        }
+
+        private void tsMenuAddJump_Click(object sender, EventArgs e)
+        {
+            int iWp, iRep;
+
+            string wp = "1";
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("WP No", "Jump to WP no?", ref wp))
+                return;
+            string repeat = "5";
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Jump repeat", "Number of times to Repeat (-1 means always)", ref repeat))
+                return;
+
+            int.TryParse(wp, out iWp);
+            int.TryParse(repeat, out iRep);
+
+            if (iWp < 1 || iWp > missionDataGrid.Rows.Count) return;
+
+            addWP("JUMP", iWp, iRep, 0, 0, 0, 0);
+
+        }
+
+        private void tsMenuAddPOI_Click(object sender, EventArgs e)
+        {
+            addWP("SET_POI", 0, 0, 0, start.Lat, start.Lng, 0);
+        }
+
+        private void tsMenuSetHead_Click(object sender, EventArgs e)
+        {
+            string head = "0";
+            int iHead = 0;
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Set Heading", "Set copter headinf (0-360 degree) -1 clears heading control", ref head))
+                return;
+            int.TryParse(head, out iHead);
+            addWP("SET_HEAD", iHead, 0, 0, 0, 0, 0);
 
         }
 
