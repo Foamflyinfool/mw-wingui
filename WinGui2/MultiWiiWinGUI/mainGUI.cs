@@ -168,6 +168,7 @@ namespace MultiWiiWinGUI
         static GMapOverlay GMOverlayWaypoints;
         static GMapOverlay GMOverlayMission;
         static GMapOverlay GMOverlayLiveData;
+        static GMapOverlay GMOverlayPOI;
 
         static GMapProvider[] mapProviders;
         static PointLatLng copterPos = new PointLatLng(47.402489, 19.071558);       //Just the corrds of my flying place
@@ -309,6 +310,11 @@ namespace MultiWiiWinGUI
 
             GMOverlayLiveData = new GMapOverlay("livedata");
             MainMap.Overlays.Add(GMOverlayLiveData);
+
+
+            GMOverlayPOI = new GMapOverlay("poi");
+            MainMap.Overlays.Add(GMOverlayPOI);
+
 
             GMOverlayLiveData.Markers.Clear();
             GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0, 3));
@@ -2940,6 +2946,27 @@ namespace MultiWiiWinGUI
 
         }
 
+        private void AddPOIMarker(string tag, double lng, double lat)
+        {
+            PointLatLng point = new PointLatLng(lat, lng);
+            GMapMarker m = new GMarkerGoogle(point, GMarkerGoogleType.lightblue_pushpin);
+            m.ToolTipMode = MarkerTooltipMode.Always;
+            m.ToolTipText = tag;
+            m.Tag = tag;
+
+            GMapMarkerRect mBorders = new GMapMarkerRect(point);
+            {
+                mBorders.InnerMarker = m;
+                mBorders.wprad = (int)float.Parse("5");
+                mBorders.MainMap = MainMap;
+            }
+
+
+            GMOverlayPOI.Markers.Add(m);
+            GMOverlayPOI.Markers.Add(mBorders);
+        }
+
+
         private void AddWPMarker(string tag, double lng, double lat, int alt, Color? color, int markertype)
         {
             PointLatLng point = new PointLatLng(lat, lng);
@@ -3662,6 +3689,11 @@ namespace MultiWiiWinGUI
 
             }
 
+            if (GMOverlayPOI != null)
+            {
+                GMOverlayPOI.Markers.Clear();
+            }
+
             for (int a = 0; a < missionDataGrid.Rows.Count - 0; a++)
             {
                 string sAction = missionDataGrid.Rows[a].Cells[Action.Index].Value.ToString();
@@ -3673,18 +3705,26 @@ namespace MultiWiiWinGUI
                 if (sAction == "POSHOLD_UNLIM") command = WP_ACTION.HOLD_UNLIM;
                 if (sAction == "POSHOLD_TIME") command = WP_ACTION.HOLD_TIME;
                 if (sAction == "RTH") command = WP_ACTION.RTH;
-               
-
-
+                if (sAction == "SET_HEAD") command = WP_ACTION.SET_HEAD;
+                if (sAction == "SET_POI") command = WP_ACTION.SET_POI;
 
                 if (sLon == "0" || sLat == "0")
                     continue;
                 if (sLon == "?" || sLat == "?")
                     continue;
-                if (sAction == "JUMP")
+                if (sAction == "JUMP")  //Not shown 
                     continue;
-                if (sAction == "RTH")
+                if (sAction == "RTH")   //Not shown
                     break;
+                if (sAction == "SET_HEAD") //Not shown
+                    continue;
+                if (sAction == "SET_POI")
+                {
+                    //add a special marker
+                    AddPOIMarker((a + 1).ToString(), double.Parse(sLon), double.Parse(sLat));
+                    continue;
+                }
+
 
                 AddWPMarker((a + 1).ToString(), double.Parse(sLon), double.Parse(sLat), (int)double.Parse(sAlt), null, command);
 
@@ -3810,6 +3850,7 @@ namespace MultiWiiWinGUI
         private void cbShowWP_CheckedChanged(object sender, EventArgs e)
         {
             GMOverlayWaypoints.IsVisibile = cbShowWP.Checked;
+            GMOverlayPOI.IsVisibile = cbShowWP.Checked;
             MainMap.Invalidate(false);
         }
 
@@ -4360,6 +4401,8 @@ namespace MultiWiiWinGUI
                 if (sAction == "POSHOLD_TIME") action = WP_ACTION.HOLD_TIME;
                 if (sAction == "RTH") action = WP_ACTION.RTH;
                 if (sAction == "JUMP") action = WP_ACTION.JUMP;
+                if (sAction == "SET_POI") action = WP_ACTION.SET_POI;
+                if (sAction == "SET_HEAD") action = WP_ACTION.SET_HEAD;
 
                 altitude = Convert.ToInt32(missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString()); // alt
                 p1 = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString()); // parameter
@@ -4436,6 +4479,11 @@ namespace MultiWiiWinGUI
                             break;
                         case WP_ACTION.JUMP: strAction = "JUMP";
                             break;
+                        case WP_ACTION.SET_POI: strAction = "SET_POI";
+                            break;
+                        case WP_ACTION.SET_HEAD: strAction = "SET_HEAD";
+                            break;
+                            
                     }
 
                     addWP(strAction, mission_step.p1,mission_step.p2,mission_step.p3, (double)mission_step.lat / 10000000.0, (double)mission_step.lon / 10000000.0, mission_step.altitude / 100);
