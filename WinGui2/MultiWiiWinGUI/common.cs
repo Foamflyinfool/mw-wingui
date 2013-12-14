@@ -24,6 +24,7 @@ using System.Reflection;
 using System.IO;
 
 using System.Drawing.Drawing2D;
+using System.Net.NetworkInformation;
 
 namespace MultiWiiWinGUI
 {
@@ -87,7 +88,7 @@ namespace MultiWiiWinGUI
 
             GPoint loc = new GPoint((int)(LocalPosition.X - (m2pixelwidth * wprad * 2)), LocalPosition.Y);// MainMap.FromLatLngToLocal(wpradposition);
 
-            g.DrawArc(Pen, new System.Drawing.Rectangle(LocalPosition.X - Offset.X - (Math.Abs(loc.X - LocalPosition.X) / 2), LocalPosition.Y - Offset.Y - Math.Abs(loc.X - LocalPosition.X) / 2, Math.Abs(loc.X - LocalPosition.X), Math.Abs(loc.X - LocalPosition.X)), 0, 360);
+            g.DrawArc(Pen, new System.Drawing.Rectangle((int) (LocalPosition.X - Offset.X - (Math.Abs(loc.X - LocalPosition.X) / 2)), (int)(LocalPosition.Y - Offset.Y - Math.Abs(loc.X - LocalPosition.X) / 2), (int)(Math.Abs(loc.X - LocalPosition.X)), (int)(Math.Abs(loc.X - LocalPosition.X))), 0, 360);
 
         }
     }
@@ -365,4 +366,31 @@ namespace MultiWiiWinGUI
         }
     }
 
+
+
+    public class Stuff
+    {
+        public static bool PingNetwork(string hostNameOrAddress)
+        {
+            bool pingStatus = false;
+
+            using (Ping p = new Ping())
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                int timeout = 4444; // 4s
+
+                try
+                {
+                    PingReply reply = p.Send(hostNameOrAddress, timeout, buffer);
+                    pingStatus = (reply.Status == IPStatus.Success);
+                }
+                catch (Exception)
+                {
+                    pingStatus = false;
+                }
+            }
+
+            return pingStatus;
+        }
+    }
 }
