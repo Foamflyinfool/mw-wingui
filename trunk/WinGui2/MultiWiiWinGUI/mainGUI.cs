@@ -4712,6 +4712,21 @@ namespace MultiWiiWinGUI
             return;
         }
 
+        private void bulkAltitudeChangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string altdif = "0";
+            InputBox.Show("Bulk Altitude Change", "Please enter the required altitude change (either plus or minus)", ref altdif);
+
+            int altchange = int.Parse(altdif);
+
+            foreach (DataGridViewRow line in missionDataGrid.Rows)
+            {
+                if ( line.Cells[Action.Index].Value == "WAYPOINT" || line.Cells[Action.Index].Value == "POSHOLD_TIME" || line.Cells[Action.Index].Value == "POSHOLD_UNLIM")
+                   line.Cells[ALTCOL.Index].Value = (int)(float.Parse(line.Cells[ALTCOL.Index].Value.ToString()) + altchange);
+            }
+
+        }
+
     }
 
 }

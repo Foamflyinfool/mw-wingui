@@ -44,6 +44,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.clearMissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bulkAltitudeChangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageFlightDeck = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.bBind = new System.Windows.Forms.Button();
@@ -562,16 +563,17 @@
             this.tsMenuSetHead,
             this.toolStripSeparator5,
             this.clearMissionToolStripMenuItem,
-            this.createCircleToolStripMenuItem});
+            this.createCircleToolStripMenuItem,
+            this.bulkAltitudeChangeToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStripMap";
-            this.contextMenuStripMap.Size = new System.Drawing.Size(175, 230);
+            this.contextMenuStripMap.Size = new System.Drawing.Size(185, 230);
             this.contextMenuStripMap.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripMap_Opening);
             // 
             // tsMenuAddWP
             // 
             this.tsMenuAddWP.Image = global::MultiWiiWinGUI.Properties.Resources.wpicon;
             this.tsMenuAddWP.Name = "tsMenuAddWP";
-            this.tsMenuAddWP.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddWP.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddWP.Text = "Add Waypoint";
             this.tsMenuAddWP.ToolTipText = "Add a waypoint at the cursor";
             this.tsMenuAddWP.Click += new System.EventHandler(this.tsMenuAddWP_Click);
@@ -580,7 +582,7 @@
             // 
             this.tsMenuAddPosholdTimed.Image = global::MultiWiiWinGUI.Properties.Resources.phicon;
             this.tsMenuAddPosholdTimed.Name = "tsMenuAddPosholdTimed";
-            this.tsMenuAddPosholdTimed.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddPosholdTimed.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddPosholdTimed.Text = "Timed PosHold ";
             this.tsMenuAddPosholdTimed.ToolTipText = "Add a point to go and hold position there for a specific amount of time";
             this.tsMenuAddPosholdTimed.Click += new System.EventHandler(this.tsMenuAddPosholdTimed_Click);
@@ -589,7 +591,7 @@
             // 
             this.tsMenuAddPosholdUnlim.Image = global::MultiWiiWinGUI.Properties.Resources.poshold_unlim;
             this.tsMenuAddPosholdUnlim.Name = "tsMenuAddPosholdUnlim";
-            this.tsMenuAddPosholdUnlim.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddPosholdUnlim.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddPosholdUnlim.Text = "PosHold Unlimited";
             this.tsMenuAddPosholdUnlim.ToolTipText = "Add a point to go and hold position there (ends mission)";
             this.tsMenuAddPosholdUnlim.Click += new System.EventHandler(this.tsMenuAddPosholdUnlim_Click);
@@ -597,7 +599,7 @@
             // tsMenuAddRTH
             // 
             this.tsMenuAddRTH.Name = "tsMenuAddRTH";
-            this.tsMenuAddRTH.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddRTH.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddRTH.Text = "Add RTH";
             this.tsMenuAddRTH.ToolTipText = "Initiate Return To Home";
             this.tsMenuAddRTH.Click += new System.EventHandler(this.tsMenuAddRTH_Click);
@@ -605,7 +607,7 @@
             // tsMenuAddJump
             // 
             this.tsMenuAddJump.Name = "tsMenuAddJump";
-            this.tsMenuAddJump.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddJump.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddJump.Text = "JUMP";
             this.tsMenuAddJump.ToolTipText = "Jumps to a given mission step ";
             this.tsMenuAddJump.Click += new System.EventHandler(this.tsMenuAddJump_Click);
@@ -613,7 +615,7 @@
             // tsMenuAddPOI
             // 
             this.tsMenuAddPOI.Name = "tsMenuAddPOI";
-            this.tsMenuAddPOI.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuAddPOI.Size = new System.Drawing.Size(184, 22);
             this.tsMenuAddPOI.Text = "Set POI";
             this.tsMenuAddPOI.ToolTipText = "Sets a Point of Interest\r\n(copter will adjust heading towards this point)";
             this.tsMenuAddPOI.Click += new System.EventHandler(this.tsMenuAddPOI_Click);
@@ -621,7 +623,7 @@
             // tsMenuSetHead
             // 
             this.tsMenuSetHead.Name = "tsMenuSetHead";
-            this.tsMenuSetHead.Size = new System.Drawing.Size(174, 22);
+            this.tsMenuSetHead.Size = new System.Drawing.Size(184, 22);
             this.tsMenuSetHead.Text = "Set Heading";
             this.tsMenuSetHead.ToolTipText = "Set copter heading ";
             this.tsMenuSetHead.Click += new System.EventHandler(this.tsMenuSetHead_Click);
@@ -629,13 +631,13 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(171, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
             // 
             // clearMissionToolStripMenuItem
             // 
             this.clearMissionToolStripMenuItem.Image = global::MultiWiiWinGUI.Properties.Resources.del_btn;
             this.clearMissionToolStripMenuItem.Name = "clearMissionToolStripMenuItem";
-            this.clearMissionToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.clearMissionToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearMissionToolStripMenuItem.Text = "Clear Mission";
             this.clearMissionToolStripMenuItem.ToolTipText = "Clears the mission (only in the WinGUI!)";
             this.clearMissionToolStripMenuItem.Click += new System.EventHandler(this.clearMissionToolStripMenuItem_Click);
@@ -643,9 +645,18 @@
             // createCircleToolStripMenuItem
             // 
             this.createCircleToolStripMenuItem.Name = "createCircleToolStripMenuItem";
-            this.createCircleToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.createCircleToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.createCircleToolStripMenuItem.Text = "Create Circle";
+            this.createCircleToolStripMenuItem.ToolTipText = "Put down a circular path around this point";
             this.createCircleToolStripMenuItem.Click += new System.EventHandler(this.createCircleToolStripMenuItem_Click);
+            // 
+            // bulkAltitudeChangeToolStripMenuItem
+            // 
+            this.bulkAltitudeChangeToolStripMenuItem.Name = "bulkAltitudeChangeToolStripMenuItem";
+            this.bulkAltitudeChangeToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.bulkAltitudeChangeToolStripMenuItem.Text = "Bulk Altitude change";
+            this.bulkAltitudeChangeToolStripMenuItem.ToolTipText = "Change altitude of all navigation points in the mission";
+            this.bulkAltitudeChangeToolStripMenuItem.Click += new System.EventHandler(this.bulkAltitudeChangeToolStripMenuItem_Click);
             // 
             // tabPageFlightDeck
             // 
@@ -5870,6 +5881,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem clearMissionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createCircleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bulkAltitudeChangeToolStripMenuItem;
     }
 }
 
