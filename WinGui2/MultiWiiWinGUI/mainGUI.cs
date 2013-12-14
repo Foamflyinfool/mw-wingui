@@ -4633,6 +4633,79 @@ namespace MultiWiiWinGUI
 
         }
 
+        private void clearMissionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Clean up current mission   
+            missionDataGrid.Rows.Clear();
+            updateMap();
+        }
+
+        private void createCircleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            string RadiusIn = "50";
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Radius", "Radius in meters (min 20)", ref RadiusIn))
+                return;
+
+            string Pointsin = "20";
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate Circle (min 5 - max 30)", ref Pointsin))
+                return;
+
+            string Directionin = "1";
+            if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Points", "Direction of circle (-1 or 1)", ref Directionin))
+                return;
+
+            int Points = 0;
+            int Radius = 0;
+            int Direction = 1;
+
+            if (!int.TryParse(RadiusIn, out Radius) || Radius < 20)
+            {
+                MessageBox.Show("Invalid Radius");
+                return;
+            }
+
+            if (!int.TryParse(Pointsin, out Points) || Points < 5 || Points >30 )
+            {
+                MessageBox.Show("Invalid Number of points");
+                return;
+            }
+
+            if (!int.TryParse(Directionin, out Direction))
+            {
+                MessageBox.Show("Invalid Direction value");
+                return;
+            }
+
+            double a = 0;
+            double step = 360.0f / Points;
+            if (Direction == -1)
+            {
+                a = 360;
+                step *= -1;
+            }
+            for (; a <= 360 && a >= 0; a += step)
+            {
+
+                float d = Radius;
+                float R = 6371000;
+
+                const float rad2deg = (float)(180 / Math.PI);
+                const float deg2rad = (float)(1.0 / rad2deg);
+
+                var lat2 = Math.Asin(Math.Sin(start.Lat * deg2rad) * Math.Cos(d / R) +
+              Math.Cos(start.Lat * deg2rad) * Math.Sin(d / R) * Math.Cos(a * deg2rad));
+                var lon2 = start.Lng * deg2rad + Math.Atan2(Math.Sin(a * deg2rad) * Math.Sin(d / R) * Math.Cos(start.Lat * deg2rad),
+                                     Math.Cos(d / R) - Math.Sin(start.Lat * deg2rad) * Math.Sin(lat2));
+
+                PointLatLng pll = new PointLatLng(lat2 * rad2deg, lon2 * rad2deg);
+                addWP("WAYPOINT", 0, 0, 0, pll.Lat, pll.Lng, iDefAlt);
+
+
+            }
+
+        }
+
     }
 
 }
