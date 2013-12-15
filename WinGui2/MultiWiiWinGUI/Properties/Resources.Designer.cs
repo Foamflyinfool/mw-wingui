@@ -83,6 +83,16 @@ namespace MultiWiiWinGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bluehome {
+            get {
+                object obj = ResourceManager.GetObject("bluehome", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap checkbox_legend {
             get {
                 object obj = ResourceManager.GetObject("checkbox_legend", resourceCulture);
@@ -436,6 +446,16 @@ namespace MultiWiiWinGUI.Properties {
         internal static System.Drawing.Bitmap stop_log {
             get {
                 object obj = ResourceManager.GetObject("stop_log", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trash {
+            get {
+                object obj = ResourceManager.GetObject("trash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
