@@ -45,7 +45,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre5";
+        const string sVersion = "2.3 pre6";
         const byte byteVersion = 230;
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
@@ -190,7 +190,6 @@ namespace MultiWiiWinGUI
         PointLatLng GPS_pos;
         PointLatLng end;
         PointLatLng start;
-        PointLatLng MouseDownStart;
 
         DebugWindow frmDebug;
         string strDebug = "";
@@ -1974,6 +1973,9 @@ namespace MultiWiiWinGUI
                 GMRouteFlightPath.Points.Add(GPS_pos);
             }
 
+            GMOverlayFlightPath.IsVisibile = false;
+            GMOverlayFlightPath.IsVisibile = true; ;
+
 
             if (tabMain.SelectedIndex == GUIPages.Mission)
             {
@@ -3280,8 +3282,8 @@ namespace MultiWiiWinGUI
             this.Cursor = Cursors.WaitCursor;
             //MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;
             MainMap.MapProvider = (GMapProvider)cbMapProviders.SelectedItem;
-            MainMap.MinZoom = 3;
-            MainMap.MaxZoom = 24;
+            MainMap.MinZoom = 5;
+            MainMap.MaxZoom = 19;
             MainMap.Zoom = 18;
             MainMap.Invalidate(false);
             gui_settings.iMapProviderSelectedIndex = cbMapProviders.SelectedIndex;
@@ -4736,7 +4738,7 @@ namespace MultiWiiWinGUI
 
             foreach (DataGridViewRow line in missionDataGrid.Rows)
             {
-                if ( line.Cells[Action.Index].Value == "WAYPOINT" || line.Cells[Action.Index].Value == "POSHOLD_TIME" || line.Cells[Action.Index].Value == "POSHOLD_UNLIM")
+                if ( (string)line.Cells[Action.Index].Value == "WAYPOINT" || (string)line.Cells[Action.Index].Value == "POSHOLD_TIME" || (string)line.Cells[Action.Index].Value == "POSHOLD_UNLIM")
                    line.Cells[ALTCOL.Index].Value = (int)(float.Parse(line.Cells[ALTCOL.Index].Value.ToString()) + altchange);
             }
 

@@ -394,6 +394,7 @@
     <Content Include="Resources\poshold.png" />
     <Content Include="Resources\poshold_unlim.png" />
     <Content Include="Resources\SmallNeedleAltimeter.bmp" />
+    <Content Include="Resources\trash.png" />
     <Content Include="Resources\up_btn.png" />
     <Content Include="Resources\VerticalSpeedIndicator_Background.bmp" />
     <Content Include="Resources\wpicon.png" />
