@@ -3098,10 +3098,25 @@ namespace MultiWiiWinGUI
                 if (item is GMapMarkerRect)
                 {
                     GMapMarkerRect rc = item as GMapMarkerRect;
-                    rc.Pen.Color = Color.Red;
+                    rc.Pen.Color = Color.Green;
                     MainMap.Invalidate(false);
-
                     CurentRectMarker = rc;
+                    int answer;
+                    if (item.Tag != null && rc.InnerMarker != null && int.TryParse(rc.InnerMarker.Tag.ToString(), out answer))
+                    {
+                        try
+                        {
+                            missionDataGrid.CurrentCell = missionDataGrid[0, answer - 1];
+                            item.ToolTipText = "Altitude: " + missionDataGrid[ALTCOL.Index, answer - 1].Value.ToString()+"m";
+                            item.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                        }
+                        catch { }
+                    }
+
+
+
+
+
                 }
             }
         }
@@ -4724,6 +4739,30 @@ namespace MultiWiiWinGUI
                 if ( line.Cells[Action.Index].Value == "WAYPOINT" || line.Cells[Action.Index].Value == "POSHOLD_TIME" || line.Cells[Action.Index].Value == "POSHOLD_UNLIM")
                    line.Cells[ALTCOL.Index].Value = (int)(float.Parse(line.Cells[ALTCOL.Index].Value.ToString()) + altchange);
             }
+
+        }
+
+        private void tsMenuDeleteWP_Click(object sender, EventArgs e)
+        {
+
+         int no = 0;
+         if (CurentRectMarker != null)
+         {
+             if (int.TryParse(CurentRectMarker.InnerMarker.Tag.ToString(), out no))
+             {
+                 try
+                 {
+                     missionDataGrid.Rows.RemoveAt(no - 1); // home is 0
+                     updateMap();
+                     updateIndex();
+                 }
+                 catch { MessageBox.Show("error selecting wp, please try again."); }
+             }
+         }
+
+         if (currentMarker != null)
+             CurentRectMarker = null;
+
 
         }
 
