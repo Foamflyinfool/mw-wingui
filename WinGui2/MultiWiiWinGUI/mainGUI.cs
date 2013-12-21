@@ -127,6 +127,7 @@ namespace MultiWiiWinGUI
 
         CheckBoxEx[, ,] aux;
         indicator_lamp[] indicators;
+        indicator_lamp[] indicators_mission;
 
         System.Windows.Forms.Label[] cb_labels;
         System.Windows.Forms.Label[] aux_labels;
@@ -879,8 +880,27 @@ namespace MultiWiiWinGUI
                 if (col == 2) { col = 0; row++; }
             }
 
+            //Create indicator lamps on the mission tab too...
+            /*
+            //Build a second indicator lamps array on Mission plane
+            indicators_mission = new indicator_lamp[iCheckBoxItems];
+            row = 0; col = 0;
+            startx = 330; starty = 162;
+            for (int i = 0; i < iCheckBoxItems; i++)
+            {
+                indicators_mission[i] = new indicator_lamp();
+                indicators_mission[i].Location = new Point(startx + col * 67, starty + row * 19);
+                indicators_mission[i].Visible = true;
+                indicators_mission[i].Text = names[i];
+                indicators_mission[i].indicator_color = 1;
+                indicators_mission[i].Anchor = AnchorStyles.Right;
+                this.splitContainer9.Panel1.Controls.Add(indicators_mission[i]);
+                this.splitContainer9.Panel1.Controls.SetChildIndex(indicators_mission[i], 0);
 
-
+                col++;
+                if (col == 2) { col = 0; row++; }
+            }
+            */
 
             //Build the RC control checkboxes structure
 
@@ -1812,6 +1832,8 @@ namespace MultiWiiWinGUI
             label78.Text = Convert.ToString(barNoise.Value);
 
 
+            /*
+
             int q = telemetry_status_sent - telemetry_status_received;
             if (q <= 3) telemetry_link_quality = 100;
             else telemetry_link_quality = 100 - q * 5;
@@ -1834,7 +1856,7 @@ namespace MultiWiiWinGUI
                 lTelemLinkStatus.ForeColor = Color.Red;
             }
 
-
+            */
 
 
 
