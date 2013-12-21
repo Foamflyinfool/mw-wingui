@@ -74,11 +74,8 @@
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
             this.label81 = new System.Windows.Forms.Label();
             this.label80 = new System.Windows.Forms.Label();
-            this.lTelemLinkStatus = new System.Windows.Forms.Label();
             this.label79 = new System.Windows.Forms.Label();
-            this.label71 = new System.Windows.Forms.Label();
             this.barNoise = new MultiWiiGUIControls.ColorProgressBar();
-            this.label70 = new System.Windows.Forms.Label();
             this.barRSSI = new MultiWiiGUIControls.ColorProgressBar();
             this.label78 = new System.Windows.Forms.Label();
             this.label69 = new System.Windows.Forms.Label();
@@ -845,11 +842,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.label81);
             this.splitContainer2.Panel2.Controls.Add(this.label80);
-            this.splitContainer2.Panel2.Controls.Add(this.lTelemLinkStatus);
             this.splitContainer2.Panel2.Controls.Add(this.label79);
-            this.splitContainer2.Panel2.Controls.Add(this.label71);
             this.splitContainer2.Panel2.Controls.Add(this.barNoise);
-            this.splitContainer2.Panel2.Controls.Add(this.label70);
             this.splitContainer2.Panel2.Controls.Add(this.barRSSI);
             this.splitContainer2.Panel2.Controls.Add(this.label78);
             this.splitContainer2.Panel2.Controls.Add(this.label69);
@@ -1041,17 +1035,6 @@
             this.label80.TabIndex = 118;
             this.label80.Text = "Noise";
             // 
-            // lTelemLinkStatus
-            // 
-            this.lTelemLinkStatus.AutoSize = true;
-            this.lTelemLinkStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lTelemLinkStatus.ForeColor = System.Drawing.Color.Red;
-            this.lTelemLinkStatus.Location = new System.Drawing.Point(153, 48);
-            this.lTelemLinkStatus.Name = "lTelemLinkStatus";
-            this.lTelemLinkStatus.Size = new System.Drawing.Size(161, 16);
-            this.lTelemLinkStatus.TabIndex = 112;
-            this.lTelemLinkStatus.Text = "Telemetry Link DOWN";
-            // 
             // label79
             // 
             this.label79.AutoSize = true;
@@ -1061,15 +1044,6 @@
             this.label79.Size = new System.Drawing.Size(35, 15);
             this.label79.TabIndex = 117;
             this.label79.Text = "RSSI";
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(161, 9);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(109, 13);
-            this.label71.TabIndex = 111;
-            this.label71.Text = "Telemetry Link quality";
             // 
             // barNoise
             // 
@@ -1086,15 +1060,6 @@
             this.barNoise.TabIndex = 116;
             this.barNoise.Text = "barNoise";
             this.barNoise.Value = 0;
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(276, 9);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(24, 13);
-            this.label70.TabIndex = 110;
-            this.label70.Text = "0 %";
             // 
             // barRSSI
             // 
@@ -6375,9 +6340,6 @@
         private MultiWiiGUIControls.vertical_speed_indicator vertical_speed_indicator1;
         private System.Windows.Forms.Label lTxPackets;
         private System.Windows.Forms.Label label69;
-        private System.Windows.Forms.Label label70;
-        private System.Windows.Forms.Label lTelemLinkStatus;
-        private System.Windows.Forms.Label label71;
         private System.Windows.Forms.Label lNavState;
         private System.Windows.Forms.Label lGpsMode;
         private System.Windows.Forms.Label l11;
