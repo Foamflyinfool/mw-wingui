@@ -287,7 +287,7 @@ namespace MultiWiiWinGUI
             MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
 
             currentMarker = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.red);
-            //MainMap.MapScaleInfoEnabled = true;
+            MainMap.MapScaleInfoEnabled = true;
 
             MainMap.ForceDoubleBuffer = true;
             MainMap.Manager.Mode = AccessMode.ServerAndCache;
@@ -355,6 +355,8 @@ namespace MultiWiiWinGUI
             {
                 Environment.Exit(-1);
             }
+
+            //fill out relevant variables
 
             sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
@@ -819,6 +821,8 @@ namespace MultiWiiWinGUI
             b_write_settings.Enabled = false;
             b_write_to_file.Enabled = false;
             b_load_from_file.Enabled = false;
+            btnDownLoadMission.Enabled = false;
+            btnUploadMission.Enabled = false;
 
 
 
@@ -837,6 +841,8 @@ namespace MultiWiiWinGUI
             MainMap.ShowCenter = false;
 
 
+            mw_gui.max_wp_number = gui_settings.max_wp_number;
+            mw_gui.wp_radius = gui_settings.wp_radius;
 
 
 
@@ -1555,6 +1561,15 @@ namespace MultiWiiWinGUI
 
                 case MSP.MSP_NAV_CONFIG:
                     ptr = 0;
+                    mw_gui.flags = inBuf[ptr++];
+                    mw_gui.wp_radius = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.safe_wp_distance = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.nav_max_altitude = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.nav_speed_max = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.nav_speed_min = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.crosstrack_gain = inBuf[ptr++];
+                    mw_gui.nav_bank_max = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.rth_altitude = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.max_wp_number = inBuf[ptr++];
                     break;
 
@@ -1957,6 +1972,31 @@ namespace MultiWiiWinGUI
 
                     }
 
+
+                    cbNavGPS_filtering.Checked  = (mw_gui.flags & 0x01) > 0;
+                    cbNavGPS_Lead.Checked       = (mw_gui.flags & 0x02) > 0;
+                    cbNavResetHome.Checked      = (mw_gui.flags & 0x04) > 0;
+                    cbNavHeadingControl.Checked = (mw_gui.flags & 0x08) > 0;
+                    cbNavTailFirst.Checked      = (mw_gui.flags & 0x10) > 0;
+                    cbNavRTHHead.Checked        = (mw_gui.flags & 0x20) > 0;
+                    cbNavSlowNav.Checked        = (mw_gui.flags & 0x40) > 0;
+                    cbNavWaitRTHAlt.Checked     = (mw_gui.flags & 0x80) > 0;
+
+                    nWPRadius.Value = mw_gui.wp_radius;
+                    nRTHAlt.Value = mw_gui.rth_altitude;
+                    nCrosstrack.Value = (decimal)mw_gui.crosstrack_gain / 100;
+                    nMaxSpeed.Value = mw_gui.nav_speed_max;
+                    nMinSpeed.Value = mw_gui.nav_speed_min;
+                    nBanking.Value = mw_gui.nav_bank_max / 100;
+                    nSafeWPDist.Value = mw_gui.safe_wp_distance;
+                    nMaxAlt.Value = mw_gui.nav_max_altitude;
+
+
+                    //Save default values to gui settings
+                    gui_settings.max_wp_number = mw_gui.max_wp_number;
+                    gui_settings.wp_radius = mw_gui.wp_radius;
+                    gui_settings.save_to_xml(sGuiSettingsFilename);
+    
                     bOptions_needs_refresh = false;
                 }
 #endregion
@@ -1974,7 +2014,7 @@ namespace MultiWiiWinGUI
             }
 
             GMOverlayFlightPath.IsVisibile = false;
-            GMOverlayFlightPath.IsVisibile = true; ;
+            GMOverlayFlightPath.IsVisibile = true;
 
 
             if (tabMain.SelectedIndex == GUIPages.Mission)
@@ -2386,10 +2426,25 @@ namespace MultiWiiWinGUI
 
             }
 
-
-
-
-
+        //update nav params.
+            int t = (byte)(cbNavGPS_filtering.Checked ? 0x01 : 0x00) +
+                 (byte)(cbNavGPS_Lead.Checked ? 0x02 : 0x00) +
+                 (byte)(cbNavResetHome.Checked ? 0x04 : 0x00) +
+                 (byte)(cbNavHeadingControl.Checked ? 0x08 : 0x00) +
+                 (byte)(cbNavTailFirst.Checked ? 0x10 : 0x00) +
+                 (byte)(cbNavRTHHead.Checked ? 0x20 : 0x00) +
+                 (byte)(cbNavSlowNav.Checked ? 0x40 : 0x00) +
+                 (byte)(cbNavWaitRTHAlt.Checked ? 0x80 : 0x00);
+            mw_params.flags = (byte)t;
+            mw_params.wp_radius = (ushort)nWPRadius.Value;
+            mw_params.rth_altitude = (ushort)nRTHAlt.Value;
+            mw_params.crosstrack_gain = (byte)((decimal)nCrosstrack.Value * 100);
+            mw_params.nav_speed_max = (ushort)nMaxSpeed.Value;
+            mw_params.nav_speed_min = (ushort)nMinSpeed.Value;
+            mw_params.nav_bank_max = (ushort)(nBanking.Value * 100);
+            mw_params.safe_wp_distance = (ushort)nSafeWPDist.Value;
+            mw_params.nav_max_altitude = (ushort)nMaxAlt.Value;
+            mw_params.max_wp_number = mw_gui.max_wp_number;
 
         }
 
@@ -2918,8 +2973,6 @@ namespace MultiWiiWinGUI
 
         }
 
-
-
         void addKMLMarker(string description, double lon, double lat, double alt)
         {
             //Close open LineStringPlacemark
@@ -2969,7 +3022,6 @@ namespace MultiWiiWinGUI
             GMOverlayPOI.Markers.Add(mBorders);
         }
 
-
         private void AddWPMarker(string tag, double lng, double lat, int alt, Color? color, int markertype)
         {
             PointLatLng point = new PointLatLng(lat, lng);
@@ -3004,7 +3056,7 @@ namespace MultiWiiWinGUI
             GMapMarkerRect mBorders = new GMapMarkerRect(point);
             {
                 mBorders.InnerMarker = m;
-                mBorders.wprad = (int)float.Parse("5");
+                mBorders.wprad = (int)mw_gui.wp_radius/100;
                 mBorders.MainMap = MainMap;
                 if (color.HasValue)
                 {
@@ -3283,7 +3335,7 @@ namespace MultiWiiWinGUI
             //MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;
             MainMap.MapProvider = (GMapProvider)cbMapProviders.SelectedItem;
             MainMap.MinZoom = 5;
-            MainMap.MaxZoom = 19;
+            MainMap.MaxZoom = 20;
             MainMap.Zoom = 18;
             MainMap.Invalidate(false);
             gui_settings.iMapProviderSelectedIndex = cbMapProviders.SelectedIndex;
@@ -3318,8 +3370,10 @@ namespace MultiWiiWinGUI
         private void b_Clear_Route_Click(object sender, EventArgs e)
         {
             GMRouteFlightPath.Points.Clear();
+            GMOverlayFlightPath.IsVisibile = false;
+            GMOverlayFlightPath.IsVisibile = true;
+            MainMap.Invalidate(false);
         }
-
 
         private void b_fetch_tiles_Click(object sender, EventArgs e)
         {
@@ -3362,7 +3416,6 @@ namespace MultiWiiWinGUI
             }
 
         }
-
 
         #region ValueChangedEvents
 
@@ -3544,7 +3597,7 @@ namespace MultiWiiWinGUI
             //Stop all timers
             timer_realtime.Stop();
             MSPquery(MSP.MSP_RESET_CONF);
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(2000);
 
             MSPquery(MSP.MSP_PID);
             MSPquery(MSP.MSP_RC_TUNING);
@@ -3552,6 +3605,7 @@ namespace MultiWiiWinGUI
             MSPquery(MSP.MSP_BOX);
             MSPquery(MSP.MSP_MISC);
             MSPquery(MSP.MSP_SERVO_CONF);
+            MSPquery(MSP.MSP_NAV_CONFIG);
 
             //Invalidate gui parameters and reread those values
 
@@ -4765,6 +4819,11 @@ namespace MultiWiiWinGUI
          if (currentMarker != null)
              CurentRectMarker = null;
 
+
+        }
+
+        private void checkBoxEx5_CheckedChanged(object sender, EventArgs e)
+        {
 
         }
 

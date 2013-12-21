@@ -89,6 +89,7 @@ namespace MultiWiiWinGUI
         public const byte MSP_SET_HEAD = 211;   //in message          define a new heading hold direction
         public const byte MSP_SET_SERVO_CONF = 212;   //in message          Servo settings
         public const byte MSP_SET_MOTOR = 214;   //in message          PropBalance function
+        public const byte MSP_SET_NAV_CONFIG = 215;
 
         public const byte MSP_BIND = 240;   //in message          no param
 

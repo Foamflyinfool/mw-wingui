@@ -62,7 +62,7 @@ namespace MultiWiiWinGUI
         public GMapMarkerRect(PointLatLng p)
             : base(p)
         {
-            Pen.DashStyle = DashStyle.Dash;
+            Pen.DashStyle = DashStyle.Dot;
 
             // do not forget set Size of the marker
             // if so, you shall have no event on it ;}

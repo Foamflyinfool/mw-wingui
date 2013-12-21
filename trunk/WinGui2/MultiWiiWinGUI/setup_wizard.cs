@@ -49,6 +49,8 @@ namespace MultiWiiWinGUI
             Settings.sLogFolder = Directory.GetCurrentDirectory() + "\\Logs";
             Settings.sSettingsFolder = Directory.GetCurrentDirectory() + "\\Settings";
             Settings.sPreferedSerialSpeed = "115200";
+            Settings.max_wp_number = 100; //until first connect
+            Settings.wp_radius = 200; //2 meters (until first connect);
 
             // scan for serial ports on startup - maybe not needed as better scan on entering page 3
             //setup_scan_Ports();
@@ -107,6 +109,10 @@ namespace MultiWiiWinGUI
                     Settings.logGnav = cb_Log8.Checked;
                     Settings.logGpar = cb_Log9.Checked;
                     Settings.logGdbg = cb_Log10.Checked;
+
+                    Settings.max_wp_number = 100; //until first connect
+                    Settings.wp_radius = 200; //2 meters (until first connect);
+
                 }
 
                 //Write out the Settings struct

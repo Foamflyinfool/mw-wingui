@@ -156,6 +156,30 @@
             this.lDistance = new System.Windows.Forms.Label();
             this.lDefAlt = new System.Windows.Forms.Label();
             this.tabPagePID = new System.Windows.Forms.TabPage();
+            this.label88 = new System.Windows.Forms.Label();
+            this.nBanking = new System.Windows.Forms.NumericUpDown();
+            this.label87 = new System.Windows.Forms.Label();
+            this.nCrosstrack = new System.Windows.Forms.NumericUpDown();
+            this.label86 = new System.Windows.Forms.Label();
+            this.nRTHAlt = new System.Windows.Forms.NumericUpDown();
+            this.label85 = new System.Windows.Forms.Label();
+            this.nMinSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label84 = new System.Windows.Forms.Label();
+            this.nMaxSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label83 = new System.Windows.Forms.Label();
+            this.nMaxAlt = new System.Windows.Forms.NumericUpDown();
+            this.label82 = new System.Windows.Forms.Label();
+            this.nSafeWPDist = new System.Windows.Forms.NumericUpDown();
+            this.label76 = new System.Windows.Forms.Label();
+            this.nWPRadius = new System.Windows.Forms.NumericUpDown();
+            this.cbNavSlowNav = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavWaitRTHAlt = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavRTHHead = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavTailFirst = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavHeadingControl = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavResetHome = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavGPS_Lead = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavGPS_filtering = new MultiWiiGUIControls.CheckBoxEx();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.nTEXPO = new System.Windows.Forms.NumericUpDown();
@@ -443,6 +467,14 @@
             this.splitContainer8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).BeginInit();
             this.tabPagePID.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nBanking)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCrosstrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nRTHAlt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMinSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMaxSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMaxAlt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSafeWPDist)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWPRadius)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTMID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_EXPO)).BeginInit();
@@ -569,7 +601,7 @@
             this.createCircleToolStripMenuItem,
             this.bulkAltitudeChangeToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStripMap";
-            this.contextMenuStripMap.Size = new System.Drawing.Size(185, 274);
+            this.contextMenuStripMap.Size = new System.Drawing.Size(185, 252);
             this.contextMenuStripMap.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripMap_Opening);
             // 
             // tsMenuAddWP
@@ -1991,6 +2023,30 @@
             // tabPagePID
             // 
             this.tabPagePID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPagePID.Controls.Add(this.label88);
+            this.tabPagePID.Controls.Add(this.nBanking);
+            this.tabPagePID.Controls.Add(this.label87);
+            this.tabPagePID.Controls.Add(this.nCrosstrack);
+            this.tabPagePID.Controls.Add(this.label86);
+            this.tabPagePID.Controls.Add(this.nRTHAlt);
+            this.tabPagePID.Controls.Add(this.label85);
+            this.tabPagePID.Controls.Add(this.nMinSpeed);
+            this.tabPagePID.Controls.Add(this.label84);
+            this.tabPagePID.Controls.Add(this.nMaxSpeed);
+            this.tabPagePID.Controls.Add(this.label83);
+            this.tabPagePID.Controls.Add(this.nMaxAlt);
+            this.tabPagePID.Controls.Add(this.label82);
+            this.tabPagePID.Controls.Add(this.nSafeWPDist);
+            this.tabPagePID.Controls.Add(this.label76);
+            this.tabPagePID.Controls.Add(this.nWPRadius);
+            this.tabPagePID.Controls.Add(this.cbNavSlowNav);
+            this.tabPagePID.Controls.Add(this.cbNavWaitRTHAlt);
+            this.tabPagePID.Controls.Add(this.cbNavRTHHead);
+            this.tabPagePID.Controls.Add(this.cbNavTailFirst);
+            this.tabPagePID.Controls.Add(this.cbNavHeadingControl);
+            this.tabPagePID.Controls.Add(this.cbNavResetHome);
+            this.tabPagePID.Controls.Add(this.cbNavGPS_Lead);
+            this.tabPagePID.Controls.Add(this.cbNavGPS_filtering);
             this.tabPagePID.Controls.Add(this.label2);
             this.tabPagePID.Controls.Add(this.label1);
             this.tabPagePID.Controls.Add(this.nTEXPO);
@@ -2013,11 +2069,430 @@
             this.tabPagePID.TabIndex = 1;
             this.tabPagePID.Text = "Flight Tuning";
             // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label88.Location = new System.Drawing.Point(596, 317);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(133, 13);
+            this.label88.TabIndex = 55;
+            this.label88.Text = "Max Nav banking (degree)";
+            // 
+            // nBanking
+            // 
+            this.nBanking.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nBanking.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nBanking.Location = new System.Drawing.Point(599, 338);
+            this.nBanking.Maximum = new decimal(new int[] {
+            45,
+            0,
+            0,
+            0});
+            this.nBanking.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nBanking.Name = "nBanking";
+            this.nBanking.Size = new System.Drawing.Size(53, 19);
+            this.nBanking.TabIndex = 54;
+            this.nBanking.Value = new decimal(new int[] {
+            45,
+            0,
+            0,
+            0});
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label87.Location = new System.Drawing.Point(867, 221);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(80, 13);
+            this.label87.TabIndex = 53;
+            this.label87.Text = "Crosstrack gain";
+            // 
+            // nCrosstrack
+            // 
+            this.nCrosstrack.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nCrosstrack.DecimalPlaces = 2;
+            this.nCrosstrack.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nCrosstrack.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nCrosstrack.Location = new System.Drawing.Point(870, 242);
+            this.nCrosstrack.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nCrosstrack.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nCrosstrack.Name = "nCrosstrack";
+            this.nCrosstrack.Size = new System.Drawing.Size(53, 19);
+            this.nCrosstrack.TabIndex = 52;
+            this.nCrosstrack.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label86.Location = new System.Drawing.Point(733, 221);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(85, 13);
+            this.label86.TabIndex = 51;
+            this.label86.Text = "RTH Altitude (m)";
+            // 
+            // nRTHAlt
+            // 
+            this.nRTHAlt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nRTHAlt.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nRTHAlt.Location = new System.Drawing.Point(736, 242);
+            this.nRTHAlt.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nRTHAlt.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nRTHAlt.Name = "nRTHAlt";
+            this.nRTHAlt.Size = new System.Drawing.Size(53, 19);
+            this.nRTHAlt.TabIndex = 50;
+            this.nRTHAlt.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label85.Location = new System.Drawing.Point(733, 269);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(112, 13);
+            this.label85.TabIndex = 49;
+            this.label85.Text = "Min Nav speed (cm/s)";
+            // 
+            // nMinSpeed
+            // 
+            this.nMinSpeed.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nMinSpeed.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nMinSpeed.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nMinSpeed.Location = new System.Drawing.Point(736, 290);
+            this.nMinSpeed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nMinSpeed.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nMinSpeed.Name = "nMinSpeed";
+            this.nMinSpeed.Size = new System.Drawing.Size(53, 19);
+            this.nMinSpeed.TabIndex = 48;
+            this.nMinSpeed.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label84.Location = new System.Drawing.Point(596, 269);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(115, 13);
+            this.label84.TabIndex = 47;
+            this.label84.Text = "Max Nav speed (cm/s)";
+            // 
+            // nMaxSpeed
+            // 
+            this.nMaxSpeed.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nMaxSpeed.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nMaxSpeed.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nMaxSpeed.Location = new System.Drawing.Point(599, 290);
+            this.nMaxSpeed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nMaxSpeed.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nMaxSpeed.Name = "nMaxSpeed";
+            this.nMaxSpeed.Size = new System.Drawing.Size(53, 19);
+            this.nMaxSpeed.TabIndex = 46;
+            this.nMaxSpeed.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label83.Location = new System.Drawing.Point(733, 365);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(105, 13);
+            this.label83.TabIndex = 45;
+            this.label83.Text = "Max Nav Altitude (m)";
+            // 
+            // nMaxAlt
+            // 
+            this.nMaxAlt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nMaxAlt.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nMaxAlt.Location = new System.Drawing.Point(736, 386);
+            this.nMaxAlt.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nMaxAlt.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nMaxAlt.Name = "nMaxAlt";
+            this.nMaxAlt.Size = new System.Drawing.Size(53, 19);
+            this.nMaxAlt.TabIndex = 44;
+            this.nMaxAlt.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label82.Location = new System.Drawing.Point(596, 365);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(110, 13);
+            this.label82.TabIndex = 43;
+            this.label82.Text = "Safe WP distance (m)";
+            // 
+            // nSafeWPDist
+            // 
+            this.nSafeWPDist.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nSafeWPDist.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nSafeWPDist.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nSafeWPDist.Location = new System.Drawing.Point(599, 386);
+            this.nSafeWPDist.Maximum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            0});
+            this.nSafeWPDist.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nSafeWPDist.Name = "nSafeWPDist";
+            this.nSafeWPDist.Size = new System.Drawing.Size(53, 19);
+            this.nSafeWPDist.TabIndex = 42;
+            this.nSafeWPDist.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label76.Location = new System.Drawing.Point(596, 221);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(84, 13);
+            this.label76.TabIndex = 41;
+            this.label76.Text = "WP Radius (cm)";
+            // 
+            // nWPRadius
+            // 
+            this.nWPRadius.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nWPRadius.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nWPRadius.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nWPRadius.Location = new System.Drawing.Point(599, 242);
+            this.nWPRadius.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nWPRadius.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nWPRadius.Name = "nWPRadius";
+            this.nWPRadius.Size = new System.Drawing.Size(53, 19);
+            this.nWPRadius.TabIndex = 40;
+            this.nWPRadius.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // cbNavSlowNav
+            // 
+            this.cbNavSlowNav.AutoSize = true;
+            this.cbNavSlowNav.aux = 0;
+            this.cbNavSlowNav.ForeColor = System.Drawing.Color.White;
+            this.cbNavSlowNav.IsHighlighted = false;
+            this.cbNavSlowNav.item = 0;
+            this.cbNavSlowNav.Location = new System.Drawing.Point(599, 186);
+            this.cbNavSlowNav.Name = "cbNavSlowNav";
+            this.cbNavSlowNav.rclevel = 0;
+            this.cbNavSlowNav.Size = new System.Drawing.Size(135, 17);
+            this.cbNavSlowNav.TabIndex = 39;
+            this.cbNavSlowNav.Text = "Enable slow navigation";
+            this.cbNavSlowNav.UseVisualStyleBackColor = true;
+            // 
+            // cbNavWaitRTHAlt
+            // 
+            this.cbNavWaitRTHAlt.AutoSize = true;
+            this.cbNavWaitRTHAlt.aux = 0;
+            this.cbNavWaitRTHAlt.ForeColor = System.Drawing.Color.White;
+            this.cbNavWaitRTHAlt.IsHighlighted = false;
+            this.cbNavWaitRTHAlt.item = 0;
+            this.cbNavWaitRTHAlt.Location = new System.Drawing.Point(599, 162);
+            this.cbNavWaitRTHAlt.Name = "cbNavWaitRTHAlt";
+            this.cbNavWaitRTHAlt.rclevel = 0;
+            this.cbNavWaitRTHAlt.Size = new System.Drawing.Size(261, 17);
+            this.cbNavWaitRTHAlt.TabIndex = 38;
+            this.cbNavWaitRTHAlt.Text = "Wait for reaching RTH altitude before come home";
+            this.cbNavWaitRTHAlt.UseVisualStyleBackColor = true;
+            // 
+            // cbNavRTHHead
+            // 
+            this.cbNavRTHHead.AutoSize = true;
+            this.cbNavRTHHead.aux = 0;
+            this.cbNavRTHHead.ForeColor = System.Drawing.Color.White;
+            this.cbNavRTHHead.IsHighlighted = false;
+            this.cbNavRTHHead.item = 0;
+            this.cbNavRTHHead.Location = new System.Drawing.Point(599, 138);
+            this.cbNavRTHHead.Name = "cbNavRTHHead";
+            this.cbNavRTHHead.rclevel = 0;
+            this.cbNavRTHHead.Size = new System.Drawing.Size(178, 17);
+            this.cbNavRTHHead.TabIndex = 37;
+            this.cbNavRTHHead.Text = "Turn to takeoff heading at home";
+            this.cbNavRTHHead.UseVisualStyleBackColor = true;
+            this.cbNavRTHHead.CheckedChanged += new System.EventHandler(this.checkBoxEx5_CheckedChanged);
+            // 
+            // cbNavTailFirst
+            // 
+            this.cbNavTailFirst.AutoSize = true;
+            this.cbNavTailFirst.aux = 0;
+            this.cbNavTailFirst.ForeColor = System.Drawing.Color.White;
+            this.cbNavTailFirst.IsHighlighted = false;
+            this.cbNavTailFirst.item = 0;
+            this.cbNavTailFirst.Location = new System.Drawing.Point(599, 114);
+            this.cbNavTailFirst.Name = "cbNavTailFirst";
+            this.cbNavTailFirst.rclevel = 0;
+            this.cbNavTailFirst.Size = new System.Drawing.Size(96, 17);
+            this.cbNavTailFirst.TabIndex = 36;
+            this.cbNavTailFirst.Text = "Fly with tail first";
+            this.cbNavTailFirst.UseVisualStyleBackColor = true;
+            // 
+            // cbNavHeadingControl
+            // 
+            this.cbNavHeadingControl.AutoSize = true;
+            this.cbNavHeadingControl.aux = 0;
+            this.cbNavHeadingControl.ForeColor = System.Drawing.Color.White;
+            this.cbNavHeadingControl.IsHighlighted = false;
+            this.cbNavHeadingControl.item = 0;
+            this.cbNavHeadingControl.Location = new System.Drawing.Point(599, 90);
+            this.cbNavHeadingControl.Name = "cbNavHeadingControl";
+            this.cbNavHeadingControl.rclevel = 0;
+            this.cbNavHeadingControl.Size = new System.Drawing.Size(127, 17);
+            this.cbNavHeadingControl.TabIndex = 35;
+            this.cbNavHeadingControl.Text = "Nav controls heading";
+            this.cbNavHeadingControl.UseVisualStyleBackColor = true;
+            // 
+            // cbNavResetHome
+            // 
+            this.cbNavResetHome.AutoSize = true;
+            this.cbNavResetHome.aux = 0;
+            this.cbNavResetHome.ForeColor = System.Drawing.Color.White;
+            this.cbNavResetHome.IsHighlighted = false;
+            this.cbNavResetHome.item = 0;
+            this.cbNavResetHome.Location = new System.Drawing.Point(599, 66);
+            this.cbNavResetHome.Name = "cbNavResetHome";
+            this.cbNavResetHome.rclevel = 0;
+            this.cbNavResetHome.Size = new System.Drawing.Size(177, 17);
+            this.cbNavResetHome.TabIndex = 34;
+            this.cbNavResetHome.Text = "Don\'t reset home position at arm";
+            this.cbNavResetHome.UseVisualStyleBackColor = true;
+            // 
+            // cbNavGPS_Lead
+            // 
+            this.cbNavGPS_Lead.AutoSize = true;
+            this.cbNavGPS_Lead.aux = 0;
+            this.cbNavGPS_Lead.ForeColor = System.Drawing.Color.White;
+            this.cbNavGPS_Lead.IsHighlighted = false;
+            this.cbNavGPS_Lead.item = 0;
+            this.cbNavGPS_Lead.Location = new System.Drawing.Point(599, 42);
+            this.cbNavGPS_Lead.Name = "cbNavGPS_Lead";
+            this.cbNavGPS_Lead.rclevel = 0;
+            this.cbNavGPS_Lead.Size = new System.Drawing.Size(193, 17);
+            this.cbNavGPS_Lead.TabIndex = 33;
+            this.cbNavGPS_Lead.Text = "Enable GPS forward prediction filter";
+            this.cbNavGPS_Lead.UseVisualStyleBackColor = true;
+            // 
+            // cbNavGPS_filtering
+            // 
+            this.cbNavGPS_filtering.AutoSize = true;
+            this.cbNavGPS_filtering.aux = 0;
+            this.cbNavGPS_filtering.ForeColor = System.Drawing.Color.White;
+            this.cbNavGPS_filtering.IsHighlighted = false;
+            this.cbNavGPS_filtering.item = 0;
+            this.cbNavGPS_filtering.Location = new System.Drawing.Point(599, 18);
+            this.cbNavGPS_filtering.Name = "cbNavGPS_filtering";
+            this.cbNavGPS_filtering.rclevel = 0;
+            this.cbNavGPS_filtering.Size = new System.Drawing.Size(120, 17);
+            this.cbNavGPS_filtering.TabIndex = 32;
+            this.cbNavGPS_filtering.Text = "Enable GPS filtering";
+            this.cbNavGPS_filtering.UseVisualStyleBackColor = true;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(718, 234);
+            this.label2.Location = new System.Drawing.Point(322, 221);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 31;
@@ -2027,7 +2502,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(718, 185);
+            this.label1.Location = new System.Drawing.Point(322, 172);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 13);
             this.label1.TabIndex = 30;
@@ -2044,7 +2519,7 @@
             0,
             0,
             131072});
-            this.nTEXPO.Location = new System.Drawing.Point(718, 250);
+            this.nTEXPO.Location = new System.Drawing.Point(322, 237);
             this.nTEXPO.Maximum = new decimal(new int[] {
             1,
             0,
@@ -2066,7 +2541,7 @@
             0,
             0,
             131072});
-            this.nTMID.Location = new System.Drawing.Point(718, 204);
+            this.nTMID.Location = new System.Drawing.Point(322, 191);
             this.nTMID.Maximum = new decimal(new int[] {
             1,
             0,
@@ -2081,7 +2556,7 @@
             // 
             this.trackBar_T_EXPO.AutoSize = false;
             this.trackBar_T_EXPO.LargeChange = 1;
-            this.trackBar_T_EXPO.Location = new System.Drawing.Point(713, 305);
+            this.trackBar_T_EXPO.Location = new System.Drawing.Point(317, 292);
             this.trackBar_T_EXPO.Maximum = 100;
             this.trackBar_T_EXPO.Name = "trackBar_T_EXPO";
             this.trackBar_T_EXPO.Size = new System.Drawing.Size(224, 20);
@@ -2093,7 +2568,7 @@
             // trackBar_T_MID
             // 
             this.trackBar_T_MID.AutoSize = false;
-            this.trackBar_T_MID.Location = new System.Drawing.Point(713, 288);
+            this.trackBar_T_MID.Location = new System.Drawing.Point(317, 275);
             this.trackBar_T_MID.Maximum = 100;
             this.trackBar_T_MID.Name = "trackBar_T_MID";
             this.trackBar_T_MID.Size = new System.Drawing.Size(224, 20);
@@ -2106,7 +2581,7 @@
             // 
             this.trackbar_RC_Rate.AutoSize = false;
             this.trackbar_RC_Rate.LargeChange = 1;
-            this.trackbar_RC_Rate.Location = new System.Drawing.Point(711, 153);
+            this.trackbar_RC_Rate.Location = new System.Drawing.Point(315, 140);
             this.trackbar_RC_Rate.Maximum = 250;
             this.trackbar_RC_Rate.Name = "trackbar_RC_Rate";
             this.trackbar_RC_Rate.Size = new System.Drawing.Size(224, 20);
@@ -2119,7 +2594,7 @@
             // 
             this.label65.AutoSize = true;
             this.label65.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label65.Location = new System.Drawing.Point(715, 85);
+            this.label65.Location = new System.Drawing.Point(319, 72);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(48, 13);
             this.label65.TabIndex = 18;
@@ -2128,7 +2603,7 @@
             // trackbar_RC_Expo
             // 
             this.trackbar_RC_Expo.AutoSize = false;
-            this.trackbar_RC_Expo.Location = new System.Drawing.Point(711, 136);
+            this.trackbar_RC_Expo.Location = new System.Drawing.Point(315, 123);
             this.trackbar_RC_Expo.Maximum = 100;
             this.trackbar_RC_Expo.Name = "trackbar_RC_Expo";
             this.trackbar_RC_Expo.Size = new System.Drawing.Size(224, 20);
@@ -2148,7 +2623,7 @@
             0,
             0,
             131072});
-            this.nRCRate.Location = new System.Drawing.Point(718, 102);
+            this.nRCRate.Location = new System.Drawing.Point(322, 89);
             this.nRCRate.Maximum = new decimal(new int[] {
             5,
             0,
@@ -2170,7 +2645,7 @@
             0,
             0,
             131072});
-            this.nRCExpo.Location = new System.Drawing.Point(718, 51);
+            this.nRCExpo.Location = new System.Drawing.Point(322, 38);
             this.nRCExpo.Maximum = new decimal(new int[] {
             1,
             0,
@@ -2185,7 +2660,7 @@
             // 
             this.label66.AutoSize = true;
             this.label66.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label66.Location = new System.Drawing.Point(715, 35);
+            this.label66.Location = new System.Drawing.Point(319, 22);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(49, 13);
             this.label66.TabIndex = 19;
@@ -2201,7 +2676,7 @@
             this.groupBox12.Controls.Add(this.nRATE_rp);
             this.groupBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox12.ForeColor = System.Drawing.Color.White;
-            this.groupBox12.Location = new System.Drawing.Point(430, 30);
+            this.groupBox12.Location = new System.Drawing.Point(8, 349);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(247, 95);
             this.groupBox12.TabIndex = 8;
@@ -2312,7 +2787,7 @@
             // 
             // throttle_expo_control1
             // 
-            this.throttle_expo_control1.Location = new System.Drawing.Point(781, 182);
+            this.throttle_expo_control1.Location = new System.Drawing.Point(385, 169);
             this.throttle_expo_control1.Name = "throttle_expo_control1";
             this.throttle_expo_control1.Size = new System.Drawing.Size(150, 100);
             this.throttle_expo_control1.TabIndex = 25;
@@ -2320,7 +2795,7 @@
             // 
             // rc_expo_control1
             // 
-            this.rc_expo_control1.Location = new System.Drawing.Point(779, 30);
+            this.rc_expo_control1.Location = new System.Drawing.Point(383, 17);
             this.rc_expo_control1.Name = "rc_expo_control1";
             this.rc_expo_control1.Size = new System.Drawing.Size(150, 100);
             this.rc_expo_control1.TabIndex = 15;
@@ -5371,7 +5846,7 @@
             this.MinimumSize = new System.Drawing.Size(1006, 570);
             this.Name = "mainGUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MultiWiiGUI";
+            this.Text = "WinGUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainGUI_FormClosing);
             this.Load += new System.EventHandler(this.mainGUI_Load);
             this.tabMain.ResumeLayout(false);
@@ -5416,6 +5891,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).EndInit();
             this.tabPagePID.ResumeLayout(false);
             this.tabPagePID.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nBanking)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCrosstrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nRTHAlt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMinSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMaxSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nMaxAlt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nSafeWPDist)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWPRadius)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTEXPO)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTMID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_T_EXPO)).EndInit();
@@ -5907,6 +6390,30 @@
         private System.Windows.Forms.ToolStripMenuItem bulkAltitudeChangeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsMenuDeleteWP;
         private System.Windows.Forms.Label label75;
+        private MultiWiiGUIControls.CheckBoxEx cbNavSlowNav;
+        private MultiWiiGUIControls.CheckBoxEx cbNavWaitRTHAlt;
+        private MultiWiiGUIControls.CheckBoxEx cbNavRTHHead;
+        private MultiWiiGUIControls.CheckBoxEx cbNavTailFirst;
+        private MultiWiiGUIControls.CheckBoxEx cbNavHeadingControl;
+        private MultiWiiGUIControls.CheckBoxEx cbNavResetHome;
+        private MultiWiiGUIControls.CheckBoxEx cbNavGPS_Lead;
+        private MultiWiiGUIControls.CheckBoxEx cbNavGPS_filtering;
+        private System.Windows.Forms.NumericUpDown nWPRadius;
+        private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.NumericUpDown nBanking;
+        private System.Windows.Forms.Label label87;
+        private System.Windows.Forms.NumericUpDown nCrosstrack;
+        private System.Windows.Forms.Label label86;
+        private System.Windows.Forms.NumericUpDown nRTHAlt;
+        private System.Windows.Forms.Label label85;
+        private System.Windows.Forms.NumericUpDown nMinSpeed;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.NumericUpDown nMaxSpeed;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.NumericUpDown nMaxAlt;
+        private System.Windows.Forms.Label label82;
+        private System.Windows.Forms.NumericUpDown nSafeWPDist;
+        private System.Windows.Forms.Label label76;
     }
 }
 
