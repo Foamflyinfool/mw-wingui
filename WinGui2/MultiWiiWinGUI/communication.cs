@@ -106,6 +106,9 @@ namespace MultiWiiWinGUI
                 b_write_settings.Enabled = false;
                 b_write_to_file.Enabled = false;
                 b_load_from_file.Enabled = false;
+                btnDownLoadMission.Enabled = false;
+                btnUploadMission.Enabled = false;
+
 
 
 
@@ -152,14 +155,7 @@ namespace MultiWiiWinGUI
                 telemetry_status_sent = 0;
 
 
-                //Enable buttons that are not working here
-                b_reset.Enabled = true;
-                b_cal_acc.Enabled = true;
-                b_cal_mag.Enabled = true;
-                b_read_settings.Enabled = true;
-                b_write_settings.Enabled = true;
-                b_write_to_file.Enabled = true;
-                b_load_from_file.Enabled = true;
+
 
 
                 //first send MSP_IDENT messaages and wait at least one successfull packet to arrive
@@ -207,6 +203,17 @@ namespace MultiWiiWinGUI
 
                 //All set we are ready to go.
 
+                //Enable buttons that are not working here
+                b_reset.Enabled = true;
+                b_cal_acc.Enabled = true;
+                b_cal_mag.Enabled = true;
+                b_read_settings.Enabled = true;
+                b_write_settings.Enabled = true;
+                b_write_to_file.Enabled = true;
+                b_load_from_file.Enabled = true;
+                btnDownLoadMission.Enabled = true;
+                btnUploadMission.Enabled = true;
+
                 timer_realtime.Start();
                 bOptions_needs_refresh = true;
                 create_RC_Checkboxes(mw_gui.sBoxNames);
@@ -250,12 +257,17 @@ namespace MultiWiiWinGUI
 
         private void write_parameters()
         {
+            byte[] buffer = new byte[250];          //this must be long enough
+            int bptr = 0;                           //buffer pointer
+            byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
+            byte checksum = 0;
 
             //Stop all timers
             timer_realtime.Stop();
 
             update_params();                            //update parameters object from GUI controls.
             mw_params.write_settings(serialPort);
+
 
             //TODO: rewrite to msp_query_sync if it is neccessary.... 
             response_counter = 0;
@@ -266,6 +278,7 @@ namespace MultiWiiWinGUI
             MSPquery(MSP.MSP_BOX);
             MSPquery(MSP.MSP_MISC);
             MSPquery(MSP.MSP_SERVO_CONF);
+            MSPquery(MSP.MSP_NAV_CONFIG);
 
             DateTime startTime = DateTime.Now;
             bool missing_packets = false;
