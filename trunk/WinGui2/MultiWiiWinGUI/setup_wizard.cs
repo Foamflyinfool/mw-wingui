@@ -15,7 +15,7 @@ namespace MultiWiiWinGUI
     {
 
         private int iActualPage = 0;            //Start from here
-        private const int iLastPage = 4;        //Finish Page
+        private const int iLastPage = 5;        //Finish Page
         private GUI_settings Settings;
         const string sGuiSettingsFilename = "gui_settings.xml";
 
@@ -51,6 +51,7 @@ namespace MultiWiiWinGUI
             Settings.sPreferedSerialSpeed = "115200";
             Settings.max_wp_number = 100; //until first connect
             Settings.wp_radius = 200; //2 meters (until first connect);
+            Settings.speech_enabled = true;
 
             // scan for serial ports on startup - maybe not needed as better scan on entering page 3
             //setup_scan_Ports();
@@ -77,7 +78,7 @@ namespace MultiWiiWinGUI
             cb_Log9.Checked = Settings.logGpar;
             cb_Log10.Checked = Settings.logGdbg;
 
-
+            cbSpeechEnabled.Checked = Settings.speech_enabled;
 
 
 
@@ -110,8 +111,11 @@ namespace MultiWiiWinGUI
                     Settings.logGpar = cb_Log9.Checked;
                     Settings.logGdbg = cb_Log10.Checked;
 
+                    Settings.speech_enabled = cbSpeechEnabled.Checked;
+
                     Settings.max_wp_number = 100; //until first connect
                     Settings.wp_radius = 200; //2 meters (until first connect);
+
 
                 }
 
@@ -184,6 +188,11 @@ namespace MultiWiiWinGUI
                 l_Captures_folder.Text = fb.SelectedPath;
             }
             fb.Dispose();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
         }
         
 

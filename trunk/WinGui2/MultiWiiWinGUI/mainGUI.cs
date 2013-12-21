@@ -36,6 +36,8 @@ using GMap.NET.MapProviders;
 using System.Globalization;
 using System.Reflection;
 using System.Media;
+using System.Speech;
+using System.Speech.Synthesis;
 
 namespace MultiWiiWinGUI
 {
@@ -61,17 +63,17 @@ namespace MultiWiiWinGUI
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
         string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump" };
 
-        string[] sNavError = { "Navigation system OK",
-                               "Next waypoint distance is more than the safety limit set in config.h, aborting mission",
+        string[] sNavError = { "Navigation system is working.",
+                               "Next waypoint distance is more than the safety limit, aborting mission",
                                "GPS reception is compromised - pausing mission, COPTER IS ADRIFT!",
-                               "CRC error while reading next WP from EEPROM - aborting mission",
-                               "End flag detected - Mission Finished" ,
-                               "Waiting for poshold timer",
-                               "Invalid Jump target detected, aborting mission",
-                               "Invalid Mission Step Action code detected, aborting mission",
-                               "Waiting to reach RTH altitude",
+                               "Error while reading next waypoint from memory, aborting mission.",
+                               "Mission Finished." ,
+                               "Waiting for timed position hold.",
+                               "Invalid Jump target detected, aborting mission.",
+                               "Invalid Mission Step Action code detected, aborting mission.",
+                               "Waiting to reach return to home altitude.",
                                "GPS fix lost, mission aborted - COPTER IS ADRIFT!",
-                               "Copter is disarmed, nav engine disabled"};
+                               "Copter is disarmed, navigation engine disabled."};
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
@@ -249,6 +251,9 @@ namespace MultiWiiWinGUI
 
 
         static bool bShowGauges = false;
+        static int prev_wp = 0;
+        static int prev_state = 0;
+        SpeechSynthesizer speech;
 
 
         #endregion
@@ -287,7 +292,7 @@ namespace MultiWiiWinGUI
             MainMap.OnMarkerLeave += new MarkerLeave(MainMap_OnMarkerLeave);
 
             currentMarker = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.red);
-            MainMap.MapScaleInfoEnabled = true;
+            //MainMap.MapScaleInfoEnabled = true;
 
             MainMap.ForceDoubleBuffer = true;
             MainMap.Manager.Mode = AccessMode.ServerAndCache;
@@ -357,7 +362,7 @@ namespace MultiWiiWinGUI
             }
 
             //fill out relevant variables
-
+            cbGUISpeechEnabled.Checked = gui_settings.speech_enabled;
             sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
             iCheckBoxItems = 24;                    //Theoretical maximum
@@ -844,7 +849,13 @@ namespace MultiWiiWinGUI
             mw_gui.max_wp_number = gui_settings.max_wp_number;
             mw_gui.wp_radius = gui_settings.wp_radius;
 
-
+            //Welcome message from Anna
+            if (gui_settings.speech_enabled)
+            {
+                speech = new SpeechSynthesizer();
+                speech.Rate = -2;
+                speech.SpeakAsync("Initialisation completed. Have a good flight!");
+            }
 
         }
         
@@ -1746,6 +1757,46 @@ namespace MultiWiiWinGUI
             servo_reverse[i].Visible = status;
         }
 
+
+        private void nav_error_notification(byte error_code)
+        {
+            /*
+            string[] sNavError = { "Navigation system OK",
+                               "Next waypoint distance is more than the safety limit set in config.h, aborting mission",
+                               "GPS reception is compromised - pausing mission, COPTER IS ADRIFT!",
+                               "CRC error while reading next WP from EEPROM - aborting mission",
+                               "End flag detected - Mission Finished" ,
+                               "Waiting for poshold timer",
+                               "Invalid Jump target detected, aborting mission",
+                               "Invalid Mission Step Action code detected, aborting mission",
+                               "Waiting to reach RTH altitude",
+                               "GPS fix lost, mission aborted - COPTER IS ADRIFT!",
+                               "Copter is disarmed, nav engine disabled"};
+            */
+
+            switch (error_code)
+            {
+                case 1: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 2: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 3: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 4: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 6: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 7: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 8: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+                case 9: speech.SpeakAsync(sNavError[error_code]);
+                    break;
+            }
+        }
+
+
+
         private void update_gui()
         {
 
@@ -2015,6 +2066,33 @@ namespace MultiWiiWinGUI
 
             GMOverlayFlightPath.IsVisibile = false;
             GMOverlayFlightPath.IsVisibile = true;
+            
+            //Speech
+            if (gui_settings.speech_enabled)
+            {
+
+                if ((prev_state != mw_gui.nav_state) || (prev_wp != mw_gui.wp_number))
+                {
+                    switch (mw_gui.nav_state)
+                    {
+                        case 1: speech.SpeakAsync("Starting return to home.");
+                            break;
+                        case 2: speech.SpeakAsync("Goint to home position.");
+                            break;
+                        case 3: speech.SpeakAsync("Switching to position hold.");
+                            break;
+                        case 4: speech.SpeakAsync("Timed position hold.");
+                            break;
+                        case 5: speech.SpeakAsync("Going to waypoint " + mw_gui.wp_number.ToString() + ".");
+                            break;
+
+                    }
+                    prev_state = mw_gui.nav_state;
+                    prev_wp = mw_gui.wp_number;
+                }
+
+            }
+
 
 
             if (tabMain.SelectedIndex == GUIPages.Mission)
@@ -2034,12 +2112,13 @@ namespace MultiWiiWinGUI
                 }
 
 
-                if (mw_gui.nav_error != previous_nav_error)
+
+                if (gui_settings.speech_enabled)
                 {
-                    previous_nav_error = mw_gui.nav_error;
-                    if (mw_gui.nav_error > 0 && mw_gui.nav_error < 10)
+                    if (mw_gui.nav_error != previous_nav_error)
                     {
-                        (new SoundPlayer(@"resources/navi-warning.wav")).Play();
+                        previous_nav_error = mw_gui.nav_error;
+                        nav_error_notification(mw_gui.nav_error);
                     }
                 }
 
@@ -2051,6 +2130,7 @@ namespace MultiWiiWinGUI
                     altitude_meter2.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
                     vertical_speed_indicator2.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
                     gpsIndicator2.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
+                    barRSSIMission.Value = mw_gui.remrssi;
                 }
 
 
@@ -2708,6 +2788,17 @@ namespace MultiWiiWinGUI
             }
 
         }
+
+
+        private void cbGUISpeechEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            gui_settings.speech_enabled = cbGUISpeechEnabled.Checked;
+            b_save_gui_settings.BackColor = Color.LightCoral;
+
+        }
+
+
+
 
         private void b_save_gui_settings_Click(object sender, EventArgs e)
         {
@@ -4626,6 +4717,7 @@ namespace MultiWiiWinGUI
                 gpsIndicator2.Visible = false;
                 vertical_speed_indicator2.Visible = false;
                 altitude_meter2.Visible = false;
+                barRSSIMission.Visible = false;
             }
             else
             {
@@ -4633,6 +4725,7 @@ namespace MultiWiiWinGUI
                 gpsIndicator2.Visible = true;
                 vertical_speed_indicator2.Visible = true;
                 altitude_meter2.Visible = true;
+                barRSSIMission.Visible = true;
             }
 
 
@@ -4827,6 +4920,7 @@ namespace MultiWiiWinGUI
 
         }
 
+ 
     }
 
 }
