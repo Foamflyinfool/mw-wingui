@@ -79,6 +79,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panelWizard = new MultiWiiGUIControls.StackPanel();
+            this.tabSpeech = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbSpeechEnabled = new System.Windows.Forms.CheckBox();
             this.tabFinish.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.tabLogs.SuspendLayout();
@@ -91,6 +96,8 @@
             this.tabStart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelWizard.SuspendLayout();
+            this.tabSpeech.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // b_finish_cancel
@@ -679,6 +686,7 @@
             this.panelWizard.Controls.Add(this.tabStart);
             this.panelWizard.Controls.Add(this.tabSerial);
             this.panelWizard.Controls.Add(this.tabFolders);
+            this.panelWizard.Controls.Add(this.tabSpeech);
             this.panelWizard.Controls.Add(this.tabLogs);
             this.panelWizard.Controls.Add(this.tabFinish);
             this.panelWizard.Location = new System.Drawing.Point(-4, 44);
@@ -688,6 +696,70 @@
             this.panelWizard.SelectedIndex = 0;
             this.panelWizard.Size = new System.Drawing.Size(596, 318);
             this.panelWizard.TabIndex = 0;
+            // 
+            // tabSpeech
+            // 
+            this.tabSpeech.BackColor = System.Drawing.Color.DimGray;
+            this.tabSpeech.Controls.Add(this.cbSpeechEnabled);
+            this.tabSpeech.Controls.Add(this.label8);
+            this.tabSpeech.Controls.Add(this.label2);
+            this.tabSpeech.Controls.Add(this.pictureBox2);
+            this.tabSpeech.Location = new System.Drawing.Point(4, 22);
+            this.tabSpeech.Name = "tabSpeech";
+            this.tabSpeech.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSpeech.Size = new System.Drawing.Size(588, 292);
+            this.tabSpeech.TabIndex = 6;
+            this.tabSpeech.Text = "tabPage1";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.BackgroundImage = global::MultiWiiWinGUI.Properties.Resources.wizard_7;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.InitialImage = global::MultiWiiWinGUI.Properties.Resources.wizard_7;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(148, 294);
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label2.Location = new System.Drawing.Point(167, 27);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(234, 20);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Enable Spoken notifications";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label8.Location = new System.Drawing.Point(168, 56);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(294, 64);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "During navigation, certain events could generate\r\nspoken notifications. You can a" +
+    "lso set periodic\r\nannouncement of certain telemetry values.\r\n\r\n";
+            // 
+            // cbSpeechEnabled
+            // 
+            this.cbSpeechEnabled.AutoSize = true;
+            this.cbSpeechEnabled.Checked = true;
+            this.cbSpeechEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSpeechEnabled.ForeColor = System.Drawing.Color.White;
+            this.cbSpeechEnabled.Location = new System.Drawing.Point(171, 134);
+            this.cbSpeechEnabled.Name = "cbSpeechEnabled";
+            this.cbSpeechEnabled.Size = new System.Drawing.Size(156, 17);
+            this.cbSpeechEnabled.TabIndex = 10;
+            this.cbSpeechEnabled.Text = "Enable spoken notifications";
+            this.cbSpeechEnabled.UseVisualStyleBackColor = true;
             // 
             // setup_wizard
             // 
@@ -725,6 +797,9 @@
             this.tabStart.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelWizard.ResumeLayout(false);
+            this.tabSpeech.ResumeLayout(false);
+            this.tabSpeech.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -781,6 +856,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private MultiWiiGUIControls.StackPanel panelWizard;
+        private System.Windows.Forms.TabPage tabSpeech;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.CheckBox cbSpeechEnabled;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label2;
 
     }
 }

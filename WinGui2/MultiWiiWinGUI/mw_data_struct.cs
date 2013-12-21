@@ -40,7 +40,7 @@ namespace MultiWiiWinGUI
         public byte max_wp_number { get; set; }
         public ushort wp_radius { get; set; }
 
-
+        public bool speech_enabled { get; set; }
 
 
         //Constructor, set default values
@@ -51,8 +51,8 @@ namespace MultiWiiWinGUI
             sSettingsFolder = Directory.GetCurrentDirectory();
             iSoftwareVersion = 23;
             bEnableLogging = false;
-
             iMapProviderSelectedIndex = 1;  //Bing Map
+            speech_enabled = true;
 
 
         }
@@ -95,6 +95,9 @@ namespace MultiWiiWinGUI
             tw.WriteStartElement("LOGDBG value=\"" + logGdbg + "\""); tw.WriteEndElement();
 
             tw.WriteStartElement("MAPPROVIDER value=\"" + iMapProviderSelectedIndex + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("SPEECH_ENABLED value=\"" + speech_enabled + "\""); tw.WriteEndElement();
+
+            
 
             tw.WriteStartElement("MAX_WP_NUMBER value=\"" + max_wp_number + "\""); tw.WriteEndElement();
             tw.WriteStartElement("WP_RADIUS value=\"" +  wp_radius + "\""); tw.WriteEndElement();
@@ -147,6 +150,7 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "mapprovider", true) == 0 && reader.HasAttributes) { iMapProviderSelectedIndex  = Convert.ToInt16(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "max_wp_number", true) == 0 && reader.HasAttributes) { max_wp_number = Convert.ToByte(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "wp_radius", true) == 0 && reader.HasAttributes) { wp_radius = Convert.ToUInt16(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "speech_enabled", true) == 0 && reader.HasAttributes) { speech_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
 
 
                             break;

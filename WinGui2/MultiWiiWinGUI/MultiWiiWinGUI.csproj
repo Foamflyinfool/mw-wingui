@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.1.0.0</ApplicationVersion>
+    <ApplicationVersion>2.3.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -139,6 +139,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -397,6 +398,7 @@
     <Content Include="Resources\trash.png" />
     <Content Include="Resources\up_btn.png" />
     <Content Include="Resources\VerticalSpeedIndicator_Background.bmp" />
+    <None Include="Resources\wizard_7.bmp" />
     <Content Include="Resources\wpicon.png" />
     <Content Include="Settings\.placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

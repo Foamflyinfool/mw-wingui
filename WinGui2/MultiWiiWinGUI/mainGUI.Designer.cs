@@ -106,6 +106,7 @@
             this.b_Clear_Route = new System.Windows.Forms.Button();
             this.spcontMapMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.barRSSIMission = new MultiWiiGUIControls.ColorProgressBar();
             this.lNavError = new System.Windows.Forms.Label();
             this.cbAutoPan = new MultiWiiGUIControls.CheckBoxEx();
             this.cbShowGauges = new MultiWiiGUIControls.CheckBoxEx();
@@ -172,14 +173,6 @@
             this.nSafeWPDist = new System.Windows.Forms.NumericUpDown();
             this.label76 = new System.Windows.Forms.Label();
             this.nWPRadius = new System.Windows.Forms.NumericUpDown();
-            this.cbNavSlowNav = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavWaitRTHAlt = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavRTHHead = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavTailFirst = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavHeadingControl = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavResetHome = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavGPS_Lead = new MultiWiiGUIControls.CheckBoxEx();
-            this.cbNavGPS_filtering = new MultiWiiGUIControls.CheckBoxEx();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.nTEXPO = new System.Windows.Forms.NumericUpDown();
@@ -199,6 +192,14 @@
             this.nRATE_tpid = new System.Windows.Forms.NumericUpDown();
             this.nRATE_yaw = new System.Windows.Forms.NumericUpDown();
             this.nRATE_rp = new System.Windows.Forms.NumericUpDown();
+            this.cbNavSlowNav = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavWaitRTHAlt = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavRTHHead = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavTailFirst = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavHeadingControl = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavResetHome = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavGPS_Lead = new MultiWiiGUIControls.CheckBoxEx();
+            this.cbNavGPS_filtering = new MultiWiiGUIControls.CheckBoxEx();
             this.throttle_expo_control1 = new MultiWiiGUIControls.throttle_expo_control();
             this.rc_expo_control1 = new MultiWiiGUIControls.rc_expo_control();
             this.tabPageConf = new System.Windows.Forms.TabPage();
@@ -378,6 +379,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.cbGUISpeechEnabled = new System.Windows.Forms.CheckBox();
             this.l_i2cdatasupress = new System.Windows.Forms.Label();
             this.b_check_update = new System.Windows.Forms.Button();
             this.b_select_settings_folder = new System.Windows.Forms.Button();
@@ -1411,6 +1413,7 @@
             // 
             // splitContainer9.Panel1
             // 
+            this.splitContainer9.Panel1.Controls.Add(this.barRSSIMission);
             this.splitContainer9.Panel1.Controls.Add(this.lNavError);
             this.splitContainer9.Panel1.Controls.Add(this.cbAutoPan);
             this.splitContainer9.Panel1.Controls.Add(this.cbShowGauges);
@@ -1443,6 +1446,23 @@
             this.splitContainer9.Size = new System.Drawing.Size(538, 417);
             this.splitContainer9.SplitterDistance = 342;
             this.splitContainer9.TabIndex = 0;
+            // 
+            // barRSSIMission
+            // 
+            this.barRSSIMission.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.barRSSIMission.BarColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.barRSSIMission.BkgColor = System.Drawing.Color.Transparent;
+            this.barRSSIMission.BorderColor = System.Drawing.Color.Black;
+            this.barRSSIMission.FillStyle = MultiWiiGUIControls.ColorProgressBar.FillStyles.Solid;
+            this.barRSSIMission.Location = new System.Drawing.Point(-2, 177);
+            this.barRSSIMission.Maximum = 255;
+            this.barRSSIMission.Minimum = 0;
+            this.barRSSIMission.Name = "barRSSIMission";
+            this.barRSSIMission.Size = new System.Drawing.Size(187, 15);
+            this.barRSSIMission.Step = 1;
+            this.barRSSIMission.TabIndex = 117;
+            this.barRSSIMission.Value = 0;
+            this.barRSSIMission.Visible = false;
             // 
             // lNavError
             // 
@@ -2039,14 +2059,6 @@
             this.tabPagePID.Controls.Add(this.nSafeWPDist);
             this.tabPagePID.Controls.Add(this.label76);
             this.tabPagePID.Controls.Add(this.nWPRadius);
-            this.tabPagePID.Controls.Add(this.cbNavSlowNav);
-            this.tabPagePID.Controls.Add(this.cbNavWaitRTHAlt);
-            this.tabPagePID.Controls.Add(this.cbNavRTHHead);
-            this.tabPagePID.Controls.Add(this.cbNavTailFirst);
-            this.tabPagePID.Controls.Add(this.cbNavHeadingControl);
-            this.tabPagePID.Controls.Add(this.cbNavResetHome);
-            this.tabPagePID.Controls.Add(this.cbNavGPS_Lead);
-            this.tabPagePID.Controls.Add(this.cbNavGPS_filtering);
             this.tabPagePID.Controls.Add(this.label2);
             this.tabPagePID.Controls.Add(this.label1);
             this.tabPagePID.Controls.Add(this.nTEXPO);
@@ -2060,6 +2072,14 @@
             this.tabPagePID.Controls.Add(this.nRCExpo);
             this.tabPagePID.Controls.Add(this.label66);
             this.tabPagePID.Controls.Add(this.groupBox12);
+            this.tabPagePID.Controls.Add(this.cbNavSlowNav);
+            this.tabPagePID.Controls.Add(this.cbNavWaitRTHAlt);
+            this.tabPagePID.Controls.Add(this.cbNavRTHHead);
+            this.tabPagePID.Controls.Add(this.cbNavTailFirst);
+            this.tabPagePID.Controls.Add(this.cbNavHeadingControl);
+            this.tabPagePID.Controls.Add(this.cbNavResetHome);
+            this.tabPagePID.Controls.Add(this.cbNavGPS_Lead);
+            this.tabPagePID.Controls.Add(this.cbNavGPS_filtering);
             this.tabPagePID.Controls.Add(this.throttle_expo_control1);
             this.tabPagePID.Controls.Add(this.rc_expo_control1);
             this.tabPagePID.Location = new System.Drawing.Point(4, 22);
@@ -2367,127 +2387,6 @@
             0,
             0});
             // 
-            // cbNavSlowNav
-            // 
-            this.cbNavSlowNav.AutoSize = true;
-            this.cbNavSlowNav.aux = 0;
-            this.cbNavSlowNav.ForeColor = System.Drawing.Color.White;
-            this.cbNavSlowNav.IsHighlighted = false;
-            this.cbNavSlowNav.item = 0;
-            this.cbNavSlowNav.Location = new System.Drawing.Point(599, 186);
-            this.cbNavSlowNav.Name = "cbNavSlowNav";
-            this.cbNavSlowNav.rclevel = 0;
-            this.cbNavSlowNav.Size = new System.Drawing.Size(135, 17);
-            this.cbNavSlowNav.TabIndex = 39;
-            this.cbNavSlowNav.Text = "Enable slow navigation";
-            this.cbNavSlowNav.UseVisualStyleBackColor = true;
-            // 
-            // cbNavWaitRTHAlt
-            // 
-            this.cbNavWaitRTHAlt.AutoSize = true;
-            this.cbNavWaitRTHAlt.aux = 0;
-            this.cbNavWaitRTHAlt.ForeColor = System.Drawing.Color.White;
-            this.cbNavWaitRTHAlt.IsHighlighted = false;
-            this.cbNavWaitRTHAlt.item = 0;
-            this.cbNavWaitRTHAlt.Location = new System.Drawing.Point(599, 162);
-            this.cbNavWaitRTHAlt.Name = "cbNavWaitRTHAlt";
-            this.cbNavWaitRTHAlt.rclevel = 0;
-            this.cbNavWaitRTHAlt.Size = new System.Drawing.Size(261, 17);
-            this.cbNavWaitRTHAlt.TabIndex = 38;
-            this.cbNavWaitRTHAlt.Text = "Wait for reaching RTH altitude before come home";
-            this.cbNavWaitRTHAlt.UseVisualStyleBackColor = true;
-            // 
-            // cbNavRTHHead
-            // 
-            this.cbNavRTHHead.AutoSize = true;
-            this.cbNavRTHHead.aux = 0;
-            this.cbNavRTHHead.ForeColor = System.Drawing.Color.White;
-            this.cbNavRTHHead.IsHighlighted = false;
-            this.cbNavRTHHead.item = 0;
-            this.cbNavRTHHead.Location = new System.Drawing.Point(599, 138);
-            this.cbNavRTHHead.Name = "cbNavRTHHead";
-            this.cbNavRTHHead.rclevel = 0;
-            this.cbNavRTHHead.Size = new System.Drawing.Size(178, 17);
-            this.cbNavRTHHead.TabIndex = 37;
-            this.cbNavRTHHead.Text = "Turn to takeoff heading at home";
-            this.cbNavRTHHead.UseVisualStyleBackColor = true;
-            this.cbNavRTHHead.CheckedChanged += new System.EventHandler(this.checkBoxEx5_CheckedChanged);
-            // 
-            // cbNavTailFirst
-            // 
-            this.cbNavTailFirst.AutoSize = true;
-            this.cbNavTailFirst.aux = 0;
-            this.cbNavTailFirst.ForeColor = System.Drawing.Color.White;
-            this.cbNavTailFirst.IsHighlighted = false;
-            this.cbNavTailFirst.item = 0;
-            this.cbNavTailFirst.Location = new System.Drawing.Point(599, 114);
-            this.cbNavTailFirst.Name = "cbNavTailFirst";
-            this.cbNavTailFirst.rclevel = 0;
-            this.cbNavTailFirst.Size = new System.Drawing.Size(96, 17);
-            this.cbNavTailFirst.TabIndex = 36;
-            this.cbNavTailFirst.Text = "Fly with tail first";
-            this.cbNavTailFirst.UseVisualStyleBackColor = true;
-            // 
-            // cbNavHeadingControl
-            // 
-            this.cbNavHeadingControl.AutoSize = true;
-            this.cbNavHeadingControl.aux = 0;
-            this.cbNavHeadingControl.ForeColor = System.Drawing.Color.White;
-            this.cbNavHeadingControl.IsHighlighted = false;
-            this.cbNavHeadingControl.item = 0;
-            this.cbNavHeadingControl.Location = new System.Drawing.Point(599, 90);
-            this.cbNavHeadingControl.Name = "cbNavHeadingControl";
-            this.cbNavHeadingControl.rclevel = 0;
-            this.cbNavHeadingControl.Size = new System.Drawing.Size(127, 17);
-            this.cbNavHeadingControl.TabIndex = 35;
-            this.cbNavHeadingControl.Text = "Nav controls heading";
-            this.cbNavHeadingControl.UseVisualStyleBackColor = true;
-            // 
-            // cbNavResetHome
-            // 
-            this.cbNavResetHome.AutoSize = true;
-            this.cbNavResetHome.aux = 0;
-            this.cbNavResetHome.ForeColor = System.Drawing.Color.White;
-            this.cbNavResetHome.IsHighlighted = false;
-            this.cbNavResetHome.item = 0;
-            this.cbNavResetHome.Location = new System.Drawing.Point(599, 66);
-            this.cbNavResetHome.Name = "cbNavResetHome";
-            this.cbNavResetHome.rclevel = 0;
-            this.cbNavResetHome.Size = new System.Drawing.Size(177, 17);
-            this.cbNavResetHome.TabIndex = 34;
-            this.cbNavResetHome.Text = "Don\'t reset home position at arm";
-            this.cbNavResetHome.UseVisualStyleBackColor = true;
-            // 
-            // cbNavGPS_Lead
-            // 
-            this.cbNavGPS_Lead.AutoSize = true;
-            this.cbNavGPS_Lead.aux = 0;
-            this.cbNavGPS_Lead.ForeColor = System.Drawing.Color.White;
-            this.cbNavGPS_Lead.IsHighlighted = false;
-            this.cbNavGPS_Lead.item = 0;
-            this.cbNavGPS_Lead.Location = new System.Drawing.Point(599, 42);
-            this.cbNavGPS_Lead.Name = "cbNavGPS_Lead";
-            this.cbNavGPS_Lead.rclevel = 0;
-            this.cbNavGPS_Lead.Size = new System.Drawing.Size(193, 17);
-            this.cbNavGPS_Lead.TabIndex = 33;
-            this.cbNavGPS_Lead.Text = "Enable GPS forward prediction filter";
-            this.cbNavGPS_Lead.UseVisualStyleBackColor = true;
-            // 
-            // cbNavGPS_filtering
-            // 
-            this.cbNavGPS_filtering.AutoSize = true;
-            this.cbNavGPS_filtering.aux = 0;
-            this.cbNavGPS_filtering.ForeColor = System.Drawing.Color.White;
-            this.cbNavGPS_filtering.IsHighlighted = false;
-            this.cbNavGPS_filtering.item = 0;
-            this.cbNavGPS_filtering.Location = new System.Drawing.Point(599, 18);
-            this.cbNavGPS_filtering.Name = "cbNavGPS_filtering";
-            this.cbNavGPS_filtering.rclevel = 0;
-            this.cbNavGPS_filtering.Size = new System.Drawing.Size(120, 17);
-            this.cbNavGPS_filtering.TabIndex = 32;
-            this.cbNavGPS_filtering.Text = "Enable GPS filtering";
-            this.cbNavGPS_filtering.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -2784,6 +2683,127 @@
             this.nRATE_rp.Size = new System.Drawing.Size(68, 18);
             this.nRATE_rp.TabIndex = 0;
             this.nRATE_rp.ValueChanged += new System.EventHandler(this.nRATE_rp_ValueChanged);
+            // 
+            // cbNavSlowNav
+            // 
+            this.cbNavSlowNav.AutoSize = true;
+            this.cbNavSlowNav.aux = 0;
+            this.cbNavSlowNav.ForeColor = System.Drawing.Color.White;
+            this.cbNavSlowNav.IsHighlighted = false;
+            this.cbNavSlowNav.item = 0;
+            this.cbNavSlowNav.Location = new System.Drawing.Point(599, 186);
+            this.cbNavSlowNav.Name = "cbNavSlowNav";
+            this.cbNavSlowNav.rclevel = 0;
+            this.cbNavSlowNav.Size = new System.Drawing.Size(135, 17);
+            this.cbNavSlowNav.TabIndex = 39;
+            this.cbNavSlowNav.Text = "Enable slow navigation";
+            this.cbNavSlowNav.UseVisualStyleBackColor = true;
+            // 
+            // cbNavWaitRTHAlt
+            // 
+            this.cbNavWaitRTHAlt.AutoSize = true;
+            this.cbNavWaitRTHAlt.aux = 0;
+            this.cbNavWaitRTHAlt.ForeColor = System.Drawing.Color.White;
+            this.cbNavWaitRTHAlt.IsHighlighted = false;
+            this.cbNavWaitRTHAlt.item = 0;
+            this.cbNavWaitRTHAlt.Location = new System.Drawing.Point(599, 162);
+            this.cbNavWaitRTHAlt.Name = "cbNavWaitRTHAlt";
+            this.cbNavWaitRTHAlt.rclevel = 0;
+            this.cbNavWaitRTHAlt.Size = new System.Drawing.Size(261, 17);
+            this.cbNavWaitRTHAlt.TabIndex = 38;
+            this.cbNavWaitRTHAlt.Text = "Wait for reaching RTH altitude before come home";
+            this.cbNavWaitRTHAlt.UseVisualStyleBackColor = true;
+            // 
+            // cbNavRTHHead
+            // 
+            this.cbNavRTHHead.AutoSize = true;
+            this.cbNavRTHHead.aux = 0;
+            this.cbNavRTHHead.ForeColor = System.Drawing.Color.White;
+            this.cbNavRTHHead.IsHighlighted = false;
+            this.cbNavRTHHead.item = 0;
+            this.cbNavRTHHead.Location = new System.Drawing.Point(599, 138);
+            this.cbNavRTHHead.Name = "cbNavRTHHead";
+            this.cbNavRTHHead.rclevel = 0;
+            this.cbNavRTHHead.Size = new System.Drawing.Size(178, 17);
+            this.cbNavRTHHead.TabIndex = 37;
+            this.cbNavRTHHead.Text = "Turn to takeoff heading at home";
+            this.cbNavRTHHead.UseVisualStyleBackColor = true;
+            this.cbNavRTHHead.CheckedChanged += new System.EventHandler(this.checkBoxEx5_CheckedChanged);
+            // 
+            // cbNavTailFirst
+            // 
+            this.cbNavTailFirst.AutoSize = true;
+            this.cbNavTailFirst.aux = 0;
+            this.cbNavTailFirst.ForeColor = System.Drawing.Color.White;
+            this.cbNavTailFirst.IsHighlighted = false;
+            this.cbNavTailFirst.item = 0;
+            this.cbNavTailFirst.Location = new System.Drawing.Point(599, 114);
+            this.cbNavTailFirst.Name = "cbNavTailFirst";
+            this.cbNavTailFirst.rclevel = 0;
+            this.cbNavTailFirst.Size = new System.Drawing.Size(96, 17);
+            this.cbNavTailFirst.TabIndex = 36;
+            this.cbNavTailFirst.Text = "Fly with tail first";
+            this.cbNavTailFirst.UseVisualStyleBackColor = true;
+            // 
+            // cbNavHeadingControl
+            // 
+            this.cbNavHeadingControl.AutoSize = true;
+            this.cbNavHeadingControl.aux = 0;
+            this.cbNavHeadingControl.ForeColor = System.Drawing.Color.White;
+            this.cbNavHeadingControl.IsHighlighted = false;
+            this.cbNavHeadingControl.item = 0;
+            this.cbNavHeadingControl.Location = new System.Drawing.Point(599, 90);
+            this.cbNavHeadingControl.Name = "cbNavHeadingControl";
+            this.cbNavHeadingControl.rclevel = 0;
+            this.cbNavHeadingControl.Size = new System.Drawing.Size(127, 17);
+            this.cbNavHeadingControl.TabIndex = 35;
+            this.cbNavHeadingControl.Text = "Nav controls heading";
+            this.cbNavHeadingControl.UseVisualStyleBackColor = true;
+            // 
+            // cbNavResetHome
+            // 
+            this.cbNavResetHome.AutoSize = true;
+            this.cbNavResetHome.aux = 0;
+            this.cbNavResetHome.ForeColor = System.Drawing.Color.White;
+            this.cbNavResetHome.IsHighlighted = false;
+            this.cbNavResetHome.item = 0;
+            this.cbNavResetHome.Location = new System.Drawing.Point(599, 66);
+            this.cbNavResetHome.Name = "cbNavResetHome";
+            this.cbNavResetHome.rclevel = 0;
+            this.cbNavResetHome.Size = new System.Drawing.Size(177, 17);
+            this.cbNavResetHome.TabIndex = 34;
+            this.cbNavResetHome.Text = "Don\'t reset home position at arm";
+            this.cbNavResetHome.UseVisualStyleBackColor = true;
+            // 
+            // cbNavGPS_Lead
+            // 
+            this.cbNavGPS_Lead.AutoSize = true;
+            this.cbNavGPS_Lead.aux = 0;
+            this.cbNavGPS_Lead.ForeColor = System.Drawing.Color.White;
+            this.cbNavGPS_Lead.IsHighlighted = false;
+            this.cbNavGPS_Lead.item = 0;
+            this.cbNavGPS_Lead.Location = new System.Drawing.Point(599, 42);
+            this.cbNavGPS_Lead.Name = "cbNavGPS_Lead";
+            this.cbNavGPS_Lead.rclevel = 0;
+            this.cbNavGPS_Lead.Size = new System.Drawing.Size(193, 17);
+            this.cbNavGPS_Lead.TabIndex = 33;
+            this.cbNavGPS_Lead.Text = "Enable GPS forward prediction filter";
+            this.cbNavGPS_Lead.UseVisualStyleBackColor = true;
+            // 
+            // cbNavGPS_filtering
+            // 
+            this.cbNavGPS_filtering.AutoSize = true;
+            this.cbNavGPS_filtering.aux = 0;
+            this.cbNavGPS_filtering.ForeColor = System.Drawing.Color.White;
+            this.cbNavGPS_filtering.IsHighlighted = false;
+            this.cbNavGPS_filtering.item = 0;
+            this.cbNavGPS_filtering.Location = new System.Drawing.Point(599, 18);
+            this.cbNavGPS_filtering.Name = "cbNavGPS_filtering";
+            this.cbNavGPS_filtering.rclevel = 0;
+            this.cbNavGPS_filtering.Size = new System.Drawing.Size(120, 17);
+            this.cbNavGPS_filtering.TabIndex = 32;
+            this.cbNavGPS_filtering.Text = "Enable GPS filtering";
+            this.cbNavGPS_filtering.UseVisualStyleBackColor = true;
             // 
             // throttle_expo_control1
             // 
@@ -5262,6 +5282,7 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPageSettings.Controls.Add(this.cbGUISpeechEnabled);
             this.tabPageSettings.Controls.Add(this.l_i2cdatasupress);
             this.tabPageSettings.Controls.Add(this.b_check_update);
             this.tabPageSettings.Controls.Add(this.b_select_settings_folder);
@@ -5282,6 +5303,17 @@
             this.tabPageSettings.Size = new System.Drawing.Size(982, 452);
             this.tabPageSettings.TabIndex = 4;
             this.tabPageSettings.Text = "GUI Settings";
+            // 
+            // cbGUISpeechEnabled
+            // 
+            this.cbGUISpeechEnabled.AutoSize = true;
+            this.cbGUISpeechEnabled.Location = new System.Drawing.Point(215, 192);
+            this.cbGUISpeechEnabled.Name = "cbGUISpeechEnabled";
+            this.cbGUISpeechEnabled.Size = new System.Drawing.Size(156, 17);
+            this.cbGUISpeechEnabled.TabIndex = 30;
+            this.cbGUISpeechEnabled.Text = "Enable spoken notifications";
+            this.cbGUISpeechEnabled.UseVisualStyleBackColor = true;
+            this.cbGUISpeechEnabled.Click += new System.EventHandler(this.cbGUISpeechEnabled_CheckedChanged);
             // 
             // l_i2cdatasupress
             // 
@@ -6414,6 +6446,8 @@
         private System.Windows.Forms.Label label82;
         private System.Windows.Forms.NumericUpDown nSafeWPDist;
         private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.CheckBox cbGUISpeechEnabled;
+        private MultiWiiGUIControls.ColorProgressBar barRSSIMission;
     }
 }
 
