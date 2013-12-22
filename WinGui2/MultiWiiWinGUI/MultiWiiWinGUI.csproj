@@ -367,13 +367,18 @@
     <Content Include="Resources\Altimeter_Background.bmp" />
     <Content Include="Resources\del_btn.png" />
     <Content Include="Resources\down_btn.png" />
+    <None Include="Resources\home_marker.png" />
+    <None Include="Resources\flight_here.png" />
     <Content Include="Resources\i_green_off.bmp" />
     <Content Include="Resources\i_green_on.bmp" />
     <Content Include="Resources\i_red_off.bmp" />
     <Content Include="Resources\i_red_on.bmp" />
     <Content Include="Resources\LongNeedleAltimeter.bmp" />
+    <None Include="Resources\map_point.png" />
+    <None Include="Resources\map_point1.png" />
     <Content Include="Resources\marker_airplane.png" />
     <Content Include="Resources\marker_bi.png" />
+    <None Include="Resources\marker_blue.png" />
     <Content Include="Resources\marker_fwing.png" />
     <Content Include="Resources\marker_heli.png" />
     <Content Include="Resources\marker_hex6p.png" />
@@ -382,6 +387,7 @@
     <Content Include="Resources\marker_octop8.png" />
     <Content Include="Resources\marker_octox8.png" />
     <Content Include="Resources\marker_oktoflatp.png" />
+    <None Include="Resources\marker_poi.png" />
     <Content Include="Resources\marker_quadp.png" />
     <Content Include="Resources\marker_quadx.png" />
     <Content Include="Resources\marker_tri.png" />
@@ -393,8 +399,10 @@
     </Content>
     <Content Include="Resources\numbers.bmp" />
     <Content Include="Resources\poshold.png" />
+    <None Include="Resources\poshold_markert.png" />
     <Content Include="Resources\poshold_unlim.png" />
     <Content Include="Resources\SmallNeedleAltimeter.bmp" />
+    <None Include="Resources\timed_marker.png" />
     <Content Include="Resources\trash.png" />
     <Content Include="Resources\up_btn.png" />
     <Content Include="Resources\VerticalSpeedIndicator_Background.bmp" />

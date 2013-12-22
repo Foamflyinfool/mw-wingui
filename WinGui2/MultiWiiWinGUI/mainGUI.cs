@@ -186,7 +186,7 @@ namespace MultiWiiWinGUI
         GMarkerGoogle currentMarker;
         GMapMarkerRect CurentRectMarker = null;
         GMapMarker center; 
-        GMarkerGoogle markerGoToClick = new GMarkerGoogle(new PointLatLng(0.0, 0.0),GMarkerGoogleType.lightblue);
+        GMapMarker markerGoToClick = new GMarkerGoogle(new PointLatLng(0.0, 0.0),GMarkerGoogleType.lightblue);
 
         List<PointLatLng> points = new List<PointLatLng>();
 
@@ -308,11 +308,12 @@ namespace MultiWiiWinGUI
             GMOverlayFlightPath = new GMapOverlay("flightpath");
             MainMap.Overlays.Add(GMOverlayFlightPath);
 
+            GMOverlayMission = new GMapOverlay("missionroute");
+            MainMap.Overlays.Add(GMOverlayMission);
+
             GMOverlayWaypoints = new GMapOverlay("waypoints");
             MainMap.Overlays.Add(GMOverlayWaypoints);
 
-            GMOverlayMission = new GMapOverlay("missionroute");
-            MainMap.Overlays.Add(GMOverlayMission);
 
             GMOverlayLiveData = new GMapOverlay("livedata");
             MainMap.Overlays.Add(GMOverlayLiveData);
@@ -323,7 +324,7 @@ namespace MultiWiiWinGUI
 
 
             GMOverlayLiveData.Markers.Clear();
-            GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(copterPos, 0, 0, 0, 3));
+            GMOverlayLiveData.Markers.Add(new GMapMarkerCopter(copterPos, 0, 0, 0, 3));
 
             GMRouteFlightPath = new GMapRoute(points, "flightpath");
             GMRouteFlightPath.Stroke = penRoute;
@@ -1003,8 +1004,6 @@ namespace MultiWiiWinGUI
 
             }
         }
-
-
 
         private void timer_realtime_Tick(object sender, EventArgs e)
         {
@@ -1777,7 +1776,6 @@ namespace MultiWiiWinGUI
             servo_reverse[i].Visible = status;
         }
 
-
         private void nav_error_notification(byte error_code)
         {
             /*
@@ -1814,8 +1812,6 @@ namespace MultiWiiWinGUI
                     break;
             }
         }
-
-
 
         private void update_gui()
         {
@@ -2173,7 +2169,7 @@ namespace MultiWiiWinGUI
                         GMOverlayLiveData.Markers.Add(new GMapMarkerHome(GPS_home));
                     }
 
-                    GMOverlayLiveData.Markers.Add(new GMapMarkerQuad(GPS_pos, mw_gui.heading, 0, mw_gui.target_bearing, mw_gui.multiType));
+                    GMOverlayLiveData.Markers.Add(new GMapMarkerCopter(GPS_pos, mw_gui.heading, 0, mw_gui.target_bearing, mw_gui.multiType));
 
                     // Center Map to copter position if AutoPan is checked in
                     if (cbAutoPan.Checked) MainMap.Position = GPS_pos;
@@ -2811,16 +2807,12 @@ namespace MultiWiiWinGUI
 
         }
 
-
         private void cbGUISpeechEnabled_CheckedChanged(object sender, EventArgs e)
         {
             gui_settings.speech_enabled = cbGUISpeechEnabled.Checked;
             b_save_gui_settings.BackColor = Color.LightCoral;
 
         }
-
-
-
 
         private void b_save_gui_settings_Click(object sender, EventArgs e)
         {
@@ -3118,52 +3110,26 @@ namespace MultiWiiWinGUI
         private void AddPOIMarker(string tag, double lng, double lat)
         {
             PointLatLng point = new PointLatLng(lat, lng);
-            GMapMarker m = new GMarkerGoogle(point, GMarkerGoogleType.lightblue_pushpin);
-            m.ToolTipMode = MarkerTooltipMode.Always;
-            m.ToolTipText = tag;
+            GMapMarker m = new GMapMarkerMissionStep(point, Convert.ToByte(tag), WP_ACTION.SET_POI);
             m.Tag = tag;
 
             GMapMarkerRect mBorders = new GMapMarkerRect(point);
             {
                 mBorders.InnerMarker = m;
-                mBorders.wprad = (int)float.Parse("5");
+                mBorders.wprad = (int)mw_gui.wp_radius / 100;
                 mBorders.MainMap = MainMap;
             }
 
-
             GMOverlayPOI.Markers.Add(m);
             GMOverlayPOI.Markers.Add(mBorders);
+
         }
 
         private void AddWPMarker(string tag, double lng, double lat, int alt, Color? color, int markertype)
         {
             PointLatLng point = new PointLatLng(lat, lng);
 
-            //GMarkerGoogle m = new GMarkerGoogle(point,GMarkerGoogleType.green);
-            GMapMarker m;
-
-            switch (markertype)
-            {
-                case 1:
-                    m = new GMapMarkerWP(point);
-                    break;
-                case 2:
-                    m = new GMapMarkerPosHoldUnlimited(point);
-                    break;
-                case 3:
-                    m = new GMapMarkerPosHold(point);
-                    break;
-                case 4:
-                    m = new GMarkerGoogle(point, GMarkerGoogleType.red_small);
-                    break;
-                default:
-                    m = new GMarkerGoogle(point, GMarkerGoogleType.green_small);
-                    break;
-
-            }
-
-            m.ToolTipMode = MarkerTooltipMode.Always;
-            m.ToolTipText = tag;
+            GMapMarker m = new GMapMarkerMissionStep(point, Convert.ToByte(tag), (byte)markertype);
             m.Tag = tag;
 
             GMapMarkerRect mBorders = new GMapMarkerRect(point);
@@ -3296,7 +3262,7 @@ namespace MultiWiiWinGUI
             {
                 PointLatLng pointClickToGo = new PointLatLng(end.Lat, end.Lng);
                 GMOverlayLiveData.Markers.Remove(markerGoToClick);
-                markerGoToClick = new GMarkerGoogle(pointClickToGo, GMarkerGoogleType.yellow_big_pause);
+                markerGoToClick = new GMapMarkerFlyHere(pointClickToGo);
                 GMOverlayLiveData.Markers.Add(markerGoToClick);
 
                 //Send the WP command, set waypoint 255 (poshold)
