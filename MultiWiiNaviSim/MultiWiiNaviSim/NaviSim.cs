@@ -655,9 +655,10 @@ namespace MultiWiiNaviSim
                if (serialPort.IsOpen)
                {
                    //Just process what is received. Get received commands and put them into 
-                   while (serialPort.BytesToRead > 0)
+                   while (serialPort.BytesToRead > 7)
                    {
-                       if (serialPort.BytesToRead >= 6)
+                       serialPort.Read(buffer, 0, 1);
+                       if (buffer[0] == 0xa5)
                        {
                            serialPort.Read(buffer, 0, 6);
                            nav_lat = BitConverter.ToInt16(buffer, 0);
@@ -669,10 +670,9 @@ namespace MultiWiiNaviSim
                                nav_lat = 0;
                                nav_lon = 0;
                            }
-
                        }
-
                    }
+
                }
                else   //port not opened, (it could happen when U disconnect the usb cable while connected
                {
