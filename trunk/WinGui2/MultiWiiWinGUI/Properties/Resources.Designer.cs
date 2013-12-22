@@ -153,9 +153,29 @@ namespace MultiWiiWinGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap flight_here {
+            get {
+                object obj = ResourceManager.GetObject("flight_here", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap home {
             get {
                 object obj = ResourceManager.GetObject("home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap home_marker {
+            get {
+                object obj = ResourceManager.GetObject("home_marker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,6 +203,26 @@ namespace MultiWiiWinGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap map_point {
+            get {
+                object obj = ResourceManager.GetObject("map_point", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap map_point1 {
+            get {
+                object obj = ResourceManager.GetObject("map_point1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap marker_airplane {
             get {
                 object obj = ResourceManager.GetObject("marker_airplane", resourceCulture);
@@ -196,6 +236,16 @@ namespace MultiWiiWinGUI.Properties {
         internal static System.Drawing.Bitmap marker_bi {
             get {
                 object obj = ResourceManager.GetObject("marker_bi", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap marker_blue {
+            get {
+                object obj = ResourceManager.GetObject("marker_blue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -276,6 +326,16 @@ namespace MultiWiiWinGUI.Properties {
         internal static System.Drawing.Bitmap marker_oktoflatp {
             get {
                 object obj = ResourceManager.GetObject("marker_oktoflatp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap marker_poi {
+            get {
+                object obj = ResourceManager.GetObject("marker_poi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -373,6 +433,16 @@ namespace MultiWiiWinGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap poshold_markert {
+            get {
+                object obj = ResourceManager.GetObject("poshold_markert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap poshold_unlim {
             get {
                 object obj = ResourceManager.GetObject("poshold_unlim", resourceCulture);
@@ -446,6 +516,16 @@ namespace MultiWiiWinGUI.Properties {
         internal static System.Drawing.Bitmap stop_log {
             get {
                 object obj = ResourceManager.GetObject("stop_log", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap timed_marker {
+            get {
+                object obj = ResourceManager.GetObject("timed_marker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

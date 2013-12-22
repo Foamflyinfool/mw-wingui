@@ -28,34 +28,11 @@ using System.Net.NetworkInformation;
 
 namespace MultiWiiWinGUI
 {
-    /// <summary>
-    /// Struct as used in Ardupilot
-    /// </summary>
-    public struct Locationwp
-    {
-        public byte id;				// command id
-        public byte options;
-        public float p1;				// param 1
-        public float p2;				// param 2
-        public float p3;				// param 3
-        public float p4;				// param 4
-        public float lat;				// Lattitude * 10**7
-        public float lng;				// Longitude * 10**7
-        public float alt;				// Altitude in centimeters (meters * 100)
-    };
-
-
-    /// <summary>
-    /// used to override the drawing of the waypoint box bounding
-    /// </summary>
     public class GMapMarkerRect : GMapMarker
     {
         public Pen Pen = new Pen(Brushes.White, 2);
-
         public Color Color { get { return Pen.Color; } set { Pen.Color = value; } }
-
         public GMapMarker InnerMarker;
-
         public int wprad = 0;
         public GMapControl MainMap;
 
@@ -63,9 +40,6 @@ namespace MultiWiiWinGUI
             : base(p)
         {
             Pen.DashStyle = DashStyle.Dot;
-
-            // do not forget set Size of the marker
-            // if so, you shall have no event on it ;}
             Size = new System.Drawing.Size(50, 50);
             Offset = new System.Drawing.Point(-Size.Width / 2, -Size.Height / 2 - 20);
         }
@@ -87,14 +61,11 @@ namespace MultiWiiWinGUI
             double m2pixelheight = MainMap.Height / height;
 
             GPoint loc = new GPoint((int)(LocalPosition.X - (m2pixelwidth * wprad * 2)), LocalPosition.Y);// MainMap.FromLatLngToLocal(wpradposition);
-
             g.DrawArc(Pen, new System.Drawing.Rectangle((int) (LocalPosition.X - Offset.X - (Math.Abs(loc.X - LocalPosition.X) / 2)), (int)(LocalPosition.Y - Offset.Y - Math.Abs(loc.X - LocalPosition.X) / 2), (int)(Math.Abs(loc.X - LocalPosition.X)), (int)(Math.Abs(loc.X - LocalPosition.X))), 0, 360);
 
         }
     }
-
-
-    public class GMapMarkerQuad : GMapMarker
+    public class GMapMarkerCopter : GMapMarker
     {
         const float rad2deg = (float)(180 / Math.PI);
         const float deg2rad = (float)(1.0 / rad2deg);
@@ -105,7 +76,7 @@ namespace MultiWiiWinGUI
         float target = -1;
         byte coptertype;
 
-        public GMapMarkerQuad(PointLatLng p, float heading, float cog, float target, byte coptertype)
+        public GMapMarkerCopter(PointLatLng p, float heading, float cog, float target, byte coptertype)
             : base(p)
         {
             this.heading = heading;
@@ -193,10 +164,30 @@ namespace MultiWiiWinGUI
             g.Transform = temp;
         }
     }
+    public class GMapMarkerFlyHere : GMapMarker
+    {
+        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.home_marker.Width, global::MultiWiiWinGUI.Properties.Resources.home_marker.Height);
+
+        public GMapMarkerFlyHere(PointLatLng p)
+            : base(p)
+        {
+            Size = SizeSt;
+        }
+
+        public override void OnRender(Graphics g)
+        {
+            Matrix temp = g.Transform;
+            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
+            Image pic = global::MultiWiiWinGUI.Properties.Resources.flight_here;
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 4, -pic.Height - 14);
+            g.Transform = temp;
+
+        }
+    }
 
     public class GMapMarkerHome : GMapMarker
     {
-        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.quadicon.Width, global::MultiWiiWinGUI.Properties.Resources.quadicon.Height);
+        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.home_marker.Width, global::MultiWiiWinGUI.Properties.Resources.home_marker.Height);
 
         public GMapMarkerHome(PointLatLng p)
             : base(p)
@@ -208,165 +199,70 @@ namespace MultiWiiWinGUI
         {
             Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            Image pic = global::MultiWiiWinGUI.Properties.Resources.home;
-            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
+            Image pic = global::MultiWiiWinGUI.Properties.Resources.home_marker;
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 4, -pic.Height - 14);
             g.Transform = temp;
 
         }
     }
 
-    public class GMapMarkerPosHold : GMapMarker
+    public class GMapMarkerMissionStep : GMapMarker
     {
-        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.phicon.Width, global::MultiWiiWinGUI.Properties.Resources.phicon.Height);
-
-        public GMapMarkerPosHold(PointLatLng p)
+        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.marker_poi.Width, global::MultiWiiWinGUI.Properties.Resources.marker_poi.Height);
+        private byte number;
+        private byte markertype;
+        public GMapMarkerMissionStep(PointLatLng p, byte id, byte type)
             : base(p)
         {
             Size = SizeSt;
+            number = id;
+            markertype = type;
         }
 
         public override void OnRender(Graphics g)
         {
+            Image pic;
             Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            Image pic = global::MultiWiiWinGUI.Properties.Resources.phicon;
-            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
-            g.Transform = temp;
 
-        }
-    }
-    public class GMapMarkerPosHoldUnlimited : GMapMarker
-    {
-        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.poshold_unlim.Width, global::MultiWiiWinGUI.Properties.Resources.poshold_unlim.Height);
-
-        public GMapMarkerPosHoldUnlimited(PointLatLng p)
-            : base(p)
-        {
-            Size = SizeSt;
-        }
-
-        public override void OnRender(Graphics g)
-        {
-            Matrix temp = g.Transform;
-            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            Image pic = global::MultiWiiWinGUI.Properties.Resources.poshold_unlim;
-            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
-            g.Transform = temp;
-
-        }
-    }
-    public class GMapMarkerWP : GMapMarker
-    {
-        static readonly System.Drawing.Size SizeSt = new System.Drawing.Size(global::MultiWiiWinGUI.Properties.Resources.wpicon.Width, global::MultiWiiWinGUI.Properties.Resources.wpicon.Height);
-
-        public GMapMarkerWP(PointLatLng p)
-            : base(p)
-        {
-            Size = SizeSt;
-        }
-
-        public override void OnRender(Graphics g)
-        {
-            Matrix temp = g.Transform;
-            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            Image pic = global::MultiWiiWinGUI.Properties.Resources.wpicon;
-            g.DrawImageUnscaled(pic, pic.Width / -2 - 7, -pic.Height - 14);
-            g.Transform = temp;
-
-        }
-    }
-
-    public class PointLatLngAlt
-    {
-        public double Lat = 0;
-        public double Lng = 0;
-        public double Alt = 0;
-        public string Tag = "";
-        public Color color = Color.White;
-
-        public PointLatLngAlt(double lat, double lng, double alt, string tag)
-        {
-            this.Lat = lat;
-            this.Lng = lng;
-            this.Alt = alt;
-            this.Tag = tag;
-        }
-
-        public PointLatLngAlt()
-        {
-
-        }
-
-        public PointLatLngAlt(GMap.NET.PointLatLng pll)
-        {
-            this.Lat = pll.Lat;
-            this.Lng = pll.Lng;
-        }
-
-        public PointLatLngAlt(Locationwp locwp)
-        {
-            this.Lat = locwp.lat;
-            this.Lng = locwp.lng;
-            this.Alt = locwp.alt;
-        }
-
-        public PointLatLngAlt(PointLatLngAlt plla)
-        {
-            this.Lat = plla.Lat;
-            this.Lng = plla.Lng;
-            this.Alt = plla.Alt;
-            this.color = plla.color;
-            this.Tag = plla.Tag;
-        }
-
-        public PointLatLng Point()
-        {
-            return new PointLatLng(Lat, Lng);
-        }
-
-        public override bool Equals(Object pllaobj)
-        {
-            PointLatLngAlt plla = (PointLatLngAlt)pllaobj;
-
-            if (plla == null)
-                return false;
-
-            if (this.Lat == plla.Lat &&
-            this.Lng == plla.Lng &&
-            this.Alt == plla.Alt &&
-            this.color == plla.color &&
-            this.Tag == plla.Tag)
+            // Set graphics
+            switch (markertype)
             {
-                return true;
+                case WP_ACTION.WAYPOINT:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.map_point1;
+                    break;
+                case WP_ACTION.HOLD_UNLIM:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.poshold_markert;
+                    break;
+                case WP_ACTION.HOLD_TIME:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.timed_marker;
+                    break;
+                case WP_ACTION.SET_POI:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_poi;
+                    break;
+                default:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.map_point1;
+                    break;
+
             }
-            return false;
-        }
 
-        public override int GetHashCode()
-        {
-            return (int)((Lat + Lng + Alt) * 100);
-        }
+            g.DrawImageUnscaled(pic, pic.Width / -2 - 4, -pic.Height - 14);
+            System.Drawing.Font drawFont = new System.Drawing.Font(FontFamily.GenericMonospace, 9.0F, FontStyle.Bold);
+            System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
 
-        /// <summary>
-        /// Calc Distance in M
-        /// </summary>
-        /// <param name="p2"></param>
-        /// <returns>Distance in M</returns>
-        public double GetDistance(PointLatLngAlt p2)
-        {
-            double d = Lat * 0.017453292519943295;
-            double num2 = Lng * 0.017453292519943295;
-            double num3 = p2.Lat * 0.017453292519943295;
-            double num4 = p2.Lng * 0.017453292519943295;
-            double num5 = num4 - num2;
-            double num6 = num3 - d;
-            double num7 = Math.Pow(Math.Sin(num6 / 2.0), 2.0) + ((Math.Cos(d) * Math.Cos(num3)) * Math.Pow(Math.Sin(num5 / 2.0), 2.0));
-            double num8 = 2.0 * Math.Atan2(Math.Sqrt(num7), Math.Sqrt(1.0 - num7));
-            return (6378.137 * num8) * 1000; // M
+            if (markertype == WP_ACTION.WAYPOINT)
+            {
+                drawBrush.Color = Color.Yellow;
+                g.DrawString("WP", drawFont, drawBrush, -8, -51);
+                drawBrush.Color = Color.White;
+            }
+            if (number < 10) g.DrawString(String.Format("{0:0}", number), drawFont, drawBrush, -5, -40);
+            if (number < 100 && number > 9) g.DrawString(String.Format("{0:0}", number), drawFont, drawBrush, -8, -40);
+            if (number > 100) g.DrawString(String.Format("{0:0}", number), drawFont, drawBrush, -12, -40);
+            g.Transform = temp;
+
         }
     }
-
-
 
     public class Stuff
     {
