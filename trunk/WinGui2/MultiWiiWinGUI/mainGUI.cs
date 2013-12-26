@@ -47,7 +47,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre6";
+        const string sVersion = "2.3 pre7";
         const byte byteVersion = 230;
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
