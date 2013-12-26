@@ -2148,11 +2148,6 @@
             0,
             0,
             0});
-            this.nRTHAlt.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             this.nRTHAlt.Name = "nRTHAlt";
             this.nRTHAlt.Size = new System.Drawing.Size(53, 19);
             this.nRTHAlt.TabIndex = 50;
