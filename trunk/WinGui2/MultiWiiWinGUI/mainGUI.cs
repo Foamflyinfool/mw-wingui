@@ -62,7 +62,7 @@ namespace MultiWiiWinGUI
         
 
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
-        string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump" };
+        string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump","Start Land","Land in Progress","Landed" };
 
         string[] sNavError = { "Navigation system is working.",
                                "Next waypoint distance is more than the safety limit, aborting mission",
@@ -74,7 +74,8 @@ namespace MultiWiiWinGUI
                                "Invalid Mission Step Action code detected, aborting mission.",
                                "Waiting to reach return to home altitude.",
                                "GPS fix lost, mission aborted - COPTER IS ADRIFT!",
-                               "Copter is disarmed, navigation engine disabled."};
+                               "Copter is disarmed, navigation engine disabled.",
+                               "Landing is in progress, check attitude if possible."};
 
         string[] sSerialSpeeds = { "115200", "57600", "38400", "19200", "9600" };
         string[] sRefreshSpeeds = { "10 Hz", "5 Hz", "2 Hz", "1 Hz" };
@@ -3902,6 +3903,7 @@ namespace MultiWiiWinGUI
                 if (sAction == "RTH") command = WP_ACTION.RTH;
                 if (sAction == "SET_HEAD") command = WP_ACTION.SET_HEAD;
                 if (sAction == "SET_POI") command = WP_ACTION.SET_POI;
+                if (sAction == "LAND") command = WP_ACTION.LAND;
 
                 if (sLon == "0" || sLat == "0")
                     continue;
@@ -3920,11 +3922,14 @@ namespace MultiWiiWinGUI
                     continue;
                 }
 
-
                 AddWPMarker((a + 1).ToString(), double.Parse(sLon), double.Parse(sLat), (int)double.Parse(sAlt), null, command);
-
+                //POSHOLD UNLIM marks the end of the mission
                 if (sAction == "POSHOLD_UNLIM")
                     break;
+
+                //LAND here also marks the end of the mission
+                if (sAction == "LAND")
+                    break;                              
 
             }
 
@@ -3993,6 +3998,16 @@ namespace MultiWiiWinGUI
                 missionDataGrid.Columns[5].HeaderText = "";
                 missionDataGrid.Columns[6].HeaderText = "";
                 missionDataGrid.Columns[7].HeaderText = "";
+            }
+
+            if (sAction == "LAND")
+            {
+                missionDataGrid.Columns[2].HeaderText = "";
+                missionDataGrid.Columns[3].HeaderText = "";
+                missionDataGrid.Columns[4].HeaderText = "";
+                missionDataGrid.Columns[5].HeaderText = "Lat";
+                missionDataGrid.Columns[6].HeaderText = "Lon";
+                missionDataGrid.Columns[7].HeaderText = "Alt";
             }
 
 
@@ -4620,6 +4635,7 @@ namespace MultiWiiWinGUI
                 if (sAction == "JUMP") action = WP_ACTION.JUMP;
                 if (sAction == "SET_POI") action = WP_ACTION.SET_POI;
                 if (sAction == "SET_HEAD") action = WP_ACTION.SET_HEAD;
+                if (sAction == "LAND") action = WP_ACTION.LAND;
 
                 altitude = Convert.ToInt32(missionDataGrid.Rows[a].Cells[ALTCOL.Index].Value.ToString()); // alt
                 p1 = Convert.ToInt16(missionDataGrid.Rows[a].Cells[Par1.Index].Value.ToString()); // parameter
@@ -4699,6 +4715,8 @@ namespace MultiWiiWinGUI
                         case WP_ACTION.SET_POI: strAction = "SET_POI";
                             break;
                         case WP_ACTION.SET_HEAD: strAction = "SET_HEAD";
+                            break;
+                        case WP_ACTION.LAND: strAction = "LAND";
                             break;
                             
                     }
@@ -4950,6 +4968,11 @@ namespace MultiWiiWinGUI
         private void checkBoxEx5_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void tsMenuAddLand_Click(object sender, EventArgs e)
+        {
+            addWP("LAND", 0, 0, 0, start.Lat, start.Lng, iDefAlt);
         }
 
 
