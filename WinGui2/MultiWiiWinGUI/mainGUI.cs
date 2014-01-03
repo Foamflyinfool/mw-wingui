@@ -49,6 +49,7 @@ namespace MultiWiiWinGUI
 
         const string sVersion = "2.3 pre7";
         const byte byteVersion = 230;
+        const uint iNaviVersion = 5;                //Navigation code version
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -860,7 +861,23 @@ namespace MultiWiiWinGUI
             }
 
         }
-        
+
+        bool check_capability(int captocheck)
+        {
+            if ((mw_gui.capability & captocheck) > 0)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+
+        uint get_navi_version()
+        {
+            return (mw_gui.capability >> 28);
+        }
+
         private void create_RC_Checkboxes(string[] names)
         {
 
@@ -1357,9 +1374,9 @@ namespace MultiWiiWinGUI
                 case MSP.MSP_IDENT:
                     ptr = 0;
                     mw_gui.version = (byte)inBuf[ptr++];
-                    mw_gui.multiType = (byte)inBuf[ptr];
+                    mw_gui.multiType = (byte)inBuf[ptr++];
                     mw_gui.protocol_version = (byte)inBuf[ptr++];
-                    mw_gui.capability = BitConverter.ToInt32(inBuf, ptr); ptr += 4;
+                    mw_gui.capability = BitConverter.ToUInt32(inBuf, ptr); ptr += 4;
                     response_counter++;
                     break;
                 case MSP.MSP_STATUS:
@@ -1591,7 +1608,8 @@ namespace MultiWiiWinGUI
 
                 case MSP.MSP_NAV_CONFIG:
                     ptr = 0;
-                    mw_gui.flags = inBuf[ptr++];
+                    mw_gui.flags1 = inBuf[ptr++];
+                    mw_gui.flags2 = inBuf[ptr++];
                     mw_gui.wp_radius = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.safe_wp_distance = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.nav_max_altitude = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
@@ -1600,6 +1618,7 @@ namespace MultiWiiWinGUI
                     mw_gui.crosstrack_gain = inBuf[ptr++];
                     mw_gui.nav_bank_max = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.rth_altitude = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.fence        = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.max_wp_number = inBuf[ptr++];
                     break;
 
@@ -2042,14 +2061,20 @@ namespace MultiWiiWinGUI
                     }
 
 
-                    cbNavGPS_filtering.Checked  = (mw_gui.flags & 0x01) > 0;
-                    cbNavGPS_Lead.Checked       = (mw_gui.flags & 0x02) > 0;
-                    cbNavResetHome.Checked      = (mw_gui.flags & 0x04) > 0;
-                    cbNavHeadingControl.Checked = (mw_gui.flags & 0x08) > 0;
-                    cbNavTailFirst.Checked      = (mw_gui.flags & 0x10) > 0;
-                    cbNavRTHHead.Checked        = (mw_gui.flags & 0x20) > 0;
-                    cbNavSlowNav.Checked        = (mw_gui.flags & 0x40) > 0;
-                    cbNavWaitRTHAlt.Checked     = (mw_gui.flags & 0x80) > 0;
+                if (naviGroup.Enabled)
+                {
+                    //flags
+                    cbNavGPS_filtering.Checked  = (mw_gui.flags1 & 0x01) > 0;
+                    cbNavGPS_Lead.Checked       = (mw_gui.flags1 & 0x02) > 0;
+                    cbNavResetHome.Checked      = (mw_gui.flags1 & 0x04) > 0;
+                    cbNavHeadingControl.Checked = (mw_gui.flags1 & 0x08) > 0;
+                    cbNavTailFirst.Checked      = (mw_gui.flags1 & 0x10) > 0;
+                    cbNavRTHHead.Checked        = (mw_gui.flags1 & 0x20) > 0;
+                    cbNavSlowNav.Checked        = (mw_gui.flags1 & 0x40) > 0;
+                    cbNavWaitRTHAlt.Checked     = (mw_gui.flags1 & 0x80) > 0;
+                    //flags2
+                    cbNavDisableSticks.Checked  = (mw_gui.flags2 & 0x01) > 0;
+                    cbNavBaroTakeover.Checked   = (mw_gui.flags2 & 0x02) > 0;
 
                     nWPRadius.Value = mw_gui.wp_radius;
                     nRTHAlt.Value = mw_gui.rth_altitude;
@@ -2059,13 +2084,14 @@ namespace MultiWiiWinGUI
                     nBanking.Value = mw_gui.nav_bank_max / 100;
                     nSafeWPDist.Value = mw_gui.safe_wp_distance;
                     nMaxAlt.Value = mw_gui.nav_max_altitude;
+                    nFence.Value = mw_gui.fence;
 
 
                     //Save default values to gui settings
                     gui_settings.max_wp_number = mw_gui.max_wp_number;
                     gui_settings.wp_radius = mw_gui.wp_radius;
+                }
                     gui_settings.save_to_xml(sGuiSettingsFilename);
-    
                     bOptions_needs_refresh = false;
                 }
 #endregion
@@ -2533,7 +2559,13 @@ namespace MultiWiiWinGUI
                  (byte)(cbNavRTHHead.Checked ? 0x20 : 0x00) +
                  (byte)(cbNavSlowNav.Checked ? 0x40 : 0x00) +
                  (byte)(cbNavWaitRTHAlt.Checked ? 0x80 : 0x00);
-            mw_params.flags = (byte)t;
+            mw_params.flags1 = (byte)t;
+
+            t = (byte)(cbNavDisableSticks.Checked ? 0x01 : 0x00) +
+                (byte)(cbNavBaroTakeover.Checked ? 0x02 : 0x00);  
+            mw_params.flags2 = (byte)t;
+
+
             mw_params.wp_radius = (ushort)nWPRadius.Value;
             mw_params.rth_altitude = (ushort)nRTHAlt.Value;
             mw_params.crosstrack_gain = (byte)((decimal)nCrosstrack.Value * 100);
@@ -2542,6 +2574,7 @@ namespace MultiWiiWinGUI
             mw_params.nav_bank_max = (ushort)(nBanking.Value * 100);
             mw_params.safe_wp_distance = (ushort)nSafeWPDist.Value;
             mw_params.nav_max_altitude = (ushort)nMaxAlt.Value;
+            mw_params.fence = (ushort)nFence.Value;
             mw_params.max_wp_number = mw_gui.max_wp_number;
 
         }
@@ -3454,7 +3487,18 @@ namespace MultiWiiWinGUI
             MainMap.Invalidate(false);
         }
 
+
+
         private void b_fetch_tiles_Click(object sender, EventArgs e)
+        {
+            fetch_map();
+        }
+        private void fetchMapTilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fetch_map();
+        }
+
+        private void fetch_map()
         {
             RectLatLng area = MainMap.SelectedArea;
             if (area.IsEmpty)
@@ -4907,6 +4951,7 @@ namespace MultiWiiWinGUI
         {
 
         }
+
 
  
     }

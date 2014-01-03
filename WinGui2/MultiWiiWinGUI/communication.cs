@@ -187,10 +187,12 @@ namespace MultiWiiWinGUI
                 while (!MSPquery_sync(MSP.MSP_SERVO_CONF, 200) && tries < 10) { tries++; }
                 if (tries == 10) { failed_connect_cleanup(1); return; }
 
-                tries = 0;
-                while (!MSPquery_sync(MSP.MSP_NAV_CONFIG, 200) && tries < 10) { tries++; }
-                if (tries == 10) { failed_connect_cleanup(1); return; }
-
+                if (check_capability(CAP.NAV_CAPABLE) )
+                {
+                    tries = 0;
+                    while (!MSPquery_sync(MSP.MSP_NAV_CONFIG, 200) && tries < 10) { tries++; }
+                    if (tries == 10) { failed_connect_cleanup(1); return; }
+                }
                 
                 serial_packet_rx_count = 0;
                 serial_packet_tx_count = 0;
@@ -202,6 +204,26 @@ namespace MultiWiiWinGUI
                 }
 
                 //All set we are ready to go.
+                if (check_capability(CAP.NAV_CAPABLE))
+                {
+                    if (get_navi_version() != iNaviVersion)
+                    {
+                        MessageBoxEx.Show(this, "Navigation code version missmatch!\r\nGUI version: v" + Convert.ToString(iNaviVersion) +
+                                          " Controller version: v" + Convert.ToString(get_navi_version()) + "\r\n Navigation functions disabled!", "Code version missmatch", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        naviGroup.Enabled = false;
+                    }
+                    else
+                    {
+                        btnDownLoadMission.Enabled = true;
+                        btnUploadMission.Enabled = true;
+                        naviGroup.Enabled = true;
+                    }
+
+                }
+                else
+                {
+                    naviGroup.Enabled = false;
+                }
 
                 //Enable buttons that are not working here
                 b_reset.Enabled = true;
@@ -211,8 +233,6 @@ namespace MultiWiiWinGUI
                 b_write_settings.Enabled = true;
                 b_write_to_file.Enabled = true;
                 b_load_from_file.Enabled = true;
-                btnDownLoadMission.Enabled = true;
-                btnUploadMission.Enabled = true;
 
                 timer_realtime.Start();
                 bOptions_needs_refresh = true;
@@ -278,8 +298,11 @@ namespace MultiWiiWinGUI
             MSPquery(MSP.MSP_BOX);
             MSPquery(MSP.MSP_MISC);
             MSPquery(MSP.MSP_SERVO_CONF);
-            MSPquery(MSP.MSP_NAV_CONFIG);
 
+            if (naviGroup.Enabled)
+            {
+                MSPquery(MSP.MSP_NAV_CONFIG);
+            }
             DateTime startTime = DateTime.Now;
             bool missing_packets = false;
             //Wait for all the responses from the setting reload. Add 2sec timeout for remote situtations
