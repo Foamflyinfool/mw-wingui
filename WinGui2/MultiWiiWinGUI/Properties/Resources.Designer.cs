@@ -293,6 +293,16 @@ namespace MultiWiiWinGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap marker_land {
+            get {
+                object obj = ResourceManager.GetObject("marker_land", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap marker_octoflatx {
             get {
                 object obj = ResourceManager.GetObject("marker_octoflatx", resourceCulture);

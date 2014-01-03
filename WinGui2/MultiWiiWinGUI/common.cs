@@ -240,6 +240,9 @@ namespace MultiWiiWinGUI
                 case WP_ACTION.SET_POI:
                     pic = global::MultiWiiWinGUI.Properties.Resources.marker_poi;
                     break;
+                case WP_ACTION.LAND:
+                    pic = global::MultiWiiWinGUI.Properties.Resources.marker_land;
+                    break;
                 default:
                     pic = global::MultiWiiWinGUI.Properties.Resources.map_point1;
                     break;

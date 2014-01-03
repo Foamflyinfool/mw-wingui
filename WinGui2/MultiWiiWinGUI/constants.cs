@@ -39,6 +39,7 @@ namespace MultiWiiWinGUI
         public const int SET_POI = 5;              //Set POINT of interest (not implemented jet)
         public const int JUMP = 6;                 //jump to the given WP and (number of times)
         public const int SET_HEAD = 7;             //fixes copter heading  (-1 clears the setting)
+        public const int LAND = 8;
     }
 
     public class CAP

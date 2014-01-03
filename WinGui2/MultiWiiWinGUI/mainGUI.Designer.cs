@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.tabMain = new System.Windows.Forms.TabControl();
             this.contextMenuStripMap = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -38,6 +38,7 @@
             this.tsMenuAddPosholdTimed = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuAddPosholdUnlim = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuAddRTH = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsMenuAddLand = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuAddJump = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuAddPOI = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuSetHead = new System.Windows.Forms.ToolStripMenuItem();
@@ -156,6 +157,8 @@
             this.lDefAlt = new System.Windows.Forms.Label();
             this.tabPagePID = new System.Windows.Forms.TabPage();
             this.naviGroup = new System.Windows.Forms.GroupBox();
+            this.label71 = new System.Windows.Forms.Label();
+            this.nFence = new System.Windows.Forms.NumericUpDown();
             this.cbNavBaroTakeover = new MultiWiiGUIControls.CheckBoxEx();
             this.cbNavDisableSticks = new MultiWiiGUIControls.CheckBoxEx();
             this.cbNavGPS_filtering = new MultiWiiGUIControls.CheckBoxEx();
@@ -438,8 +441,6 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.nFence = new System.Windows.Forms.NumericUpDown();
-            this.label71 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.contextMenuStripMap.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
@@ -475,6 +476,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.missionDataGrid)).BeginInit();
             this.tabPagePID.SuspendLayout();
             this.naviGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nFence)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nBanking)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nCrosstrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRTHAlt)).BeginInit();
@@ -572,7 +574,6 @@
             this.tabPageCLI.SuspendLayout();
             this.gbTerminal.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nFence)).BeginInit();
             this.SuspendLayout();
             // 
             // tabMain
@@ -602,6 +603,7 @@
             this.tsMenuAddPosholdTimed,
             this.tsMenuAddPosholdUnlim,
             this.tsMenuAddRTH,
+            this.tsMenuAddLand,
             this.tsMenuAddJump,
             this.tsMenuAddPOI,
             this.tsMenuSetHead,
@@ -613,7 +615,7 @@
             this.toolStripSeparator6,
             this.fetchMapTilesToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStripMap";
-            this.contextMenuStripMap.Size = new System.Drawing.Size(185, 280);
+            this.contextMenuStripMap.Size = new System.Drawing.Size(185, 302);
             this.contextMenuStripMap.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripMap_Opening);
             // 
             // tsMenuAddWP
@@ -651,6 +653,13 @@
             this.tsMenuAddRTH.Text = "Add RTH";
             this.tsMenuAddRTH.ToolTipText = "Initiate Return To Home";
             this.tsMenuAddRTH.Click += new System.EventHandler(this.tsMenuAddRTH_Click);
+            // 
+            // tsMenuAddLand
+            // 
+            this.tsMenuAddLand.Name = "tsMenuAddLand";
+            this.tsMenuAddLand.Size = new System.Drawing.Size(184, 22);
+            this.tsMenuAddLand.Text = "Add Land Here";
+            this.tsMenuAddLand.Click += new System.EventHandler(this.tsMenuAddLand_Click);
             // 
             // tsMenuAddJump
             // 
@@ -1774,14 +1783,14 @@
             this.missionDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             this.missionDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.missionDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.missionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.missionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.No,
@@ -1795,14 +1804,14 @@
             this.UP,
             this.Down,
             this.DEL});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
             this.missionDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.missionDataGrid.EnableHeadersVisualStyles = false;
             this.missionDataGrid.Location = new System.Drawing.Point(0, 0);
@@ -1838,6 +1847,7 @@
             "POSHOLD_UNLIM",
             "POSHOLD_TIME",
             "RTH",
+            "LAND",
             "JUMP",
             "SET_POI",
             "SET_HEAD"});
@@ -2082,6 +2092,35 @@
             this.naviGroup.TabIndex = 56;
             this.naviGroup.TabStop = false;
             this.naviGroup.Text = "Navigation settings";
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label71.Location = new System.Drawing.Point(286, 391);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(85, 13);
+            this.label71.TabIndex = 59;
+            this.label71.Text = "Fence radius (m)";
+            // 
+            // nFence
+            // 
+            this.nFence.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nFence.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nFence.Location = new System.Drawing.Point(289, 412);
+            this.nFence.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nFence.Name = "nFence";
+            this.nFence.Size = new System.Drawing.Size(53, 19);
+            this.nFence.TabIndex = 58;
+            this.nFence.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
             // cbNavBaroTakeover
             // 
@@ -4529,9 +4568,11 @@
             // l_dbg1
             // 
             this.l_dbg1.AutoSize = true;
+            this.l_dbg1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_dbg1.ForeColor = System.Drawing.Color.White;
             this.l_dbg1.Location = new System.Drawing.Point(235, 31);
             this.l_dbg1.Name = "l_dbg1";
-            this.l_dbg1.Size = new System.Drawing.Size(13, 13);
+            this.l_dbg1.Size = new System.Drawing.Size(14, 13);
             this.l_dbg1.TabIndex = 73;
             this.l_dbg1.Text = "0";
             // 
@@ -4558,9 +4599,11 @@
             // l_dbg2
             // 
             this.l_dbg2.AutoSize = true;
+            this.l_dbg2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_dbg2.ForeColor = System.Drawing.Color.White;
             this.l_dbg2.Location = new System.Drawing.Point(339, 30);
             this.l_dbg2.Name = "l_dbg2";
-            this.l_dbg2.Size = new System.Drawing.Size(13, 13);
+            this.l_dbg2.Size = new System.Drawing.Size(14, 13);
             this.l_dbg2.TabIndex = 76;
             this.l_dbg2.Text = "0";
             // 
@@ -4576,9 +4619,11 @@
             // l_dbg4
             // 
             this.l_dbg4.AutoSize = true;
+            this.l_dbg4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_dbg4.ForeColor = System.Drawing.Color.White;
             this.l_dbg4.Location = new System.Drawing.Point(565, 30);
             this.l_dbg4.Name = "l_dbg4";
-            this.l_dbg4.Size = new System.Drawing.Size(13, 13);
+            this.l_dbg4.Size = new System.Drawing.Size(14, 13);
             this.l_dbg4.TabIndex = 82;
             this.l_dbg4.Text = "0";
             // 
@@ -4607,9 +4652,11 @@
             // l_dbg3
             // 
             this.l_dbg3.AutoSize = true;
+            this.l_dbg3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l_dbg3.ForeColor = System.Drawing.Color.White;
             this.l_dbg3.Location = new System.Drawing.Point(444, 30);
             this.l_dbg3.Name = "l_dbg3";
-            this.l_dbg3.Size = new System.Drawing.Size(13, 13);
+            this.l_dbg3.Size = new System.Drawing.Size(14, 13);
             this.l_dbg3.TabIndex = 79;
             this.l_dbg3.Text = "0";
             // 
@@ -5044,6 +5091,7 @@
             // l_alt
             // 
             this.l_alt.AutoSize = true;
+            this.l_alt.ForeColor = System.Drawing.Color.White;
             this.l_alt.Location = new System.Drawing.Point(120, 286);
             this.l_alt.Name = "l_alt";
             this.l_alt.Size = new System.Drawing.Size(13, 13);
@@ -5062,6 +5110,7 @@
             // l_head
             // 
             this.l_head.AutoSize = true;
+            this.l_head.ForeColor = System.Drawing.Color.White;
             this.l_head.Location = new System.Drawing.Point(120, 303);
             this.l_head.Name = "l_head";
             this.l_head.Size = new System.Drawing.Size(13, 13);
@@ -5924,35 +5973,6 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
-            // nFence
-            // 
-            this.nFence.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nFence.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nFence.Location = new System.Drawing.Point(289, 412);
-            this.nFence.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nFence.Name = "nFence";
-            this.nFence.Size = new System.Drawing.Size(53, 19);
-            this.nFence.TabIndex = 58;
-            this.nFence.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label71.Location = new System.Drawing.Point(286, 391);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(85, 13);
-            this.label71.TabIndex = 59;
-            this.label71.Text = "Fence radius (m)";
-            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -6012,6 +6032,7 @@
             this.tabPagePID.PerformLayout();
             this.naviGroup.ResumeLayout(false);
             this.naviGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nFence)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nBanking)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nCrosstrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nRTHAlt)).EndInit();
@@ -6128,7 +6149,6 @@
             this.gbTerminal.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nFence)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6484,17 +6504,6 @@
         private MultiWiiGUIControls.CheckBoxEx cbAutoPan;
         private System.Windows.Forms.Label label74;
         private System.Windows.Forms.Label label73;
-        private System.Windows.Forms.DataGridViewTextBoxColumn No;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Action;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Par2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Par3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LATCOL;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LONCOL;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ALTCOL;
-        private System.Windows.Forms.DataGridViewImageColumn UP;
-        private System.Windows.Forms.DataGridViewImageColumn Down;
-        private System.Windows.Forms.DataGridViewImageColumn DEL;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripMap;
         private System.Windows.Forms.ToolStripMenuItem tsMenuAddWP;
         private System.Windows.Forms.ToolStripMenuItem tsMenuAddPosholdTimed;
@@ -6544,6 +6553,18 @@
         private MultiWiiGUIControls.CheckBoxEx cbNavBaroTakeover;
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.NumericUpDown nFence;
+        private System.Windows.Forms.ToolStripMenuItem tsMenuAddLand;
+        private System.Windows.Forms.DataGridViewTextBoxColumn No;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Action;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Par1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Par2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Par3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LATCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LONCOL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ALTCOL;
+        private System.Windows.Forms.DataGridViewImageColumn UP;
+        private System.Windows.Forms.DataGridViewImageColumn Down;
+        private System.Windows.Forms.DataGridViewImageColumn DEL;
     }
 }
 
