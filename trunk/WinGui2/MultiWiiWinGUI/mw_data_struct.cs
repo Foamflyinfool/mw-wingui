@@ -263,7 +263,8 @@ namespace MultiWiiWinGUI
 
 
         //NAV settings
-        public byte flags;
+        public byte flags1;
+        public byte flags2;
         public UInt16 wp_radius;
         public UInt16 safe_wp_distance;
         public UInt16 nav_max_altitude;
@@ -272,6 +273,7 @@ namespace MultiWiiWinGUI
         public byte crosstrack_gain;
         public UInt16 nav_bank_max;
         public UInt16 rth_altitude;
+        public UInt16 fence;
         public byte max_wp_number;
 
         //Other parameters
@@ -468,10 +470,12 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'$';
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = (byte)(17);
+                buffer[bptr++] = (byte)(20);
                 buffer[bptr++] = (byte)MSP.MSP_SET_NAV_CONFIG;
 
-                buffer[bptr++] = (byte)flags;
+                buffer[bptr++] = (byte)flags1;
+                buffer[bptr++] = (byte)flags2;
+
                 buffer[bptr++] = (byte)(wp_radius & 0x00ff);
                 buffer[bptr++] = (byte)((wp_radius >> 8) & 0x00ff);
 
@@ -494,6 +498,9 @@ namespace MultiWiiWinGUI
 
                 buffer[bptr++] = (byte)(rth_altitude & 0x00ff);
                 buffer[bptr++] = (byte)((rth_altitude >> 8) & 0x00ff);
+
+                buffer[bptr++] = (byte)(fence & 0x00ff);
+                buffer[bptr++] = (byte)((fence >> 8) & 0x00ff);
 
                 buffer[bptr++] = max_wp_number;
 
@@ -725,7 +732,7 @@ namespace MultiWiiWinGUI
         public byte multiType;
         public byte version;
         public byte protocol_version;
-        public Int32 capability;
+        public UInt32 capability;
         public byte[] pidP;
         public byte[] pidI;
         public byte[] pidD;
@@ -820,7 +827,8 @@ namespace MultiWiiWinGUI
 
 
         //NAV settings
-        public byte flags;
+        public byte flags1;
+        public byte flags2;
         public UInt16 wp_radius;
         public UInt16 safe_wp_distance;
         public UInt16 nav_max_altitude;
@@ -829,6 +837,7 @@ namespace MultiWiiWinGUI
         public byte crosstrack_gain;
         public UInt16 nav_bank_max;
         public UInt16 rth_altitude;
+        public UInt16 fence;
         public byte max_wp_number;
 
 
@@ -838,14 +847,6 @@ namespace MultiWiiWinGUI
 
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
-
-
-
-
-
-
-
-
 
 
         //Constructor

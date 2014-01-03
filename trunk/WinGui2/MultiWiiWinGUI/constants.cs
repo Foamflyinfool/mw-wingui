@@ -41,6 +41,15 @@ namespace MultiWiiWinGUI
         public const int SET_HEAD = 7;             //fixes copter heading  (-1 clears the setting)
     }
 
+    public class CAP
+    {
+        public const int BIND_CAPABLE = 1;
+        public const int DYNBAL_CAPABLE = 4;
+        public const int FLAP_CAPABLE = 8;
+        public const int NAV_CAPABLE = 16;
+
+    }
+
 
     public class MSP
     {
