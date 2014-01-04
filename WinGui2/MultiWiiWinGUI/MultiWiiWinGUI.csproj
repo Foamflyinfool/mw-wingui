@@ -180,6 +180,9 @@
     <Compile Include="MWGUIControls\altitude_meter.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MWGUIControls\battery_indicator_control.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MWGUIControls\ColorProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -365,6 +368,7 @@
     <None Include="Resources\heli_120.bmp" />
     <None Include="Resources\vtail.bmp" />
     <Content Include="Resources\Altimeter_Background.bmp" />
+    <Content Include="Resources\battery_indicator_background.png" />
     <Content Include="Resources\del_btn.png" />
     <Content Include="Resources\down_btn.png" />
     <None Include="Resources\home_marker.png" />

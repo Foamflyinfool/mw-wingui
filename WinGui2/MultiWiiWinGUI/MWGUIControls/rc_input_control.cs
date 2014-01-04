@@ -49,7 +49,7 @@ namespace MultiWiiGUIControls
         {
             components = new System.ComponentModel.Container();
             this.Height = 200;
-            this.Width = 225;
+            this.Width = 200;
         }
         #endregion
 
@@ -79,13 +79,13 @@ namespace MultiWiiGUIControls
                     if (i == 3) { strLabel = "Yaw"; }
                     if (i > 3) { strLabel = "Aux" + (i - 3); }
 
-                    pe.Graphics.DrawString(String.Format("{0:0}", strLabel), drawFont, drawBrush, 5, bar_pos[i] - 13);
-                    pe.Graphics.DrawString(String.Format("{0:0}", RC_Values[i]), drawFont, drawBrush, 165, bar_pos[i] - 13);
+                    pe.Graphics.DrawString(String.Format("{0:0}", strLabel), drawFont, drawBrush, 5, bar_pos[i] - 18);
+                    pe.Graphics.DrawString(String.Format("{0:0}", RC_Values[i]), drawFont, drawBrush, 165, bar_pos[i] - 18);
                     int w = (int)((RC_Values[i] - 1000) / (double)(1000 / 120));
                     if (w < 0) { w = 0; }
                     if (w > 120) { w = 120; }
 
-                    pe.Graphics.FillRectangle(drawBrushGreen, 40, bar_pos[i] - 10, w, 10);
+                    pe.Graphics.FillRectangle(drawBrushGreen, 40, bar_pos[i] - 15, w, 10);
                 }
             }
 
@@ -122,13 +122,13 @@ namespace MultiWiiGUIControls
         {
             get
             {
-                return new Size(200, 225);
+                return new Size(200, 200);
             }
         }
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
-            base.SetBoundsCore(x, y, 200, 225, specified);
+            base.SetBoundsCore(x, y, 200, 200, specified);
         }
 
         #endregion

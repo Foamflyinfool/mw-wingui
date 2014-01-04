@@ -41,6 +41,7 @@ namespace MultiWiiWinGUI
         public ushort wp_radius { get; set; }
 
         public bool speech_enabled { get; set; }
+        public byte cellcount { get; set; }
 
 
         //Constructor, set default values
@@ -53,6 +54,8 @@ namespace MultiWiiWinGUI
             bEnableLogging = false;
             iMapProviderSelectedIndex = 1;  //Bing Map
             speech_enabled = true;
+            cellcount = 3;
+
 
 
         }
@@ -96,6 +99,8 @@ namespace MultiWiiWinGUI
 
             tw.WriteStartElement("MAPPROVIDER value=\"" + iMapProviderSelectedIndex + "\""); tw.WriteEndElement();
             tw.WriteStartElement("SPEECH_ENABLED value=\"" + speech_enabled + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("CELLCOUNT value=\"" + cellcount + "\""); tw.WriteEndElement();
+            
 
             
 
@@ -151,6 +156,7 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "max_wp_number", true) == 0 && reader.HasAttributes) { max_wp_number = Convert.ToByte(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "wp_radius", true) == 0 && reader.HasAttributes) { wp_radius = Convert.ToUInt16(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "speech_enabled", true) == 0 && reader.HasAttributes) { speech_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "cellcount", true) == 0 && reader.HasAttributes) { cellcount = Convert.ToByte(reader.GetAttribute("value")); }
 
 
                             break;
