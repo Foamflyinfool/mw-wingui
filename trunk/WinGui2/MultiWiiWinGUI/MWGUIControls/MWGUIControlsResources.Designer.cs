@@ -123,6 +123,16 @@ namespace MultiWiiWinGUI.MWGUIControls {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap battery_indicator_background {
+            get {
+                object obj = ResourceManager.GetObject("battery_indicator_background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap bicopter {
             get {
                 object obj = ResourceManager.GetObject("bicopter", resourceCulture);

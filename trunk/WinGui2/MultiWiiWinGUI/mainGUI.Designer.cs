@@ -61,20 +61,21 @@
             this.label11 = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.label47 = new System.Windows.Forms.Label();
+            this.battery_indicator1 = new MultiWiiGUIControls.battery_indicator();
             this.vertical_speed_indicator1 = new MultiWiiGUIControls.vertical_speed_indicator();
             this.altitude_meter1 = new MultiWiiGUIControls.altitude_meter();
             this.attitudeIndicatorInstrumentControl1 = new MultiWiiGUIControls.artifical_horizon();
             this.gpsIndicator = new MultiWiiGUIControls.GpsIndicatorInstrumentControl();
             this.headingIndicatorInstrumentControl1 = new MultiWiiGUIControls.heading_indicator();
-            this.indACC = new MultiWiiGUIControls.indicator_lamp();
-            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
-            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
-            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
-            this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
-            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
+            this.label47 = new System.Windows.Forms.Label();
             this.rc_input_control1 = new MultiWiiGUIControls.rc_input_control();
             this.motorsIndicator1 = new MultiWiiGUIControls.MWGUIMotors();
+            this.indACC = new MultiWiiGUIControls.indicator_lamp();
+            this.indGPS = new MultiWiiGUIControls.indicator_lamp();
+            this.indOPTIC = new MultiWiiGUIControls.indicator_lamp();
+            this.indBARO = new MultiWiiGUIControls.indicator_lamp();
+            this.indMAG = new MultiWiiGUIControls.indicator_lamp();
+            this.indSONAR = new MultiWiiGUIControls.indicator_lamp();
             this.label81 = new System.Windows.Forms.Label();
             this.label80 = new System.Windows.Forms.Label();
             this.label79 = new System.Windows.Forms.Label();
@@ -105,6 +106,7 @@
             this.b_Clear_Route = new System.Windows.Forms.Button();
             this.spcontMapMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.battery_indicator2 = new MultiWiiGUIControls.battery_indicator();
             this.barRSSIMission = new MultiWiiGUIControls.ColorProgressBar();
             this.lNavError = new System.Windows.Forms.Label();
             this.cbAutoPan = new MultiWiiGUIControls.CheckBoxEx();
@@ -383,8 +385,8 @@
             this.label13 = new System.Windows.Forms.Label();
             this.l_capture_file = new System.Windows.Forms.Label();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.cbCellcount = new System.Windows.Forms.ComboBox();
             this.label70 = new System.Windows.Forms.Label();
-            this.numMinCellVoltage = new System.Windows.Forms.NumericUpDown();
             this.cbGUISpeechEnabled = new System.Windows.Forms.CheckBox();
             this.l_i2cdatasupress = new System.Windows.Forms.Label();
             this.b_check_update = new System.Windows.Forms.Button();
@@ -569,7 +571,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nFrameRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).BeginInit();
             this.tabPageSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMinCellVoltage)).BeginInit();
             this.groupBox11.SuspendLayout();
             this.tabPageCLI.SuspendLayout();
             this.gbTerminal.SuspendLayout();
@@ -907,39 +908,39 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.label47);
+            this.splitContainer3.Panel1.Controls.Add(this.battery_indicator1);
             this.splitContainer3.Panel1.Controls.Add(this.vertical_speed_indicator1);
             this.splitContainer3.Panel1.Controls.Add(this.altitude_meter1);
             this.splitContainer3.Panel1.Controls.Add(this.attitudeIndicatorInstrumentControl1);
             this.splitContainer3.Panel1.Controls.Add(this.gpsIndicator);
             this.splitContainer3.Panel1.Controls.Add(this.headingIndicatorInstrumentControl1);
-            this.splitContainer3.Panel1.Controls.Add(this.indACC);
-            this.splitContainer3.Panel1.Controls.Add(this.indGPS);
-            this.splitContainer3.Panel1.Controls.Add(this.indBARO);
-            this.splitContainer3.Panel1.Controls.Add(this.indMAG);
-            this.splitContainer3.Panel1.Controls.Add(this.indOPTIC);
-            this.splitContainer3.Panel1.Controls.Add(this.indSONAR);
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.label47);
             this.splitContainer3.Panel2.Controls.Add(this.rc_input_control1);
             this.splitContainer3.Panel2.Controls.Add(this.motorsIndicator1);
+            this.splitContainer3.Panel2.Controls.Add(this.indACC);
+            this.splitContainer3.Panel2.Controls.Add(this.indGPS);
+            this.splitContainer3.Panel2.Controls.Add(this.indOPTIC);
+            this.splitContainer3.Panel2.Controls.Add(this.indBARO);
+            this.splitContainer3.Panel2.Controls.Add(this.indMAG);
+            this.splitContainer3.Panel2.Controls.Add(this.indSONAR);
             this.splitContainer3.Size = new System.Drawing.Size(982, 323);
             this.splitContainer3.SplitterDistance = 597;
             this.splitContainer3.TabIndex = 0;
             // 
-            // label47
+            // battery_indicator1
             // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(499, 14);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(78, 13);
-            this.label47.TabIndex = 108;
-            this.label47.Text = "Active Sensors";
+            this.battery_indicator1.Location = new System.Drawing.Point(305, 156);
+            this.battery_indicator1.Name = "battery_indicator1";
+            this.battery_indicator1.Size = new System.Drawing.Size(150, 150);
+            this.battery_indicator1.TabIndex = 110;
+            this.battery_indicator1.Text = "battery_indicator1";
             // 
             // vertical_speed_indicator1
             // 
-            this.vertical_speed_indicator1.Location = new System.Drawing.Point(164, 162);
+            this.vertical_speed_indicator1.Location = new System.Drawing.Point(156, 156);
             this.vertical_speed_indicator1.Name = "vertical_speed_indicator1";
             this.vertical_speed_indicator1.Size = new System.Drawing.Size(150, 150);
             this.vertical_speed_indicator1.TabIndex = 109;
@@ -947,7 +948,7 @@
             // 
             // altitude_meter1
             // 
-            this.altitude_meter1.Location = new System.Drawing.Point(164, 6);
+            this.altitude_meter1.Location = new System.Drawing.Point(156, 6);
             this.altitude_meter1.Name = "altitude_meter1";
             this.altitude_meter1.Size = new System.Drawing.Size(150, 150);
             this.altitude_meter1.TabIndex = 108;
@@ -964,7 +965,7 @@
             // 
             // gpsIndicator
             // 
-            this.gpsIndicator.Location = new System.Drawing.Point(8, 162);
+            this.gpsIndicator.Location = new System.Drawing.Point(8, 156);
             this.gpsIndicator.Name = "gpsIndicator";
             this.gpsIndicator.Size = new System.Drawing.Size(150, 150);
             this.gpsIndicator.TabIndex = 74;
@@ -972,72 +973,27 @@
             // 
             // headingIndicatorInstrumentControl1
             // 
-            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(320, 6);
+            this.headingIndicatorInstrumentControl1.Location = new System.Drawing.Point(305, 7);
             this.headingIndicatorInstrumentControl1.Name = "headingIndicatorInstrumentControl1";
             this.headingIndicatorInstrumentControl1.Size = new System.Drawing.Size(150, 150);
             this.headingIndicatorInstrumentControl1.TabIndex = 72;
             this.headingIndicatorInstrumentControl1.Text = "headingIndicatorInstrumentControl1";
             // 
-            // indACC
+            // label47
             // 
-            this.indACC.Location = new System.Drawing.Point(502, 28);
-            this.indACC.Margin = new System.Windows.Forms.Padding(1);
-            this.indACC.Name = "indACC";
-            this.indACC.Size = new System.Drawing.Size(65, 17);
-            this.indACC.TabIndex = 82;
-            this.indACC.Text = "ACC";
-            // 
-            // indGPS
-            // 
-            this.indGPS.Location = new System.Drawing.Point(502, 47);
-            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
-            this.indGPS.Name = "indGPS";
-            this.indGPS.Size = new System.Drawing.Size(65, 17);
-            this.indGPS.TabIndex = 86;
-            this.indGPS.Text = "GPS";
-            // 
-            // indBARO
-            // 
-            this.indBARO.Location = new System.Drawing.Point(502, 66);
-            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
-            this.indBARO.Name = "indBARO";
-            this.indBARO.Size = new System.Drawing.Size(65, 17);
-            this.indBARO.TabIndex = 83;
-            this.indBARO.Text = "BARO";
-            // 
-            // indMAG
-            // 
-            this.indMAG.Location = new System.Drawing.Point(502, 85);
-            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
-            this.indMAG.Name = "indMAG";
-            this.indMAG.Size = new System.Drawing.Size(65, 17);
-            this.indMAG.TabIndex = 84;
-            this.indMAG.Text = "MAG";
-            // 
-            // indOPTIC
-            // 
-            this.indOPTIC.Location = new System.Drawing.Point(502, 123);
-            this.indOPTIC.Margin = new System.Windows.Forms.Padding(1);
-            this.indOPTIC.Name = "indOPTIC";
-            this.indOPTIC.Size = new System.Drawing.Size(65, 17);
-            this.indOPTIC.TabIndex = 103;
-            this.indOPTIC.Text = "OPTIC";
-            // 
-            // indSONAR
-            // 
-            this.indSONAR.Location = new System.Drawing.Point(502, 104);
-            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
-            this.indSONAR.Name = "indSONAR";
-            this.indSONAR.Size = new System.Drawing.Size(65, 17);
-            this.indSONAR.TabIndex = 85;
-            this.indSONAR.Text = "SONAR";
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(12, 210);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(78, 13);
+            this.label47.TabIndex = 108;
+            this.label47.Text = "Active Sensors";
             // 
             // rc_input_control1
             // 
             this.rc_input_control1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rc_input_control1.Location = new System.Drawing.Point(178, 6);
             this.rc_input_control1.Name = "rc_input_control1";
-            this.rc_input_control1.Size = new System.Drawing.Size(200, 225);
+            this.rc_input_control1.Size = new System.Drawing.Size(200, 200);
             this.rc_input_control1.TabIndex = 76;
             this.rc_input_control1.Text = "rc_input_control1";
             // 
@@ -1049,6 +1005,66 @@
             this.motorsIndicator1.Size = new System.Drawing.Size(170, 200);
             this.motorsIndicator1.TabIndex = 75;
             this.motorsIndicator1.Text = "motorsIndicator1";
+            // 
+            // indACC
+            // 
+            this.indACC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indACC.Location = new System.Drawing.Point(6, 224);
+            this.indACC.Margin = new System.Windows.Forms.Padding(1);
+            this.indACC.Name = "indACC";
+            this.indACC.Size = new System.Drawing.Size(65, 17);
+            this.indACC.TabIndex = 82;
+            this.indACC.Text = "ACC";
+            // 
+            // indGPS
+            // 
+            this.indGPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indGPS.Location = new System.Drawing.Point(82, 224);
+            this.indGPS.Margin = new System.Windows.Forms.Padding(1);
+            this.indGPS.Name = "indGPS";
+            this.indGPS.Size = new System.Drawing.Size(65, 17);
+            this.indGPS.TabIndex = 86;
+            this.indGPS.Text = "GPS";
+            // 
+            // indOPTIC
+            // 
+            this.indOPTIC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indOPTIC.Location = new System.Drawing.Point(310, 252);
+            this.indOPTIC.Margin = new System.Windows.Forms.Padding(1);
+            this.indOPTIC.Name = "indOPTIC";
+            this.indOPTIC.Size = new System.Drawing.Size(65, 17);
+            this.indOPTIC.TabIndex = 103;
+            this.indOPTIC.Text = "OPTIC";
+            // 
+            // indBARO
+            // 
+            this.indBARO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indBARO.Location = new System.Drawing.Point(158, 224);
+            this.indBARO.Margin = new System.Windows.Forms.Padding(1);
+            this.indBARO.Name = "indBARO";
+            this.indBARO.Size = new System.Drawing.Size(65, 17);
+            this.indBARO.TabIndex = 83;
+            this.indBARO.Text = "BARO";
+            // 
+            // indMAG
+            // 
+            this.indMAG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indMAG.Location = new System.Drawing.Point(234, 224);
+            this.indMAG.Margin = new System.Windows.Forms.Padding(1);
+            this.indMAG.Name = "indMAG";
+            this.indMAG.Size = new System.Drawing.Size(65, 17);
+            this.indMAG.TabIndex = 84;
+            this.indMAG.Text = "MAG";
+            // 
+            // indSONAR
+            // 
+            this.indSONAR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indSONAR.Location = new System.Drawing.Point(310, 224);
+            this.indSONAR.Margin = new System.Windows.Forms.Padding(1);
+            this.indSONAR.Name = "indSONAR";
+            this.indSONAR.Size = new System.Drawing.Size(65, 17);
+            this.indSONAR.TabIndex = 85;
+            this.indSONAR.Text = "SONAR";
             // 
             // label81
             // 
@@ -1401,6 +1417,7 @@
             // 
             // splitContainer9.Panel1
             // 
+            this.splitContainer9.Panel1.Controls.Add(this.battery_indicator2);
             this.splitContainer9.Panel1.Controls.Add(this.barRSSIMission);
             this.splitContainer9.Panel1.Controls.Add(this.lNavError);
             this.splitContainer9.Panel1.Controls.Add(this.cbAutoPan);
@@ -1434,6 +1451,16 @@
             this.splitContainer9.Size = new System.Drawing.Size(538, 417);
             this.splitContainer9.SplitterDistance = 342;
             this.splitContainer9.TabIndex = 0;
+            // 
+            // battery_indicator2
+            // 
+            this.battery_indicator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.battery_indicator2.Location = new System.Drawing.Point(433, 192);
+            this.battery_indicator2.Name = "battery_indicator2";
+            this.battery_indicator2.Size = new System.Drawing.Size(150, 150);
+            this.battery_indicator2.TabIndex = 118;
+            this.battery_indicator2.Text = "battery_indicator2";
+            this.battery_indicator2.Visible = false;
             // 
             // barRSSIMission
             // 
@@ -4444,7 +4471,7 @@
             this.rci_Control_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rci_Control_settings.Location = new System.Drawing.Point(774, 6);
             this.rci_Control_settings.Name = "rci_Control_settings";
-            this.rci_Control_settings.Size = new System.Drawing.Size(200, 225);
+            this.rci_Control_settings.Size = new System.Drawing.Size(200, 200);
             this.rci_Control_settings.TabIndex = 15;
             this.rci_Control_settings.Text = "rc_input_control2";
             // 
@@ -5350,8 +5377,8 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPageSettings.Controls.Add(this.cbCellcount);
             this.tabPageSettings.Controls.Add(this.label70);
-            this.tabPageSettings.Controls.Add(this.numMinCellVoltage);
             this.tabPageSettings.Controls.Add(this.cbGUISpeechEnabled);
             this.tabPageSettings.Controls.Add(this.l_i2cdatasupress);
             this.tabPageSettings.Controls.Add(this.b_check_update);
@@ -5374,42 +5401,34 @@
             this.tabPageSettings.TabIndex = 4;
             this.tabPageSettings.Text = "GUI Settings";
             // 
+            // cbCellcount
+            // 
+            this.cbCellcount.FormattingEnabled = true;
+            this.cbCellcount.Items.AddRange(new object[] {
+            "1s",
+            "2s",
+            "3s",
+            "4s",
+            "5s",
+            "6s",
+            "7s",
+            "8s",
+            "9s",
+            "10s"});
+            this.cbCellcount.Location = new System.Drawing.Point(215, 230);
+            this.cbCellcount.Name = "cbCellcount";
+            this.cbCellcount.Size = new System.Drawing.Size(53, 21);
+            this.cbCellcount.TabIndex = 33;
+            this.cbCellcount.SelectedIndexChanged += new System.EventHandler(this.cbCellcount_SelectedIndexChanged);
+            // 
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(284, 238);
+            this.label70.Location = new System.Drawing.Point(274, 234);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(106, 13);
+            this.label70.Size = new System.Drawing.Size(91, 13);
             this.label70.TabIndex = 32;
-            this.label70.Text = "Minimum Cell voltage";
-            // 
-            // numMinCellVoltage
-            // 
-            this.numMinCellVoltage.DecimalPlaces = 1;
-            this.numMinCellVoltage.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numMinCellVoltage.Location = new System.Drawing.Point(215, 234);
-            this.numMinCellVoltage.Maximum = new decimal(new int[] {
-            42,
-            0,
-            0,
-            65536});
-            this.numMinCellVoltage.Minimum = new decimal(new int[] {
-            28,
-            0,
-            0,
-            65536});
-            this.numMinCellVoltage.Name = "numMinCellVoltage";
-            this.numMinCellVoltage.Size = new System.Drawing.Size(63, 20);
-            this.numMinCellVoltage.TabIndex = 31;
-            this.numMinCellVoltage.Value = new decimal(new int[] {
-            28,
-            0,
-            0,
-            65536});
+            this.label70.Text = "Battery Cell Count";
             // 
             // cbGUISpeechEnabled
             // 
@@ -5802,6 +5821,7 @@
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(29, 51);
             this.toolStripLabel1.Text = "Port";
+            this.toolStripLabel1.Click += new System.EventHandler(this.toolStripLabel1_Click);
             // 
             // cb_serial_port
             // 
@@ -6002,8 +6022,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.tabPageMisson.ResumeLayout(false);
@@ -6141,7 +6161,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nBitRate)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.tabPageSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMinCellVoltage)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
             this.tabPageCLI.ResumeLayout(false);
@@ -6548,7 +6567,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem fetchMapTilesToolStripMenuItem;
         private System.Windows.Forms.Label label70;
-        private System.Windows.Forms.NumericUpDown numMinCellVoltage;
         private MultiWiiGUIControls.CheckBoxEx cbNavDisableSticks;
         private MultiWiiGUIControls.CheckBoxEx cbNavBaroTakeover;
         private System.Windows.Forms.Label label71;
@@ -6565,6 +6583,9 @@
         private System.Windows.Forms.DataGridViewImageColumn UP;
         private System.Windows.Forms.DataGridViewImageColumn Down;
         private System.Windows.Forms.DataGridViewImageColumn DEL;
+        private MultiWiiGUIControls.battery_indicator battery_indicator1;
+        private System.Windows.Forms.ComboBox cbCellcount;
+        private MultiWiiGUIControls.battery_indicator battery_indicator2;
     }
 }
 

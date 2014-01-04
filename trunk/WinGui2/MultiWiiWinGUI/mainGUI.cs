@@ -435,6 +435,8 @@ namespace MultiWiiWinGUI
             cb_Log9.Checked = gui_settings.logGpar;
             cb_Log10.Checked = gui_settings.logGdbg;
 
+            cbCellcount.SelectedIndex = gui_settings.cellcount - 1;
+            cbGUISpeechEnabled.Checked = gui_settings.speech_enabled;
 
             splash.sStatus = "Build PID structures...";
             splash.Refresh();
@@ -885,7 +887,7 @@ namespace MultiWiiWinGUI
             //Build indicator lamps array
             indicators = new indicator_lamp[iCheckBoxItems];
             int row = 0; int col = 0;
-            int startx = 330; int starty = 162;
+            int startx = 459; int starty = 7;
             for (int i = 0; i < iCheckBoxItems; i++)
             {
                 indicators[i] = new indicator_lamp();
@@ -893,33 +895,28 @@ namespace MultiWiiWinGUI
                 indicators[i].Visible = true;
                 indicators[i].Text = names[i];
                 indicators[i].indicator_color = 1;
-                //indicators[i].Anchor = AnchorStyles.Right;
                 this.splitContainer3.Panel1.Controls.Add(indicators[i]);
                 col++;
                 if (col == 2) { col = 0; row++; }
             }
 
             //Create indicator lamps on the mission tab too...
-            /*
             //Build a second indicator lamps array on Mission plane
             indicators_mission = new indicator_lamp[iCheckBoxItems];
-            row = 0; col = 0;
-            startx = 330; starty = 162;
+            startx = this.splitContainer9.Panel1.Location.X + this.splitContainer9.Panel1.Width - 67;
+            starty = this.splitContainer9.Panel1.Location.Y + 20;
             for (int i = 0; i < iCheckBoxItems; i++)
             {
                 indicators_mission[i] = new indicator_lamp();
-                indicators_mission[i].Location = new Point(startx + col * 67, starty + row * 19);
-                indicators_mission[i].Visible = true;
+                indicators_mission[i].Location = new Point(startx , starty + i * 19);
                 indicators_mission[i].Text = names[i];
                 indicators_mission[i].indicator_color = 1;
-                indicators_mission[i].Anchor = AnchorStyles.Right;
+                indicators_mission[i].Anchor = ( AnchorStyles.Right | AnchorStyles.Top );
+                indicators_mission[i].Visible = bShowGauges;
                 this.splitContainer9.Panel1.Controls.Add(indicators_mission[i]);
                 this.splitContainer9.Panel1.Controls.SetChildIndex(indicators_mission[i], 0);
 
-                col++;
-                if (col == 2) { col = 0; row++; }
             }
-            */
 
             //Build the RC control checkboxes structure
 
@@ -1014,11 +1011,12 @@ namespace MultiWiiWinGUI
                 for (int i = 0; i < iCheckBoxItems; i++)
                 {
                     this.tabPageRC.Controls.Remove(cb_labels[i]);
+                    cb_labels[i].Dispose();
                     this.splitContainer3.Panel1.Controls.Remove(indicators[i]);
+                    indicators[i].Dispose();
+                    this.splitContainer9.Panel1.Controls.Remove(indicators_mission[i]);
+                    indicators_mission[i].Dispose();
                 }
-
-
-
 
             }
         }
@@ -1188,11 +1186,6 @@ namespace MultiWiiWinGUI
             logbrowser.sInitialDirectory = gui_settings.sLogFolder;
             logbrowser.ShowDialog();
             logbrowser.Dispose();
-        }
-
-        private void l_ports_label_DoubleClick(object sender, EventArgs e)
-        {
-            serial_ports_enumerate();
         }
 
         private void serial_ports_enumerate()
@@ -1798,19 +1791,6 @@ namespace MultiWiiWinGUI
 
         private void nav_error_notification(byte error_code)
         {
-            /*
-            string[] sNavError = { "Navigation system OK",
-                               "Next waypoint distance is more than the safety limit set in config.h, aborting mission",
-                               "GPS reception is compromised - pausing mission, COPTER IS ADRIFT!",
-                               "CRC error while reading next WP from EEPROM - aborting mission",
-                               "End flag detected - Mission Finished" ,
-                               "Waiting for poshold timer",
-                               "Invalid Jump target detected, aborting mission",
-                               "Invalid Mission Step Action code detected, aborting mission",
-                               "Waiting to reach RTH altitude",
-                               "GPS fix lost, mission aborted - COPTER IS ADRIFT!",
-                               "Copter is disarmed, nav engine disabled"};
-            */
 
             switch (error_code)
             {
@@ -1846,35 +1826,6 @@ namespace MultiWiiWinGUI
 
             barNoise.Value = mw_gui.remnoise;
             label78.Text = Convert.ToString(barNoise.Value);
-
-
-            /*
-
-            int q = telemetry_status_sent - telemetry_status_received;
-            if (q <= 3) telemetry_link_quality = 100;
-            else telemetry_link_quality = 100 - q * 5;
-            if (telemetry_link_quality <= 0) telemetry_link_quality = 0;
-            label70.Text = Convert.ToString(telemetry_link_quality);
-
-            if (telemetry_link_quality > 80)
-            {
-                lTelemLinkStatus.Text = "Telemetry Link OK";
-                lTelemLinkStatus.ForeColor = Color.Green;
-            }
-            else if (telemetry_link_quality > 30)
-            {
-                lTelemLinkStatus.Text = "Telemetry Link FAILING";
-                lTelemLinkStatus.ForeColor = Color.Orange;
-            }
-            else
-            {
-                lTelemLinkStatus.Text = "Telemetry Link DOWN";
-                lTelemLinkStatus.ForeColor = Color.Red;
-            }
-
-            */
-
-
 
             if (frmDebug != null && strDebug != "")
             {
@@ -1932,112 +1883,124 @@ namespace MultiWiiWinGUI
             #region options_need_refresh_if
 
             if (bOptions_needs_refresh)
+            {
+                update_pid_panel();
+                update_aux_panel();
+
+                throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
+
+                //update magnetic declination
+
+                label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
+                decimal mag_dec = (decimal)mw_gui.mag_declination / 10;
+                if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
+                else cbMagSign.SelectedIndex = 0;
+                mag_dec = Math.Abs(mag_dec);
+                nMagDeg.Value = (int)mag_dec;
+                nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
+
+                //Update Power parameters
+                nVBatScale.Value = (int)mw_gui.vbatscale;
+                nVBatWarn1.Value = (int)mw_gui.vbatlevel_warn1;
+                nVBatWarn2.Value = (int)mw_gui.vbatlevel_warn2;
+                nVBatCritical.Value = (int)mw_gui.vbatlevel_crit;
+                nPAlarm.Value = mw_gui.powerTrigger;
+                nPAlarm.BackColor = Color.White;
+
+                //Update throttle params
+                nMinThr.Value = mw_gui.minThrottle;
+                lMaxThr.Text = Convert.ToString(mw_gui.maxThrottle);
+                lMinCommand.Text = Convert.ToString(mw_gui.minCommand);
+                nFSThr.Value = mw_gui.failsafe_throttle;
+
+                lArms.Text = Convert.ToString(mw_gui.plog_arm);
+                lLife.Text = Convert.ToString(mw_gui.plog_lifetime);
+
+
+                //Update Servo settings panel
+                //Disable all
+                for (int i = 0; i < 8; i++)
                 {
-                    update_pid_panel();
-                    update_aux_panel();
-
-                    throttle_expo_control1.SetRCExpoParameters((double)nTMID.Value, (double)nTEXPO.Value, mw_gui.rcThrottle);
-
-                    //update magnetic declination
-
-                    label49.Text = "(" + Convert.ToString((decimal)mw_gui.mag_declination / 10) + ")";
-                    decimal mag_dec = (decimal)mw_gui.mag_declination / 10;
-                    if (mag_dec < 0) cbMagSign.SelectedIndex = 1;
-                    else cbMagSign.SelectedIndex = 0;
-                    mag_dec = Math.Abs(mag_dec);
-                    nMagDeg.Value = (int)mag_dec;
-                    nMagMin.Value = (mag_dec - (int)mag_dec) * 60;
-
-                    //Update Power parameters
-                    nVBatScale.Value = (int)mw_gui.vbatscale;
-                    nVBatWarn1.Value = (int)mw_gui.vbatlevel_warn1;
-                    nVBatWarn2.Value = (int)mw_gui.vbatlevel_warn2;
-                    nVBatCritical.Value = (int)mw_gui.vbatlevel_crit;
-                    nPAlarm.Value = mw_gui.powerTrigger;
-                    nPAlarm.BackColor = Color.White;
-
-                    //Update throttle params
-                    nMinThr.Value = mw_gui.minThrottle;
-                    lMaxThr.Text = Convert.ToString(mw_gui.maxThrottle);
-                    lMinCommand.Text = Convert.ToString(mw_gui.minCommand);
-                    nFSThr.Value = mw_gui.failsafe_throttle;
-
-                    lArms.Text = Convert.ToString(mw_gui.plog_arm);
-                    lLife.Text = Convert.ToString(mw_gui.plog_lifetime);
+                    set_servo_control(i, false, "Unused");
+                }
 
 
-                    //Update Servo settings panel
-                    //Disable all
-                    for (int i = 0; i < 8; i++)
+                switch ((CopterType)mw_gui.multiType)
+                {
+                    case CopterType.Tri:
+                        set_servo_control(5, true, "Yaw servo");
+                        servo_rate[5].Enabled = false;
+                        servo_rate[5].Visible = false;
+                        break;
+                    case CopterType.Airplane:
+                        set_servo_control(2, true, "Flaps");
+                        set_servo_control(3, true, "Wing 1");
+                        set_servo_control(4, true, "Wing 2");
+                        set_servo_control(5, true, "Rudder");
+                        set_servo_control(6, true, "Elevator");
+                        break;
+                    case CopterType.Gimbal:
+                        set_servo_control(0, true, "Pitch");
+                        set_servo_control(1, true, "Roll");
+                        set_servo_control(2, true, "Trigger");
+                        break;
+                    case CopterType.FlyWing:
+                        set_servo_control(3, true, "Wing 1");
+                        set_servo_control(4, true, "Wing 2");
+                        break;
+                    case CopterType.BI:
+                        set_servo_control(4, true, "Left motor servo");
+                        set_servo_control(5, true, "Right motor servo");
+                        break;
+                    case CopterType.DualCopter:
+                        set_servo_control(4, true, "PITCH Servo");
+                        set_servo_control(5, true, "ROLL Servo");
+                        break;
+                    case CopterType.Singlecopter:
+                        set_servo_control(3, true, "Side Servo");
+                        set_servo_control(4, true, "Side Servo");
+                        set_servo_control(5, true, "Front Servo");
+                        set_servo_control(6, true, "Rear Servo");
+                        break;
+                    case CopterType.Heli_120_CCPM:
+                        set_servo_control(5, true, "Yaw motor");
+                        set_servo_control(3, true, "NICK Servo");
+                        set_servo_control(4, true, "Left Servo");
+                        set_servo_control(6, true, "Right Servo");
+                        break;
+                    case CopterType.Heli_90_DEG:
+                        set_servo_control(5, true, "Yaw motor");
+                        set_servo_control(3, true, "NICK Servo");
+                        set_servo_control(4, true, "Roll Servo");
+                        set_servo_control(6, true, "Collective Servo");
+                        break;
+                }
+
+
+
+
+                for (int i = 0; i < 8; i++)
+                {
+
+
+                    servo_max[i].Value = mw_gui.servoMax[i];
+                    servo_min[i].Value = mw_gui.servoMin[i];
+                    servo_mid[i].Value = mw_gui.servoMiddle[i];
+                    servo_rate[i].Value = Math.Abs(mw_gui.servoRate[i]);
+
+                    if (mw_gui.servoRate[i] < 0)
                     {
-                        set_servo_control(i, false, "Unused");
+                        servo_reverse[i].Checked = true;
+                    }
+                    else
+                    {
+                        servo_reverse[i].Checked = false;
                     }
 
-
-                    switch ((CopterType)mw_gui.multiType)
+                    //Servo handler madness 
+                    if ((CopterType)mw_gui.multiType == CopterType.Tri)
                     {
-                        case CopterType.Tri:
-                            set_servo_control(5, true, "Yaw servo");
-                            servo_rate[5].Enabled = false;
-                            servo_rate[5].Visible = false;
-                            break;
-                        case CopterType.Airplane:
-                            set_servo_control(2, true, "Flaps");
-                            set_servo_control(3, true, "Wing 1");
-                            set_servo_control(4, true, "Wing 2");
-                            set_servo_control(5, true, "Rudder");
-                            set_servo_control(6, true, "Elevator");
-                            break;
-                        case CopterType.Gimbal:
-                            set_servo_control(0, true, "Pitch");
-                            set_servo_control(1, true, "Roll");
-                            set_servo_control(2, true, "Trigger");
-                            break;
-                        case CopterType.FlyWing:
-                            set_servo_control(3, true, "Wing 1");
-                            set_servo_control(4, true, "Wing 2");
-                            break;
-                        case CopterType.BI:
-                            set_servo_control(4, true, "Left motor servo");
-                            set_servo_control(5, true, "Right motor servo");
-                            break;
-                        case CopterType.DualCopter:
-                            set_servo_control(4, true, "PITCH Servo");
-                            set_servo_control(5, true, "ROLL Servo");
-                            break;
-                        case CopterType.Singlecopter:
-                            set_servo_control(3, true, "Side Servo");
-                            set_servo_control(4, true, "Side Servo");
-                            set_servo_control(5, true, "Front Servo");
-                            set_servo_control(6, true, "Rear Servo");
-                            break;
-                        case CopterType.Heli_120_CCPM:
-                            set_servo_control(5, true, "Yaw motor");
-                            set_servo_control(3, true, "NICK Servo");
-                            set_servo_control(4, true, "Left Servo");
-                            set_servo_control(6, true, "Right Servo");
-                            break;
-                        case CopterType.Heli_90_DEG:
-                            set_servo_control(5, true, "Yaw motor");
-                            set_servo_control(3, true, "NICK Servo");
-                            set_servo_control(4, true, "Roll Servo");
-                            set_servo_control(6, true, "Collective Servo");
-                            break;
-                    }
-
-
-
-
-                    for (int i = 0; i < 8; i++)
-                    {
-
-
-                        servo_max[i].Value = mw_gui.servoMax[i];
-                        servo_min[i].Value = mw_gui.servoMin[i];
-                        servo_mid[i].Value = mw_gui.servoMiddle[i];
-                        servo_rate[i].Value = Math.Abs(mw_gui.servoRate[i]);
-
-                        if (mw_gui.servoRate[i] < 0)
+                        if (mw_gui.servoRate[i] == 1)
                         {
                             servo_reverse[i].Checked = true;
                         }
@@ -2045,37 +2008,25 @@ namespace MultiWiiWinGUI
                         {
                             servo_reverse[i].Checked = false;
                         }
-
-                        //Servo handler madness 
-                        if ((CopterType)mw_gui.multiType == CopterType.Tri)
-                        {
-                            if (mw_gui.servoRate[i] == 1)
-                            {
-                                servo_reverse[i].Checked = true;
-                            }
-                            else
-                            {
-                                servo_reverse[i].Checked = false;
-                            }
-                        }
-
                     }
+
+                }
 
 
                 if (naviGroup.Enabled)
                 {
                     //flags
-                    cbNavGPS_filtering.Checked  = (mw_gui.flags1 & 0x01) > 0;
-                    cbNavGPS_Lead.Checked       = (mw_gui.flags1 & 0x02) > 0;
-                    cbNavResetHome.Checked      = (mw_gui.flags1 & 0x04) > 0;
+                    cbNavGPS_filtering.Checked = (mw_gui.flags1 & 0x01) > 0;
+                    cbNavGPS_Lead.Checked = (mw_gui.flags1 & 0x02) > 0;
+                    cbNavResetHome.Checked = (mw_gui.flags1 & 0x04) > 0;
                     cbNavHeadingControl.Checked = (mw_gui.flags1 & 0x08) > 0;
-                    cbNavTailFirst.Checked      = (mw_gui.flags1 & 0x10) > 0;
-                    cbNavRTHHead.Checked        = (mw_gui.flags1 & 0x20) > 0;
-                    cbNavSlowNav.Checked        = (mw_gui.flags1 & 0x40) > 0;
-                    cbNavWaitRTHAlt.Checked     = (mw_gui.flags1 & 0x80) > 0;
+                    cbNavTailFirst.Checked = (mw_gui.flags1 & 0x10) > 0;
+                    cbNavRTHHead.Checked = (mw_gui.flags1 & 0x20) > 0;
+                    cbNavSlowNav.Checked = (mw_gui.flags1 & 0x40) > 0;
+                    cbNavWaitRTHAlt.Checked = (mw_gui.flags1 & 0x80) > 0;
                     //flags2
-                    cbNavDisableSticks.Checked  = (mw_gui.flags2 & 0x01) > 0;
-                    cbNavBaroTakeover.Checked   = (mw_gui.flags2 & 0x02) > 0;
+                    cbNavDisableSticks.Checked = (mw_gui.flags2 & 0x01) > 0;
+                    cbNavBaroTakeover.Checked = (mw_gui.flags2 & 0x02) > 0;
 
                     nWPRadius.Value = mw_gui.wp_radius;
                     nRTHAlt.Value = mw_gui.rth_altitude;
@@ -2092,30 +2043,30 @@ namespace MultiWiiWinGUI
                     gui_settings.max_wp_number = mw_gui.max_wp_number;
                     gui_settings.wp_radius = mw_gui.wp_radius;
                 }
-                    gui_settings.save_to_xml(sGuiSettingsFilename);
-                    bOptions_needs_refresh = false;
-                }
+
+
+                gui_settings.save_to_xml(sGuiSettingsFilename);
+                bOptions_needs_refresh = false;
+            }
 #endregion
 
             #region GUIPages.mission
 
             //Map update should be continous
-
             if (mw_gui.GPS_latitude != 0)
             {
                 GPS_pos.Lat = (double)mw_gui.GPS_latitude / 10000000;
                 GPS_pos.Lng = (double)mw_gui.GPS_longitude / 10000000;
-
                 GMRouteFlightPath.Points.Add(GPS_pos);
             }
 
+            //Hack to force map update
             GMOverlayFlightPath.IsVisibile = false;
             GMOverlayFlightPath.IsVisibile = true;
             
-            //Speech
+            //Speech nav status notification
             if (gui_settings.speech_enabled)
             {
-
                 if ((prev_state != mw_gui.nav_state) || (prev_wp != mw_gui.wp_number))
                 {
                     switch (mw_gui.nav_state)
@@ -2130,23 +2081,26 @@ namespace MultiWiiWinGUI
                             break;
                         case 5: speech.SpeakAsync("Going to waypoint " + mw_gui.wp_number.ToString() + ".");
                             break;
+                        case 9: speech.SpeakAsync("Landing is in progress.");
+                            break;
+                        case 10: speech.SpeakAsync("Copter is landed. Pull throttle to minimum to disarm.");
+                            break;
 
                     }
                     prev_state = mw_gui.nav_state;
                     prev_wp = mw_gui.wp_number;
                 }
-
             }
-
-
 
             if (tabMain.SelectedIndex == GUIPages.Mission)
             {
+
+                //Update nav and GPS mode text
                 lGpsMode.Text = sGpsMode[mw_gui.gps_mode];
                 lNavState.Text = sNavState[mw_gui.nav_state];
 
+                //Highlight actual mission step
                 for (int i = 0; i < missionDataGrid.RowCount; i++) missionDataGrid.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(255, 64, 64, 64);
-
                 if (mw_gui.gps_mode == 3)
                 {
                     try
@@ -2156,8 +2110,7 @@ namespace MultiWiiWinGUI
                     catch { }
                 }
 
-
-
+                //Error notification (perhaps could move to common section
                 if (gui_settings.speech_enabled)
                 {
                     if (mw_gui.nav_error != previous_nav_error)
@@ -2169,39 +2122,56 @@ namespace MultiWiiWinGUI
 
                 lNavError.Text = sNavError[mw_gui.nav_error];
 
-
+                //Show gauges on MAP
                 if (bShowGauges)
                 {
                     altitude_meter2.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
                     vertical_speed_indicator2.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
                     gpsIndicator2.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
+                    battery_indicator2.SetVoltage(mw_gui.vBat, gui_settings.cellcount);
                     barRSSIMission.Value = mw_gui.remrssi;
+                    for (int i = 0; i < iCheckBoxItems; i++)
+                    {
+                        if ((mw_gui.mode & (1 << i)) > 0)
+                        {
+                            indicators_mission[i].SetStatus(true);
+                        }
+                        else
+                        {
+                            indicators_mission[i].SetStatus(false);
+                        }
+                    }
+
+
                 }
 
 
-
+                //Update markers
                 if (mw_gui.GPS_latitude != 0)
                 {
-
+                    //Clear markers
                     GMOverlayLiveData.Markers.Clear();
 
+                    //Display GPS position
                     lGPS_lat.Text = Convert.ToString((decimal)mw_gui.GPS_latitude / 10000000);
                     lGPS_lon.Text = Convert.ToString((decimal)mw_gui.GPS_longitude / 10000000);
 
+                    //Go to click marker display
                     if (markerGoToClick != null) GMOverlayLiveData.Markers.Add(markerGoToClick);
 
+                    //Display HOME position marker
                     if (isBoxActive("ARM") && (mw_gui.GPS_home_lon != 0))       //ARMED
                     {
                         PointLatLng GPS_home = new PointLatLng((double)mw_gui.GPS_home_lat / 10000000, (double)mw_gui.GPS_home_lon / 10000000);
                         GMOverlayLiveData.Markers.Add(new GMapMarkerHome(GPS_home));
                     }
 
+                    //Display copter marker
                     GMOverlayLiveData.Markers.Add(new GMapMarkerCopter(GPS_pos, mw_gui.heading, 0, mw_gui.target_bearing, mw_gui.multiType));
 
                     // Center Map to copter position if AutoPan is checked in
                     if (cbAutoPan.Checked) MainMap.Position = GPS_pos;
                     MainMap.Invalidate(false);
-
 
                     l_GPS_alt.Text = Convert.ToString(mw_gui.GPS_altitude) + "m";
                     l_GPS_numsat.Text = Convert.ToString(mw_gui.GPS_numSat);
@@ -2357,7 +2327,7 @@ namespace MultiWiiWinGUI
                 altitude_meter1.SetAlimeterParameters(mw_gui.EstAlt / 100);                     //Control needs input in meter - EstAlt comes in cm
                 vertical_speed_indicator1.SetVerticalSpeedIndicatorParameters(mw_gui.vario);    //Control needs input in cm/sec - so vario
                 gpsIndicator.SetGPSIndicatorParameters(mw_gui.GPS_directionToHome, mw_gui.GPS_distanceToHome, mw_gui.GPS_numSat, Convert.ToBoolean(mw_gui.GPS_fix), bHomeRecorded, Convert.ToBoolean(mw_gui.GPS_update));
-
+                battery_indicator1.SetVoltage(mw_gui.vBat, gui_settings.cellcount);
                 //update indicator lamps
 
                 indACC.SetStatus((mw_gui.present & 1) != 0);
@@ -2370,8 +2340,14 @@ namespace MultiWiiWinGUI
 
                 for (int i = 0; i < iCheckBoxItems; i++)
                 {
-                    if ((mw_gui.mode & (1 << i)) > 0) indicators[i].SetStatus(true);
-                    else indicators[i].SetStatus(false);
+                    if ((mw_gui.mode & (1 << i)) > 0)
+                    {
+                        indicators[i].SetStatus(true);
+                    }
+                    else
+                    {
+                        indicators[i].SetStatus(false);
+                    }
                 }
 
 
@@ -4763,19 +4739,28 @@ namespace MultiWiiWinGUI
         {
             if (bShowGauges)
             {
+                //Hide gauges
                 bShowGauges = false;
                 gpsIndicator2.Visible = false;
                 vertical_speed_indicator2.Visible = false;
                 altitude_meter2.Visible = false;
                 barRSSIMission.Visible = false;
+                battery_indicator2.Visible = false;
+                if (indicators_mission != null) 
+                   for (int i = 0; i < iCheckBoxItems; i++) indicators_mission[i].Visible = false;
             }
             else
             {
+                //Show gauges
                 bShowGauges = true;
                 gpsIndicator2.Visible = true;
                 vertical_speed_indicator2.Visible = true;
                 altitude_meter2.Visible = true;
                 barRSSIMission.Visible = true;
+                battery_indicator2.Visible = true;
+                if (indicators_mission != null)
+                   for (int i = 0; i < iCheckBoxItems; i++) indicators_mission[i].Visible = true;
+
             }
 
 
@@ -4974,6 +4959,20 @@ namespace MultiWiiWinGUI
         {
             addWP("LAND", 0, 0, 0, start.Lat, start.Lng, iDefAlt);
         }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            serial_ports_enumerate();
+        }
+
+        private void cbCellcount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gui_settings.cellcount = Convert.ToByte(cbCellcount.SelectedIndex + 1);
+            battery_indicator1.SetVoltage(mw_gui.vBat, gui_settings.cellcount);
+            b_save_gui_settings.BackColor = Color.LightCoral;
+        }
+
+ 
 
 
  
