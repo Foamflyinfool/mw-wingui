@@ -62,7 +62,7 @@ namespace MultiWiiWinGUI
         
 
         string[] sGpsMode = { "None", "PosHold", "RTH", "Mission" };
-        string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump","Start Land","Land in Progress","Landed" };
+        string[] sNavState = { "None", "RTH Start", "RTH Enroute", "PosHold infinit", "PosHold timed", "WP Enroute", "Process next","Jump","Start Land","Land in Progress","Landed","Settling before land","Start descent" };
 
         string[] sNavError = { "Navigation system is working.",
                                "Next waypoint distance is more than the safety limit, aborting mission",
@@ -1136,6 +1136,20 @@ namespace MultiWiiWinGUI
 
             //Some additional housekeeping if we are connected
 
+            // But enable context menu on mission plane only
+            if (tabMain.SelectedIndex == GUIPages.Mission)
+            {
+                contextMenuStripMap.Enabled = true;
+                contextMenuStripMap.Visible = true;
+            }
+
+            else
+            {
+                contextMenuStripMap.Enabled = false;
+                contextMenuStripMap.Visible = false;
+            }
+
+
             if (isConnected == true)
             {
 
@@ -1612,6 +1626,7 @@ namespace MultiWiiWinGUI
                     mw_gui.crosstrack_gain = inBuf[ptr++];
                     mw_gui.nav_bank_max = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.rth_altitude = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
+                    mw_gui.land_speed = inBuf[ptr++];
                     mw_gui.fence        = BitConverter.ToUInt16(inBuf, ptr); ptr += 2;
                     mw_gui.max_wp_number = inBuf[ptr++];
                     break;
@@ -1817,15 +1832,15 @@ namespace MultiWiiWinGUI
         {
 
 
-            label41.Text = Convert.ToString(serial_error_count);
-            label42.Text = Convert.ToString(serial_packet_rx_count);
-            lTxPackets.Text = Convert.ToString(serial_packet_tx_count);
+            labelCRCErrors.Text = Convert.ToString(serial_error_count);
+            labelReceivedPackets.Text = Convert.ToString(serial_packet_rx_count);
+            labelSentPackets.Text = Convert.ToString(serial_packet_tx_count);
 
             barRSSI.Value = mw_gui.remrssi;
-            label77.Text = Convert.ToString(barRSSI.Value);
+            labelRSSI.Text = Convert.ToString(barRSSI.Value);
 
             barNoise.Value = mw_gui.remnoise;
-            label78.Text = Convert.ToString(barNoise.Value);
+            labelNoise.Text = Convert.ToString(barNoise.Value);
 
             if (frmDebug != null && strDebug != "")
             {
@@ -2036,6 +2051,7 @@ namespace MultiWiiWinGUI
                     nBanking.Value = mw_gui.nav_bank_max / 100;
                     nSafeWPDist.Value = mw_gui.safe_wp_distance;
                     nMaxAlt.Value = mw_gui.nav_max_altitude;
+                    nLandSpeed.Value = mw_gui.land_speed;
                     nFence.Value = mw_gui.fence;
 
 
@@ -2552,6 +2568,7 @@ namespace MultiWiiWinGUI
             mw_params.safe_wp_distance = (ushort)nSafeWPDist.Value;
             mw_params.nav_max_altitude = (ushort)nMaxAlt.Value;
             mw_params.fence = (ushort)nFence.Value;
+            mw_params.land_speed = (byte)nLandSpeed.Value;
             mw_params.max_wp_number = mw_gui.max_wp_number;
 
         }
@@ -3938,7 +3955,7 @@ namespace MultiWiiWinGUI
             }
             if (sAction == "RTH")
             {
-                missionDataGrid.Columns[2].HeaderText = "";
+                missionDataGrid.Columns[2].HeaderText = "Land";
                 missionDataGrid.Columns[3].HeaderText = "";
                 missionDataGrid.Columns[4].HeaderText = "";
                 missionDataGrid.Columns[5].HeaderText = "";
