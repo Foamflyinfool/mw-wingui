@@ -280,6 +280,7 @@ namespace MultiWiiWinGUI
         public UInt16 nav_bank_max;
         public UInt16 rth_altitude;
         public UInt16 fence;
+        public byte land_speed;
         public byte max_wp_number;
 
         //Other parameters
@@ -476,7 +477,7 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'$';
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = (byte)(20);
+                buffer[bptr++] = (byte)(21);
                 buffer[bptr++] = (byte)MSP.MSP_SET_NAV_CONFIG;
 
                 buffer[bptr++] = (byte)flags1;
@@ -504,6 +505,8 @@ namespace MultiWiiWinGUI
 
                 buffer[bptr++] = (byte)(rth_altitude & 0x00ff);
                 buffer[bptr++] = (byte)((rth_altitude >> 8) & 0x00ff);
+
+                buffer[bptr++] = land_speed;
 
                 buffer[bptr++] = (byte)(fence & 0x00ff);
                 buffer[bptr++] = (byte)((fence >> 8) & 0x00ff);
@@ -843,6 +846,7 @@ namespace MultiWiiWinGUI
         public byte crosstrack_gain;
         public UInt16 nav_bank_max;
         public UInt16 rth_altitude;
+        public byte land_speed;
         public UInt16 fence;
         public byte max_wp_number;
 

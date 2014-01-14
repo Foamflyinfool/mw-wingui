@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.tabMain = new System.Windows.Forms.TabControl();
             this.contextMenuStripMap = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -81,18 +81,18 @@
             this.label79 = new System.Windows.Forms.Label();
             this.barNoise = new MultiWiiGUIControls.ColorProgressBar();
             this.barRSSI = new MultiWiiGUIControls.ColorProgressBar();
-            this.label78 = new System.Windows.Forms.Label();
+            this.labelRSSI = new System.Windows.Forms.Label();
             this.label69 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.lTxPackets = new System.Windows.Forms.Label();
+            this.labelNoise = new System.Windows.Forms.Label();
+            this.labelSentPackets = new System.Windows.Forms.Label();
             this.l_i2cerrors = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
+            this.labelReceivedPackets = new System.Windows.Forms.Label();
             this.l_vbatt = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
+            this.labelCRCErrors = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.l_powersum = new System.Windows.Forms.Label();
             this.tabPageMisson = new System.Windows.Forms.TabPage();
@@ -443,6 +443,8 @@
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.nLandSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label41 = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.contextMenuStripMap.SuspendLayout();
             this.tabPageFlightDeck.SuspendLayout();
@@ -575,11 +577,12 @@
             this.tabPageCLI.SuspendLayout();
             this.gbTerminal.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nLandSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // tabMain
             // 
-            this.tabMain.ContextMenuStrip = this.contextMenuStripMap;
+            //this.tabMain.ContextMenuStrip = this.contextMenuStripMap;
             this.tabMain.Controls.Add(this.tabPageFlightDeck);
             this.tabMain.Controls.Add(this.tabPageMisson);
             this.tabMain.Controls.Add(this.tabPagePID);
@@ -589,6 +592,7 @@
             this.tabMain.Controls.Add(this.tabPageVideo);
             this.tabMain.Controls.Add(this.tabPageSettings);
             this.tabMain.Controls.Add(this.tabPageCLI);
+            this.tabPageMisson.ContextMenuStrip = this.contextMenuStripMap;
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Location = new System.Drawing.Point(0, 54);
             this.tabMain.Name = "tabMain";
@@ -881,18 +885,18 @@
             this.splitContainer2.Panel2.Controls.Add(this.label79);
             this.splitContainer2.Panel2.Controls.Add(this.barNoise);
             this.splitContainer2.Panel2.Controls.Add(this.barRSSI);
-            this.splitContainer2.Panel2.Controls.Add(this.label78);
+            this.splitContainer2.Panel2.Controls.Add(this.labelRSSI);
             this.splitContainer2.Panel2.Controls.Add(this.label69);
-            this.splitContainer2.Panel2.Controls.Add(this.label77);
-            this.splitContainer2.Panel2.Controls.Add(this.lTxPackets);
+            this.splitContainer2.Panel2.Controls.Add(this.labelNoise);
+            this.splitContainer2.Panel2.Controls.Add(this.labelSentPackets);
             this.splitContainer2.Panel2.Controls.Add(this.l_i2cerrors);
             this.splitContainer2.Panel2.Controls.Add(this.label44);
             this.splitContainer2.Panel2.Controls.Add(this.label21);
             this.splitContainer2.Panel2.Controls.Add(this.label43);
             this.splitContainer2.Panel2.Controls.Add(this.label6);
-            this.splitContainer2.Panel2.Controls.Add(this.label42);
+            this.splitContainer2.Panel2.Controls.Add(this.labelReceivedPackets);
             this.splitContainer2.Panel2.Controls.Add(this.l_vbatt);
-            this.splitContainer2.Panel2.Controls.Add(this.label41);
+            this.splitContainer2.Panel2.Controls.Add(this.labelCRCErrors);
             this.splitContainer2.Panel2.Controls.Add(this.label7);
             this.splitContainer2.Panel2.Controls.Add(this.l_powersum);
             this.splitContainer2.Size = new System.Drawing.Size(982, 416);
@@ -1080,7 +1084,7 @@
             // 
             this.label80.AutoSize = true;
             this.label80.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label80.Location = new System.Drawing.Point(345, 26);
+            this.label80.Location = new System.Drawing.Point(349, 46);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(39, 15);
             this.label80.TabIndex = 118;
@@ -1090,7 +1094,7 @@
             // 
             this.label79.AutoSize = true;
             this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label79.Location = new System.Drawing.Point(349, 47);
+            this.label79.Location = new System.Drawing.Point(349, 26);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(35, 15);
             this.label79.TabIndex = 117;
@@ -1128,15 +1132,15 @@
             this.barRSSI.Text = "colorProgressBar1";
             this.barRSSI.Value = 0;
             // 
-            // label78
+            // labelRSSI
             // 
-            this.label78.AutoSize = true;
-            this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label78.Location = new System.Drawing.Point(583, 47);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(48, 15);
-            this.label78.TabIndex = 114;
-            this.label78.Text = "no data";
+            this.labelRSSI.AutoSize = true;
+            this.labelRSSI.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRSSI.Location = new System.Drawing.Point(583, 26);
+            this.labelRSSI.Name = "labelRSSI";
+            this.labelRSSI.Size = new System.Drawing.Size(48, 15);
+            this.labelRSSI.TabIndex = 114;
+            this.labelRSSI.Text = "no data";
             // 
             // label69
             // 
@@ -1147,24 +1151,24 @@
             this.label69.TabIndex = 109;
             this.label69.Text = "Packet\'s sent";
             // 
-            // label77
+            // labelNoise
             // 
-            this.label77.AutoSize = true;
-            this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label77.Location = new System.Drawing.Point(584, 26);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(48, 15);
-            this.label77.TabIndex = 113;
-            this.label77.Text = "no data";
+            this.labelNoise.AutoSize = true;
+            this.labelNoise.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNoise.Location = new System.Drawing.Point(583, 45);
+            this.labelNoise.Name = "labelNoise";
+            this.labelNoise.Size = new System.Drawing.Size(48, 15);
+            this.labelNoise.TabIndex = 113;
+            this.labelNoise.Text = "no data";
             // 
-            // lTxPackets
+            // labelSentPackets
             // 
-            this.lTxPackets.AutoSize = true;
-            this.lTxPackets.Location = new System.Drawing.Point(106, 9);
-            this.lTxPackets.Name = "lTxPackets";
-            this.lTxPackets.Size = new System.Drawing.Size(13, 13);
-            this.lTxPackets.TabIndex = 108;
-            this.lTxPackets.Text = "0";
+            this.labelSentPackets.AutoSize = true;
+            this.labelSentPackets.Location = new System.Drawing.Point(106, 9);
+            this.labelSentPackets.Name = "labelSentPackets";
+            this.labelSentPackets.Size = new System.Drawing.Size(13, 13);
+            this.labelSentPackets.TabIndex = 108;
+            this.labelSentPackets.Text = "0";
             // 
             // l_i2cerrors
             // 
@@ -1214,14 +1218,14 @@
             this.label6.TabIndex = 94;
             this.label6.Text = "Battery Voltage:";
             // 
-            // label42
+            // labelReceivedPackets
             // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(106, 28);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(13, 13);
-            this.label42.TabIndex = 105;
-            this.label42.Text = "0";
+            this.labelReceivedPackets.AutoSize = true;
+            this.labelReceivedPackets.Location = new System.Drawing.Point(106, 28);
+            this.labelReceivedPackets.Name = "labelReceivedPackets";
+            this.labelReceivedPackets.Size = new System.Drawing.Size(13, 13);
+            this.labelReceivedPackets.TabIndex = 105;
+            this.labelReceivedPackets.Text = "0";
             // 
             // l_vbatt
             // 
@@ -1233,14 +1237,14 @@
             this.l_vbatt.TabIndex = 97;
             this.l_vbatt.Text = "0.0 volts";
             // 
-            // label41
+            // labelCRCErrors
             // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(106, 48);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(13, 13);
-            this.label41.TabIndex = 104;
-            this.label41.Text = "0";
+            this.labelCRCErrors.AutoSize = true;
+            this.labelCRCErrors.Location = new System.Drawing.Point(106, 48);
+            this.labelCRCErrors.Name = "labelCRCErrors";
+            this.labelCRCErrors.Size = new System.Drawing.Size(13, 13);
+            this.labelCRCErrors.TabIndex = 104;
+            this.labelCRCErrors.Text = "0";
             // 
             // label7
             // 
@@ -1810,14 +1814,14 @@
             this.missionDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             this.missionDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.missionDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.missionDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.missionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.missionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.No,
@@ -1831,14 +1835,14 @@
             this.UP,
             this.Down,
             this.DEL});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.missionDataGrid.DefaultCellStyle = dataGridViewCellStyle4;
             this.missionDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.missionDataGrid.EnableHeadersVisualStyles = false;
             this.missionDataGrid.Location = new System.Drawing.Point(0, 0);
@@ -2084,6 +2088,8 @@
             // 
             // naviGroup
             // 
+            this.naviGroup.Controls.Add(this.label41);
+            this.naviGroup.Controls.Add(this.nLandSpeed);
             this.naviGroup.Controls.Add(this.label71);
             this.naviGroup.Controls.Add(this.nFence);
             this.naviGroup.Controls.Add(this.cbNavBaroTakeover);
@@ -5993,6 +5999,40 @@
             this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
             this.dataGridViewImageColumn3.Width = 16;
             // 
+            // nLandSpeed
+            // 
+            this.nLandSpeed.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.nLandSpeed.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nLandSpeed.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nLandSpeed.Location = new System.Drawing.Point(289, 364);
+            this.nLandSpeed.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nLandSpeed.Name = "nLandSpeed";
+            this.nLandSpeed.Size = new System.Drawing.Size(53, 19);
+            this.nLandSpeed.TabIndex = 60;
+            this.nLandSpeed.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label41.Location = new System.Drawing.Point(286, 343);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(65, 13);
+            this.label41.TabIndex = 61;
+            this.label41.Text = "Land Speed";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -6168,6 +6208,7 @@
             this.gbTerminal.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nLandSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6298,8 +6339,8 @@
         private System.Windows.Forms.Label l_GPS_alt;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Button b_Clear_Route;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Label labelCRCErrors;
+        private System.Windows.Forms.Label labelReceivedPackets;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -6502,15 +6543,15 @@
         private System.Windows.Forms.Label label26;
         private MultiWiiGUIControls.altitude_meter altitude_meter1;
         private MultiWiiGUIControls.vertical_speed_indicator vertical_speed_indicator1;
-        private System.Windows.Forms.Label lTxPackets;
+        private System.Windows.Forms.Label labelSentPackets;
         private System.Windows.Forms.Label label69;
         private System.Windows.Forms.Label lNavState;
         private System.Windows.Forms.Label lGpsMode;
         private System.Windows.Forms.Label l11;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label lNavError;
-        private System.Windows.Forms.Label label77;
-        private System.Windows.Forms.Label label78;
+        private System.Windows.Forms.Label labelNoise;
+        private System.Windows.Forms.Label labelRSSI;
         private MultiWiiGUIControls.ColorProgressBar barRSSI;
         private MultiWiiGUIControls.ColorProgressBar barNoise;
         private System.Windows.Forms.Label label80;
@@ -6586,6 +6627,8 @@
         private MultiWiiGUIControls.battery_indicator battery_indicator1;
         private System.Windows.Forms.ComboBox cbCellcount;
         private MultiWiiGUIControls.battery_indicator battery_indicator2;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.NumericUpDown nLandSpeed;
     }
 }
 
