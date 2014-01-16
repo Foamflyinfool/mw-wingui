@@ -47,7 +47,7 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre7";
+        const string sVersion = "2.3 pre8";
         const byte byteVersion = 230;
         const uint iNaviVersion = 5;                //Navigation code version
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
@@ -1135,19 +1135,6 @@ namespace MultiWiiWinGUI
         {
 
             //Some additional housekeeping if we are connected
-
-            // But enable context menu on mission plane only
-            if (tabMain.SelectedIndex == GUIPages.Mission)
-            {
-                contextMenuStripMap.Enabled = true;
-                contextMenuStripMap.Visible = true;
-            }
-
-            else
-            {
-                contextMenuStripMap.Enabled = false;
-                contextMenuStripMap.Visible = false;
-            }
 
 
             if (isConnected == true)
