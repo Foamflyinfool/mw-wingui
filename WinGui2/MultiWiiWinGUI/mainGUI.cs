@@ -83,6 +83,12 @@ namespace MultiWiiWinGUI
         const int rcLow = 1300;
         const int rcMid = 1700;
 
+        const int rcLevel1 = 1230;
+        const int rcLevel2 = 1360;
+        const int rcLevel3 = 1490;
+        const int rcLevel4 = 1620;
+        const int rcLevel5 = 1749;
+
         const string sRelName = "2.3";
 
         Boolean isCLI = false;
@@ -900,7 +906,6 @@ namespace MultiWiiWinGUI
                 if (col == 2) { col = 0; row++; }
             }
 
-            //Create indicator lamps on the mission tab too...
             //Build a second indicator lamps array on Mission plane
             indicators_mission = new indicator_lamp[iCheckBoxItems];
             startx = this.splitContainer9.Panel1.Location.X + this.splitContainer9.Panel1.Width - 67;
@@ -920,7 +925,9 @@ namespace MultiWiiWinGUI
 
             //Build the RC control checkboxes structure
 
-
+            if (!check_capability(CAP.EXTENDED_AUX))
+            {
+#region normal_aux_states 
             aux = new CheckBoxEx[4, 4, iCheckBoxItems];
 
             startx = 200;
@@ -989,6 +996,83 @@ namespace MultiWiiWinGUI
 
 
             }
+#endregion
+            } // EXTNEDED AUX CAPABILITY
+            else 
+            {
+#region extended_aux_states
+            aux = new CheckBoxEx[4, 6, iCheckBoxItems];
+
+            startx = 150;
+            starty = 60;
+
+            int a, b, c;
+            for (c = 0; c < 4; c++)
+            {
+                for (a = 0; a < 6; a++)
+                {
+                    for (b = 0; b < iCheckBoxItems; b++)
+                    {
+                        aux[c, a, b] = new CheckBoxEx();
+                        aux[c, a, b].Location = new Point(startx + a * 18 + c * 130, starty + b * 25);
+                        aux[c, a, b].Visible = true;
+                        aux[c, a, b].Text = "";
+                        aux[c, a, b].AutoSize = true;
+                        aux[c, a, b].Size = new Size(16, 16);
+                        aux[c, a, b].UseVisualStyleBackColor = true;
+                        aux[c, a, b].CheckedChanged += new System.EventHandler(this.aux_checked_changed_event);
+                        //Set info on the given checkbox position
+                        aux[c, a, b].aux = c;           //Which aux channel
+                        aux[c, a, b].rclevel = a;       //which rc level
+                        aux[c, a, b].item = b;          //Which item
+                        this.tabPageRC.Controls.Add(aux[c, a, b]);
+
+                    }
+                }
+            }
+
+            aux_labels = new System.Windows.Forms.Label[4];
+            lmh_labels = new System.Windows.Forms.Label[4, 6];          // aux1-4, L,M,H
+            string strlmh = "123456";
+            for (a = 0; a < 4; a++)
+            {
+                aux_labels[a] = new System.Windows.Forms.Label();
+                aux_labels[a].Text = "AUX" + String.Format("{0:0}", a + 1);
+                aux_labels[a].Location = new Point(startx + a * 130 + 32, starty - 35);
+                aux_labels[a].AutoSize = true;
+                aux_labels[a].ForeColor = Color.White;
+                this.tabPageRC.Controls.Add(aux_labels[a]);
+                for (b = 0; b < 6; b++)
+                {
+                    lmh_labels[a, b] = new System.Windows.Forms.Label();
+                    lmh_labels[a, b].Text = strlmh.Substring(b, 1); ;
+                    lmh_labels[a, b].Location = new Point(startx + a * 130 + b * 18, starty - 20);
+                    lmh_labels[a, b].AutoSize = true;
+                    lmh_labels[a, b].ForeColor = Color.White;
+                    this.tabPageRC.Controls.Add(lmh_labels[a, b]);
+                }
+
+            }
+
+            cb_labels = new System.Windows.Forms.Label[20];
+
+            for (z = 0; z < iCheckBoxItems; z++)
+            {
+                cb_labels[z] = new System.Windows.Forms.Label();
+                cb_labels[z].Text = names[z];
+                cb_labels[z].Location = new Point(10, starty + z * 25);
+                cb_labels[z].Visible = true;
+                cb_labels[z].AutoSize = true;
+                cb_labels[z].ForeColor = Color.White;
+                cb_labels[z].TextAlign = ContentAlignment.MiddleRight;
+                this.tabPageRC.Controls.Add(cb_labels[z]);
+
+
+            }
+#endregion
+            }
+
+
         }
 
         private void delete_RC_Checkboxes()
@@ -1482,11 +1566,23 @@ namespace MultiWiiWinGUI
                     break;
                 case MSP.MSP_BOX:
                     ptr = 0;
-                    if (mw_gui.activation.Length < dataSize / 2)
-                        mw_gui.activation = new short[dataSize / 2];
-                    for (int i = 0; i < (dataSize / 2); i++)
+                    if (!check_capability(CAP.EXTENDED_AUX))
                     {
-                        mw_gui.activation[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        if (mw_gui.activation.Length < dataSize / 2)
+                            mw_gui.activation = new UInt32[dataSize / 2];
+                        for (int i = 0; i < (dataSize / 2); i++)
+                        {
+                            mw_gui.activation[i] = (UInt32)BitConverter.ToInt16(inBuf, ptr); ptr += 2;
+                        }
+                    }
+                    else
+                    {
+                        if (mw_gui.activation.Length < dataSize / 4)
+                            mw_gui.activation = new UInt32[dataSize / 4];
+                        for (int i = 0; i < (dataSize / 4); i++)
+                        {
+                            mw_gui.activation[i] = BitConverter.ToUInt32(inBuf, ptr); ptr += 4;
+                        }
                     }
                     response_counter++;
                     break;
@@ -2189,44 +2285,83 @@ namespace MultiWiiWinGUI
             {
                 //update RC control values
                 rci_Control_settings.SetRCInputParameters(mw_gui.rcThrottle, mw_gui.rcPitch, mw_gui.rcRoll, mw_gui.rcYaw, mw_gui.rcAUX, AUX_CHANNELS + 4);
-                //Show LMH postions above switches
-                lmh_labels[0, 0].BackColor = (mw_gui.rcAUX[0] < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[0, 1].BackColor = (mw_gui.rcAUX[0] > rcLow && mw_gui.rcAUX[0] < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[0, 2].BackColor = (mw_gui.rcAUX[0] > rcMid) ? Color.Green : Color.Transparent;
-
-                lmh_labels[1, 0].BackColor = (mw_gui.rcAUX[1] < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[1, 1].BackColor = (mw_gui.rcAUX[1] > rcLow && mw_gui.rcAUX[1] < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[1, 2].BackColor = (mw_gui.rcAUX[1] > rcMid) ? Color.Green : Color.Transparent;
-
-                lmh_labels[2, 0].BackColor = (mw_gui.rcAUX[2] < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[2, 1].BackColor = (mw_gui.rcAUX[2] > rcLow && mw_gui.rcAUX[2] < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[2, 2].BackColor = (mw_gui.rcAUX[2] > rcMid) ? Color.Green : Color.Transparent;
-
-                lmh_labels[3, 0].BackColor = (mw_gui.rcAUX[3] < rcLow) ? Color.Green : Color.Transparent;
-                lmh_labels[3, 1].BackColor = (mw_gui.rcAUX[3] > rcLow && mw_gui.rcAUX[7] < rcMid) ? Color.Green : Color.Transparent;
-                lmh_labels[3, 2].BackColor = (mw_gui.rcAUX[3] > rcMid) ? Color.Green : Color.Transparent;
-
-                //evaluate rc_options and recolor mode which supposed to be ON at the current rc values
-                byte act1, act2, opt1, opt2;
-
-                //Construct options switch mask based on rcAux input
-                opt1 = (byte)(Convert.ToByte(mw_gui.rcAUX[0] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[0] && mw_gui.rcAUX[0] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[0] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[1] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[1] && mw_gui.rcAUX[1] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[1] > 1700) * 32);
-                opt2 = (byte)(Convert.ToByte(mw_gui.rcAUX[2] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[2] && mw_gui.rcAUX[2] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[2] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[3] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[3] && mw_gui.rcAUX[3] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[3] > 1700) * 32);
-
-                //Compare with switchbox settings
-                for (int b = 0; b < iCheckBoxItems; b++)
+                if (!check_capability(CAP.EXTENDED_AUX))
                 {
-                    act1 = 0; act2 = 0;
-                    for (byte a = 0; a < 3; a++)
+                    #region normal_aux
+                    //Show LMH postions above switches
+                    for (int i = 0; i < 4; i++)
                     {
-                        if (aux[0, a, b].Checked) act1 += (byte)(1 << a);
-                        if (aux[1, a, b].Checked) act1 += (byte)(1 << (3 + a));
-                        if (aux[2, a, b].Checked) act2 += (byte)(1 << a);
-                        if (aux[3, a, b].Checked) act2 += (byte)(1 << (3 + a));
+                        lmh_labels[i, 0].BackColor = (mw_gui.rcAUX[i] < rcLow) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 1].BackColor = (mw_gui.rcAUX[i] > rcLow && mw_gui.rcAUX[i] < rcMid) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 2].BackColor = (mw_gui.rcAUX[i] > rcMid) ? Color.Green : Color.Transparent;
                     }
-                    //Highlight active function name
-                    if ((opt1 & act1) != 0 || (opt2 & act2) != 0) { cb_labels[b].BackColor = Color.Red; cb_labels[b].ForeColor = Color.Yellow; } else { cb_labels[b].BackColor = Color.Transparent; cb_labels[b].ForeColor = Color.White; }
+
+                    //evaluate rc_options and recolor mode which supposed to be ON at the current rc values
+                    byte act1, act2, opt1, opt2;
+
+                    //Construct options switch mask based on rcAux input
+                    opt1 = (byte)(Convert.ToByte(mw_gui.rcAUX[0] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[0] && mw_gui.rcAUX[0] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[0] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[1] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[1] && mw_gui.rcAUX[1] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[1] > 1700) * 32);
+                    opt2 = (byte)(Convert.ToByte(mw_gui.rcAUX[2] < 1300) + Convert.ToByte(1300 < mw_gui.rcAUX[2] && mw_gui.rcAUX[2] < 1700) * 2 + Convert.ToByte(mw_gui.rcAUX[2] > 1700) * 4 + Convert.ToByte(mw_gui.rcAUX[3] < 1300) * 8 + Convert.ToByte(1300 < mw_gui.rcAUX[3] && mw_gui.rcAUX[3] < 1700) * 16 + Convert.ToByte(mw_gui.rcAUX[3] > 1700) * 32);
+
+                    //Compare with switchbox settings
+                    for (int b = 0; b < iCheckBoxItems; b++)
+                    {
+                        act1 = 0; act2 = 0;
+                        for (byte a = 0; a < 3; a++)
+                        {
+                            if (aux[0, a, b].Checked) act1 += (byte)(1 << a);
+                            if (aux[1, a, b].Checked) act1 += (byte)(1 << (3 + a));
+                            if (aux[2, a, b].Checked) act2 += (byte)(1 << a);
+                            if (aux[3, a, b].Checked) act2 += (byte)(1 << (3 + a));
+                        }
+                        //Highlight active function name
+                        if ((opt1 & act1) != 0 || (opt2 & act2) != 0) { cb_labels[b].BackColor = Color.Red; cb_labels[b].ForeColor = Color.Yellow; } else { cb_labels[b].BackColor = Color.Transparent; cb_labels[b].ForeColor = Color.White; }
+                    }
+                    #endregion
                 }
+                else
+                {
+                    #region extended_aux
+                    for (int i = 0; i < 4; i++)
+                    {
+                        lmh_labels[i, 0].BackColor = (mw_gui.rcAUX[i] < rcLevel1) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 1].BackColor = (mw_gui.rcAUX[i] >= rcLevel1 && mw_gui.rcAUX[i] < rcLevel2) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 2].BackColor = (mw_gui.rcAUX[i] >= rcLevel2 && mw_gui.rcAUX[i] < rcLevel3) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 3].BackColor = (mw_gui.rcAUX[i] >= rcLevel3 && mw_gui.rcAUX[i] < rcLevel4) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 4].BackColor = (mw_gui.rcAUX[i] >= rcLevel4 && mw_gui.rcAUX[i] < rcLevel5) ? Color.Green : Color.Transparent;
+                        lmh_labels[i, 5].BackColor = (mw_gui.rcAUX[i] >= rcLevel5) ? Color.Green : Color.Transparent;
+                    }
+
+                    UInt32 auxState = 0;
+                    for (int i = 0; i < 4; i++)
+                    {
+
+
+                        auxState |= (mw_gui.rcAUX[i] < 1230) ? (UInt32)1 << (6 * i) : 0;
+                        auxState |= (1231 < mw_gui.rcAUX[i] && mw_gui.rcAUX[i] < 1360) ? (UInt32)1 << (6 * i + 1) : 0;
+                        auxState |= (1361 < mw_gui.rcAUX[i] && mw_gui.rcAUX[i] < 1490) ? (UInt32)1 << (6 * i + 2) : 0;
+                        auxState |= (1491 < mw_gui.rcAUX[i] && mw_gui.rcAUX[i] < 1620) ? (UInt32)1 << (6 * i + 3) : 0;
+                        auxState |= (1621 < mw_gui.rcAUX[i] && mw_gui.rcAUX[i] < 1749) ? (UInt32)1 << (6 * i + 4) : 0;
+                        auxState |= (mw_gui.rcAUX[i] > 1750) ? (UInt32)1 << (6 * i + 5) : 0;
+                    }
+                    UInt32 check_state;
+                    for (int b = 0; b < iCheckBoxItems; b++)
+                    {
+                        check_state  = 0 ;
+                        for (byte a = 0; a < 6; a++)
+                        {
+                            if (aux[0, a, b].Checked) check_state += (UInt32)(1 << a);
+                            if (aux[1, a, b].Checked) check_state += (UInt32)(1 << (6 + a));
+                            if (aux[2, a, b].Checked) check_state += (UInt32)(1 << (12 +a));
+                            if (aux[3, a, b].Checked) check_state += (UInt32)(1 << (18 + a));
+                        }
+                        //Highlight active function name
+                        if ( (check_state & auxState) != 0) { cb_labels[b].BackColor = Color.Red; cb_labels[b].ForeColor = Color.Yellow; } else { cb_labels[b].BackColor = Color.Transparent; cb_labels[b].ForeColor = Color.White; }
+                    }
+
+                    #endregion 
+                }
+
             }
 
             #endregion
@@ -2424,12 +2559,16 @@ namespace MultiWiiWinGUI
 
                 response_counter = 0;
 
-                MSPquery(MSP.MSP_PID);
-                MSPquery(MSP.MSP_RC_TUNING);
-                MSPquery(MSP.MSP_IDENT);
-                MSPquery(MSP.MSP_BOX);
-                MSPquery(MSP.MSP_MISC);
-                MSPquery(MSP.MSP_SERVO_CONF);
+                MSPquery_sync(MSP.MSP_PID,200);
+                MSPquery_sync(MSP.MSP_RC_TUNING,200);
+                MSPquery_sync(MSP.MSP_IDENT,200);
+                MSPquery_sync(MSP.MSP_MISC,200);
+                MSPquery_sync(MSP.MSP_SERVO_CONF,200);
+                MSPquery_sync(MSP.MSP_BOX,200);
+                if (naviGroup.Enabled)
+                {
+                    MSPquery_sync(MSP.MSP_NAV_CONFIG, 200);
+                }
 
 
                 DateTime startTime = DateTime.Now;
@@ -2438,8 +2577,7 @@ namespace MultiWiiWinGUI
                 //Wait for all the responses from the setting reload. Add 2sec timeout for remote situtations
                 while (response_counter < 5)
                 {
-                    if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 2000) { response_counter = 8; missing_packets = true; }
-
+                    if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 3000) { response_counter = 8; missing_packets = true; }
                 }
 
                 if (missing_packets) MessageBoxEx.Show("Not all response packets were arrived,\rplease reread parameters to make sure that you see valid parameters.", "Response Packets Lost", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -2479,14 +2617,29 @@ namespace MultiWiiWinGUI
             for (int b = 0; b < iCheckBoxItems; b++)
             {
                 mw_params.activation[b] = 0;
-                for (byte a = 0; a < 3; a++)
-                {
-                    if (aux[0, a, b].Checked) mw_params.activation[b] += (short)(1 << a);
-                    if (aux[1, a, b].Checked) mw_params.activation[b] += (short)(1 << (3 + a));
-                    if (aux[2, a, b].Checked) mw_params.activation[b] += (short)(1 << (6 + a));
-                    if (aux[3, a, b].Checked) mw_params.activation[b] += (short)(1 << (9 + a));
 
+                if (!check_capability(CAP.EXTENDED_AUX))
+                {
+                    for (byte a = 0; a < 3; a++)
+                    {
+                        if (aux[0, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << a);
+                        if (aux[1, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (3 + a));
+                        if (aux[2, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (6 + a));
+                        if (aux[3, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (9 + a));
+
+                    }
                 }
+                else
+                {
+                    for (byte a = 0; a < 6; a++)
+                    {
+                        if (aux[0, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << a);
+                        if (aux[1, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (6 + a));
+                        if (aux[2, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (12 + a));
+                        if (aux[3, a, b].Checked) mw_params.activation[b] += (UInt32)(1 << (18 + a));
+                    }
+                }
+
             }
 
             decimal mag_dec = 0;
@@ -2570,39 +2723,108 @@ namespace MultiWiiWinGUI
         private void update_aux_panel()
         {
 
-            for (int i = 0; i < iCheckBoxItems; i++)
-            {
-                aux[0, 0, i].Checked = (mw_gui.activation[i] & (1 << 0)) == 0 ? false : true;
-                aux[0, 1, i].Checked = (mw_gui.activation[i] & (1 << 1)) == 0 ? false : true;
-                aux[0, 2, i].Checked = (mw_gui.activation[i] & (1 << 2)) == 0 ? false : true;
-                aux[1, 0, i].Checked = (mw_gui.activation[i] & (1 << 3)) == 0 ? false : true;
-                aux[1, 1, i].Checked = (mw_gui.activation[i] & (1 << 4)) == 0 ? false : true;
-                aux[1, 2, i].Checked = (mw_gui.activation[i] & (1 << 5)) == 0 ? false : true;
-                aux[2, 0, i].Checked = (mw_gui.activation[i] & (1 << 6)) == 0 ? false : true;
-                aux[2, 1, i].Checked = (mw_gui.activation[i] & (1 << 7)) == 0 ? false : true;
-                aux[2, 2, i].Checked = (mw_gui.activation[i] & (1 << 8)) == 0 ? false : true;
-                aux[3, 0, i].Checked = (mw_gui.activation[i] & (1 << 9)) == 0 ? false : true;
-                aux[3, 1, i].Checked = (mw_gui.activation[i] & (1 << 10)) == 0 ? false : true;
-                aux[3, 2, i].Checked = (mw_gui.activation[i] & (1 << 11)) == 0 ? false : true;
-            }
-
-            for (int i = 0; i < iCheckBoxItems; i++)
+            if (!check_capability(CAP.EXTENDED_AUX))
             {
 
-                aux[0, 0, i].IsHighlighted = (aux[0, 0, i].Checked == ((mw_gui.activation[i] & (1 << 0)) == 0)) ? true : false;
-                aux[0, 1, i].IsHighlighted = (aux[0, 1, i].Checked == ((mw_gui.activation[i] & (1 << 1)) == 0)) ? true : false;
-                aux[0, 2, i].IsHighlighted = (aux[0, 2, i].Checked == ((mw_gui.activation[i] & (1 << 2)) == 0)) ? true : false;
-                aux[1, 0, i].IsHighlighted = (aux[1, 0, i].Checked == ((mw_gui.activation[i] & (1 << 3)) == 0)) ? true : false;
-                aux[1, 1, i].IsHighlighted = (aux[1, 1, i].Checked == ((mw_gui.activation[i] & (1 << 4)) == 0)) ? true : false;
-                aux[1, 2, i].IsHighlighted = (aux[1, 2, i].Checked == ((mw_gui.activation[i] & (1 << 5)) == 0)) ? true : false;
-                aux[2, 0, i].IsHighlighted = (aux[2, 0, i].Checked == ((mw_gui.activation[i] & (1 << 6)) == 0)) ? true : false;
-                aux[2, 1, i].IsHighlighted = (aux[2, 1, i].Checked == ((mw_gui.activation[i] & (1 << 7)) == 0)) ? true : false;
-                aux[2, 2, i].IsHighlighted = (aux[2, 2, i].Checked == ((mw_gui.activation[i] & (1 << 8)) == 0)) ? true : false;
-                aux[3, 0, i].IsHighlighted = (aux[3, 0, i].Checked == ((mw_gui.activation[i] & (1 << 9)) == 0)) ? true : false;
-                aux[3, 1, i].IsHighlighted = (aux[3, 1, i].Checked == ((mw_gui.activation[i] & (1 << 10)) == 0)) ? true : false;
-                aux[3, 2, i].IsHighlighted = (aux[3, 2, i].Checked == ((mw_gui.activation[i] & (1 << 11)) == 0)) ? true : false;
-            }
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+                    aux[0, 0, i].Checked = (mw_gui.activation[i] & (1 << 0)) == 0 ? false : true;
+                    aux[0, 1, i].Checked = (mw_gui.activation[i] & (1 << 1)) == 0 ? false : true;
+                    aux[0, 2, i].Checked = (mw_gui.activation[i] & (1 << 2)) == 0 ? false : true;
+                    aux[1, 0, i].Checked = (mw_gui.activation[i] & (1 << 3)) == 0 ? false : true;
+                    aux[1, 1, i].Checked = (mw_gui.activation[i] & (1 << 4)) == 0 ? false : true;
+                    aux[1, 2, i].Checked = (mw_gui.activation[i] & (1 << 5)) == 0 ? false : true;
+                    aux[2, 0, i].Checked = (mw_gui.activation[i] & (1 << 6)) == 0 ? false : true;
+                    aux[2, 1, i].Checked = (mw_gui.activation[i] & (1 << 7)) == 0 ? false : true;
+                    aux[2, 2, i].Checked = (mw_gui.activation[i] & (1 << 8)) == 0 ? false : true;
+                    aux[3, 0, i].Checked = (mw_gui.activation[i] & (1 << 9)) == 0 ? false : true;
+                    aux[3, 1, i].Checked = (mw_gui.activation[i] & (1 << 10)) == 0 ? false : true;
+                    aux[3, 2, i].Checked = (mw_gui.activation[i] & (1 << 11)) == 0 ? false : true;
+                }
 
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+
+                    aux[0, 0, i].IsHighlighted = (aux[0, 0, i].Checked == ((mw_gui.activation[i] & (1 << 0)) == 0)) ? true : false;
+                    aux[0, 1, i].IsHighlighted = (aux[0, 1, i].Checked == ((mw_gui.activation[i] & (1 << 1)) == 0)) ? true : false;
+                    aux[0, 2, i].IsHighlighted = (aux[0, 2, i].Checked == ((mw_gui.activation[i] & (1 << 2)) == 0)) ? true : false;
+                    aux[1, 0, i].IsHighlighted = (aux[1, 0, i].Checked == ((mw_gui.activation[i] & (1 << 3)) == 0)) ? true : false;
+                    aux[1, 1, i].IsHighlighted = (aux[1, 1, i].Checked == ((mw_gui.activation[i] & (1 << 4)) == 0)) ? true : false;
+                    aux[1, 2, i].IsHighlighted = (aux[1, 2, i].Checked == ((mw_gui.activation[i] & (1 << 5)) == 0)) ? true : false;
+                    aux[2, 0, i].IsHighlighted = (aux[2, 0, i].Checked == ((mw_gui.activation[i] & (1 << 6)) == 0)) ? true : false;
+                    aux[2, 1, i].IsHighlighted = (aux[2, 1, i].Checked == ((mw_gui.activation[i] & (1 << 7)) == 0)) ? true : false;
+                    aux[2, 2, i].IsHighlighted = (aux[2, 2, i].Checked == ((mw_gui.activation[i] & (1 << 8)) == 0)) ? true : false;
+                    aux[3, 0, i].IsHighlighted = (aux[3, 0, i].Checked == ((mw_gui.activation[i] & (1 << 9)) == 0)) ? true : false;
+                    aux[3, 1, i].IsHighlighted = (aux[3, 1, i].Checked == ((mw_gui.activation[i] & (1 << 10)) == 0)) ? true : false;
+                    aux[3, 2, i].IsHighlighted = (aux[3, 2, i].Checked == ((mw_gui.activation[i] & (1 << 11)) == 0)) ? true : false;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+                    aux[0, 0, i].Checked = (mw_gui.activation[i] & (1 << 0)) == 0 ? false : true;
+                    aux[0, 1, i].Checked = (mw_gui.activation[i] & (1 << 1)) == 0 ? false : true;
+                    aux[0, 2, i].Checked = (mw_gui.activation[i] & (1 << 2)) == 0 ? false : true;
+                    aux[0, 3, i].Checked = (mw_gui.activation[i] & (1 << 3)) == 0 ? false : true;
+                    aux[0, 4, i].Checked = (mw_gui.activation[i] & (1 << 4)) == 0 ? false : true;
+                    aux[0, 5, i].Checked = (mw_gui.activation[i] & (1 << 5)) == 0 ? false : true;
+
+                    aux[1, 0, i].Checked = (mw_gui.activation[i] & (1 << 6)) == 0 ? false : true;
+                    aux[1, 1, i].Checked = (mw_gui.activation[i] & (1 << 7)) == 0 ? false : true;
+                    aux[1, 2, i].Checked = (mw_gui.activation[i] & (1 << 8)) == 0 ? false : true;
+                    aux[1, 3, i].Checked = (mw_gui.activation[i] & (1 << 9)) == 0 ? false : true;
+                    aux[1, 4, i].Checked = (mw_gui.activation[i] & (1 << 10)) == 0 ? false : true;
+                    aux[1, 5, i].Checked = (mw_gui.activation[i] & (1 << 11)) == 0 ? false : true;
+
+                    aux[2, 0, i].Checked = (mw_gui.activation[i] & (1 << 12)) == 0 ? false : true;
+                    aux[2, 1, i].Checked = (mw_gui.activation[i] & (1 << 13)) == 0 ? false : true;
+                    aux[2, 2, i].Checked = (mw_gui.activation[i] & (1 << 14)) == 0 ? false : true;
+                    aux[2, 3, i].Checked = (mw_gui.activation[i] & (1 << 15)) == 0 ? false : true;
+                    aux[2, 4, i].Checked = (mw_gui.activation[i] & (1 << 16)) == 0 ? false : true;
+                    aux[2, 5, i].Checked = (mw_gui.activation[i] & (1 << 17)) == 0 ? false : true;
+
+                    aux[3, 0, i].Checked = (mw_gui.activation[i] & (1 << 18)) == 0 ? false : true;
+                    aux[3, 1, i].Checked = (mw_gui.activation[i] & (1 << 19)) == 0 ? false : true;
+                    aux[3, 2, i].Checked = (mw_gui.activation[i] & (1 << 20)) == 0 ? false : true;
+                    aux[3, 3, i].Checked = (mw_gui.activation[i] & (1 << 21)) == 0 ? false : true;
+                    aux[3, 4, i].Checked = (mw_gui.activation[i] & (1 << 22)) == 0 ? false : true;
+                    aux[3, 5, i].Checked = (mw_gui.activation[i] & (1 << 23)) == 0 ? false : true;
+                }
+                for (int i = 0; i < iCheckBoxItems; i++)
+                {
+
+                    aux[0, 0, i].IsHighlighted = (aux[0, 0, i].Checked == ((mw_gui.activation[i] & (1 << 0)) == 0)) ? true : false;
+                    aux[0, 1, i].IsHighlighted = (aux[0, 1, i].Checked == ((mw_gui.activation[i] & (1 << 1)) == 0)) ? true : false;
+                    aux[0, 2, i].IsHighlighted = (aux[0, 2, i].Checked == ((mw_gui.activation[i] & (1 << 2)) == 0)) ? true : false;
+                    aux[0, 3, i].IsHighlighted = (aux[0, 3, i].Checked == ((mw_gui.activation[i] & (1 << 3)) == 0)) ? true : false;
+                    aux[0, 4, i].IsHighlighted = (aux[0, 4, i].Checked == ((mw_gui.activation[i] & (1 << 4)) == 0)) ? true : false;
+                    aux[0, 5, i].IsHighlighted = (aux[0, 5, i].Checked == ((mw_gui.activation[i] & (1 << 5)) == 0)) ? true : false;
+
+                    aux[1, 0, i].IsHighlighted = (aux[1, 0, i].Checked == ((mw_gui.activation[i] & (1 << 6)) == 0)) ? true : false;
+                    aux[1, 1, i].IsHighlighted = (aux[1, 1, i].Checked == ((mw_gui.activation[i] & (1 << 7)) == 0)) ? true : false;
+                    aux[1, 2, i].IsHighlighted = (aux[1, 2, i].Checked == ((mw_gui.activation[i] & (1 << 8)) == 0)) ? true : false;
+                    aux[1, 3, i].IsHighlighted = (aux[1, 3, i].Checked == ((mw_gui.activation[i] & (1 << 9)) == 0)) ? true : false;
+                    aux[1, 4, i].IsHighlighted = (aux[1, 4, i].Checked == ((mw_gui.activation[i] & (1 << 10)) == 0)) ? true : false;
+                    aux[1, 5, i].IsHighlighted = (aux[1, 5, i].Checked == ((mw_gui.activation[i] & (1 << 11)) == 0)) ? true : false;
+
+                    aux[2, 0, i].IsHighlighted = (aux[2, 0, i].Checked == ((mw_gui.activation[i] & (1 << 12)) == 0)) ? true : false;
+                    aux[2, 1, i].IsHighlighted = (aux[2, 1, i].Checked == ((mw_gui.activation[i] & (1 << 13)) == 0)) ? true : false;
+                    aux[2, 2, i].IsHighlighted = (aux[2, 2, i].Checked == ((mw_gui.activation[i] & (1 << 14)) == 0)) ? true : false;
+                    aux[2, 3, i].IsHighlighted = (aux[2, 3, i].Checked == ((mw_gui.activation[i] & (1 << 15)) == 0)) ? true : false;
+                    aux[2, 4, i].IsHighlighted = (aux[2, 4, i].Checked == ((mw_gui.activation[i] & (1 << 16)) == 0)) ? true : false;
+                    aux[2, 5, i].IsHighlighted = (aux[2, 5, i].Checked == ((mw_gui.activation[i] & (1 << 17)) == 0)) ? true : false;
+
+                    aux[3, 0, i].IsHighlighted = (aux[3, 0, i].Checked == ((mw_gui.activation[i] & (1 << 18)) == 0)) ? true : false;
+                    aux[3, 1, i].IsHighlighted = (aux[3, 1, i].Checked == ((mw_gui.activation[i] & (1 << 19)) == 0)) ? true : false;
+                    aux[3, 2, i].IsHighlighted = (aux[3, 2, i].Checked == ((mw_gui.activation[i] & (1 << 20)) == 0)) ? true : false;
+                    aux[3, 3, i].IsHighlighted = (aux[3, 3, i].Checked == ((mw_gui.activation[i] & (1 << 21)) == 0)) ? true : false;
+                    aux[3, 4, i].IsHighlighted = (aux[3, 4, i].Checked == ((mw_gui.activation[i] & (1 << 22)) == 0)) ? true : false;
+                    aux[3, 5, i].IsHighlighted = (aux[3, 5, i].Checked == ((mw_gui.activation[i] & (1 << 23)) == 0)) ? true : false;
+
+                }
+
+            }
 
         }
 
