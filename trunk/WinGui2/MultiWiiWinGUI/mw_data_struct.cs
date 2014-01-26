@@ -299,7 +299,7 @@ namespace MultiWiiWinGUI
 
         //Rc command parsing
 
-        public Int16[] activation;
+        public UInt32[] activation;
 
 
         //For GUI only
@@ -307,6 +307,7 @@ namespace MultiWiiWinGUI
         public string[] pidnames;
         private int iPIDItems, iCheckBoxItems;
         private int iSwVer;
+        private bool bExtendedAux;
 
         //Constructor
         public mw_settings(int pidItems, int checkboxItems, int iSoftwareVersion)
@@ -316,7 +317,7 @@ namespace MultiWiiWinGUI
             pidI = new byte[pidItems];
             pidD = new byte[pidItems];
              
-            activation = new Int16[checkboxItems];
+            activation = new UInt32[checkboxItems];
 
             servoMin = new int[8];
             servoMax = new int[8];
@@ -326,18 +327,20 @@ namespace MultiWiiWinGUI
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;
             iSwVer = iSoftwareVersion;
-
+        
             pidnames = new string[pidItems];
 
         }
 
-        public void write_settings( SerialPort serialport)
+        public void write_settings( SerialPort serialport, int cbItems, bool extended_aux)
         {
 
             byte[] buffer = new byte[250];          //this must be long enough
             int bptr = 0;                           //buffer pointer
             byte[] bInt16 = new byte[2];            //two byte buffer for converting int to two separated bytes
             byte checksum = 0;
+            int icbItems = cbItems;
+
 
             //Write out settings
             if (serialport.IsOpen)
@@ -382,8 +385,6 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-//                while (serialport.BytesToWrite > 0) ;
-            //while (serialport.BytesToRead > 0) ;
 
                 //Then write checkboxitems
 
@@ -392,20 +393,27 @@ namespace MultiWiiWinGUI
                 buffer[bptr++] = (byte)'$';
                 buffer[bptr++] = (byte)'M';
                 buffer[bptr++] = (byte)'<';
-                buffer[bptr++] = (byte)(2 * iCheckBoxItems);
+                if (extended_aux)
+                 buffer[bptr++] = (byte)(4 * icbItems);
+                else
+                  buffer[bptr++] = (byte)(2 * icbItems);
+
                 buffer[bptr++] = (byte)MSP.MSP_SET_BOX;
 
-                for (int i = 0; i < iCheckBoxItems; i++)
+                for (int i = 0; i < icbItems; i++)
                 {
                     buffer[bptr++] = (byte)(activation[i] & 0x00ff);
                     buffer[bptr++] = (byte)((activation[i] >> 8) & 0x00ff);
+                    if (extended_aux)
+                    {
+                        buffer[bptr++] = (byte)((activation[i] >> 16) & 0x00ff);
+                        buffer[bptr++] = (byte)((activation[i] >> 24) & 0x00ff);
+                    }                      
+                    
                 }
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-//                while (serialport.BytesToWrite > 0) ;
-//                while (serialport.BytesToRead > 0) ;
-
 
                 //Servo_conf
 
@@ -430,8 +438,6 @@ namespace MultiWiiWinGUI
                 for (int i = 3; i < bptr; i++) checksum ^= buffer[i];
                 buffer[bptr++] = checksum;
                 serialport.Write(buffer, 0, bptr);
-//                while (serialport.BytesToWrite > 0) ;
-//                while (serialport.BytesToRead > 0) ;
 
 
                 //then the rest
@@ -643,9 +649,9 @@ namespace MultiWiiWinGUI
                                 }
                                 if (String.Compare(reader.Name, "auxfunc", true) == 0 && reader.HasAttributes)
                                 {
-                                    int auxID = 0; short a1 = 0; 
+                                    int auxID = 0; UInt32 a1 = 0; 
                                     auxID = Convert.ToInt16(reader.GetAttribute("id"));
-                                    a1 = Convert.ToInt16(reader.GetAttribute("aux1234"));
+                                    a1 = Convert.ToUInt32(reader.GetAttribute("aux1234"));
                                     activation[auxID] = a1;
                                 }
                                 if (String.Compare(reader.Name, "rcrate", true) == 0 && reader.HasAttributes) { rcRate = Convert.ToByte(reader.GetAttribute("value")); }
@@ -752,7 +758,7 @@ namespace MultiWiiWinGUI
         public byte DynThrPID;
         public byte ThrottleMID;
         public byte ThrottleEXPO;
-        public Int16[] activation;
+        public UInt32[] activation;
         public string[] sBoxNames;
         public bool bUpdateBoxNames;
         public int GPS_distanceToHome;
@@ -877,7 +883,7 @@ namespace MultiWiiWinGUI
 
 
 
-            activation = new Int16[checkboxItems];
+            activation = new UInt32[checkboxItems];
 
             iPIDItems = pidItems;
             iCheckBoxItems = checkboxItems;

@@ -48,6 +48,7 @@ namespace MultiWiiWinGUI
         public const int DYNBAL_CAPABLE = 4;
         public const int FLAP_CAPABLE = 8;
         public const int NAV_CAPABLE = 16;
+        public const int EXTENDED_AUX = 32;
 
     }
 

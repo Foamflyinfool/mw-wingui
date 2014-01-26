@@ -286,22 +286,22 @@ namespace MultiWiiWinGUI
             timer_realtime.Stop();
 
             update_params();                            //update parameters object from GUI controls.
-            mw_params.write_settings(serialPort);
+            mw_params.write_settings(serialPort,iCheckBoxItems, check_capability(CAP.EXTENDED_AUX));
 
 
             //TODO: rewrite to msp_query_sync if it is neccessary.... 
             response_counter = 0;
 
-            MSPquery(MSP.MSP_PID);
-            MSPquery(MSP.MSP_RC_TUNING);
-            MSPquery(MSP.MSP_IDENT);
-            MSPquery(MSP.MSP_BOX);
-            MSPquery(MSP.MSP_MISC);
-            MSPquery(MSP.MSP_SERVO_CONF);
+            MSPquery_sync(MSP.MSP_PID,200);
+            MSPquery_sync(MSP.MSP_RC_TUNING,200);
+            MSPquery_sync(MSP.MSP_IDENT,200);
+            MSPquery_sync(MSP.MSP_BOX,200);
+            MSPquery_sync(MSP.MSP_MISC,200);
+            MSPquery_sync(MSP.MSP_SERVO_CONF,200);
 
             if (naviGroup.Enabled)
             {
-                MSPquery(MSP.MSP_NAV_CONFIG);
+                MSPquery_sync(MSP.MSP_NAV_CONFIG,200);
             }
             DateTime startTime = DateTime.Now;
             bool missing_packets = false;
