@@ -1,10 +1,7 @@
 ﻿/*
  * MultiWii Windows GUI by Andras Schaffer (EOSBandi)
- * February  2012     V1.0 Beta
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   any later version. see <http://www.gnu.org/licenses/>
+ * February  2014     V2.3 Beta
+
  * 
  * LogBrowser is based on ArduPlanner Mega code written by Michael Oborne http://www.diydrones.com 
  * Instrument controls are based on AvionicsInstrument Controls written by Guillaume CHOUTEAU http://www.codeproject.com/Articles/27411/C-Avionic-Instrument-Controls
