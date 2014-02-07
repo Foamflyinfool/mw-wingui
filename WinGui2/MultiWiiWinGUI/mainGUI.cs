@@ -44,9 +44,9 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre8";
+        const string sVersion = "2.3 pre9";
         const byte byteVersion = 230;
-        const uint iNaviVersion = 5;                //Navigation code version
+        const uint iNaviVersion = 6;                //Navigation code version
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -2507,8 +2507,14 @@ namespace MultiWiiWinGUI
         private void aux_checked_changed_event(object sender, EventArgs e)
         {
             CheckBoxEx cb = ((CheckBoxEx)(sender));
-
-            cb.IsHighlighted = cb.Checked == ((byte)(mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false;
+            if (!check_capability(CAP.EXTENDED_AUX))
+            {
+                cb.IsHighlighted = cb.Checked == ((mw_gui.activation[cb.item] & (1 << cb.aux * 3 + cb.rclevel)) == 0) ? true : false;
+            }
+            else
+            {
+                cb.IsHighlighted = cb.Checked == ((mw_gui.activation[cb.item] & (1 << (cb.aux * 6 + cb.rclevel))) == 0) ? true : false;
+            }
 
         }
 
