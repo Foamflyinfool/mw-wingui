@@ -106,6 +106,8 @@
             this.b_Clear_Route = new System.Windows.Forms.Button();
             this.spcontMapMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.btnMapZoopDown = new System.Windows.Forms.Button();
+            this.btnMapZoomUp = new System.Windows.Forms.Button();
             this.battery_indicator2 = new MultiWiiGUIControls.battery_indicator();
             this.barRSSIMission = new MultiWiiGUIControls.ColorProgressBar();
             this.lNavError = new System.Windows.Forms.Label();
@@ -1420,6 +1422,8 @@
             // 
             // splitContainer9.Panel1
             // 
+            this.splitContainer9.Panel1.Controls.Add(this.btnMapZoopDown);
+            this.splitContainer9.Panel1.Controls.Add(this.btnMapZoomUp);
             this.splitContainer9.Panel1.Controls.Add(this.battery_indicator2);
             this.splitContainer9.Panel1.Controls.Add(this.barRSSIMission);
             this.splitContainer9.Panel1.Controls.Add(this.lNavError);
@@ -1454,6 +1458,26 @@
             this.splitContainer9.Size = new System.Drawing.Size(538, 417);
             this.splitContainer9.SplitterDistance = 342;
             this.splitContainer9.TabIndex = 0;
+            // 
+            // btnMapZoopDown
+            // 
+            this.btnMapZoopDown.Location = new System.Drawing.Point(515, 51);
+            this.btnMapZoopDown.Name = "btnMapZoopDown";
+            this.btnMapZoopDown.Size = new System.Drawing.Size(23, 23);
+            this.btnMapZoopDown.TabIndex = 120;
+            this.btnMapZoopDown.Text = "&-";
+            this.btnMapZoopDown.UseVisualStyleBackColor = true;
+            this.btnMapZoopDown.Click += new System.EventHandler(this.btnMapZoopDown_Click);
+            // 
+            // btnMapZoomUp
+            // 
+            this.btnMapZoomUp.Location = new System.Drawing.Point(515, 23);
+            this.btnMapZoomUp.Name = "btnMapZoomUp";
+            this.btnMapZoomUp.Size = new System.Drawing.Size(23, 23);
+            this.btnMapZoomUp.TabIndex = 119;
+            this.btnMapZoomUp.Text = "&+";
+            this.btnMapZoomUp.UseVisualStyleBackColor = true;
+            this.btnMapZoomUp.Click += new System.EventHandler(this.btnMapZoomUp_Click);
             // 
             // battery_indicator2
             // 
@@ -6628,6 +6652,8 @@
         private MultiWiiGUIControls.battery_indicator battery_indicator2;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.NumericUpDown nLandSpeed;
+        private System.Windows.Forms.Button btnMapZoopDown;
+        private System.Windows.Forms.Button btnMapZoomUp;
     }
 }
 

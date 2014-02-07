@@ -5201,6 +5201,16 @@ namespace MultiWiiWinGUI
             b_save_gui_settings.BackColor = Color.LightCoral;
         }
 
+        private void btnMapZoomUp_Click(object sender, EventArgs e)
+        {
+            if (MainMap.Zoom < 20) MainMap.Zoom += 1;
+        }
+
+        private void btnMapZoopDown_Click(object sender, EventArgs e)
+        {
+            if (MainMap.Zoom > 2) MainMap.Zoom -= 1;
+        }
+
  
 
 
