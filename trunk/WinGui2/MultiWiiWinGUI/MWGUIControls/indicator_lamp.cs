@@ -140,7 +140,10 @@ namespace MultiWiiGUIControls
             this.Refresh();
         }
 
-
+        public bool GetStatus()
+        {
+            return status;
+        }
 
         protected override Size DefaultSize
         {

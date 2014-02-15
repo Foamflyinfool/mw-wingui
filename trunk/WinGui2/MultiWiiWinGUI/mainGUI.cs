@@ -440,6 +440,12 @@ namespace MultiWiiWinGUI
 
             cbCellcount.SelectedIndex = gui_settings.cellcount - 1;
             cbGUISpeechEnabled.Checked = gui_settings.speech_enabled;
+            cbSpeakAlt.Checked = gui_settings.announce_alt_enabled;
+            cbSpeakBattery.Checked = gui_settings.announce_vbat_enabled;
+            cbSpeakDist.Checked = gui_settings.announce_dist_enabled;
+            comboSpeakInterval.SelectedIndex = gui_settings.announce_interval;
+
+            b_save_gui_settings.BackColor = Color.Transparent;
 
             splash.sStatus = "Build PID structures...";
             splash.Refresh();
@@ -1912,6 +1918,10 @@ namespace MultiWiiWinGUI
         {
 
 
+            //Common stuff
+
+            bool test = isArmed();
+
             labelCRCErrors.Text = Convert.ToString(serial_error_count);
             labelReceivedPackets.Text = Convert.ToString(serial_packet_rx_count);
             labelSentPackets.Text = Convert.ToString(serial_packet_tx_count);
@@ -1921,6 +1931,9 @@ namespace MultiWiiWinGUI
 
             barNoise.Value = mw_gui.remnoise;
             labelNoise.Text = Convert.ToString(barNoise.Value);
+            
+            //VBat on the FC Config panel for helping setup vBatScale
+            lVBatConf.Text = String.Format("{0:0.0} volts", (double)mw_gui.vBat / 10);
 
             if (frmDebug != null && strDebug != "")
             {
@@ -2590,6 +2603,22 @@ namespace MultiWiiWinGUI
                 timer_realtime.Start();
             }
         }
+
+        private bool isArmed()
+        {
+            if (mw_gui.sBoxNames != null)
+            {
+                int i = Array.IndexOf(mw_gui.sBoxNames, "ARM");
+                if (indicators != null)
+                {
+                    return indicators[i].GetStatus();
+                }
+            }
+
+            return false;
+
+        }
+
 
         private void update_params()
         {
@@ -5209,6 +5238,64 @@ namespace MultiWiiWinGUI
         private void btnMapZoopDown_Click(object sender, EventArgs e)
         {
             if (MainMap.Zoom > 2) MainMap.Zoom -= 1;
+        }
+
+        private void nSrvMid1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer_announce_Tick(object sender, EventArgs e)
+        {
+            //Announce is active only when copter is armed
+            if (isArmed() && speech !=null && isConnected)
+            {
+                   if (gui_settings.announce_alt_enabled) speech.SpeakAsync("Altitude " + Convert.ToString(mw_gui.EstAlt / 100) + " meters.");
+                   if (gui_settings.announce_vbat_enabled) speech.SpeakAsync("Battery " + Convert.ToString(((double)mw_gui.vBat) / 10) + "volts");
+                   if (gui_settings.announce_dist_enabled) speech.SpeakAsync("Distance " + Convert.ToString(mw_gui.GPS_distanceToHome) + "meters.");
+            }
+        }
+
+        private void cbSpeakBattery_CheckedChanged(object sender, EventArgs e)
+        {
+            gui_settings.announce_vbat_enabled = cbSpeakBattery.Checked;
+            b_save_gui_settings.BackColor = Color.LightCoral;
+
+        }
+
+        private void cbSpeakAlt_CheckedChanged(object sender, EventArgs e)
+        {
+            gui_settings.announce_alt_enabled = cbSpeakAlt.Checked;
+            b_save_gui_settings.BackColor = Color.LightCoral;
+        }
+
+        private void cbSpeakDist_CheckedChanged(object sender, EventArgs e)
+        {
+            gui_settings.announce_dist_enabled = cbSpeakDist.Checked;
+            b_save_gui_settings.BackColor = Color.LightCoral;
+        }
+
+        private void comboSpeakInterval_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            gui_settings.announce_interval = comboSpeakInterval.SelectedIndex;
+            b_save_gui_settings.BackColor = Color.LightCoral;
+            switch(comboSpeakInterval.SelectedIndex)
+            {
+                case 0: timer_announce.Interval = 10000;
+                    break;
+                case 1: timer_announce.Interval = 15000;
+                    break;
+                case 2: timer_announce.Interval = 30000;
+                    break;
+                case 3: timer_announce.Interval = 60000;
+                    break;
+                case 4: timer_announce.Interval = 90000;
+                    break;
+                default: timer_announce.Interval = 60000;
+                    break;
+            }
+            
         }
 
  

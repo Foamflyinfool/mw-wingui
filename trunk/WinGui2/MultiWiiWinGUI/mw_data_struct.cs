@@ -41,7 +41,15 @@ namespace MultiWiiWinGUI
         public ushort wp_radius { get; set; }
 
         public bool speech_enabled { get; set; }
+        public bool announce_alt_enabled { get; set; }
+        public bool announce_vbat_enabled { get; set; }
+        public bool announce_dist_enabled { get; set; }
+        public int announce_interval { get; set; }
+
+        
+
         public byte cellcount { get; set; }
+
 
 
         //Constructor, set default values
@@ -54,6 +62,11 @@ namespace MultiWiiWinGUI
             bEnableLogging = false;
             iMapProviderSelectedIndex = 1;  //Bing Map
             speech_enabled = true;
+            announce_alt_enabled = false;
+            announce_dist_enabled = false;
+            announce_vbat_enabled = false;
+            announce_interval = 2;
+
             cellcount = 3;
 
 
@@ -99,11 +112,14 @@ namespace MultiWiiWinGUI
 
             tw.WriteStartElement("MAPPROVIDER value=\"" + iMapProviderSelectedIndex + "\""); tw.WriteEndElement();
             tw.WriteStartElement("SPEECH_ENABLED value=\"" + speech_enabled + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("ANNOUNCE_ALT value=\"" + announce_alt_enabled + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("ANNOUNCE_VBAT value=\"" + announce_vbat_enabled + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("ANNOUNCE_DIST value=\"" + announce_dist_enabled + "\""); tw.WriteEndElement();
+            tw.WriteStartElement("ANNOUNCE_INTERVAL value=\"" + announce_interval + "\""); tw.WriteEndElement();
+
+            
             tw.WriteStartElement("CELLCOUNT value=\"" + cellcount + "\""); tw.WriteEndElement();
             
-
-            
-
             tw.WriteStartElement("MAX_WP_NUMBER value=\"" + max_wp_number + "\""); tw.WriteEndElement();
             tw.WriteStartElement("WP_RADIUS value=\"" +  wp_radius + "\""); tw.WriteEndElement();
 
@@ -156,6 +172,12 @@ namespace MultiWiiWinGUI
                             if (String.Compare(reader.Name, "max_wp_number", true) == 0 && reader.HasAttributes) { max_wp_number = Convert.ToByte(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "wp_radius", true) == 0 && reader.HasAttributes) { wp_radius = Convert.ToUInt16(reader.GetAttribute("value")); }
                             if (String.Compare(reader.Name, "speech_enabled", true) == 0 && reader.HasAttributes) { speech_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
+
+                            if (String.Compare(reader.Name, "announce_alt", true) == 0 && reader.HasAttributes) { announce_alt_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "announce_vbat", true) == 0 && reader.HasAttributes) { announce_vbat_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "announce_dist", true) == 0 && reader.HasAttributes) { announce_dist_enabled = Convert.ToBoolean(reader.GetAttribute("value")); }
+                            if (String.Compare(reader.Name, "announce_interval", true) == 0 && reader.HasAttributes) { announce_interval = Convert.ToInt16(reader.GetAttribute("value")); }
+                            
                             if (String.Compare(reader.Name, "cellcount", true) == 0 && reader.HasAttributes) { cellcount = Convert.ToByte(reader.GetAttribute("value")); }
 
 
