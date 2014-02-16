@@ -44,9 +44,9 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre9";
+        const string sVersion = "2.3 pre10";
         const byte byteVersion = 230;
-        const uint iNaviVersion = 6;                //Navigation code version
+        const uint iNaviVersion = 7;                //Navigation code version
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -1081,20 +1081,57 @@ namespace MultiWiiWinGUI
         private void delete_RC_Checkboxes()
         {
             int a, b, c;
+
             if (aux != null)
             {
-                for (c = 0; c < 4; c++)
+
+                if (!check_capability(CAP.EXTENDED_AUX))
                 {
-                    for (a = 0; a < 3; a++)
+                    for (c = 0; c < 4; c++)
+                        for (a = 0; a < 3; a++)
+                            for (b = 0; b < iCheckBoxItems; b++)
+                            {
+                                this.tabPageRC.Controls.Remove(aux[c, a, b]);
+                                aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
+                                aux[c, a, b].Dispose();
+                            }
+
+                    for (a = 0; a < 4; a++)
                     {
-                        for (b = 0; b < iCheckBoxItems; b++)
+                        this.tabPageRC.Controls.Remove(aux_labels[a]);
+                        aux_labels[a].Dispose();
+                        for (b = 0; b < 3; b++)
                         {
-                            this.tabPageRC.Controls.Remove(aux[c, a, b]);
-                            aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
+                            this.tabPageRC.Controls.Remove(lmh_labels[a, b]);
+                            lmh_labels[a, b].Dispose();
                         }
                     }
-                }
 
+
+                }
+                else           //Extended AUX
+                {
+                    for (c = 0; c < 4; c++)
+                        for (a = 0; a < 6; a++)
+                            for (b = 0; b < iCheckBoxItems; b++)
+                            {
+                                this.tabPageRC.Controls.Remove(aux[c, a, b]);
+                                aux[c, a, b].CheckedChanged -= new System.EventHandler(this.aux_checked_changed_event);
+                                aux[c, a, b].Dispose();
+                            }
+
+                    for (a = 0; a < 4; a++)
+                    {
+                        this.tabPageRC.Controls.Remove(aux_labels[a]);
+                        aux_labels[a].Dispose();
+                        for (b = 0; b < 6; b++)
+                        {
+                            this.tabPageRC.Controls.Remove(lmh_labels[a, b]);
+                            lmh_labels[a, b].Dispose();
+                        }
+                    }
+
+                }
                 for (int i = 0; i < iCheckBoxItems; i++)
                 {
                     this.tabPageRC.Controls.Remove(cb_labels[i]);
@@ -1104,7 +1141,6 @@ namespace MultiWiiWinGUI
                     this.splitContainer9.Panel1.Controls.Remove(indicators_mission[i]);
                     indicators_mission[i].Dispose();
                 }
-
             }
         }
 
