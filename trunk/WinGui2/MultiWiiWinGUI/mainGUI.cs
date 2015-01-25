@@ -44,9 +44,9 @@ namespace MultiWiiWinGUI
 
         #region Common variables (properties)
 
-        const string sVersion = "2.3 pre10";
-        const byte byteVersion = 230;
-        const uint iNaviVersion = 7;                //Navigation code version
+        const string sVersion = "2.4";
+        byte byteVersion = 230;
+        uint iNaviVersion = 7;                //Navigation code version
         const string sVersionUrl = "http://mw-wingui.googlecode.com/svn/trunk/WinGui2/version.xml";
         private string sVersionFromSVN;
         private XDocument doc;
@@ -86,7 +86,7 @@ namespace MultiWiiWinGUI
         const int rcLevel4 = 1620;
         const int rcLevel5 = 1749;
 
-        const string sRelName = "2.3";
+        const string sRelName = "2.4";
 
         Boolean isCLI = false;
         string inCLIBuffer;
@@ -370,7 +370,7 @@ namespace MultiWiiWinGUI
 
             //fill out relevant variables
             cbGUISpeechEnabled.Checked = gui_settings.speech_enabled;
-            sOptionsConfigFilename = sOptionsConfigFilename + gui_settings.iSoftwareVersion + ".xml";
+            sOptionsConfigFilename = sOptionsConfigFilename + ".xml";
             read_options_config();                  //read and parse optionsconfig.xml file. sets iCheckBoxItems
             iCheckBoxItems = 24;                    //Theoretical maximum
 
@@ -1390,7 +1390,16 @@ namespace MultiWiiWinGUI
                             }
 
 
-
+                            if (String.Compare(reader.Name, "version", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                byteVersion = Convert.ToByte(reader.GetAttribute("id"));
+                            }
+                            if (String.Compare(reader.Name, "naviversion", true) == 0 && reader.HasAttributes)
+                            {
+                                reader.MoveToAttribute("id");
+                                iNaviVersion = Convert.ToUInt16(reader.GetAttribute("id"));
+                            }
 
                             if (String.Compare(reader.Name, "pid", true) == 0 && reader.HasAttributes)
                             {
@@ -1661,6 +1670,10 @@ namespace MultiWiiWinGUI
                     ptr = 0;
                     for (int i = 0; i < 8; i++)
                     {
+                        //DO only the tricopter version...
+
+
+
                         mw_gui.servoMin[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMax[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
                         mw_gui.servoMiddle[i] = BitConverter.ToInt16(inBuf, ptr); ptr += 2;
@@ -2121,12 +2134,8 @@ namespace MultiWiiWinGUI
                 }
 
 
-
-
                 for (int i = 0; i < 8; i++)
                 {
-
-
                     servo_max[i].Value = mw_gui.servoMax[i];
                     servo_min[i].Value = mw_gui.servoMin[i];
                     servo_mid[i].Value = mw_gui.servoMiddle[i];
@@ -2155,7 +2164,6 @@ namespace MultiWiiWinGUI
                     }
 
                 }
-
 
                 if (naviGroup.Enabled)
                 {
