@@ -1,13 +1,17 @@
-<?xml version="1.0" encoding="us-ascii"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- This a config file for RC options for latest dev MultiWii Code-->
 <CONFIG>
+
+
+  <VERSION id="231" />
+  <NAVIVERSION id="7" />
   
   <PID id="0" name="Roll" desc="Roll Rate control" />
 	  <P id="0" shown="true" min="0" max="20.0" prec="10" />
 	  <I id="0" shown="true" min="0" max="0.250" prec="1000" />
 	  <D id="0" shown="true" min="0" max="100" prec="1" />
 
-    <PID id="1" name="Pitch" desc="Pitch Rate control" />
+  <PID id="1" name="Pitch" desc="Pitch Rate control" />
 	  <P id="1" shown="true" min="0" max="20.0" prec="10" />
 	  <I id="1" shown="true" min="0" max="0.250" prec="1000" />
 	  <D id="1" shown="true" min="0" max="100" prec="1" />
